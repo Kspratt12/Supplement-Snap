@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
+import { jsPDF } from "jspdf"
 import { supabase } from "../../lib/supabase"
 
 // Web Speech API type declarations
@@ -107,6 +108,7 @@ export default function Home() {
   const [showReport, setShowReport] = useState(false)
   const [reportLoading, setReportLoading] = useState(false)
   const [reportCopied, setReportCopied] = useState(false)
+  const [pdfGenerating, setPdfGenerating] = useState(false)
 
   // Check speech recognition support on mount
   useEffect(() => {
@@ -380,6 +382,175 @@ export default function Home() {
     })
 
     return text.trim()
+  }
+
+  async function downloadPdf() {
+    if (!selectedProject || captures.length === 0) return
+    setPdfGenerating(true)
+
+    try {
+      const doc = new jsPDF({ unit: "mm", format: "a4" })
+      const pageWidth = doc.internal.pageSize.getWidth()
+      const pageHeight = doc.internal.pageSize.getHeight()
+      const margin = 20
+      const contentWidth = pageWidth - margin * 2
+      let y = margin
+
+      function checkPage(needed: number) {
+        if (y + needed > pageHeight - margin) {
+          doc.addPage()
+          y = margin
+        }
+      }
+
+      // --- Header bar ---
+      doc.setFillColor(79, 70, 229) // indigo-600
+      doc.rect(0, 0, pageWidth, 14, "F")
+      doc.setTextColor(255, 255, 255)
+      doc.setFontSize(10)
+      doc.setFont("helvetica", "bold")
+      doc.text("Supplement Snap – Project Report", margin, 9)
+      y = 24
+
+      // --- Project info ---
+      doc.setTextColor(24, 24, 27) // zinc-900
+      doc.setFontSize(18)
+      doc.setFont("helvetica", "bold")
+      doc.text(selectedProject.project_name, margin, y)
+      y += 8
+
+      doc.setFontSize(10)
+      doc.setFont("helvetica", "normal")
+      doc.setTextColor(113, 113, 122) // zinc-500
+      doc.text(`Property Address: ${selectedProject.property_address || "N/A"}`, margin, y)
+      y += 5
+      const now = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+      doc.text(`Generated: ${now}`, margin, y)
+      y += 5
+      doc.text(`Findings: ${captures.length}`, margin, y)
+      y += 10
+
+      // --- Divider ---
+      doc.setDrawColor(228, 228, 231) // zinc-200
+      doc.setLineWidth(0.3)
+      doc.line(margin, y, pageWidth - margin, y)
+      y += 8
+
+      // --- Findings ---
+      for (let i = 0; i < captures.length; i++) {
+        const c = captures[i]
+        const urls = c.image_urls && c.image_urls.length > 0 ? c.image_urls : [c.image_url]
+
+        // Finding header
+        checkPage(30)
+        doc.setFontSize(12)
+        doc.setFont("helvetica", "bold")
+        doc.setTextColor(24, 24, 27)
+        doc.text(`${i + 1}. ${c.damage_type} – ${c.roof_area}`, margin, y)
+        y += 5
+
+        doc.setFontSize(8)
+        doc.setFont("helvetica", "normal")
+        doc.setTextColor(161, 161, 170) // zinc-400
+        doc.text(new Date(c.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }), margin, y)
+        y += 6
+
+        // Field note
+        if (c.field_note) {
+          checkPage(15)
+          doc.setFontSize(8)
+          doc.setFont("helvetica", "bold")
+          doc.setTextColor(161, 161, 170)
+          doc.text("FIELD NOTE", margin, y)
+          y += 4
+          doc.setFontSize(9)
+          doc.setFont("helvetica", "normal")
+          doc.setTextColor(82, 82, 91) // zinc-600
+          const noteLines = doc.splitTextToSize(c.field_note, contentWidth)
+          checkPage(noteLines.length * 4 + 2)
+          doc.text(noteLines, margin, y)
+          y += noteLines.length * 4 + 3
+        }
+
+        // Supplement narrative
+        if (drafts[c.id]) {
+          checkPage(15)
+          doc.setFontSize(8)
+          doc.setFont("helvetica", "bold")
+          doc.setTextColor(161, 161, 170)
+          doc.text("SUPPLEMENT EXPLANATION", margin, y)
+          y += 4
+
+          // Light background box
+          doc.setFontSize(9)
+          doc.setFont("helvetica", "normal")
+          doc.setTextColor(63, 63, 70) // zinc-700
+          const draftLines = doc.splitTextToSize(drafts[c.id], contentWidth - 6)
+          const boxHeight = draftLines.length * 4 + 4
+          checkPage(boxHeight + 2)
+          doc.setFillColor(250, 250, 250) // zinc-50
+          doc.roundedRect(margin, y - 2, contentWidth, boxHeight, 2, 2, "F")
+          doc.text(draftLines, margin + 3, y + 2)
+          y += boxHeight + 3
+        } else {
+          checkPage(8)
+          doc.setFontSize(8)
+          doc.setFont("helvetica", "italic")
+          doc.setTextColor(161, 161, 170)
+          doc.text("Draft not available for this finding.", margin, y)
+          y += 6
+        }
+
+        // Photos
+        for (const url of urls) {
+          try {
+            const response = await fetch(url)
+            const blob = await response.blob()
+            const dataUrl = await new Promise<string>((resolve) => {
+              const reader = new FileReader()
+              reader.onloadend = () => resolve(reader.result as string)
+              reader.readAsDataURL(blob)
+            })
+
+            const imgProps = doc.getImageProperties(dataUrl)
+            const maxW = Math.min(contentWidth, 80)
+            const ratio = imgProps.height / imgProps.width
+            const imgW = maxW
+            const imgH = maxW * ratio
+            const cappedH = Math.min(imgH, 60)
+
+            checkPage(cappedH + 5)
+            doc.addImage(dataUrl, "JPEG", margin, y, imgW, cappedH)
+            y += cappedH + 4
+          } catch {
+            // Skip images that fail to load
+          }
+        }
+
+        // Divider between findings
+        if (i < captures.length - 1) {
+          y += 2
+          checkPage(8)
+          doc.setDrawColor(228, 228, 231)
+          doc.setLineWidth(0.2)
+          doc.line(margin, y, pageWidth - margin, y)
+          y += 8
+        }
+      }
+
+      // --- Footer on last page ---
+      doc.setFontSize(7)
+      doc.setFont("helvetica", "normal")
+      doc.setTextColor(161, 161, 170)
+      doc.text("Generated by Supplement Snap", margin, pageHeight - 10)
+
+      const safeName = selectedProject.project_name.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, "-")
+      doc.save(`${safeName}-Report.pdf`)
+    } catch (err) {
+      console.error("PDF generation failed:", err)
+    } finally {
+      setPdfGenerating(false)
+    }
   }
 
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
@@ -729,7 +900,7 @@ export default function Home() {
               <p>Generated: {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
             </div>
 
-            <div className="mt-3 flex gap-2">
+            <div className="mt-3 flex flex-wrap gap-2">
               <button
                 type="button"
                 onClick={() => {
@@ -743,6 +914,26 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
                 {reportCopied ? "Copied!" : "Copy Report"}
+              </button>
+              <button
+                type="button"
+                onClick={downloadPdf}
+                disabled={pdfGenerating}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+              >
+                {pdfGenerating ? (
+                  <>
+                    <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    Generating PDF...
+                  </>
+                ) : (
+                  <>
+                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Download PDF
+                  </>
+                )}
               </button>
               <button
                 type="button"
