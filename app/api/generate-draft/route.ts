@@ -51,9 +51,8 @@ Rules:
     return NextResponse.json({ draft })
   } catch (err) {
     console.error("Claude API error:", err)
-    return NextResponse.json(
-      { error: "Failed to generate draft. Check server logs." },
-      { status: 500 }
-    )
+    const message =
+      err instanceof Error ? err.message : "Unknown error occurred"
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
