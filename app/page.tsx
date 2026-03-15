@@ -14,6 +14,12 @@ export default function LandingPage() {
           </Link>
           <div className="flex items-center gap-4">
             <Link
+              href="/pricing"
+              className="hidden text-sm font-medium text-zinc-600 hover:text-zinc-900 sm:block"
+            >
+              Pricing
+            </Link>
+            <Link
               href="/app"
               className="text-sm font-medium text-zinc-600 hover:text-zinc-900"
             >
