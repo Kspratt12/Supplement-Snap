@@ -539,6 +539,14 @@ export default function Home() {
       }
 
       if (includePhotos) {
+        // Photos label
+        checkPage(10)
+        doc.setFontSize(8)
+        doc.setFont("helvetica", "bold")
+        doc.setTextColor(161, 161, 170)
+        doc.text("PHOTOS", margin, y)
+        y += 5
+
         for (const url of urls) {
           try {
             const response = await fetch(url)
@@ -549,11 +557,10 @@ export default function Home() {
               reader.readAsDataURL(blob)
             })
             const imgProps = doc.getImageProperties(dataUrl)
-            const maxW = Math.min(contentWidth, 80)
             const ratio = imgProps.height / imgProps.width
-            const imgW = maxW
-            const imgH = maxW * ratio
-            const cappedH = Math.min(imgH, 60)
+            const imgW = contentWidth
+            const imgH = contentWidth * ratio
+            const cappedH = Math.min(imgH, 120)
             checkPage(cappedH + 5)
             doc.addImage(dataUrl, "JPEG", margin, y, imgW, cappedH)
             y += cappedH + 4
