@@ -43,16 +43,37 @@ export default function Home() {
   const [saving, setSaving] = useState(false)
   const [captures, setCaptures] = useState<Capture[]>([])
   const [drafts, setDrafts] = useState<Record<string, string>>({})
+  const [draftLoading, setDraftLoading] = useState<Record<string, boolean>>({})
+  const [draftErrors, setDraftErrors] = useState<Record<string, string>>({})
 
-  function generateDraft(c: Capture) {
-    const note = c.field_note
-      ? `The contractor noted: ${c.field_note}.`
-      : "No additional field notes were recorded."
-    const draft =
-      `During tear-off on the ${c.roof_area} of the roof, damage to the ${c.damage_type} was discovered. ` +
-      `${note} ` +
-      `This condition was not visible prior to shingle removal and requires repair or replacement as part of the restoration scope.`
-    setDrafts((prev) => ({ ...prev, [c.id]: draft }))
+  async function generateDraft(c: Capture) {
+    setDraftLoading((prev) => ({ ...prev, [c.id]: true }))
+    setDraftErrors((prev) => ({ ...prev, [c.id]: "" }))
+
+    try {
+      const res = await fetch("/api/generate-draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          damage_type: c.damage_type,
+          roof_area: c.roof_area,
+          field_note: c.field_note,
+        }),
+      })
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null)
+        throw new Error(data?.error || `Request failed (${res.status})`)
+      }
+
+      const { draft } = await res.json()
+      setDrafts((prev) => ({ ...prev, [c.id]: draft }))
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error"
+      setDraftErrors((prev) => ({ ...prev, [c.id]: message }))
+    } finally {
+      setDraftLoading((prev) => ({ ...prev, [c.id]: false }))
+    }
   }
 
   useEffect(() => {
@@ -179,7 +200,7 @@ export default function Home() {
           <select
             value={damageType}
             onChange={(e) => setDamageType(e.target.value)}
-            className="w-full rounded border border-gray-700 bg-black px-3 py-2 text-sm"
+            className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
           >
             <option value="">Select damage type...</option>
             {DAMAGE_TYPES.map((t) => (
@@ -196,7 +217,7 @@ export default function Home() {
           <select
             value={roofArea}
             onChange={(e) => setRoofArea(e.target.value)}
-            className="w-full rounded border border-gray-700 bg-black px-3 py-2 text-sm"
+            className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
           >
             <option value="">Select roof area...</option>
             {ROOF_AREAS.map((a) => (
@@ -215,7 +236,7 @@ export default function Home() {
             onChange={(e) => setFieldNote(e.target.value)}
             placeholder="Describe the damage..."
             rows={3}
-            className="w-full rounded border border-gray-700 bg-black px-3 py-2 text-sm"
+            className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400"
           />
         </div>
 
@@ -274,7 +295,9 @@ export default function Home() {
                   <p className="text-xs text-gray-600">
                     {new Date(c.created_at).toLocaleString()}
                   </p>
-                  {!drafts[c.id] && (
+
+                  {/* Generate draft button */}
+                  {!drafts[c.id] && !draftLoading[c.id] && (
                     <button
                       type="button"
                       onClick={() => generateDraft(c)}
@@ -283,6 +306,31 @@ export default function Home() {
                       Generate Supplement Draft
                     </button>
                   )}
+
+                  {/* Loading state */}
+                  {draftLoading[c.id] && (
+                    <p className="mt-2 text-xs text-gray-400">
+                      Generating draft...
+                    </p>
+                  )}
+
+                  {/* Error state */}
+                  {draftErrors[c.id] && (
+                    <div className="mt-2">
+                      <p className="text-xs text-red-400">
+                        {draftErrors[c.id]}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => generateDraft(c)}
+                        className="mt-1 text-xs text-gray-400 underline hover:text-white"
+                      >
+                        Retry
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Draft result */}
                   {drafts[c.id] && (
                     <div className="mt-3 rounded border border-gray-600 bg-gray-900 p-3">
                       <p className="mb-1 text-xs font-medium text-gray-400">
