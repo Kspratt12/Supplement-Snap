@@ -618,7 +618,39 @@ export default function Home() {
     }
   }
 
-  const MAX_PHOTOS = 10
+  const MAX_PHOTOS = 6
+
+  function compressImage(file: File, maxWidth = 1200, quality = 0.8): Promise<File> {
+    return new Promise((resolve) => {
+      const img = new Image()
+      img.onload = () => {
+        // Skip compression if already small enough
+        if (img.width <= maxWidth && file.size < 500_000) {
+          resolve(file)
+          return
+        }
+        const scale = Math.min(1, maxWidth / img.width)
+        const canvas = document.createElement("canvas")
+        canvas.width = Math.round(img.width * scale)
+        canvas.height = Math.round(img.height * scale)
+        const ctx = canvas.getContext("2d")!
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(new File([blob], file.name, { type: "image/jpeg" }))
+            } else {
+              resolve(file)
+            }
+          },
+          "image/jpeg",
+          quality
+        )
+      }
+      img.onerror = () => resolve(file)
+      img.src = URL.createObjectURL(file)
+    })
+  }
 
   function addFiles(newFiles: File[]) {
     // Filter to only image files
@@ -694,11 +726,16 @@ export default function Home() {
     }
 
     setSaving(true)
-    setStatus(`Uploading ${files.length} photo${files.length !== 1 ? "s" : ""}...`)
+    setStatus(`Compressing ${files.length} photo${files.length !== 1 ? "s" : ""}...`)
+
+    // Compress all images before upload
+    const compressed = await Promise.all(files.map((f) => compressImage(f)))
+
+    setStatus(`Uploading ${compressed.length} photo${compressed.length !== 1 ? "s" : ""}...`)
 
     const uploadedUrls: string[] = []
 
-    for (const f of files) {
+    for (const f of compressed) {
       const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}-${f.name}`
 
       const { error: uploadError } = await supabase.storage
