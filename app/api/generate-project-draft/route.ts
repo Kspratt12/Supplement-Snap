@@ -16,38 +16,56 @@ export async function POST(request: Request) {
       )
     }
 
-    const captureList = captures
+    // Build the structured findings list
+    const findings = captures
       .map(
-        (c: { damage_type: string; roof_area: string; field_note: string }, i: number) =>
-          `${i + 1}. Damage: ${c.damage_type} | Area: ${c.roof_area}${c.field_note ? ` | Note: ${c.field_note}` : ""}`
+        (
+          c: {
+            damage_type: string
+            roof_area: string
+            field_note: string
+            created_at?: string
+          },
+          i: number
+        ) => {
+          let entry = `${i + 1}. Damage Type: ${c.damage_type}\n   Roof Area: ${c.roof_area}`
+          if (c.field_note) {
+            entry += `\n   Field Note: ${c.field_note}`
+          }
+          if (c.created_at) {
+            entry += `\n   Documented: ${new Date(c.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`
+          }
+          return entry
+        }
       )
-      .join("\n")
+      .join("\n\n")
 
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 800,
+      max_tokens: 1200,
       messages: [
         {
           role: "user",
-          content: `You are a roofing insurance supplement documentation assistant. Write a combined supplement summary for an insurance claim based on all damage items found during roof tear-off on a single property.
+          content: `You are a senior supplement writer at a roofing restoration company. Write a professional insurance supplement explanation for concealed damage discovered during tear-off.
 
 Project: ${project_name}
-${property_address ? `Property: ${property_address}` : ""}
+${property_address ? `Property Address: ${property_address}` : ""}
 
-Damage items documented during tear-off:
-${captureList}
+Findings:
+${findings}
 
-Rules:
-- Write a unified supplement summary covering all documented damage items.
-- Open with a brief statement identifying the property and that damage was discovered during tear-off.
-- Address each damage item in its own sentence or two, grouped logically by roof area when possible.
-- Close with a summary statement that these conditions were not visible prior to shingle removal and require repair or replacement.
-- Use professional, insurance-friendly language suitable for adjuster correspondence or claim notes.
-- Do NOT invent measurements or dimensions not present in the field notes.
-- Do NOT reference Xactimate codes.
-- Do NOT use generic AI filler language.
-- Sound like a real supplement writer at a roofing restoration company.
-- The tone should be factual and non-adversarial.`,
+Instructions:
+- Write in professional insurance documentation style suitable for carrier submission.
+- Reference that these are concealed conditions discovered during the tear-off process that were not visible or detectable during the initial inspection.
+- Combine all findings into one clean, unified supplement narrative — do NOT use bullet points or numbered lists in the output.
+- Produce clear paragraphs that flow naturally. Group related findings by roof area when it makes sense.
+- Each damage finding should be addressed with enough detail to justify the supplement request.
+- Close with a summary statement that these concealed conditions require repair or replacement to restore the roof system to its pre-loss condition and to meet applicable building codes.
+- Do NOT invent specific measurements, dimensions, or quantities not present in the field notes.
+- Do NOT reference Xactimate line items or codes.
+- Do NOT use generic AI filler language, marketing speak, or overly formal legalese.
+- Sound like a real supplement writer — factual, direct, non-adversarial, and professional.
+- The output should be ready to copy and paste into a supplement submission or adjuster correspondence.`,
         },
       ],
     })

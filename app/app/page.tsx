@@ -146,23 +146,39 @@ export default function Home() {
   }
 
   async function generateProjectDraft() {
-    if (!selectedProject || captures.length === 0) return
+    if (!selectedProject || !selectedProjectId) return
 
     setProjectDraftLoading(true)
     setProjectDraftError("")
     setProjectDraft("")
 
     try {
+      // Re-fetch fresh captures from Supabase to ensure we have the latest data
+      const { data: freshCaptures, error: fetchError } = await supabase
+        .from("captures")
+        .select("*")
+        .eq("project_id", selectedProjectId)
+        .order("created_at", { ascending: true })
+
+      if (fetchError) {
+        throw new Error(`Failed to load captures: ${fetchError.message}`)
+      }
+
+      if (!freshCaptures || freshCaptures.length === 0) {
+        throw new Error("No captures found for this project.")
+      }
+
       const res = await fetch("/api/generate-project-draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           project_name: selectedProject.project_name,
           property_address: selectedProject.property_address,
-          captures: captures.map((c) => ({
+          captures: freshCaptures.map((c) => ({
             damage_type: c.damage_type,
             roof_area: c.roof_area,
             field_note: c.field_note,
+            created_at: c.created_at,
           })),
         }),
       })
@@ -418,7 +434,7 @@ export default function Home() {
 
           {projectDraft && (
             <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-              <div className="mb-3 flex items-center gap-2">
+              <div className="mb-4 flex items-center gap-2">
                 <svg className="h-4 w-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
@@ -426,6 +442,27 @@ export default function Home() {
                   Project Supplement Draft
                 </p>
               </div>
+
+              {/* Findings summary */}
+              <div className="mb-4 rounded-lg border border-zinc-100 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-800/30">
+                <p className="mb-2 text-xs font-medium text-zinc-400">
+                  Based on {captures.length} finding{captures.length !== 1 ? "s" : ""}:
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {captures.map((c) => (
+                    <span
+                      key={c.id}
+                      className="inline-flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-xs text-zinc-600 border border-zinc-200 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-400"
+                    >
+                      <span className="font-medium">{c.damage_type}</span>
+                      <span className="text-zinc-300 dark:text-zinc-600">/</span>
+                      <span>{c.roof_area}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Draft text */}
               <div className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-800/50">
                 <p className="whitespace-pre-wrap text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
                   {projectDraft}
