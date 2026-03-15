@@ -1484,6 +1484,10 @@ export default function Home() {
           <div className="space-y-4">
             {captures
               .filter((c) => statusFilter === "All" || (c.status || "Captured") === statusFilter)
+              .sort((a, b) => {
+                const priority: Record<string, number> = { "Needs Review": 0, "Captured": 1, "Ready to Send": 2, "Sent": 3 }
+                return (priority[a.status || "Captured"] ?? 1) - (priority[b.status || "Captured"] ?? 1)
+              })
               .map((c) => (
               <div
                 key={c.id}
