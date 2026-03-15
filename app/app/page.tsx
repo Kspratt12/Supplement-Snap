@@ -394,7 +394,7 @@ export default function Home() {
     return text.trim()
   }
 
-  async function buildPdfDoc() {
+  async function buildPdfDoc(includePhotos = true) {
     if (!selectedProject || captures.length === 0) return null
 
     const doc = new jsPDF({ unit: "mm", format: "a4" })
@@ -500,27 +500,36 @@ export default function Home() {
         y += 6
       }
 
-      for (const url of urls) {
-        try {
-          const response = await fetch(url)
-          const blob = await response.blob()
-          const dataUrl = await new Promise<string>((resolve) => {
-            const reader = new FileReader()
-            reader.onloadend = () => resolve(reader.result as string)
-            reader.readAsDataURL(blob)
-          })
-          const imgProps = doc.getImageProperties(dataUrl)
-          const maxW = Math.min(contentWidth, 80)
-          const ratio = imgProps.height / imgProps.width
-          const imgW = maxW
-          const imgH = maxW * ratio
-          const cappedH = Math.min(imgH, 60)
-          checkPage(cappedH + 5)
-          doc.addImage(dataUrl, "JPEG", margin, y, imgW, cappedH)
-          y += cappedH + 4
-        } catch {
-          // Skip images that fail to load
+      if (includePhotos) {
+        for (const url of urls) {
+          try {
+            const response = await fetch(url)
+            const blob = await response.blob()
+            const dataUrl = await new Promise<string>((resolve) => {
+              const reader = new FileReader()
+              reader.onloadend = () => resolve(reader.result as string)
+              reader.readAsDataURL(blob)
+            })
+            const imgProps = doc.getImageProperties(dataUrl)
+            const maxW = Math.min(contentWidth, 80)
+            const ratio = imgProps.height / imgProps.width
+            const imgW = maxW
+            const imgH = maxW * ratio
+            const cappedH = Math.min(imgH, 60)
+            checkPage(cappedH + 5)
+            doc.addImage(dataUrl, "JPEG", margin, y, imgW, cappedH)
+            y += cappedH + 4
+          } catch {
+            // Skip images that fail to load
+          }
         }
+      } else if (urls.length > 0) {
+        checkPage(6)
+        doc.setFontSize(8)
+        doc.setFont("helvetica", "italic")
+        doc.setTextColor(161, 161, 170)
+        doc.text(`[${urls.length} photo${urls.length !== 1 ? "s" : ""} attached to this finding]`, margin, y)
+        y += 6
       }
 
       if (i < captures.length - 1) {
@@ -573,7 +582,8 @@ export default function Home() {
     setEmailError("")
 
     try {
-      const doc = await buildPdfDoc()
+      // Build PDF without photos to keep email attachment small
+      const doc = await buildPdfDoc(false)
       if (!doc) throw new Error("Failed to generate PDF")
 
       // Get base64 PDF content (strip the data:... prefix)
