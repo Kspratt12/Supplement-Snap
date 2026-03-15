@@ -111,6 +111,12 @@ export default function Home() {
   const [draftErrors, setDraftErrors] = useState<Record<string, string>>({})
   const [copied, setCopied] = useState<Record<string, boolean>>({})
 
+  // Photo viewer state
+  const [viewerPhotos, setViewerPhotos] = useState<string[]>([])
+  const [viewerIndex, setViewerIndex] = useState(0)
+  const [viewerZoom, setViewerZoom] = useState(1)
+  const viewerTouchStart = useRef<{ x: number; y: number } | null>(null)
+
   // Project draft state
   const [projectDraft, setProjectDraft] = useState("")
   const [projectDraftLoading, setProjectDraftLoading] = useState(false)
@@ -131,6 +137,24 @@ export default function Home() {
   const [emailSending, setEmailSending] = useState(false)
   const [emailStatus, setEmailStatus] = useState<"" | "sent" | "error">("")
   const [emailError, setEmailError] = useState("")
+
+  // Photo viewer keyboard navigation
+  useEffect(() => {
+    if (viewerPhotos.length === 0) return
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") { setViewerPhotos([]); setViewerZoom(1) }
+      if (e.key === "ArrowRight") setViewerIndex((i) => Math.min(i + 1, viewerPhotos.length - 1))
+      if (e.key === "ArrowLeft") setViewerIndex((i) => Math.max(i - 1, 0))
+    }
+    window.addEventListener("keydown", handleKey)
+    return () => window.removeEventListener("keydown", handleKey)
+  }, [viewerPhotos])
+
+  function openViewer(photos: string[], index: number) {
+    setViewerPhotos(photos)
+    setViewerIndex(index)
+    setViewerZoom(1)
+  }
 
   // Check speech recognition support on mount
   useEffect(() => {
@@ -1530,8 +1554,9 @@ export default function Home() {
                   <img
                     src={urls[0]}
                     alt={`${c.damage_type} - ${c.roof_area}`}
-                    className="w-full object-cover"
+                    className="w-full object-cover cursor-pointer"
                     style={{ maxHeight: "280px" }}
+                    onClick={() => openViewer(urls, 0)}
                   />
                 ) : (
                   <div className="grid grid-cols-3 gap-1 p-1">
@@ -1540,7 +1565,8 @@ export default function Home() {
                         key={i}
                         src={url}
                         alt={`${c.damage_type} - ${c.roof_area} (${i + 1})`}
-                        className="aspect-square w-full rounded-lg object-cover"
+                        className="aspect-square w-full rounded-lg object-cover cursor-pointer"
+                        onClick={() => openViewer(urls, i)}
                       />
                     ))}
                   </div>
@@ -1770,6 +1796,96 @@ export default function Home() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Photo Viewer Modal */}
+      {viewerPhotos.length > 0 && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90"
+          onClick={(e) => { if (e.target === e.currentTarget) { setViewerPhotos([]); setViewerZoom(1) } }}
+        >
+          {/* Close button */}
+          <button
+            type="button"
+            onClick={() => { setViewerPhotos([]); setViewerZoom(1) }}
+            className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
+          >
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {/* Counter */}
+          {viewerPhotos.length > 1 && (
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-3 py-1 text-sm text-white">
+              {viewerIndex + 1} / {viewerPhotos.length}
+            </div>
+          )}
+
+          {/* Previous button */}
+          {viewerIndex > 0 && (
+            <button
+              type="button"
+              onClick={() => { setViewerIndex((i) => i - 1); setViewerZoom(1) }}
+              className="absolute left-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:left-4"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+          )}
+
+          {/* Next button */}
+          {viewerIndex < viewerPhotos.length - 1 && (
+            <button
+              type="button"
+              onClick={() => { setViewerIndex((i) => i + 1); setViewerZoom(1) }}
+              className="absolute right-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:right-4"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          )}
+
+          {/* Image */}
+          <div
+            className="flex h-full w-full items-center justify-center overflow-auto p-12 sm:p-16"
+            onWheel={(e) => {
+              e.preventDefault()
+              setViewerZoom((z) => Math.min(Math.max(z + (e.deltaY > 0 ? -0.2 : 0.2), 0.5), 4))
+            }}
+            onTouchStart={(e) => {
+              if (e.touches.length === 1) {
+                viewerTouchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+              }
+            }}
+            onTouchEnd={(e) => {
+              if (!viewerTouchStart.current || e.changedTouches.length === 0) return
+              const dx = e.changedTouches[0].clientX - viewerTouchStart.current.x
+              const dy = e.changedTouches[0].clientY - viewerTouchStart.current.y
+              viewerTouchStart.current = null
+              // Only swipe if horizontal movement is dominant and > 50px
+              if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+                if (dx < 0 && viewerIndex < viewerPhotos.length - 1) {
+                  setViewerIndex((i) => i + 1)
+                  setViewerZoom(1)
+                } else if (dx > 0 && viewerIndex > 0) {
+                  setViewerIndex((i) => i - 1)
+                  setViewerZoom(1)
+                }
+              }
+            }}
+          >
+            <img
+              src={viewerPhotos[viewerIndex]}
+              alt={`Photo ${viewerIndex + 1}`}
+              className="max-h-full max-w-full object-contain select-none"
+              style={{ transform: `scale(${viewerZoom})`, transition: "transform 0.15s ease" }}
+              draggable={false}
+            />
           </div>
         </div>
       )}
