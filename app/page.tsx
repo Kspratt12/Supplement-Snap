@@ -124,6 +124,19 @@ export default function Home() {
     setCreatingProject(false)
   }
 
+  async function deleteCapture(c: Capture) {
+    if (!confirm("Delete this capture? This cannot be undone.")) return
+
+    // Extract storage file path from the public URL
+    const match = c.image_url.match(/test-uploads\/(.+)$/)
+    if (match) {
+      await supabase.storage.from("test-uploads").remove([match[1]])
+    }
+
+    await supabase.from("captures").delete().eq("id", c.id)
+    setCaptures((prev) => prev.filter((cap) => cap.id !== c.id))
+  }
+
   async function generateDraft(c: Capture) {
     setDraftLoading((prev) => ({ ...prev, [c.id]: true }))
     setDraftErrors((prev) => ({ ...prev, [c.id]: "" }))
@@ -493,6 +506,14 @@ export default function Home() {
                       </button>
                     </div>
                   )}
+
+                  <button
+                    type="button"
+                    onClick={() => deleteCapture(c)}
+                    className="mt-3 text-xs text-gray-500 hover:text-red-400"
+                  >
+                    Delete Capture
+                  </button>
                 </div>
               </div>
             ))}
