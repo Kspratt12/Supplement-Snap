@@ -36,6 +36,7 @@ type Capture = {
   id: string
   project_id: string
   image_url: string
+  image_urls?: string[]
   damage_type: string
   roof_area: string
   field_note: string
@@ -52,8 +53,8 @@ export default function Home() {
   const [showNewProject, setShowNewProject] = useState(false)
 
   // Capture form state
-  const [preview, setPreview] = useState<string | null>(null)
-  const [file, setFile] = useState<File | null>(null)
+  const [previews, setPreviews] = useState<string[]>([])
+  const [files, setFiles] = useState<File[]>([])
   const [damageType, setDamageType] = useState("")
   const [roofArea, setRoofArea] = useState("")
   const [fieldNote, setFieldNote] = useState("")
@@ -136,10 +137,14 @@ export default function Home() {
   async function deleteCapture(c: Capture) {
     if (!confirm("Delete this capture? This cannot be undone.")) return
 
-    // Extract storage file path from the public URL
-    const match = c.image_url.match(/test-uploads\/(.+)$/)
-    if (match) {
-      await supabase.storage.from("test-uploads").remove([match[1]])
+    // Delete all associated images from storage
+    const urls = c.image_urls && c.image_urls.length > 0 ? c.image_urls : [c.image_url]
+    const filePaths = urls
+      .map((url) => url.match(/test-uploads\/(.+)$/)?.[1])
+      .filter((p): p is string => !!p)
+
+    if (filePaths.length > 0) {
+      await supabase.storage.from("test-uploads").remove(filePaths)
     }
 
     await supabase.from("captures").delete().eq("id", c.id)
@@ -230,11 +235,22 @@ export default function Home() {
   }
 
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
-    const selected = e.target.files?.[0]
-    if (!selected) return
-    setFile(selected)
-    setPreview(URL.createObjectURL(selected))
+    const selected = e.target.files
+    if (!selected || selected.length === 0) return
+    const newFiles = Array.from(selected)
+    setFiles((prev) => [...prev, ...newFiles])
+    setPreviews((prev) => [...prev, ...newFiles.map((f) => URL.createObjectURL(f))])
     setStatus("")
+    // Reset the input so the same file can be re-selected
+    e.target.value = ""
+  }
+
+  function removeFile(index: number) {
+    setPreviews((prev) => {
+      URL.revokeObjectURL(prev[index])
+      return prev.filter((_, i) => i !== index)
+    })
+    setFiles((prev) => prev.filter((_, i) => i !== index))
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -244,8 +260,8 @@ export default function Home() {
       setStatus("Please select or create a project first.")
       return
     }
-    if (!file) {
-      setStatus("Please select a photo first.")
+    if (files.length === 0) {
+      setStatus("Please select at least one photo.")
       return
     }
     if (!damageType) {
@@ -258,31 +274,36 @@ export default function Home() {
     }
 
     setSaving(true)
-    setStatus("Uploading photo...")
+    setStatus(`Uploading ${files.length} photo${files.length !== 1 ? "s" : ""}...`)
 
-    const fileName = `${Date.now()}-${file.name}`
+    const uploadedUrls: string[] = []
 
-    const { error: uploadError } = await supabase.storage
-      .from("test-uploads")
-      .upload(fileName, file)
+    for (const f of files) {
+      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}-${f.name}`
 
-    if (uploadError) {
-      setStatus(`Upload failed: ${uploadError.message}`)
-      setSaving(false)
-      return
+      const { error: uploadError } = await supabase.storage
+        .from("test-uploads")
+        .upload(fileName, f)
+
+      if (uploadError) {
+        setStatus(`Upload failed: ${uploadError.message}`)
+        setSaving(false)
+        return
+      }
+
+      const { data: urlData } = supabase.storage
+        .from("test-uploads")
+        .getPublicUrl(fileName)
+
+      uploadedUrls.push(urlData.publicUrl)
     }
-
-    const { data: urlData } = supabase.storage
-      .from("test-uploads")
-      .getPublicUrl(fileName)
-
-    const imageUrl = urlData.publicUrl
 
     setStatus("Saving capture...")
 
     const { error: insertError } = await supabase.from("captures").insert({
       project_id: selectedProjectId,
-      image_url: imageUrl,
+      image_url: uploadedUrls[0],
+      image_urls: uploadedUrls,
       damage_type: damageType,
       roof_area: roofArea,
       field_note: fieldNote,
@@ -295,16 +316,13 @@ export default function Home() {
     }
 
     setStatus("Capture saved!")
-    setFile(null)
-    setPreview(null)
+    setFiles([])
+    previews.forEach((p) => URL.revokeObjectURL(p))
+    setPreviews([])
     setDamageType("")
     setRoofArea("")
     setFieldNote("")
     setSaving(false)
-
-    // Reset both file inputs
-    const inputs = document.querySelectorAll<HTMLInputElement>('input[type="file"]')
-    inputs.forEach((input) => { input.value = "" })
 
     await loadCaptures(selectedProjectId)
   }
@@ -512,9 +530,16 @@ export default function Home() {
           <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-500">New Capture</h2>
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              Damage Photo
-            </label>
+            <div className="mb-2 flex items-center justify-between">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                Damage Photos
+              </label>
+              {previews.length > 0 && (
+                <span className="text-xs text-zinc-400">
+                  {previews.length} photo{previews.length !== 1 ? "s" : ""}
+                </span>
+              )}
+            </div>
 
             {/* Hidden file inputs */}
             <input
@@ -529,59 +554,61 @@ export default function Home() {
               id="upload-input"
               type="file"
               accept="image/*"
+              multiple
               onChange={handleFileSelect}
               className="hidden"
             />
 
-            {!preview ? (
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => document.getElementById("camera-input")?.click()}
-                  className="flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-zinc-300 bg-zinc-50 px-4 py-6 text-zinc-600 hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-indigo-800 dark:hover:bg-indigo-950/30 dark:hover:text-indigo-400"
-                >
-                  <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-                  </svg>
-                  <span className="text-sm font-semibold">Take Photo</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => document.getElementById("upload-input")?.click()}
-                  className="flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-zinc-300 bg-zinc-50 px-4 py-6 text-zinc-600 hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-indigo-800 dark:hover:bg-indigo-950/30 dark:hover:text-indigo-400"
-                >
-                  <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                  </svg>
-                  <span className="text-sm font-semibold">Upload Photo</span>
-                </button>
-              </div>
-            ) : (
-              <div className="relative">
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className="w-full max-h-64 rounded-xl border border-zinc-200 object-cover dark:border-zinc-700"
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    setFile(null)
-                    setPreview(null)
-                    const inputs = document.querySelectorAll<HTMLInputElement>('input[type="file"]')
-                    inputs.forEach((input) => { input.value = "" })
-                  }}
-                  className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70"
-                  aria-label="Remove photo"
-                >
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+            {/* Photo previews grid */}
+            {previews.length > 0 && (
+              <div className="mb-3 grid grid-cols-3 gap-2 sm:grid-cols-4">
+                {previews.map((src, i) => (
+                  <div key={i} className="group relative aspect-square">
+                    <img
+                      src={src}
+                      alt={`Photo ${i + 1}`}
+                      className="h-full w-full rounded-lg border border-zinc-200 object-cover dark:border-zinc-700"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeFile(i)}
+                      className="absolute top-1 right-1 flex h-6 w-6 items-center justify-center rounded-full bg-black/50 text-white sm:opacity-0 sm:group-hover:opacity-100"
+                      aria-label={`Remove photo ${i + 1}`}
+                    >
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
               </div>
             )}
+
+            {/* Take / Upload buttons — always visible so user can add more */}
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => document.getElementById("camera-input")?.click()}
+                className="flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-zinc-300 bg-zinc-50 px-4 py-5 text-zinc-600 hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-indigo-800 dark:hover:bg-indigo-950/30 dark:hover:text-indigo-400"
+              >
+                <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                </svg>
+                <span className="text-xs font-semibold">{previews.length > 0 ? "+ Take Photo" : "Take Photo"}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => document.getElementById("upload-input")?.click()}
+                className="flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-zinc-300 bg-zinc-50 px-4 py-5 text-zinc-600 hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-indigo-800 dark:hover:bg-indigo-950/30 dark:hover:text-indigo-400"
+              >
+                <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                </svg>
+                <span className="text-xs font-semibold">{previews.length > 0 ? "+ Upload Photo" : "Upload Photo"}</span>
+              </button>
+            </div>
           </div>
 
           <div>
@@ -652,7 +679,7 @@ export default function Home() {
             disabled={saving}
             className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50"
           >
-            {saving ? "Saving..." : "Save Capture"}
+            {saving ? "Saving..." : files.length > 1 ? `Save Capture (${files.length} photos)` : "Save Capture"}
           </button>
         </form>
       ) : (
@@ -683,12 +710,28 @@ export default function Home() {
                 key={c.id}
                 className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
               >
-                <img
-                  src={c.image_url}
-                  alt={`${c.damage_type} - ${c.roof_area}`}
-                  className="w-full object-cover"
-                  style={{ maxHeight: "280px" }}
-                />
+                {(() => {
+                const urls = c.image_urls && c.image_urls.length > 0 ? c.image_urls : [c.image_url]
+                return urls.length === 1 ? (
+                  <img
+                    src={urls[0]}
+                    alt={`${c.damage_type} - ${c.roof_area}`}
+                    className="w-full object-cover"
+                    style={{ maxHeight: "280px" }}
+                  />
+                ) : (
+                  <div className="flex gap-1 overflow-x-auto p-1">
+                    {urls.map((url, i) => (
+                      <img
+                        key={i}
+                        src={url}
+                        alt={`${c.damage_type} - ${c.roof_area} (${i + 1})`}
+                        className="h-48 w-auto flex-shrink-0 rounded-lg object-cover first:ml-0"
+                      />
+                    ))}
+                  </div>
+                )
+              })()}
                 <div className="p-4 space-y-3">
                   {/* Tags + timestamp row */}
                   <div className="flex items-center justify-between">
