@@ -302,8 +302,9 @@ export default function Home() {
     setFieldNote("")
     setSaving(false)
 
-    const input = document.querySelector<HTMLInputElement>('input[type="file"]')
-    if (input) input.value = ""
+    // Reset both file inputs
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[type="file"]')
+    inputs.forEach((input) => { input.value = "" })
 
     await loadCaptures(selectedProjectId)
   }
@@ -511,21 +512,75 @@ export default function Home() {
           <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-500">New Capture</h2>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <label className="mb-2 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
               Damage Photo
             </label>
+
+            {/* Hidden file inputs */}
             <input
+              id="camera-input"
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            <input
+              id="upload-input"
               type="file"
               accept="image/*"
               onChange={handleFileSelect}
-              className="block w-full text-sm text-zinc-500 file:mr-3 file:rounded-lg file:border-0 file:bg-indigo-600 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-indigo-500"
+              className="hidden"
             />
-            {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="mt-3 max-h-64 rounded-lg border border-zinc-200 dark:border-zinc-700"
-              />
+
+            {!preview ? (
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => document.getElementById("camera-input")?.click()}
+                  className="flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-zinc-300 bg-zinc-50 px-4 py-6 text-zinc-600 hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-indigo-800 dark:hover:bg-indigo-950/30 dark:hover:text-indigo-400"
+                >
+                  <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                  </svg>
+                  <span className="text-sm font-semibold">Take Photo</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => document.getElementById("upload-input")?.click()}
+                  className="flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-zinc-300 bg-zinc-50 px-4 py-6 text-zinc-600 hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-indigo-800 dark:hover:bg-indigo-950/30 dark:hover:text-indigo-400"
+                >
+                  <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                  </svg>
+                  <span className="text-sm font-semibold">Upload Photo</span>
+                </button>
+              </div>
+            ) : (
+              <div className="relative">
+                <img
+                  src={preview}
+                  alt="Preview"
+                  className="w-full max-h-64 rounded-xl border border-zinc-200 object-cover dark:border-zinc-700"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFile(null)
+                    setPreview(null)
+                    const inputs = document.querySelectorAll<HTMLInputElement>('input[type="file"]')
+                    inputs.forEach((input) => { input.value = "" })
+                  }}
+                  className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70"
+                  aria-label="Remove photo"
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
             )}
           </div>
 
