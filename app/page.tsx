@@ -1,636 +1,272 @@
-"use client"
+import Link from "next/link"
 
-import { useEffect, useState } from "react"
-import { supabase } from "../lib/supabase"
-
-const DAMAGE_TYPES = [
-  "Decking",
-  "Flashing",
-  "Vent / Pipe Boot",
-  "Drip Edge",
-  "Ice & Water",
-  "Multiple Layers",
-  "Other",
-] as const
-
-const ROOF_AREAS = [
-  "Front",
-  "Back",
-  "Left",
-  "Right",
-  "Valley",
-  "Chimney",
-  "Ridge",
-  "Eave",
-] as const
-
-type Project = {
-  id: string
-  project_name: string
-  property_address: string
-  created_at: string
-}
-
-type Capture = {
-  id: string
-  project_id: string
-  image_url: string
-  damage_type: string
-  roof_area: string
-  field_note: string
-  created_at: string
-}
-
-export default function Home() {
-  // Project state
-  const [projects, setProjects] = useState<Project[]>([])
-  const [selectedProjectId, setSelectedProjectId] = useState("")
-  const [newProjectName, setNewProjectName] = useState("")
-  const [newProjectAddress, setNewProjectAddress] = useState("")
-  const [creatingProject, setCreatingProject] = useState(false)
-  const [showNewProject, setShowNewProject] = useState(false)
-
-  // Capture form state
-  const [preview, setPreview] = useState<string | null>(null)
-  const [file, setFile] = useState<File | null>(null)
-  const [damageType, setDamageType] = useState("")
-  const [roofArea, setRoofArea] = useState("")
-  const [fieldNote, setFieldNote] = useState("")
-  const [status, setStatus] = useState("")
-  const [saving, setSaving] = useState(false)
-
-  // Captures + drafts
-  const [captures, setCaptures] = useState<Capture[]>([])
-  const [drafts, setDrafts] = useState<Record<string, string>>({})
-  const [draftLoading, setDraftLoading] = useState<Record<string, boolean>>({})
-  const [draftErrors, setDraftErrors] = useState<Record<string, string>>({})
-  const [copied, setCopied] = useState<Record<string, boolean>>({})
-
-  // Project draft state
-  const [projectDraft, setProjectDraft] = useState("")
-  const [projectDraftLoading, setProjectDraftLoading] = useState(false)
-  const [projectDraftError, setProjectDraftError] = useState("")
-  const [projectDraftCopied, setProjectDraftCopied] = useState(false)
-
-  // Load projects on mount
-  useEffect(() => {
-    loadProjects()
-  }, [])
-
-  // Load captures when selected project changes
-  useEffect(() => {
-    if (selectedProjectId) {
-      loadCaptures(selectedProjectId)
-    } else {
-      setCaptures([])
-    }
-    setDrafts({})
-    setDraftLoading({})
-    setDraftErrors({})
-    setProjectDraft("")
-    setProjectDraftError("")
-  }, [selectedProjectId])
-
-  async function loadProjects() {
-    const { data } = await supabase
-      .from("projects")
-      .select("*")
-      .order("created_at", { ascending: false })
-    if (data) setProjects(data)
-  }
-
-  async function loadCaptures(projectId: string) {
-    const { data } = await supabase
-      .from("captures")
-      .select("*")
-      .eq("project_id", projectId)
-      .order("created_at", { ascending: false })
-    if (data) setCaptures(data)
-  }
-
-  async function handleCreateProject(e: React.FormEvent) {
-    e.preventDefault()
-    if (!newProjectName.trim()) return
-
-    setCreatingProject(true)
-    const { data, error } = await supabase
-      .from("projects")
-      .insert({
-        project_name: newProjectName.trim(),
-        property_address: newProjectAddress.trim(),
-      })
-      .select()
-      .single()
-
-    if (!error && data) {
-      setProjects((prev) => [data, ...prev])
-      setSelectedProjectId(data.id)
-      setNewProjectName("")
-      setNewProjectAddress("")
-      setShowNewProject(false)
-    }
-    setCreatingProject(false)
-  }
-
-  async function deleteCapture(c: Capture) {
-    if (!confirm("Delete this capture? This cannot be undone.")) return
-
-    // Extract storage file path from the public URL
-    const match = c.image_url.match(/test-uploads\/(.+)$/)
-    if (match) {
-      await supabase.storage.from("test-uploads").remove([match[1]])
-    }
-
-    await supabase.from("captures").delete().eq("id", c.id)
-    setCaptures((prev) => prev.filter((cap) => cap.id !== c.id))
-  }
-
-  async function generateProjectDraft() {
-    if (!selectedProject || captures.length === 0) return
-
-    setProjectDraftLoading(true)
-    setProjectDraftError("")
-    setProjectDraft("")
-
-    try {
-      const res = await fetch("/api/generate-project-draft", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          project_name: selectedProject.project_name,
-          property_address: selectedProject.property_address,
-          captures: captures.map((c) => ({
-            damage_type: c.damage_type,
-            roof_area: c.roof_area,
-            field_note: c.field_note,
-          })),
-        }),
-      })
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => null)
-        throw new Error(data?.error || `Request failed (${res.status})`)
-      }
-
-      const { draft } = await res.json()
-      setProjectDraft(draft)
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error"
-      setProjectDraftError(message)
-    } finally {
-      setProjectDraftLoading(false)
-    }
-  }
-
-  async function generateDraft(c: Capture) {
-    setDraftLoading((prev) => ({ ...prev, [c.id]: true }))
-    setDraftErrors((prev) => ({ ...prev, [c.id]: "" }))
-
-    try {
-      const res = await fetch("/api/generate-draft", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          damage_type: c.damage_type,
-          roof_area: c.roof_area,
-          field_note: c.field_note,
-        }),
-      })
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => null)
-        throw new Error(data?.error || `Request failed (${res.status})`)
-      }
-
-      const { draft } = await res.json()
-      setDrafts((prev) => ({ ...prev, [c.id]: draft }))
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error"
-      setDraftErrors((prev) => ({ ...prev, [c.id]: message }))
-    } finally {
-      setDraftLoading((prev) => ({ ...prev, [c.id]: false }))
-    }
-  }
-
-  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
-    const selected = e.target.files?.[0]
-    if (!selected) return
-    setFile(selected)
-    setPreview(URL.createObjectURL(selected))
-    setStatus("")
-  }
-
-  async function handleSave(e: React.FormEvent) {
-    e.preventDefault()
-
-    if (!selectedProjectId) {
-      setStatus("Please select or create a project first.")
-      return
-    }
-    if (!file) {
-      setStatus("Please select a photo first.")
-      return
-    }
-    if (!damageType) {
-      setStatus("Please select a damage type.")
-      return
-    }
-    if (!roofArea) {
-      setStatus("Please select a roof area.")
-      return
-    }
-
-    setSaving(true)
-    setStatus("Uploading photo...")
-
-    const fileName = `${Date.now()}-${file.name}`
-
-    const { error: uploadError } = await supabase.storage
-      .from("test-uploads")
-      .upload(fileName, file)
-
-    if (uploadError) {
-      setStatus(`Upload failed: ${uploadError.message}`)
-      setSaving(false)
-      return
-    }
-
-    const { data: urlData } = supabase.storage
-      .from("test-uploads")
-      .getPublicUrl(fileName)
-
-    const imageUrl = urlData.publicUrl
-
-    setStatus("Saving capture...")
-
-    const { error: insertError } = await supabase.from("captures").insert({
-      project_id: selectedProjectId,
-      image_url: imageUrl,
-      damage_type: damageType,
-      roof_area: roofArea,
-      field_note: fieldNote,
-    })
-
-    if (insertError) {
-      setStatus(`Save failed: ${insertError.message}`)
-      setSaving(false)
-      return
-    }
-
-    setStatus("Capture saved!")
-    setFile(null)
-    setPreview(null)
-    setDamageType("")
-    setRoofArea("")
-    setFieldNote("")
-    setSaving(false)
-
-    const input = document.querySelector<HTMLInputElement>('input[type="file"]')
-    if (input) input.value = ""
-
-    await loadCaptures(selectedProjectId)
-  }
-
-  const selectedProject = projects.find((p) => p.id === selectedProjectId)
-
+export default function LandingPage() {
   return (
-    <main className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="mb-1 text-2xl font-bold">Supplement Snap</h1>
-      <p className="mb-6 text-sm text-gray-500">
-        Capture roof damage during tear-off
-      </p>
-
-      {/* Project selector */}
-      <section className="mb-8 rounded border border-gray-700 p-4">
-        <label className="mb-2 block text-sm font-medium">Project / Job</label>
-        <div className="flex gap-2">
-          <select
-            value={selectedProjectId}
-            onChange={(e) => {
-              setSelectedProjectId(e.target.value)
-              setShowNewProject(false)
-            }}
-            className="flex-1 rounded border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
-          >
-            <option value="">Select a project...</option>
-            {projects.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.project_name}
-                {p.property_address ? ` — ${p.property_address}` : ""}
-              </option>
-            ))}
-          </select>
-          <button
-            type="button"
-            onClick={() => setShowNewProject(!showNewProject)}
-            className="rounded bg-gray-800 px-3 py-2 text-xs font-medium text-white hover:bg-gray-700"
-          >
-            {showNewProject ? "Cancel" : "+ New"}
-          </button>
-        </div>
-
-        {/* New project form */}
-        {showNewProject && (
-          <form onSubmit={handleCreateProject} className="mt-3 space-y-2">
-            <input
-              type="text"
-              value={newProjectName}
-              onChange={(e) => setNewProjectName(e.target.value)}
-              placeholder="Project name (e.g. Smith Residence)"
-              className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400"
-            />
-            <input
-              type="text"
-              value={newProjectAddress}
-              onChange={(e) => setNewProjectAddress(e.target.value)}
-              placeholder="Property address (optional)"
-              className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400"
-            />
-            <button
-              type="submit"
-              disabled={creatingProject || !newProjectName.trim()}
-              className="rounded bg-white px-4 py-1.5 text-sm font-medium text-black hover:bg-gray-200 disabled:opacity-50"
+    <div className="bg-white text-zinc-900">
+      {/* Nav */}
+      <nav className="border-b border-zinc-100">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">
+              S
+            </div>
+            <span className="text-lg font-bold tracking-tight">Supplement Snap</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/app"
+              className="text-sm font-medium text-zinc-600 hover:text-zinc-900"
             >
-              {creatingProject ? "Creating..." : "Create Project"}
-            </button>
-          </form>
-        )}
+              Open App
+            </Link>
+            <a
+              href="#demo"
+              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+            >
+              Book a Demo
+            </a>
+          </div>
+        </div>
+      </nav>
 
-        {/* Selected project info */}
-        {selectedProject && (
-          <p className="mt-2 text-xs text-gray-500">
-            {selectedProject.property_address || "No address"}
-            {" · "}
-            {captures.length} capture{captures.length !== 1 ? "s" : ""}
-          </p>
-        )}
+      {/* Hero */}
+      <section className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center sm:pt-28 sm:pb-20">
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-4 py-1.5 text-xs font-semibold text-indigo-700">
+          <span className="h-1.5 w-1.5 rounded-full bg-indigo-600" />
+          Built for roofing restoration contractors
+        </div>
+        <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
+          Stop leaving supplement
+          <br className="hidden sm:block" />
+          <span className="text-indigo-600"> money on the table</span>
+        </h1>
+        <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl">
+          Supplement Snap helps roofing crews capture damage during tear-off and
+          generate professional supplement documentation in seconds — so you recover
+          every dollar your jobs are owed.
+        </p>
+        <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <a
+            href="#demo"
+            className="w-full rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
+          >
+            Book a Demo
+          </a>
+          <a
+            href="#how-it-works"
+            className="w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
+          >
+            See How It Works
+          </a>
+        </div>
       </section>
 
-      {/* Project draft */}
-      {selectedProject && captures.length > 0 && (
-        <section className="mb-8">
-          {!projectDraft && !projectDraftLoading && (
-            <button
-              type="button"
-              onClick={generateProjectDraft}
-              className="w-full rounded bg-white px-4 py-2 text-sm font-medium text-black hover:bg-gray-200"
-            >
-              Generate Project Draft ({captures.length} capture
-              {captures.length !== 1 ? "s" : ""})
-            </button>
-          )}
-
-          {projectDraftLoading && (
-            <p className="text-sm text-gray-400">
-              Generating project draft...
-            </p>
-          )}
-
-          {projectDraftError && (
-            <div>
-              <p className="text-sm text-red-400">{projectDraftError}</p>
-              <button
-                type="button"
-                onClick={generateProjectDraft}
-                className="mt-1 text-xs text-gray-400 underline hover:text-white"
-              >
-                Retry
-              </button>
-            </div>
-          )}
-
-          {projectDraft && (
-            <div className="rounded border border-gray-600 bg-gray-900 p-4">
-              <p className="mb-2 text-xs font-medium text-gray-400">
-                Project Supplement Draft
-              </p>
-              <p className="whitespace-pre-wrap text-sm text-gray-200">
-                {projectDraft}
-              </p>
-              <div className="mt-3 flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    navigator.clipboard.writeText(projectDraft)
-                    setProjectDraftCopied(true)
-                    setTimeout(() => setProjectDraftCopied(false), 2000)
-                  }}
-                  className="rounded bg-gray-700 px-3 py-1 text-xs text-white hover:bg-gray-600"
-                >
-                  {projectDraftCopied ? "Copied!" : "Copy Project Draft"}
-                </button>
-                <button
-                  type="button"
-                  onClick={generateProjectDraft}
-                  className="rounded bg-gray-700 px-3 py-1 text-xs text-white hover:bg-gray-600"
-                >
-                  Regenerate
-                </button>
+      {/* Screenshot / Product Preview */}
+      <section className="mx-auto max-w-5xl px-6 pb-20">
+        <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 shadow-lg">
+          <div className="flex items-center gap-1.5 border-b border-zinc-200 bg-zinc-100 px-4 py-3">
+            <span className="h-2.5 w-2.5 rounded-full bg-zinc-300" />
+            <span className="h-2.5 w-2.5 rounded-full bg-zinc-300" />
+            <span className="h-2.5 w-2.5 rounded-full bg-zinc-300" />
+          </div>
+          <div className="p-6 sm:p-10">
+            <div className="grid gap-6 sm:grid-cols-3">
+              {/* Mock card 1 */}
+              <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
+                <div className="mb-3 h-32 rounded-lg bg-gradient-to-br from-zinc-200 to-zinc-100" />
+                <div className="flex gap-1.5">
+                  <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Decking</span>
+                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">Front</span>
+                </div>
+                <p className="mt-2 text-xs text-zinc-400">Rotted decking found along eave edge, 4x8 section requires full replacement...</p>
+              </div>
+              {/* Mock card 2 */}
+              <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
+                <div className="mb-3 h-32 rounded-lg bg-gradient-to-br from-zinc-200 to-zinc-100" />
+                <div className="flex gap-1.5">
+                  <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Flashing</span>
+                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">Chimney</span>
+                </div>
+                <p className="mt-2 text-xs text-zinc-400">Step flashing corroded at chimney wall, counter flashing missing top seal...</p>
+              </div>
+              {/* Mock card 3 */}
+              <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
+                <div className="mb-3 h-32 rounded-lg bg-gradient-to-br from-zinc-200 to-zinc-100" />
+                <div className="flex gap-1.5">
+                  <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Ice &amp; Water</span>
+                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">Valley</span>
+                </div>
+                <p className="mt-2 text-xs text-zinc-400">No ice and water shield present in valley, code requires I&amp;W in all valleys...</p>
               </div>
             </div>
-          )}
-        </section>
-      )}
-
-      {/* Capture form — only show when a project is selected */}
-      {selectedProjectId ? (
-        <form onSubmit={handleSave} className="mb-10 space-y-5">
-          <div>
-            <label className="mb-1 block text-sm font-medium">
-              Damage Photo
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileSelect}
-              className="block w-full text-sm file:mr-3 file:rounded file:border-0 file:bg-gray-800 file:px-3 file:py-1.5 file:text-sm file:text-white hover:file:bg-gray-700"
-            />
-            {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="mt-3 max-h-64 rounded border border-gray-700"
-              />
-            )}
           </div>
+        </div>
+      </section>
 
-          <div>
-            <label className="mb-1 block text-sm font-medium">
-              Damage Type
-            </label>
-            <select
-              value={damageType}
-              onChange={(e) => setDamageType(e.target.value)}
-              className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
-            >
-              <option value="">Select damage type...</option>
-              {DAMAGE_TYPES.map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-medium">Roof Area</label>
-            <select
-              value={roofArea}
-              onChange={(e) => setRoofArea(e.target.value)}
-              className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
-            >
-              <option value="">Select roof area...</option>
-              {ROOF_AREAS.map((a) => (
-                <option key={a} value={a}>
-                  {a}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-medium">
-              Field Note
-            </label>
-            <textarea
-              value={fieldNote}
-              onChange={(e) => setFieldNote(e.target.value)}
-              placeholder="Describe the damage..."
-              rows={3}
-              className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400"
-            />
-          </div>
-
-          {status && (
-            <p
-              className={`text-sm ${status.includes("failed") ? "text-red-400" : status.includes("saved") ? "text-green-400" : "text-gray-400"}`}
-            >
-              {status}
+      {/* How It Works */}
+      <section id="how-it-works" className="border-t border-zinc-100 bg-zinc-50 py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">How It Works</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Three steps from roof to supplement
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
+              Your crew captures damage on-site. The office gets a professional supplement draft — ready to submit.
             </p>
-          )}
+          </div>
 
-          <button
-            type="submit"
-            disabled={saving}
-            className="w-full rounded bg-white px-4 py-2 text-sm font-medium text-black hover:bg-gray-200 disabled:opacity-50"
-          >
-            {saving ? "Saving..." : "Save Capture"}
-          </button>
-        </form>
-      ) : (
-        <p className="mb-10 text-sm text-gray-500">
-          Select or create a project above to start capturing damage.
-        </p>
-      )}
+          <div className="mt-14 grid gap-8 sm:grid-cols-3">
+            {/* Step 1 */}
+            <div className="rounded-xl border border-zinc-200 bg-white p-6">
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">
+                1
+              </div>
+              <h3 className="text-base font-semibold">Snap the damage</h3>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-500">
+                During tear-off, your crew photographs each area of damage — decking, flashing, pipe boots, code violations — right from their phone.
+              </p>
+            </div>
 
-      {/* Saved captures for selected project */}
-      {captures.length > 0 && (
-        <section>
-          <h2 className="mb-4 text-lg font-semibold">
-            Captures ({captures.length})
-          </h2>
-          <div className="space-y-4">
-            {captures.map((c) => (
-              <div
-                key={c.id}
-                className="overflow-hidden rounded border border-gray-700"
-              >
-                <img
-                  src={c.image_url}
-                  alt={`${c.damage_type} - ${c.roof_area}`}
-                  className="w-full object-cover"
-                  style={{ maxHeight: "300px" }}
-                />
-                <div className="space-y-1 p-4">
-                  <div className="flex gap-2">
-                    <span className="rounded bg-gray-800 px-2 py-0.5 text-xs">
-                      {c.damage_type}
-                    </span>
-                    <span className="rounded bg-gray-800 px-2 py-0.5 text-xs">
-                      {c.roof_area}
-                    </span>
-                  </div>
-                  {c.field_note && (
-                    <p className="text-sm text-gray-300">{c.field_note}</p>
-                  )}
-                  <p className="truncate text-xs text-gray-500">
-                    {c.image_url}
-                  </p>
-                  <p className="text-xs text-gray-600">
-                    {new Date(c.created_at).toLocaleString()}
-                  </p>
+            {/* Step 2 */}
+            <div className="rounded-xl border border-zinc-200 bg-white p-6">
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">
+                2
+              </div>
+              <h3 className="text-base font-semibold">Tag and note</h3>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-500">
+                Select the damage type and roof area, add a quick field note. Everything is organized by project and saved to the cloud instantly.
+              </p>
+            </div>
 
-                  {!drafts[c.id] && !draftLoading[c.id] && (
-                    <button
-                      type="button"
-                      onClick={() => generateDraft(c)}
-                      className="mt-2 rounded bg-gray-800 px-3 py-1.5 text-xs font-medium text-white hover:bg-gray-700"
-                    >
-                      Generate Supplement Draft
-                    </button>
-                  )}
+            {/* Step 3 */}
+            <div className="rounded-xl border border-zinc-200 bg-white p-6">
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">
+                3
+              </div>
+              <h3 className="text-base font-semibold">Generate the supplement</h3>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-500">
+                One click generates a professional supplement draft using AI — written in insurance language, ready to copy into Xactimate or your carrier submission.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                  {draftLoading[c.id] && (
-                    <p className="mt-2 text-xs text-gray-400">
-                      Generating draft...
-                    </p>
-                  )}
+      {/* Why It Matters */}
+      <section className="border-t border-zinc-100 py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Why It Matters</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Every undocumented item is lost revenue
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
+              Most roofing companies leave thousands on the table because field damage is never properly captured or communicated to the office.
+            </p>
+          </div>
 
-                  {draftErrors[c.id] && (
-                    <div className="mt-2">
-                      <p className="text-xs text-red-400">
-                        {draftErrors[c.id]}
-                      </p>
-                      <button
-                        type="button"
-                        onClick={() => generateDraft(c)}
-                        className="mt-1 text-xs text-gray-400 underline hover:text-white"
-                      >
-                        Retry
-                      </button>
-                    </div>
-                  )}
+          <div className="mt-14 grid gap-8 sm:grid-cols-3">
+            {/* Benefit 1 */}
+            <div className="text-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h3 className="text-base font-semibold">Better field documentation</h3>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-500">
+                Photos, damage types, roof areas, and field notes — all captured in real time and organized by project. No more lost photos or forgotten details.
+              </p>
+            </div>
 
-                  {drafts[c.id] && (
-                    <div className="mt-3 rounded border border-gray-600 bg-gray-900 p-3">
-                      <p className="mb-1 text-xs font-medium text-gray-400">
-                        Supplement Draft
-                      </p>
-                      <p className="text-sm text-gray-200">{drafts[c.id]}</p>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          navigator.clipboard.writeText(drafts[c.id])
-                          setCopied((prev) => ({ ...prev, [c.id]: true }))
-                          setTimeout(
-                            () =>
-                              setCopied((prev) => ({
-                                ...prev,
-                                [c.id]: false,
-                              })),
-                            2000
-                          )
-                        }}
-                        className="mt-2 rounded bg-gray-700 px-3 py-1 text-xs text-white hover:bg-gray-600"
-                      >
-                        {copied[c.id] ? "Copied!" : "Copy Draft"}
-                      </button>
-                    </div>
-                  )}
+            {/* Benefit 2 */}
+            <div className="text-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-base font-semibold">Less missed supplement money</h3>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-500">
+                When every item is documented and drafted into supplement language, you stop leaving money behind. Capture it on the roof, collect it from the carrier.
+              </p>
+            </div>
 
-                  <button
-                    type="button"
-                    onClick={() => deleteCapture(c)}
-                    className="mt-3 text-xs text-gray-500 hover:text-red-400"
-                  >
-                    Delete Capture
-                  </button>
-                </div>
+            {/* Benefit 3 */}
+            <div className="text-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
+              </div>
+              <h3 className="text-base font-semibold">Faster office workflow</h3>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-500">
+                No more deciphering blurry photos and handwritten notes. The office gets organized captures and ready-to-submit supplement drafts the same day.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Social proof placeholder */}
+      <section className="border-t border-zinc-100 bg-zinc-50 py-16">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <p className="text-sm font-medium text-zinc-400">
+            Trusted by roofing restoration contractors across the U.S.
+          </p>
+          <div className="mt-8 grid grid-cols-2 gap-8 sm:grid-cols-4">
+            {["Storm Pro Roofing", "Apex Restoration", "Summit Exteriors", "Ridgeline Contractors"].map((name) => (
+              <div key={name} className="text-base font-semibold text-zinc-300">
+                {name}
               </div>
             ))}
           </div>
-        </section>
-      )}
-    </main>
+        </div>
+      </section>
+
+      {/* Bottom CTA */}
+      <section id="demo" className="border-t border-zinc-100 py-20">
+        <div className="mx-auto max-w-3xl px-6 text-center">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            Ready to capture what you&apos;re owed?
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
+            Book a 15-minute demo and see how Supplement Snap helps your crew
+            document damage and generate supplement drafts from the field.
+          </p>
+          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <a
+              href="mailto:hello@supplementsnap.com"
+              className="w-full rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
+            >
+              Book a Demo
+            </a>
+            <Link
+              href="/app"
+              className="w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
+            >
+              Try It Now
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-zinc-100 py-10">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
+          <div className="flex items-center gap-2">
+            <div className="flex h-6 w-6 items-center justify-center rounded bg-indigo-600 text-xs font-bold text-white">
+              S
+            </div>
+            <span className="text-sm font-semibold">Supplement Snap</span>
+          </div>
+          <p className="text-xs text-zinc-400">
+            &copy; {new Date().getFullYear()} Supplement Snap. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </div>
   )
 }
