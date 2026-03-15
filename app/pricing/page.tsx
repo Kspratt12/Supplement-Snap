@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { Suspense } from "react"
+import { CheckoutButton, CancelBanner } from "./checkout-button"
 
 export const metadata: Metadata = {
   title: "Pricing – Supplement Snap",
@@ -85,6 +87,10 @@ export default function PricingPage() {
         </p>
       </section>
 
+      <Suspense fallback={null}>
+        <CancelBanner />
+      </Suspense>
+
       {/* Pricing Card */}
       <section className="mx-auto max-w-md px-6 py-16">
         <div className="rounded-2xl border-2 border-indigo-600 bg-white p-8 shadow-xl sm:p-10">
@@ -113,12 +119,7 @@ export default function PricingPage() {
             </div>
           </div>
 
-          <Link
-            href="/demo"
-            className="mt-8 block w-full rounded-lg bg-indigo-600 px-6 py-3.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
-          >
-            Get Started
-          </Link>
+          <CheckoutButton />
           <p className="mt-3 text-center text-xs text-zinc-400">
             We&apos;ll help set up your team and get you running fast.
           </p>
