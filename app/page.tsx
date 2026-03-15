@@ -42,6 +42,18 @@ export default function Home() {
   const [status, setStatus] = useState("")
   const [saving, setSaving] = useState(false)
   const [captures, setCaptures] = useState<Capture[]>([])
+  const [drafts, setDrafts] = useState<Record<string, string>>({})
+
+  function generateDraft(c: Capture) {
+    const note = c.field_note
+      ? `The contractor noted: ${c.field_note}.`
+      : "No additional field notes were recorded."
+    const draft =
+      `During tear-off on the ${c.roof_area} of the roof, damage to the ${c.damage_type} was discovered. ` +
+      `${note} ` +
+      `This condition was not visible prior to shingle removal and requires repair or replacement as part of the restoration scope.`
+    setDrafts((prev) => ({ ...prev, [c.id]: draft }))
+  }
 
   useEffect(() => {
     loadCaptures()
@@ -262,6 +274,23 @@ export default function Home() {
                   <p className="text-xs text-gray-600">
                     {new Date(c.created_at).toLocaleString()}
                   </p>
+                  {!drafts[c.id] && (
+                    <button
+                      type="button"
+                      onClick={() => generateDraft(c)}
+                      className="mt-2 rounded bg-gray-800 px-3 py-1.5 text-xs font-medium text-white hover:bg-gray-700"
+                    >
+                      Generate Supplement Draft
+                    </button>
+                  )}
+                  {drafts[c.id] && (
+                    <div className="mt-3 rounded border border-gray-600 bg-gray-900 p-3">
+                      <p className="mb-1 text-xs font-medium text-gray-400">
+                        Supplement Draft
+                      </p>
+                      <p className="text-sm text-gray-200">{drafts[c.id]}</p>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
