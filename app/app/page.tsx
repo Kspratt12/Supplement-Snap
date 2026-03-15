@@ -103,6 +103,11 @@ export default function Home() {
   const [projectDraftError, setProjectDraftError] = useState("")
   const [projectDraftCopied, setProjectDraftCopied] = useState(false)
 
+  // Project report state
+  const [showReport, setShowReport] = useState(false)
+  const [reportLoading, setReportLoading] = useState(false)
+  const [reportCopied, setReportCopied] = useState(false)
+
   // Check speech recognition support on mount
   useEffect(() => {
     setSpeechSupported(
@@ -173,6 +178,7 @@ export default function Home() {
     setDraftErrors({})
     setProjectDraft("")
     setProjectDraftError("")
+    setShowReport(false)
   }, [selectedProjectId])
 
   async function loadProjects() {
@@ -314,6 +320,66 @@ export default function Home() {
     } finally {
       setDraftLoading((prev) => ({ ...prev, [c.id]: false }))
     }
+  }
+
+  async function generateReport() {
+    if (!selectedProject || captures.length === 0) return
+
+    setReportLoading(true)
+
+    // Generate drafts for any captures that don't have one yet
+    const missing = captures.filter((c) => !drafts[c.id] && !draftLoading[c.id])
+
+    for (const c of missing) {
+      try {
+        const res = await fetch("/api/generate-draft", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            damage_type: c.damage_type,
+            roof_area: c.roof_area,
+            field_note: c.field_note,
+          }),
+        })
+        if (res.ok) {
+          const { draft } = await res.json()
+          setDrafts((prev) => ({ ...prev, [c.id]: draft }))
+        }
+      } catch {
+        // Continue generating remaining drafts even if one fails
+      }
+    }
+
+    setReportLoading(false)
+    setShowReport(true)
+  }
+
+  function buildReportText(): string {
+    if (!selectedProject) return ""
+    const now = new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+
+    let text = `PROJECT REPORT – ${selectedProject.project_name}\n\n`
+    text += `Property Address: ${selectedProject.property_address || "N/A"}\n`
+    text += `Generated: ${now}\n\n`
+    text += `FINDINGS\n\n`
+
+    captures.forEach((c, i) => {
+      text += `${i + 1}. ${c.damage_type} – ${c.roof_area}\n`
+      if (c.field_note) {
+        text += `${c.field_note}\n`
+      }
+      text += `\n`
+      if (drafts[c.id]) {
+        text += `${drafts[c.id]}\n`
+      }
+      text += `\n`
+    })
+
+    return text.trim()
   }
 
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
@@ -603,6 +669,158 @@ export default function Home() {
               </div>
             </div>
           )}
+        </section>
+      )}
+
+      {/* Generate Project Report button */}
+      {selectedProject && captures.length > 0 && !showReport && (
+        <section className="mb-8">
+          <button
+            type="button"
+            onClick={generateReport}
+            disabled={reportLoading}
+            className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750"
+          >
+            {reportLoading ? (
+              <span className="inline-flex items-center gap-2">
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
+                Generating report...
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-2">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Generate Project Report ({captures.length} finding{captures.length !== 1 ? "s" : ""})
+              </span>
+            )}
+          </button>
+        </section>
+      )}
+
+      {/* Project Report */}
+      {showReport && selectedProject && (
+        <section className="mb-8 rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+          {/* Report header */}
+          <div className="border-b border-zinc-100 p-5 dark:border-zinc-800">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <svg className="h-4 w-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+                  Project Report
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowReport(false)}
+                className="text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+              >
+                Close
+              </button>
+            </div>
+
+            <h3 className="mt-3 text-lg font-bold text-zinc-900 dark:text-zinc-100">
+              {selectedProject.project_name}
+            </h3>
+            <div className="mt-1 space-y-0.5 text-sm text-zinc-500 dark:text-zinc-400">
+              <p>{selectedProject.property_address || "No address on file"}</p>
+              <p>Generated: {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
+            </div>
+
+            <div className="mt-3 flex gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(buildReportText())
+                  setReportCopied(true)
+                  setTimeout(() => setReportCopied(false), 2000)
+                }}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+              >
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                {reportCopied ? "Copied!" : "Copy Report"}
+              </button>
+              <button
+                type="button"
+                onClick={generateReport}
+                disabled={reportLoading}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750"
+              >
+                {reportLoading ? "Regenerating..." : "Regenerate"}
+              </button>
+            </div>
+          </div>
+
+          {/* Findings */}
+          <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
+            {captures.map((c, i) => {
+              const urls = c.image_urls && c.image_urls.length > 0 ? c.image_urls : [c.image_url]
+              return (
+                <div key={c.id} className="p-5">
+                  {/* Finding header */}
+                  <div className="flex items-start gap-3">
+                    <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-xs font-bold text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-400">
+                      {i + 1}
+                    </span>
+                    <div className="flex-1">
+                      <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                        {c.damage_type} – {c.roof_area}
+                      </h4>
+                      <p className="mt-0.5 text-xs text-zinc-400">
+                        {new Date(c.created_at).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Field note */}
+                  {c.field_note && (
+                    <div className="mt-3 ml-9">
+                      <p className="text-xs font-medium uppercase tracking-wider text-zinc-400">Field Note</p>
+                      <p className="mt-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                        {c.field_note}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Supplement draft */}
+                  {drafts[c.id] && (
+                    <div className="mt-3 ml-9 rounded-lg bg-zinc-50 p-3 dark:bg-zinc-800/50">
+                      <p className="mb-1 text-xs font-medium uppercase tracking-wider text-zinc-400">Supplement Explanation</p>
+                      <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+                        {drafts[c.id]}
+                      </p>
+                    </div>
+                  )}
+
+                  {!drafts[c.id] && (
+                    <div className="mt-3 ml-9">
+                      <p className="text-xs italic text-zinc-400">Draft not available for this finding.</p>
+                    </div>
+                  )}
+
+                  {/* Photos */}
+                  <div className="mt-3 ml-9 flex gap-2 overflow-x-auto">
+                    {urls.map((url, j) => (
+                      <img
+                        key={j}
+                        src={url}
+                        alt={`Finding ${i + 1} photo ${j + 1}`}
+                        className="h-24 w-auto flex-shrink-0 rounded-lg border border-zinc-200 object-cover dark:border-zinc-700"
+                      />
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </section>
       )}
 
