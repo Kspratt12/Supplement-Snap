@@ -57,6 +57,16 @@ type Project = {
   created_at: string
 }
 
+const CAPTURE_STATUSES = ["Captured", "Needs Review", "Ready to Send", "Sent"] as const
+type CaptureStatus = typeof CAPTURE_STATUSES[number]
+
+const STATUS_STYLES: Record<CaptureStatus, string> = {
+  "Captured": "bg-zinc-100 text-zinc-600",
+  "Needs Review": "bg-amber-50 text-amber-600",
+  "Ready to Send": "bg-blue-50 text-blue-600",
+  "Sent": "bg-green-50 text-green-600",
+}
+
 type Capture = {
   id: string
   project_id: string
@@ -65,6 +75,7 @@ type Capture = {
   damage_type: string
   roof_area: string
   field_note: string
+  status?: CaptureStatus
   created_at: string
 }
 
@@ -94,6 +105,7 @@ export default function Home() {
 
   // Captures + drafts
   const [captures, setCaptures] = useState<Capture[]>([])
+  const [statusFilter, setStatusFilter] = useState<"All" | CaptureStatus>("All")
   const [drafts, setDrafts] = useState<Record<string, string>>({})
   const [draftLoading, setDraftLoading] = useState<Record<string, boolean>>({})
   const [draftErrors, setDraftErrors] = useState<Record<string, string>>({})
@@ -251,6 +263,22 @@ export default function Home() {
     setCaptures((prev) => prev.filter((cap) => cap.id !== c.id))
   }
 
+  async function updateCaptureStatus(captureId: string, newStatus: CaptureStatus) {
+    await supabase.from("captures").update({ status: newStatus }).eq("id", captureId)
+    setCaptures((prev) =>
+      prev.map((c) => (c.id === captureId ? { ...c, status: newStatus } : c))
+    )
+  }
+
+  async function bulkUpdateStatus(captureIds: string[], newStatus: CaptureStatus) {
+    for (const id of captureIds) {
+      await supabase.from("captures").update({ status: newStatus }).eq("id", id)
+    }
+    setCaptures((prev) =>
+      prev.map((c) => (captureIds.includes(c.id) ? { ...c, status: newStatus } : c))
+    )
+  }
+
   async function generateProjectDraft() {
     if (!selectedProject || !selectedProjectId) return
 
@@ -326,6 +354,10 @@ export default function Home() {
 
       const { draft } = await res.json()
       setDrafts((prev) => ({ ...prev, [c.id]: draft }))
+      // Auto-update status to "Needs Review"
+      if (!c.status || c.status === "Captured") {
+        updateCaptureStatus(c.id, "Needs Review")
+      }
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error"
       setDraftErrors((prev) => ({ ...prev, [c.id]: message }))
@@ -360,6 +392,12 @@ export default function Home() {
       } catch {
         // Continue generating remaining drafts even if one fails
       }
+    }
+
+    // Auto-update all captures to "Ready to Send"
+    const toUpdate = captures.filter((c) => c.status !== "Sent").map((c) => c.id)
+    if (toUpdate.length > 0) {
+      bulkUpdateStatus(toUpdate, "Ready to Send")
     }
 
     setReportLoading(false)
@@ -610,6 +648,8 @@ export default function Home() {
       }
 
       setEmailStatus("sent")
+      // Auto-update all captures to "Sent"
+      bulkUpdateStatus(captures.map((c) => c.id), "Sent")
     } catch (err) {
       setEmailStatus("error")
       setEmailError(err instanceof Error ? err.message : "Failed to send email")
@@ -764,6 +804,7 @@ export default function Home() {
       damage_type: damageType,
       roof_area: roofArea,
       field_note: fieldNote,
+      status: "Captured",
     })
 
     if (insertError) {
@@ -1407,16 +1448,43 @@ export default function Home() {
       {/* Saved captures for selected project */}
       {captures.length > 0 && (
         <section>
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-base font-semibold text-zinc-900">
               Captures
             </h2>
-            <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+            <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
               {captures.length}
             </span>
           </div>
+
+          {/* Status filter */}
+          <div className="mb-4 flex gap-1.5 overflow-x-auto">
+            {(["All", ...CAPTURE_STATUSES] as const).map((s) => {
+              const count = s === "All" ? captures.length : captures.filter((c) => (c.status || "Captured") === s).length
+              return (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => setStatusFilter(s)}
+                  className={`inline-flex flex-shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
+                    statusFilter === s
+                      ? "bg-indigo-600 text-white"
+                      : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                  }`}
+                >
+                  {s}
+                  <span className={`${statusFilter === s ? "text-indigo-200" : "text-zinc-400"}`}>
+                    {count}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+
           <div className="space-y-4">
-            {captures.map((c) => (
+            {captures
+              .filter((c) => statusFilter === "All" || (c.status || "Captured") === statusFilter)
+              .map((c) => (
               <div
                 key={c.id}
                 className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
@@ -1444,13 +1512,23 @@ export default function Home() {
                 )
               })()}
                 <div className="p-4 space-y-3">
-                  {/* Tags + timestamp row */}
+                  {/* Status + tags row */}
                   <div className="flex items-center justify-between">
-                    <div className="flex gap-1.5">
-                      <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-400">
+                    <div className="flex flex-wrap gap-1.5">
+                      <select
+                        value={c.status || "Captured"}
+                        onChange={(e) => updateCaptureStatus(c.id, e.target.value as CaptureStatus)}
+                        className={`rounded-full px-2.5 py-0.5 text-xs font-medium border-0 cursor-pointer appearance-none pr-5 ${STATUS_STYLES[c.status as CaptureStatus || "Captured"]}`}
+                        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 6px center" }}
+                      >
+                        {CAPTURE_STATUSES.map((s) => (
+                          <option key={s} value={s}>{s}</option>
+                        ))}
+                      </select>
+                      <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">
                         {c.damage_type}
                       </span>
-                      <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                      <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
                         {c.roof_area}
                       </span>
                     </div>
