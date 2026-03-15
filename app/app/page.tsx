@@ -1,8 +1,32 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { supabase } from "../../lib/supabase"
+
+// Web Speech API type declarations
+interface SpeechRecognitionEvent extends Event {
+  resultIndex: number
+  results: SpeechRecognitionResultList
+}
+
+interface SpeechRecognitionInstance extends EventTarget {
+  continuous: boolean
+  interimResults: boolean
+  lang: string
+  start(): void
+  stop(): void
+  onresult: ((event: SpeechRecognitionEvent) => void) | null
+  onerror: ((event: Event) => void) | null
+  onend: (() => void) | null
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition: new () => SpeechRecognitionInstance
+    webkitSpeechRecognition: new () => SpeechRecognitionInstance
+  }
+}
 
 const DAMAGE_TYPES = [
   "Decking",
@@ -61,6 +85,11 @@ export default function Home() {
   const [status, setStatus] = useState("")
   const [saving, setSaving] = useState(false)
 
+  // Voice recording state
+  const [isRecording, setIsRecording] = useState(false)
+  const [speechSupported, setSpeechSupported] = useState(false)
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
+
   // Captures + drafts
   const [captures, setCaptures] = useState<Capture[]>([])
   const [drafts, setDrafts] = useState<Record<string, string>>({})
@@ -73,6 +102,59 @@ export default function Home() {
   const [projectDraftLoading, setProjectDraftLoading] = useState(false)
   const [projectDraftError, setProjectDraftError] = useState("")
   const [projectDraftCopied, setProjectDraftCopied] = useState(false)
+
+  // Check speech recognition support on mount
+  useEffect(() => {
+    setSpeechSupported(
+      typeof window !== "undefined" &&
+        ("SpeechRecognition" in window || "webkitSpeechRecognition" in window)
+    )
+  }, [])
+
+  function toggleRecording() {
+    if (isRecording && recognitionRef.current) {
+      recognitionRef.current.stop()
+      return
+    }
+
+    const SpeechRecognitionAPI =
+      window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!SpeechRecognitionAPI) return
+
+    const recognition = new SpeechRecognitionAPI()
+    recognition.continuous = true
+    recognition.interimResults = false
+    recognition.lang = "en-US"
+
+    recognition.onresult = (event) => {
+      let transcript = ""
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          transcript += event.results[i][0].transcript
+        }
+      }
+      if (transcript) {
+        setFieldNote((prev) => {
+          const separator = prev && !prev.endsWith(" ") ? " " : ""
+          return prev + separator + transcript
+        })
+      }
+    }
+
+    recognition.onerror = () => {
+      setIsRecording(false)
+      recognitionRef.current = null
+    }
+
+    recognition.onend = () => {
+      setIsRecording(false)
+      recognitionRef.current = null
+    }
+
+    recognitionRef.current = recognition
+    recognition.start()
+    setIsRecording(true)
+  }
 
   // Load projects on mount
   useEffect(() => {
@@ -658,6 +740,34 @@ export default function Home() {
               rows={3}
               className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
             />
+            {speechSupported && (
+              <button
+                type="button"
+                onClick={toggleRecording}
+                className={`mt-2 inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-semibold sm:w-auto ${
+                  isRecording
+                    ? "bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 dark:bg-red-950/30 dark:text-red-400 dark:border-red-900 dark:hover:bg-red-950/50"
+                    : "bg-zinc-50 text-zinc-600 border border-zinc-300 hover:bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700 dark:hover:bg-zinc-750"
+                }`}
+              >
+                {isRecording ? (
+                  <>
+                    <span className="relative flex h-3 w-3">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+                      <span className="relative inline-flex h-3 w-3 rounded-full bg-red-500" />
+                    </span>
+                    Recording... tap to stop
+                  </>
+                ) : (
+                  <>
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+                    </svg>
+                    Record Damage Note
+                  </>
+                )}
+              </button>
+            )}
           </div>
 
           {status && (
