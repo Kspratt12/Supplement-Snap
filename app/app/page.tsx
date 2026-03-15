@@ -553,13 +553,26 @@ export default function Home() {
     }
   }
 
+  const MAX_PHOTOS = 10
+
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files
     if (!selected || selected.length === 0) return
     const newFiles = Array.from(selected)
-    setFiles((prev) => [...prev, ...newFiles])
-    setPreviews((prev) => [...prev, ...newFiles.map((f) => URL.createObjectURL(f))])
-    setStatus("")
+    const remaining = MAX_PHOTOS - files.length
+    if (remaining <= 0) {
+      setStatus(`Maximum ${MAX_PHOTOS} photos per capture.`)
+      e.target.value = ""
+      return
+    }
+    const toAdd = newFiles.slice(0, remaining)
+    if (toAdd.length < newFiles.length) {
+      setStatus(`Only ${remaining} more photo${remaining !== 1 ? "s" : ""} allowed. ${newFiles.length - toAdd.length} skipped.`)
+    } else {
+      setStatus("")
+    }
+    setFiles((prev) => [...prev, ...toAdd])
+    setPreviews((prev) => [...prev, ...toAdd.map((f) => URL.createObjectURL(f))])
     // Reset the input so the same file can be re-selected
     e.target.value = ""
   }
@@ -1026,8 +1039,8 @@ export default function Home() {
                 Damage Photos
               </label>
               {previews.length > 0 && (
-                <span className="text-xs text-zinc-400">
-                  {previews.length} photo{previews.length !== 1 ? "s" : ""}
+                <span className={`text-xs ${previews.length >= MAX_PHOTOS ? "text-amber-500 font-medium" : "text-zinc-400"}`}>
+                  {previews.length}/{MAX_PHOTOS} photos
                 </span>
               )}
             </div>
@@ -1075,7 +1088,12 @@ export default function Home() {
               </div>
             )}
 
-            {/* Take / Upload buttons — always visible so user can add more */}
+            {/* Take / Upload buttons — visible when under limit */}
+            {files.length >= MAX_PHOTOS ? (
+              <p className="rounded-lg bg-amber-50 px-3 py-2 text-center text-xs text-amber-600">
+                Photo limit reached ({MAX_PHOTOS}/{MAX_PHOTOS}). Remove a photo to add more.
+              </p>
+            ) : (
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
@@ -1100,6 +1118,7 @@ export default function Home() {
                 <span className="text-xs font-semibold">{previews.length > 0 ? "+ Upload Photo" : "Upload Photo"}</span>
               </button>
             </div>
+            )}
           </div>
 
           <div>
@@ -1239,13 +1258,13 @@ export default function Home() {
                     style={{ maxHeight: "280px" }}
                   />
                 ) : (
-                  <div className="flex gap-1 overflow-x-auto p-1">
+                  <div className="grid grid-cols-3 gap-1 p-1">
                     {urls.map((url, i) => (
                       <img
                         key={i}
                         src={url}
                         alt={`${c.damage_type} - ${c.roof_area} (${i + 1})`}
-                        className="h-48 w-auto flex-shrink-0 rounded-lg object-cover first:ml-0"
+                        className="aspect-square w-full rounded-lg object-cover"
                       />
                     ))}
                   </div>
