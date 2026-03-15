@@ -66,6 +66,12 @@ export default function Home() {
   const [draftErrors, setDraftErrors] = useState<Record<string, string>>({})
   const [copied, setCopied] = useState<Record<string, boolean>>({})
 
+  // Project draft state
+  const [projectDraft, setProjectDraft] = useState("")
+  const [projectDraftLoading, setProjectDraftLoading] = useState(false)
+  const [projectDraftError, setProjectDraftError] = useState("")
+  const [projectDraftCopied, setProjectDraftCopied] = useState(false)
+
   // Load projects on mount
   useEffect(() => {
     loadProjects()
@@ -81,6 +87,8 @@ export default function Home() {
     setDrafts({})
     setDraftLoading({})
     setDraftErrors({})
+    setProjectDraft("")
+    setProjectDraftError("")
   }, [selectedProjectId])
 
   async function loadProjects() {
@@ -135,6 +143,43 @@ export default function Home() {
 
     await supabase.from("captures").delete().eq("id", c.id)
     setCaptures((prev) => prev.filter((cap) => cap.id !== c.id))
+  }
+
+  async function generateProjectDraft() {
+    if (!selectedProject || captures.length === 0) return
+
+    setProjectDraftLoading(true)
+    setProjectDraftError("")
+    setProjectDraft("")
+
+    try {
+      const res = await fetch("/api/generate-project-draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          project_name: selectedProject.project_name,
+          property_address: selectedProject.property_address,
+          captures: captures.map((c) => ({
+            damage_type: c.damage_type,
+            roof_area: c.roof_area,
+            field_note: c.field_note,
+          })),
+        }),
+      })
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null)
+        throw new Error(data?.error || `Request failed (${res.status})`)
+      }
+
+      const { draft } = await res.json()
+      setProjectDraft(draft)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error"
+      setProjectDraftError(message)
+    } finally {
+      setProjectDraftLoading(false)
+    }
   }
 
   async function generateDraft(c: Capture) {
@@ -320,6 +365,72 @@ export default function Home() {
           </p>
         )}
       </section>
+
+      {/* Project draft */}
+      {selectedProject && captures.length > 0 && (
+        <section className="mb-8">
+          {!projectDraft && !projectDraftLoading && (
+            <button
+              type="button"
+              onClick={generateProjectDraft}
+              className="w-full rounded bg-white px-4 py-2 text-sm font-medium text-black hover:bg-gray-200"
+            >
+              Generate Project Draft ({captures.length} capture
+              {captures.length !== 1 ? "s" : ""})
+            </button>
+          )}
+
+          {projectDraftLoading && (
+            <p className="text-sm text-gray-400">
+              Generating project draft...
+            </p>
+          )}
+
+          {projectDraftError && (
+            <div>
+              <p className="text-sm text-red-400">{projectDraftError}</p>
+              <button
+                type="button"
+                onClick={generateProjectDraft}
+                className="mt-1 text-xs text-gray-400 underline hover:text-white"
+              >
+                Retry
+              </button>
+            </div>
+          )}
+
+          {projectDraft && (
+            <div className="rounded border border-gray-600 bg-gray-900 p-4">
+              <p className="mb-2 text-xs font-medium text-gray-400">
+                Project Supplement Draft
+              </p>
+              <p className="whitespace-pre-wrap text-sm text-gray-200">
+                {projectDraft}
+              </p>
+              <div className="mt-3 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(projectDraft)
+                    setProjectDraftCopied(true)
+                    setTimeout(() => setProjectDraftCopied(false), 2000)
+                  }}
+                  className="rounded bg-gray-700 px-3 py-1 text-xs text-white hover:bg-gray-600"
+                >
+                  {projectDraftCopied ? "Copied!" : "Copy Project Draft"}
+                </button>
+                <button
+                  type="button"
+                  onClick={generateProjectDraft}
+                  className="rounded bg-gray-700 px-3 py-1 text-xs text-white hover:bg-gray-600"
+                >
+                  Regenerate
+                </button>
+              </div>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* Capture form — only show when a project is selected */}
       {selectedProjectId ? (
