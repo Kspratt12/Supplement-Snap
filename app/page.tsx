@@ -19,12 +19,12 @@ export default function LandingPage() {
             >
               Open App
             </Link>
-            <a
-              href="#demo"
+            <Link
+              href="/demo"
               className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
             >
               Book a Demo
-            </a>
+            </Link>
           </div>
         </div>
       </nav>
@@ -46,12 +46,12 @@ export default function LandingPage() {
           every dollar your jobs are owed.
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <a
-            href="#demo"
+          <Link
+            href="/demo"
             className="w-full rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
           >
             Book a Demo
-          </a>
+          </Link>
           <a
             href="#how-it-works"
             className="w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750 sm:w-auto"
@@ -237,12 +237,12 @@ export default function LandingPage() {
             document damage and generate supplement drafts from the field.
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <a
-              href="mailto:hello@supplementsnap.com"
+            <Link
+              href="/demo"
               className="w-full rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
             >
               Book a Demo
-            </a>
+            </Link>
             <Link
               href="/app"
               className="w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750 sm:w-auto"
