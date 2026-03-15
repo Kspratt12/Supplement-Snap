@@ -85,6 +85,7 @@ export default function Home() {
   const [fieldNote, setFieldNote] = useState("")
   const [status, setStatus] = useState("")
   const [saving, setSaving] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
 
   // Voice recording state
   const [isRecording, setIsRecording] = useState(false)
@@ -555,26 +556,49 @@ export default function Home() {
 
   const MAX_PHOTOS = 10
 
-  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
-    const selected = e.target.files
-    if (!selected || selected.length === 0) return
-    const newFiles = Array.from(selected)
+  function addFiles(newFiles: File[]) {
+    // Filter to only image files
+    const imageFiles = newFiles.filter((f) => f.type.startsWith("image/"))
+    if (imageFiles.length === 0) return
+
     const remaining = MAX_PHOTOS - files.length
     if (remaining <= 0) {
       setStatus(`Maximum ${MAX_PHOTOS} photos per capture.`)
-      e.target.value = ""
       return
     }
-    const toAdd = newFiles.slice(0, remaining)
-    if (toAdd.length < newFiles.length) {
-      setStatus(`Only ${remaining} more photo${remaining !== 1 ? "s" : ""} allowed. ${newFiles.length - toAdd.length} skipped.`)
+    const toAdd = imageFiles.slice(0, remaining)
+    if (toAdd.length < imageFiles.length) {
+      setStatus(`Only ${remaining} more photo${remaining !== 1 ? "s" : ""} allowed. ${imageFiles.length - toAdd.length} skipped.`)
     } else {
       setStatus("")
     }
     setFiles((prev) => [...prev, ...toAdd])
     setPreviews((prev) => [...prev, ...toAdd.map((f) => URL.createObjectURL(f))])
-    // Reset the input so the same file can be re-selected
+  }
+
+  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const selected = e.target.files
+    if (!selected || selected.length === 0) return
+    addFiles(Array.from(selected))
     e.target.value = ""
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault()
+    setIsDragging(false)
+    const dropped = e.dataTransfer.files
+    if (!dropped || dropped.length === 0) return
+    addFiles(Array.from(dropped))
+  }
+
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault()
+    setIsDragging(true)
+  }
+
+  function handleDragLeave(e: React.DragEvent) {
+    e.preventDefault()
+    setIsDragging(false)
   }
 
   function removeFile(index: number) {
@@ -1033,7 +1057,11 @@ export default function Home() {
         <form onSubmit={handleSave} className="mb-10 space-y-5 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-500">New Capture</h2>
 
-          <div>
+          <div
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+          >
             <div className="mb-2 flex items-center justify-between">
               <label className="block text-sm font-medium text-zinc-700">
                 {previews.length > 0 ? `Photos (${previews.length})` : "Damage Photos"}
@@ -1093,8 +1121,16 @@ export default function Home() {
               <p className="rounded-lg bg-amber-50 px-3 py-2 text-center text-xs text-amber-600">
                 Photo limit reached ({MAX_PHOTOS}/{MAX_PHOTOS}). Remove a photo to add more.
               </p>
+            ) : isDragging ? (
+              /* Drop zone overlay */
+              <div className="flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-indigo-400 bg-indigo-50 px-4 py-10 text-indigo-600">
+                <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                </svg>
+                <span className="text-sm font-semibold">Drop photos here</span>
+              </div>
             ) : previews.length === 0 ? (
-              /* Initial state — large buttons */
+              /* Initial state — large buttons + drop hint */
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
@@ -1142,6 +1178,7 @@ export default function Home() {
                   </svg>
                   + Add More Photos
                 </button>
+                <span className="hidden sm:inline-flex items-center text-xs text-zinc-400">or drag & drop</span>
               </div>
             )}
           </div>
