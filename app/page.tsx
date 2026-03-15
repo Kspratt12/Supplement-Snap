@@ -64,6 +64,7 @@ export default function Home() {
   const [drafts, setDrafts] = useState<Record<string, string>>({})
   const [draftLoading, setDraftLoading] = useState<Record<string, boolean>>({})
   const [draftErrors, setDraftErrors] = useState<Record<string, string>>({})
+  const [copied, setCopied] = useState<Record<string, boolean>>({})
 
   // Load projects on mount
   useEffect(() => {
@@ -472,6 +473,24 @@ export default function Home() {
                         Supplement Draft
                       </p>
                       <p className="text-sm text-gray-200">{drafts[c.id]}</p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(drafts[c.id])
+                          setCopied((prev) => ({ ...prev, [c.id]: true }))
+                          setTimeout(
+                            () =>
+                              setCopied((prev) => ({
+                                ...prev,
+                                [c.id]: false,
+                              })),
+                            2000
+                          )
+                        }}
+                        className="mt-2 rounded bg-gray-700 px-3 py-1 text-xs text-white hover:bg-gray-600"
+                      >
+                        {copied[c.id] ? "Copied!" : "Copy Draft"}
+                      </button>
                     </div>
                   )}
                 </div>
