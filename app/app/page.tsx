@@ -797,7 +797,8 @@ export default function Home() {
 
     setStatus("Saving capture...")
 
-    const { error: insertError } = await supabase.from("captures").insert({
+    // Insert capture with all columns, fall back to core columns if schema cache is stale
+    const fullRow = {
       project_id: selectedProjectId,
       image_url: uploadedUrls[0],
       image_urls: uploadedUrls,
@@ -805,7 +806,30 @@ export default function Home() {
       roof_area: roofArea,
       field_note: fieldNote,
       status: "Captured",
-    })
+    }
+    const coreRow = {
+      project_id: selectedProjectId,
+      image_url: uploadedUrls[0],
+      damage_type: damageType,
+      roof_area: roofArea,
+      field_note: fieldNote,
+    }
+
+    let { error: insertError, data: insertedRow } = await supabase
+      .from("captures")
+      .insert(fullRow)
+      .select()
+      .single()
+
+    if (insertError?.message?.includes("schema cache")) {
+      const fallback = await supabase
+        .from("captures")
+        .insert(coreRow)
+        .select()
+        .single()
+      insertError = fallback.error
+      insertedRow = fallback.data
+    }
 
     if (insertError) {
       setStatus(`Save failed: ${insertError.message}`)
