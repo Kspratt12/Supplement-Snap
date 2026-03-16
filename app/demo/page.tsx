@@ -95,7 +95,64 @@ export default function DemoPage() {
         </div>
       </nav>
 
-      <main className="mx-auto max-w-lg px-4 py-16 sm:px-6">
+      <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+        {/* Hero */}
+        <div className="mb-12 text-center">
+          <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl">
+            See Supplement Snap in Action
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-500">
+            Book a quick walkthrough to see how roofing crews capture hidden damage during tear-off and generate supplement reports for insurance adjusters.
+          </p>
+        </div>
+
+        {/* Info cards */}
+        <div className="mb-12 grid gap-6 sm:grid-cols-2">
+          {/* What you'll see */}
+          <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
+            <h2 className="text-sm font-semibold text-zinc-900">What you&apos;ll see in the demo</h2>
+            <div className="mt-4 space-y-3">
+              {[
+                "Capturing hidden damage photos during tear-off",
+                "Adding damage notes using voice dictation",
+                "Automatically generating a supplement report",
+                "Exporting a clean PDF ready for adjusters",
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-2.5">
+                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-sm text-zinc-600">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Who it's for */}
+          <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
+            <h2 className="text-sm font-semibold text-zinc-900">Who this demo is for</h2>
+            <div className="mt-4 space-y-3">
+              {[
+                "Roofing contractors",
+                "Project managers",
+                "Supplement specialists",
+                "Office staff handling insurance claims",
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-2.5">
+                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                  </svg>
+                  <span className="text-sm text-zinc-600">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <p className="mb-10 text-center text-sm text-zinc-400">
+          The walkthrough takes about 15 minutes and shows the complete workflow from capture to report.
+        </p>
+
         {submitted ? (
           <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center shadow-sm">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
@@ -105,7 +162,7 @@ export default function DemoPage() {
             </div>
             <h2 className="text-xl font-bold text-zinc-900">Demo Request Sent</h2>
             <p className="mt-2 text-sm text-zinc-500">
-              Thanks! We'll reach out shortly to schedule your demo.
+              Thanks! We&apos;ll reach out shortly to schedule your demo.
             </p>
             <Link
               href="/"
@@ -116,18 +173,15 @@ export default function DemoPage() {
           </div>
         ) : (
           <>
-            <div className="mb-8 text-center">
-              <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
-                Book a Demo
-              </h1>
-              <p className="mt-2 text-base text-zinc-500">
-                See how roofers generate supplements in minutes.
-              </p>
+            <div className="mb-6 text-center">
+              <h2 className="text-xl font-bold tracking-tight text-zinc-900">
+                Request your demo
+              </h2>
             </div>
 
             <form
               onSubmit={handleSubmit}
-              className="space-y-5 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8"
+              className="mx-auto max-w-lg space-y-5 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8"
             >
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-zinc-700">
