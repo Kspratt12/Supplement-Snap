@@ -175,7 +175,7 @@ export default function DashboardPage() {
             <span className="text-lg font-bold tracking-tight text-zinc-900">Supplement Snap</span>
           </Link>
           <div className="flex items-center gap-3">
-            <Link href="/app" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">{isActive ? "My Projects" : "Try Free"}</Link>
+            <Link href="/app" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">{isActive ? "My Projects" : "Open App"}</Link>
             <button
               onClick={async () => { await signOut(); router.push("/") }}
               className="text-sm font-medium text-zinc-500 hover:text-zinc-900"
@@ -195,9 +195,9 @@ export default function DashboardPage() {
         {/* Header with plan badge */}
         <div className="mb-6 sm:mb-8 flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900">Welcome back, {userName}</h1>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900">Welcome{hasAnyData ? " back" : ""}, {userName}</h1>
             <p className="mt-1 text-sm text-zinc-500">
-              {isActive ? "Ready to capture damage and generate reports." : "Get started by activating your subscription."}
+              {isActive ? "Ready to capture damage and generate reports." : "Try your free project or upgrade to unlock everything."}
             </p>
           </div>
           {!subscriptionLoading && (
