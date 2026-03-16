@@ -240,6 +240,121 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Report Preview */}
+      <section className="border-t border-zinc-100 py-20">
+        <div className="mx-auto max-w-3xl px-6">
+          <div className="mb-12 text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Output</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Adjuster-ready supplement reports
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
+              Generate clean documentation that can be sent directly to insurance adjusters.
+            </p>
+          </div>
+
+          {/* Report document preview */}
+          <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-lg">
+            {/* Report header bar */}
+            <div className="bg-indigo-600 px-6 py-3 sm:px-8">
+              <p className="text-xs font-semibold text-white tracking-wide">Supplement Snap — Project Report</p>
+            </div>
+
+            <div className="px-6 py-6 sm:px-8 sm:py-8">
+              {/* Project info */}
+              <div className="mb-6">
+                <h3 className="text-lg font-bold text-zinc-900">Smith Residence</h3>
+                <div className="mt-2 space-y-0.5 text-sm text-zinc-500">
+                  <p>Property Address: 742 Evergreen Terrace, Springfield</p>
+                  <p>Date of Inspection: March 12, 2026</p>
+                  <p>Findings: 3</p>
+                </div>
+              </div>
+
+              <div className="h-px bg-zinc-200" />
+
+              {/* Findings */}
+              <div className="mt-6 mb-2">
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Findings</p>
+              </div>
+
+              {/* Finding 1 */}
+              <div className="mb-5">
+                <div className="flex items-start gap-2.5">
+                  <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">1</span>
+                  <div>
+                    <p className="text-sm font-semibold text-zinc-900">Decking — Front Slope</p>
+                    <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                      During tear-off of the front slope, three sheets of rotted OSB decking were discovered along the eave edge. Wood was soft and deteriorated from prolonged moisture exposure. This damage was concealed beneath the existing shingles and underlayment.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Finding 2 */}
+              <div className="mb-5">
+                <div className="flex items-start gap-2.5">
+                  <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">2</span>
+                  <div>
+                    <p className="text-sm font-semibold text-zinc-900">Flashing — Chimney</p>
+                    <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                      Step flashing along the chimney wall was found to be severely corroded with multiple separation points. Counter flashing seal at the mortar joint had failed, allowing water intrusion behind the flashing system.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Finding 3 */}
+              <div className="mb-6">
+                <div className="flex items-start gap-2.5">
+                  <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">3</span>
+                  <div>
+                    <p className="text-sm font-semibold text-zinc-900">Ice &amp; Water Shield — Valley</p>
+                    <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                      No ice and water shield membrane was present in the main valley. Current building code requires ice and water shield in all valley areas. Installation is necessary to bring the roof system into compliance.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="h-px bg-zinc-200" />
+
+              {/* Photos section */}
+              <div className="mt-6 mb-3">
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Supporting Photos</p>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <div className="aspect-square rounded-lg bg-gradient-to-br from-amber-100 to-amber-50 border border-zinc-200" />
+                  <p className="mt-1.5 text-[10px] text-zinc-400">Photo 1 — Decking rot exposure</p>
+                </div>
+                <div>
+                  <div className="aspect-square rounded-lg bg-gradient-to-br from-red-100 to-red-50 border border-zinc-200" />
+                  <p className="mt-1.5 text-[10px] text-zinc-400">Photo 2 — Flashing corrosion</p>
+                </div>
+                <div>
+                  <div className="aspect-square rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 border border-zinc-200" />
+                  <p className="mt-1.5 text-[10px] text-zinc-400">Photo 3 — Valley underlayment absence</p>
+                </div>
+              </div>
+
+              <div className="mt-6 h-px bg-zinc-200" />
+
+              {/* Summary */}
+              <div className="mt-6 rounded-lg bg-zinc-50 px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Summary</p>
+                <p className="mt-2 text-xs leading-relaxed text-zinc-600">
+                  3 supplement items documented during tear-off inspection. All findings represent concealed conditions not visible during initial inspection. Documentation and supporting photos are ready for adjuster review and supplement submission.
+                </p>
+              </div>
+
+              {/* Footer */}
+              <p className="mt-6 text-center text-[10px] text-zinc-300">Generated by Supplement Snap</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section id="how-it-works" className="border-t border-zinc-100 bg-zinc-50 py-20">
         <div className="mx-auto max-w-5xl px-6">
