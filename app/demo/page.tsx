@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { trackEvent } from "../../lib/analytics"
 
 const ROLES = ["Owner", "Project Manager", "Sales Rep", "Estimator", "Other"] as const
 
@@ -65,6 +66,7 @@ export default function DemoPage() {
         }),
       }).catch(() => {})
 
+      trackEvent("demo_request_submitted")
       router.push("/demo-confirmation")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.")

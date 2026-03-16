@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
+import { OnboardingChecklist } from "./onboarding-checklist"
 
 type ProjectWithCount = {
   id: string
@@ -20,6 +21,8 @@ export default function DashboardPage() {
   const [projects, setProjects] = useState<ProjectWithCount[]>([])
   const [loadingProjects, setLoadingProjects] = useState(true)
   const [portalLoading, setPortalLoading] = useState(false)
+  const [hasSentReport, setHasSentReport] = useState(false)
+  const [reportCount, setReportCount] = useState(0)
 
   useEffect(() => {
     if (!authLoading && !user) router.replace("/login")
@@ -53,6 +56,20 @@ export default function DashboardPage() {
     }
 
     setProjects(projectsWithCounts)
+
+    // Check if any capture has been sent (for onboarding checklist)
+    if (projectsData.length > 0) {
+      const projectIds = projectsData.map((p: { id: string }) => p.id)
+      const { count: sentCount } = await supabase
+        .from("captures")
+        .select("*", { count: "exact", head: true })
+        .in("project_id", projectIds)
+        .in("status", ["Sent", "Ready to Send"])
+      const sc = sentCount || 0
+      setHasSentReport(sc > 0)
+      setReportCount(sc)
+    }
+
     setLoadingProjects(false)
   }
 
@@ -139,6 +156,73 @@ export default function DashboardPage() {
             </span>
           )}
         </div>
+
+        {/* Onboarding checklist */}
+        {!subscriptionLoading && !loadingProjects && (
+          <OnboardingChecklist
+            isActive={isActive}
+            hasProjects={projects.length > 0}
+            hasCaptures={projects.some((p) => p.capture_count > 0)}
+            hasSentReport={hasSentReport}
+          />
+        )}
+
+        {/* Activity Overview */}
+        {!subscriptionLoading && !loadingProjects && (
+          <div className="mb-8">
+            <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">Activity Overview</h2>
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
+              {/* Projects */}
+              <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-50">
+                    <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-zinc-900">{isActive ? projects.length : 0}</p>
+                    <p className="text-xs text-zinc-500">Projects</p>
+                  </div>
+                </div>
+              </div>
+              {/* Captures */}
+              <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-50">
+                    <svg className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-zinc-900">{isActive ? projects.reduce((sum, p) => sum + p.capture_count, 0) : 0}</p>
+                    <p className="text-xs text-zinc-500">Captures</p>
+                  </div>
+                </div>
+              </div>
+              {/* Reports */}
+              <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-50">
+                    <svg className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-zinc-900">{isActive ? reportCount : 0}</p>
+                    <p className="text-xs text-zinc-500">Reports Generated</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {!isActive && (
+              <p className="mt-3 text-center text-xs text-zinc-400">
+                Activate your subscription to begin capturing damage.
+              </p>
+            )}
+          </div>
+        )}
 
         {/* Top row: Subscription + Quick Actions */}
         <div className="mb-8 grid gap-4 sm:grid-cols-2">

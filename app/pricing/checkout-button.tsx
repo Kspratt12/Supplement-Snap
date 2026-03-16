@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { useAuth } from "../../lib/auth-context"
+import { trackEvent } from "../../lib/analytics"
 
 /*
  * ─── STRIPE TEST CHECKLIST ───────────────────────────────────────
@@ -34,6 +35,7 @@ export function CheckoutButton() {
       const data = await res.json()
 
       if (data.url) {
+        trackEvent("checkout_started")
         window.location.href = data.url
       } else {
         setError(data.error || "Unable to start checkout right now. Please try again.")

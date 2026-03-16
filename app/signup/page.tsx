@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "../../lib/supabase"
 import { useAuth } from "../../lib/auth-context"
+import { trackEvent } from "../../lib/analytics"
 
 export default function SignupPage() {
   const [name, setName] = useState("")
@@ -43,6 +44,13 @@ export default function SignupPage() {
       setError(error.message)
       setLoading(false)
     } else {
+      trackEvent("signup_completed")
+      // Send welcome email (fire-and-forget)
+      fetch("/api/send-onboarding-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to: email, name, type: "welcome" }),
+      }).catch(() => {})
       router.push("/dashboard")
     }
   }

@@ -1,10 +1,16 @@
 "use client"
 
+import { useEffect } from "react"
 import Link from "next/link"
 import { useAuth } from "../../lib/auth-context"
+import { trackEvent } from "../../lib/analytics"
 
 export default function SuccessPage() {
   const { user, loading } = useAuth()
+
+  useEffect(() => {
+    trackEvent("subscription_active")
+  }, [])
 
   if (loading) return null
 

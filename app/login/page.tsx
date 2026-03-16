@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "../../lib/supabase"
 import { useAuth } from "../../lib/auth-context"
+import { trackEvent } from "../../lib/analytics"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -29,6 +30,7 @@ export default function LoginPage() {
       setError(error.message)
       setLoading(false)
     } else {
+      trackEvent("login_completed")
       router.push("/dashboard")
     }
   }
