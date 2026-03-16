@@ -156,7 +156,7 @@ export default function DashboardPage() {
                 <button
                   onClick={openBillingPortal}
                   disabled={portalLoading}
-                  className="text-xs font-medium text-zinc-400 hover:text-zinc-600 disabled:opacity-50"
+                  className="rounded-md border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 disabled:opacity-50 transition-colors"
                 >
                   {portalLoading ? "..." : "Billing"}
                 </button>
@@ -316,18 +316,12 @@ export default function DashboardPage() {
                 <span className="text-sm">Loading projects...</span>
               </div>
             ) : projects.length === 0 ? (
-              <div className="rounded-xl border border-dashed border-zinc-300 bg-white px-6 py-10 sm:py-14 text-center">
+              <div className="rounded-xl border border-dashed border-zinc-300 bg-white px-6 py-10 sm:py-12 text-center">
                 <svg className="mx-auto h-10 w-10 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                 </svg>
                 <h3 className="mt-3 text-sm sm:text-base font-semibold text-zinc-900">No projects yet</h3>
-                <p className="mt-1 text-sm text-zinc-500">Create your first project to start capturing damage.</p>
-                <Link
-                  href="/app"
-                  className="mt-4 inline-flex items-center rounded-lg bg-indigo-600 px-5 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
-                >
-                  Create Your First Project
-                </Link>
+                <p className="mt-1 text-sm text-zinc-500">Tap <strong>+ New Project</strong> above to get started.</p>
               </div>
             ) : (
               <div className="space-y-3">
