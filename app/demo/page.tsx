@@ -1,79 +1,21 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { trackEvent } from "../../lib/analytics"
+import { useEffect } from "react"
 
-const ROLES = ["Owner", "Project Manager", "Sales Rep", "Estimator", "Other"] as const
+const CALENDLY_URL = "https://calendly.com/kelvin-sprattenterprise/30min"
 
 export default function DemoPage() {
-  const router = useRouter()
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [company, setCompany] = useState("")
-  const [phone, setPhone] = useState("")
-  const [role, setRole] = useState("")
-  const [message, setMessage] = useState("")
-  const [submitting, setSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [error, setError] = useState("")
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!name.trim() || !email.trim()) return
-
-    setSubmitting(true)
-    setError("")
-
-    try {
-      const body = [
-        `Name: ${name}`,
-        `Company: ${company || "N/A"}`,
-        `Email: ${email}`,
-        `Phone: ${phone || "N/A"}`,
-        `Role: ${role || "N/A"}`,
-        message ? `Message: ${message}` : "",
-      ].filter(Boolean).join("\n")
-
-      const res = await fetch("/api/send-report", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          to: "admin@supplementsnap.com",
-          subject: "New Demo Request – Supplement Snap",
-          message: body,
-          projectName: "Demo Request",
-          propertyAddress: company || "",
-        }),
-      })
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => null)
-        throw new Error(data?.error || `Request failed (${res.status})`)
-      }
-
-      // Send confirmation email to the user
-      fetch("/api/send-report", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          to: email,
-          subject: "Your Supplement Snap Demo Request",
-          message: `Hi ${name},\n\nThank you for requesting a demo of Supplement Snap. We received your request and will reach out within 1 business day to schedule a walkthrough.\n\nDuring the demo, you'll see:\n• How crews capture damage during tear-off\n• How supplement documentation is generated with AI\n• How PDF reports are sent directly to adjusters\n\nWe look forward to showing you how Supplement Snap helps roofing teams recover more supplement revenue.\n\n— The Supplement Snap Team`,
-          projectName: "Demo Confirmation",
-          propertyAddress: "",
-        }),
-      }).catch(() => {})
-
-      trackEvent("demo_request_submitted")
-      router.push("/demo-confirmation")
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.")
-    } finally {
-      setSubmitting(false)
+  useEffect(() => {
+    // Load Calendly widget script
+    const script = document.createElement("script")
+    script.src = "https://assets.calendly.com/assets/external/widget.js"
+    script.async = true
+    document.body.appendChild(script)
+    return () => {
+      document.body.removeChild(script)
     }
-  }
+  }, [])
 
   return (
     <div className="min-h-screen bg-zinc-50">
@@ -86,209 +28,73 @@ export default function DemoPage() {
             </div>
             <span className="text-lg font-bold tracking-tight text-zinc-900">Supplement Snap</span>
           </Link>
-          <Link
-            href="/app"
-            className="text-sm font-medium text-zinc-600 hover:text-zinc-900"
-          >
-            Open App
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/" className="hidden text-sm font-medium text-zinc-600 hover:text-zinc-900 sm:block">Home</Link>
+            <Link href="/pricing" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">Pricing</Link>
+          </div>
         </div>
       </nav>
 
-      <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+      <main className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
         {/* Hero */}
-        <div className="mb-12 text-center">
-          <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl">
+        <div className="mb-10 text-center">
+          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Free 15-Minute Walkthrough</p>
+          <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl">
             See Supplement Snap in Action
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-500">
-            Book a quick walkthrough to see how roofing crews capture hidden damage during tear-off and generate supplement reports for insurance adjusters.
+            Pick a time below. I&apos;ll screen share and walk you through how your crew captures hidden damage and sends adjuster-ready reports — all from the field.
           </p>
         </div>
 
-        {/* Info cards */}
-        <div className="mb-12 grid gap-6 sm:grid-cols-2">
-          {/* What you'll see */}
-          <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
-            <h2 className="text-sm font-semibold text-zinc-900">What you&apos;ll see in the demo</h2>
-            <div className="mt-4 space-y-3">
-              {[
-                "Capturing hidden damage photos during tear-off",
-                "Adding damage notes using voice dictation",
-                "Automatically generating a supplement report",
-                "Exporting a clean PDF ready for adjusters",
-              ].map((item) => (
-                <div key={item} className="flex items-start gap-2.5">
-                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span className="text-sm text-zinc-600">{item}</span>
-                </div>
-              ))}
+        <div className="grid gap-8 lg:grid-cols-3">
+          {/* Left: What you'll see + who it's for */}
+          <div className="space-y-6 lg:col-span-1">
+            <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+              <h2 className="text-sm font-semibold text-zinc-900">What you&apos;ll see</h2>
+              <div className="mt-3 space-y-2.5">
+                {[
+                  "Crew captures damage photos from the roof",
+                  "Voice notes auto-transcribed (works in Spanish)",
+                  "AI generates professional supplement narrative",
+                  "PDF report emailed to adjuster in one click",
+                  "Xactimate CSV export with real line codes",
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-2">
+                    <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-xs text-zinc-600">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+              <h2 className="text-sm font-semibold text-zinc-900">No pitch — just a demo</h2>
+              <p className="mt-2 text-xs leading-relaxed text-zinc-500">
+                This is a 15-minute screen share where I walk you through the tool on a real project. You&apos;ll see exactly how it works and can ask questions. No pressure, no sales pitch.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-green-200 bg-green-50 p-5">
+              <p className="text-xs font-semibold text-green-800">Average supplement recovered</p>
+              <p className="mt-1 text-2xl font-extrabold text-green-700">$2,400</p>
+              <p className="mt-1 text-xs text-green-600">One supplement pays for the platform.</p>
             </div>
           </div>
 
-          {/* Who it's for */}
-          <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
-            <h2 className="text-sm font-semibold text-zinc-900">Who this demo is for</h2>
-            <div className="mt-4 space-y-3">
-              {[
-                "Roofing contractors",
-                "Project managers",
-                "Supplement specialists",
-                "Office staff handling insurance claims",
-              ].map((item) => (
-                <div key={item} className="flex items-start gap-2.5">
-                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                  </svg>
-                  <span className="text-sm text-zinc-600">{item}</span>
-                </div>
-              ))}
+          {/* Right: Calendly embed */}
+          <div className="lg:col-span-2">
+            <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
+              <div
+                className="calendly-inline-widget"
+                data-url={`${CALENDLY_URL}?hide_gdpr_banner=1&background_color=ffffff&text_color=27272a&primary_color=4f46e5`}
+                style={{ minWidth: "320px", height: "660px" }}
+              />
             </div>
           </div>
         </div>
-
-        <p className="mb-10 text-center text-sm text-zinc-400">
-          The walkthrough takes about 15 minutes and shows the complete workflow from capture to report.
-        </p>
-
-        {submitted ? (
-          <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center shadow-sm">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
-              <svg className="h-7 w-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h2 className="text-xl font-bold text-zinc-900">Demo Request Sent</h2>
-            <p className="mt-2 text-sm text-zinc-500">
-              Thanks! We&apos;ll reach out shortly to schedule your demo.
-            </p>
-            <Link
-              href="/"
-              className="mt-6 inline-block rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
-            >
-              Back to Home
-            </Link>
-          </div>
-        ) : (
-          <>
-            <div className="mb-6 text-center">
-              <h2 className="text-xl font-bold tracking-tight text-zinc-900">
-                Request your demo
-              </h2>
-            </div>
-
-            <form
-              onSubmit={handleSubmit}
-              className="mx-auto max-w-lg space-y-5 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8"
-            >
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-zinc-700">
-                  Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="John Smith"
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400"
-                />
-              </div>
-
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-zinc-700">
-                  Email <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="john@smithroofing.com"
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400"
-                />
-              </div>
-
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-zinc-700">
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
-                  placeholder="Smith Roofing"
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400"
-                />
-              </div>
-
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-zinc-700">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="555-123-5555"
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400"
-                />
-              </div>
-
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-zinc-700">
-                  Role
-                </label>
-                <select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900"
-                >
-                  <option value="">Select your role...</option>
-                  {ROLES.map((r) => (
-                    <option key={r} value={r}>{r}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-zinc-700">
-                  Message <span className="text-xs text-zinc-400">(optional)</span>
-                </label>
-                <textarea
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Tell us about your business or what you'd like to see..."
-                  rows={3}
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400"
-                />
-              </div>
-
-              {error && (
-                <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
-                  {error}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                disabled={submitting || !name.trim() || !email.trim()}
-                className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50"
-              >
-                {submitting ? (
-                  <span className="inline-flex items-center gap-2">
-                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                    Sending...
-                  </span>
-                ) : (
-                  "Request Demo"
-                )}
-              </button>
-            </form>
-          </>
-        )}
       </main>
     </div>
   )
