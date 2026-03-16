@@ -53,23 +53,23 @@ export default function SuccessPage() {
           {user ? (
             <>
               <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-6">
-                <p className="text-sm font-semibold text-zinc-700">Next step</p>
+                <p className="text-sm font-semibold text-zinc-700">Your account is ready to use</p>
                 <p className="mt-1 text-sm text-zinc-500">
-                  Book your onboarding call so we can get your team set up and running fast.
+                  Start capturing damage and generating reports. Need a walkthrough? Book a free onboarding call.
                 </p>
               </div>
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                 <Link
-                  href="/demo"
+                  href="/dashboard"
                   className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
                 >
-                  Book Onboarding Call
+                  Go to Dashboard
                 </Link>
                 <Link
-                  href="/dashboard"
+                  href="/demo"
                   className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
                 >
-                  Go to Dashboard
+                  Book Onboarding Call
                 </Link>
               </div>
             </>

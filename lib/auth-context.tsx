@@ -64,15 +64,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null)
       setLoading(false)
-      if (session?.user) {
-        loadSubscription(session.user.id)
-      } else {
-        setSubscriptionStatus("inactive")
-        setSubscriptionPlan("none")
-        setSubscriptionLoading(false)
+      // Only reload subscription on real auth changes, not token refreshes (prevents tab-switch flicker)
+      if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
+        if (session?.user) {
+          loadSubscription(session.user.id)
+        } else {
+          setSubscriptionStatus("inactive")
+          setSubscriptionPlan("none")
+          setSubscriptionLoading(false)
+        }
       }
     })
 

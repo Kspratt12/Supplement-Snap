@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: "Roofing Supplement Software | Supplement Snap",
     description:
       "Capture hidden roofing damage during tear-off, generate supplement documentation, and send adjuster-ready reports in minutes.",
-    url: "https://supplement-snap.vercel.app",
+    url: "https://supplementsnap.io",
     siteName: "Supplement Snap",
     type: "website",
     locale: "en_US",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     description:
       "Capture hidden roofing damage during tear-off, generate supplement documentation, and send adjuster-ready reports in minutes.",
   },
-  metadataBase: new URL("https://supplement-snap.vercel.app"),
+  metadataBase: new URL("https://supplementsnap.io"),
   icons: {
     icon: "/favicon.svg",
     apple: "/favicon.svg",
@@ -75,7 +75,7 @@ export default function RootLayout({
               operatingSystem: "Web",
               description:
                 "Capture hidden roofing damage during tear-off, generate supplement documentation, and send adjuster-ready reports in minutes.",
-              url: "https://supplement-snap.vercel.app",
+              url: "https://supplementsnap.io",
               offers: {
                 "@type": "Offer",
                 price: "49",
@@ -86,7 +86,7 @@ export default function RootLayout({
               provider: {
                 "@type": "Organization",
                 name: "Supplement Snap",
-                url: "https://supplement-snap.vercel.app",
+                url: "https://supplementsnap.io",
               },
             }),
           }}

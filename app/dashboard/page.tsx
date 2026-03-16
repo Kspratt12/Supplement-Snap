@@ -138,7 +138,7 @@ export default function DashboardPage() {
       })
       const data = await res.json()
       if (data.url) {
-        window.location.href = data.url
+        window.open(data.url, "_blank")
       } else {
         alert("Unable to open billing portal. Please contact support.")
       }
