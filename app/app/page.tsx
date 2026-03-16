@@ -1697,19 +1697,21 @@ function Home() {
               )}
             </div>
             {/* Map preview */}
-            {showMap && selectedProject.property_address && (
+            {showMap && (
               <div className="mt-2 overflow-hidden rounded-lg border border-zinc-200">
                 <div className="flex items-center justify-between bg-zinc-50 px-3 py-2">
                   <span className="text-xs font-medium text-zinc-500">Property Location</span>
                   <div className="flex items-center gap-2">
-                    <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedProject.property_address)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-medium text-indigo-600 hover:text-indigo-500"
-                    >
-                      Open in Google Maps
-                    </a>
+                    {selectedProject.property_address && (
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedProject.property_address)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-medium text-indigo-600 hover:text-indigo-500"
+                      >
+                        Open in Google Maps
+                      </a>
+                    )}
                     <button
                       type="button"
                       onClick={() => setShowMap(false)}
@@ -1721,15 +1723,49 @@ function Home() {
                     </button>
                   </div>
                 </div>
-                <iframe
-                  src={`https://maps.google.com/maps?q=${encodeURIComponent(selectedProject.property_address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                  width="100%"
-                  height="200"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  allowFullScreen
-                  title="Property location"
-                />
+                {/* Editable address */}
+                <div className="flex gap-2 border-b border-zinc-100 px-3 py-2 bg-white">
+                  <input
+                    type="text"
+                    defaultValue={selectedProject.property_address || ""}
+                    placeholder="Enter property address..."
+                    onKeyDown={async (e) => {
+                      if (e.key === "Enter") {
+                        const input = e.target as HTMLInputElement
+                        const newAddress = input.value.trim()
+                        if (!newAddress || !selectedProject) return
+                        await supabase.from("projects").update({ property_address: newAddress }).eq("id", selectedProject.id)
+                        setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, property_address: newAddress } : p))
+                      }
+                    }}
+                    className="flex-1 rounded border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400"
+                  />
+                  <button
+                    type="button"
+                    onClick={async (e) => {
+                      const input = (e.target as HTMLElement).previousElementSibling as HTMLInputElement
+                      if (!input) return
+                      const newAddress = input.value.trim()
+                      if (!newAddress || !selectedProject) return
+                      await supabase.from("projects").update({ property_address: newAddress }).eq("id", selectedProject.id)
+                      setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, property_address: newAddress } : p))
+                    }}
+                    className="rounded bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                  >
+                    Update
+                  </button>
+                </div>
+                {selectedProject.property_address && (
+                  <iframe
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(selectedProject.property_address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                    width="100%"
+                    height="200"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    title="Property location"
+                  />
+                )}
               </div>
             )}
           </div>
@@ -2337,7 +2373,7 @@ function Home() {
             </h2>
             <div className="flex items-center gap-2">
               <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                ~${captures.reduce((sum, c) => sum + (SUPPLEMENT_ESTIMATES[c.damage_type] || 200), 0).toLocaleString()} est.
+                ${captures.reduce((sum, c) => sum + (SUPPLEMENT_ESTIMATES[c.damage_type] || 200), 0).toLocaleString()} est.
               </span>
               <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
                 {captures.length}
@@ -2443,7 +2479,7 @@ function Home() {
                         {c.roof_area}
                       </span>
                       <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                        ~${SUPPLEMENT_ESTIMATES[c.damage_type] || 200}
+                        ${SUPPLEMENT_ESTIMATES[c.damage_type] || 200}
                       </span>
                     </div>
                     <span className="text-xs text-zinc-400">
