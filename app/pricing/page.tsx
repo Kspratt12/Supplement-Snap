@@ -83,28 +83,43 @@ export default function PricingPage() {
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-zinc-500 sm:text-lg">
           One approved supplement pays for the entire platform. Choose the plan that fits your team.
         </p>
-        <div className="mx-auto mt-8 max-w-md rounded-xl border-2 border-green-200 bg-green-50 px-6 py-4">
-          <p className="text-sm font-semibold text-green-800">Try Supplement Snap free</p>
-          <p className="mt-1 text-xs text-green-700">
-            Create your first project at no cost. No credit card required. See the value before you commit.
-          </p>
-          <Link
-            href="/signup?trial=1"
-            className="mt-3 inline-block rounded-lg bg-green-600 px-5 py-2 text-sm font-semibold text-white hover:bg-green-500"
-          >
-            Start Free Project
-          </Link>
-        </div>
       </section>
 
       <Suspense fallback={null}>
         <CancelBanner />
       </Suspense>
-      <TestModeBanner isTestMode={(process.env.STRIPE_SECRET_KEY || "").startsWith("sk_test_")} />
 
       {/* Pricing Cards */}
-      <section className="mx-auto max-w-4xl px-6 py-16">
-        <div className="grid gap-6 sm:grid-cols-2">
+      <section className="mx-auto max-w-5xl px-6 py-16">
+        <div className="grid gap-6 sm:grid-cols-3">
+          {/* Free */}
+          <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-8 shadow-sm">
+            <p className="text-sm font-semibold uppercase tracking-wider text-green-600">Free</p>
+            <p className="mt-1 text-xs text-zinc-400">Try it on your next job</p>
+            <div className="mt-5">
+              <span className="text-4xl font-extrabold text-zinc-900">$0</span>
+            </div>
+            <p className="mt-1 text-sm text-zinc-500">No credit card required</p>
+
+            <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
+              {["1 demo project", "Capture damage photos", "Voice-to-note documentation", "AI supplement draft", "See sample PDF report"].map((f) => (
+                <div key={f} className="flex items-start gap-2.5">
+                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-sm text-zinc-700">{f}</span>
+                </div>
+              ))}
+            </div>
+
+            <Link
+              href="/signup"
+              className="mt-8 block w-full rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
+            >
+              Start Free Project
+            </Link>
+          </div>
+
           {/* Starter */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-8 shadow-sm">
             <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Starter</p>
