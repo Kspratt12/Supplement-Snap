@@ -1532,7 +1532,6 @@ function Home() {
             {projects.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.project_name}
-                {p.property_address ? ` — ${p.property_address}` : ""}
               </option>
             ))}
           </select>
