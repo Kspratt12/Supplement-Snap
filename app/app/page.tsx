@@ -191,6 +191,8 @@ function Home() {
   const [projectDraftCopied, setProjectDraftCopied] = useState(false)
   const [draftExpanded, setDraftExpanded] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [editingClaim, setEditingClaim] = useState(false)
+  const [editClaimData, setEditClaimData] = useState({ insurance_company: "", claim_number: "", adjuster_name: "", adjuster_email: "", date_of_loss: "" })
 
   // Project report state
   const [showReport, setShowReport] = useState(false)
@@ -1741,22 +1743,72 @@ function Home() {
                 {captures.length} capture{captures.length !== 1 ? "s" : ""}
               </span>
             </div>
-            {(selectedProject.insurance_company || selectedProject.claim_number) && (
-              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-zinc-500">
-                {selectedProject.insurance_company && (
-                  <span><span className="font-medium text-zinc-600">Ins:</span> {selectedProject.insurance_company}</span>
-                )}
-                {selectedProject.claim_number && (
-                  <span><span className="font-medium text-zinc-600">Claim:</span> {selectedProject.claim_number}</span>
-                )}
-                {selectedProject.date_of_loss && (
-                  <span><span className="font-medium text-zinc-600">DOL:</span> {new Date(selectedProject.date_of_loss + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
-                )}
-                {selectedProject.adjuster_name && (
-                  <span><span className="font-medium text-zinc-600">Adj:</span> {selectedProject.adjuster_name}</span>
-                )}
-              </div>
-            )}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-500">
+              {!editingClaim ? (
+                <>
+                  {selectedProject.insurance_company && (
+                    <span><span className="font-medium text-zinc-600">Ins:</span> {selectedProject.insurance_company}</span>
+                  )}
+                  {selectedProject.claim_number && (
+                    <span><span className="font-medium text-zinc-600">Claim:</span> {selectedProject.claim_number}</span>
+                  )}
+                  {selectedProject.date_of_loss && (
+                    <span><span className="font-medium text-zinc-600">DOL:</span> {new Date(selectedProject.date_of_loss + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                  )}
+                  {selectedProject.adjuster_name && (
+                    <span><span className="font-medium text-zinc-600">Adj:</span> {selectedProject.adjuster_name}</span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditClaimData({
+                        insurance_company: selectedProject.insurance_company || "",
+                        claim_number: selectedProject.claim_number || "",
+                        adjuster_name: selectedProject.adjuster_name || "",
+                        adjuster_email: selectedProject.adjuster_email || "",
+                        date_of_loss: selectedProject.date_of_loss || "",
+                      })
+                      setEditingClaim(true)
+                    }}
+                    className="text-indigo-600 hover:text-indigo-500 font-medium"
+                  >
+                    {selectedProject.insurance_company || selectedProject.claim_number ? "Edit" : "+ Add Claim Info"}
+                  </button>
+                </>
+              ) : (
+                <div className="w-full space-y-2 pt-1">
+                  <div className="grid grid-cols-2 gap-2">
+                    <input value={editClaimData.insurance_company} onChange={(e) => setEditClaimData(d => ({ ...d, insurance_company: e.target.value }))} placeholder="Insurance company" className="rounded border border-zinc-200 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
+                    <input value={editClaimData.claim_number} onChange={(e) => setEditClaimData(d => ({ ...d, claim_number: e.target.value }))} placeholder="Claim number" className="rounded border border-zinc-200 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
+                    <input value={editClaimData.adjuster_name} onChange={(e) => setEditClaimData(d => ({ ...d, adjuster_name: e.target.value }))} placeholder="Adjuster name" className="rounded border border-zinc-200 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
+                    <input value={editClaimData.adjuster_email} onChange={(e) => setEditClaimData(d => ({ ...d, adjuster_email: e.target.value }))} placeholder="Adjuster email" className="rounded border border-zinc-200 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
+                  </div>
+                  <input type="date" value={editClaimData.date_of_loss} onChange={(e) => setEditClaimData(d => ({ ...d, date_of_loss: e.target.value }))} className="rounded border border-zinc-200 px-2.5 py-1.5 text-xs text-zinc-900" />
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        await supabase.from("projects").update({
+                          insurance_company: editClaimData.insurance_company || null,
+                          claim_number: editClaimData.claim_number || null,
+                          adjuster_name: editClaimData.adjuster_name || null,
+                          adjuster_email: editClaimData.adjuster_email || null,
+                          date_of_loss: editClaimData.date_of_loss || null,
+                        }).eq("id", selectedProject.id)
+                        setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, ...editClaimData } : p))
+                        setEditingClaim(false)
+                      }}
+                      className="rounded bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                    >
+                      Save
+                    </button>
+                    <button type="button" onClick={() => setEditingClaim(false)} className="rounded border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-600 hover:bg-zinc-50">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
             {/* Diagram upload */}
             <div className="flex items-center gap-2 pt-1">
               {selectedProject.diagram_url ? (
