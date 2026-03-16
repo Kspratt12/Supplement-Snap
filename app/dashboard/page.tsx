@@ -6,6 +6,7 @@ import Link from "next/link"
 import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { OnboardingChecklist } from "./onboarding-checklist"
+import { QuickCapture } from "./quick-capture"
 
 type ProjectWithCount = {
   id: string
@@ -25,6 +26,7 @@ export default function DashboardPage() {
   const [reportCount, setReportCount] = useState(0)
   const [showSubModal, setShowSubModal] = useState(false)
   const [showSampleReport, setShowSampleReport] = useState(false)
+  const [showQuickCapture, setShowQuickCapture] = useState(false)
 
   useEffect(() => {
     if (!authLoading && !user) router.replace("/login")
@@ -143,8 +145,8 @@ export default function DashboardPage() {
           </div>
           {isActive && (
             <div className="flex gap-2">
-              <Link
-                href="/app"
+              <button
+                onClick={() => setShowQuickCapture(true)}
                 className="flex items-center gap-2 rounded-lg bg-indigo-600 px-5 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
               >
                 <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -152,7 +154,7 @@ export default function DashboardPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
                 </svg>
                 <span className="hidden sm:inline">Capture Damage</span>
-              </Link>
+              </button>
               <Link
                 href="/app"
                 className="flex items-center rounded-lg border border-zinc-300 bg-white px-5 min-h-[48px] text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
@@ -232,74 +234,99 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Top row: Subscription + Quick Actions */}
+        {/* Top row: Subscription + Quick Record | Quick Actions */}
         <div className="mb-8 grid gap-4 sm:grid-cols-2 items-start">
-          {/* 2. Subscription card */}
-          {!subscriptionLoading && (
-            <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Plan</p>
-              <div className="mt-3 flex items-center gap-2">
-                <span className="text-base font-bold text-zinc-900">Starter</span>
-                <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${badge.color}`}>
-                  {badge.text}
-                </span>
-              </div>
-              {isActive && (
-                <p className="mt-1 text-xs text-zinc-400">$49/mo after setup</p>
-              )}
-              <div className="mt-4 flex gap-2">
-                {isActive ? (
-                  <>
-                    <Link
-                      href="/app"
-                      className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
-                    >
-                      Open App
-                    </Link>
-                    <button
-                      onClick={openBillingPortal}
-                      disabled={portalLoading}
-                      className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-50"
-                    >
-                      {portalLoading ? "Loading..." : "Manage Billing"}
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      href="/pricing"
-                      className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
-                    >
-                      Start Subscription
-                    </Link>
-                    <Link
-                      href="/pricing"
-                      className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
-                    >
-                      View Plans
-                    </Link>
-                  </>
+          {/* Left column: Plan + Quick Record stacked */}
+          <div className="space-y-4">
+            {/* 2. Subscription card */}
+            {!subscriptionLoading && (
+              <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Plan</p>
+                <div className="mt-3 flex items-center gap-2">
+                  <span className="text-base font-bold text-zinc-900">Starter</span>
+                  <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${badge.color}`}>
+                    {badge.text}
+                  </span>
+                </div>
+                {isActive && (
+                  <p className="mt-1 text-xs text-zinc-400">$49/mo after setup</p>
                 )}
+                <div className="mt-4 flex gap-2">
+                  {isActive ? (
+                    <>
+                      <Link
+                        href="/app"
+                        className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                      >
+                        Open App
+                      </Link>
+                      <button
+                        onClick={openBillingPortal}
+                        disabled={portalLoading}
+                        className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-50"
+                      >
+                        {portalLoading ? "Loading..." : "Manage Billing"}
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/pricing"
+                        className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                      >
+                        Start Subscription
+                      </Link>
+                      <Link
+                        href="/pricing"
+                        className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+                      >
+                        View Plans
+                      </Link>
+                    </>
+                  )}
+                </div>
               </div>
+            )}
+
+            {/* Quick Record card */}
+            <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Quick Record</p>
+              <p className="mt-2 text-sm text-zinc-500">Capture damage fast — snap a photo or record a voice note.</p>
+              <button
+                onClick={() => {
+                  if (isActive) {
+                    setShowQuickCapture(true)
+                  } else {
+                    setShowSubModal(true)
+                  }
+                }}
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                </svg>
+                Quick Capture
+              </button>
             </div>
-          )}
+          </div>
 
           {/* 4. Quick Actions */}
           <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Quick Actions</p>
             <div className="mt-3 space-y-2">
               {isActive ? (
-                <Link
-                  href="/app"
-                  className="flex items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                <button
+                  onClick={() => setShowQuickCapture(true)}
+                  className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
                 >
                   <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
                   </svg>
                   Capture Damage
-                  <span className="ml-auto text-xs text-zinc-400">Speak damage notes instead of typing</span>
-                </Link>
+                  <span className="ml-auto text-xs text-zinc-400 hidden sm:inline">Quick capture</span>
+                </button>
               ) : (
                 <button
                   onClick={() => setShowSubModal(true)}
@@ -554,6 +581,16 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Quick Capture Modal */}
+        {user && (
+          <QuickCapture
+            userId={user.id}
+            open={showQuickCapture}
+            onClose={() => setShowQuickCapture(false)}
+            onSaved={() => loadProjects()}
+          />
         )}
 
       </main>
