@@ -583,195 +583,319 @@ function Home() {
     return text.trim()
   }
 
+  // Helper: fetch image as data URL (handles CORS, any format)
+  async function fetchImageDataUrl(url: string): Promise<string | null> {
+    try {
+      if (!url || url === "") return null
+      const res = await fetch(url)
+      const blob = await res.blob()
+      return await new Promise<string>((resolve) => {
+        const reader = new FileReader()
+        reader.onloadend = () => resolve(reader.result as string)
+        reader.readAsDataURL(blob)
+      })
+    } catch {
+      return null
+    }
+  }
+
+  // Detect image format from data URL for jsPDF
+  function getImageFormat(dataUrl: string): string {
+    if (dataUrl.includes("image/png")) return "PNG"
+    if (dataUrl.includes("image/webp")) return "WEBP"
+    if (dataUrl.includes("image/gif")) return "GIF"
+    return "JPEG"
+  }
+
   async function buildPdfDoc(includePhotos = true) {
     if (!selectedProject || captures.length === 0) return null
 
     const doc = new jsPDF({ unit: "mm", format: "a4" })
     const pageWidth = doc.internal.pageSize.getWidth()
     const pageHeight = doc.internal.pageSize.getHeight()
-    const margin = 20
+    const margin = 18
     const contentWidth = pageWidth - margin * 2
     let y = margin
 
     function checkPage(needed: number) {
-      if (y + needed > pageHeight - margin) {
+      if (y + needed > pageHeight - 15) {
+        // Add page number footer before new page
+        doc.setFontSize(7)
+        doc.setFont("helvetica", "normal")
+        doc.setTextColor(180, 180, 180)
+        doc.text(`Page ${doc.getNumberOfPages()}`, pageWidth / 2, pageHeight - 8, { align: "center" })
         doc.addPage()
         y = margin
       }
     }
 
+    // ── HEADER BAR ──
     doc.setFillColor(79, 70, 229)
-    doc.rect(0, 0, pageWidth, 14, "F")
-    doc.setTextColor(255, 255, 255)
-    doc.setFontSize(10)
-    doc.setFont("helvetica", "bold")
-    const pdfTitle = companyName ? `${companyName} – Supplement Report` : "Supplement Snap – Project Report"
-    doc.text(pdfTitle, margin, 9)
+    doc.rect(0, 0, pageWidth, 16, "F")
 
-    // Add company logo if available (skip for email to reduce payload size)
+    // Company logo (any format: PNG, JPEG, WEBP, GIF, SVG rasterized)
     if (companyLogoUrl && includePhotos) {
       try {
-        // Fetch logo as blob to avoid CORS issues
-        const logoRes = await fetch(companyLogoUrl)
-        const logoBlob = await logoRes.blob()
-        const logoDataUrl = await new Promise<string>((resolve) => {
-          const reader = new FileReader()
-          reader.onloadend = () => resolve(reader.result as string)
-          reader.readAsDataURL(logoBlob)
-        })
-
-        const logoImg = new Image()
-        await new Promise<void>((resolve) => {
-          logoImg.onload = () => {
-            const logoH = 10
-            const logoW = (logoImg.width / logoImg.height) * logoH
-            doc.addImage(logoDataUrl, "PNG", pageWidth - margin - logoW, 2, logoW, logoH)
-            resolve()
-          }
-          logoImg.onerror = () => resolve()
-          logoImg.src = logoDataUrl
-        })
+        const logoDataUrl = await fetchImageDataUrl(companyLogoUrl)
+        if (logoDataUrl) {
+          const fmt = getImageFormat(logoDataUrl)
+          const logoImg = new Image()
+          await new Promise<void>((resolve) => {
+            logoImg.onload = () => {
+              const logoH = 12
+              const logoW = (logoImg.width / logoImg.height) * logoH
+              doc.addImage(logoDataUrl, fmt, margin, 2, logoW, logoH)
+              // Title text after logo
+              doc.setTextColor(255, 255, 255)
+              doc.setFontSize(10)
+              doc.setFont("helvetica", "bold")
+              const titleX = margin + logoW + 4
+              const pdfTitle = companyName ? `${companyName} – Supplement Report` : "Supplement Snap – Project Report"
+              doc.text(pdfTitle, titleX, 10)
+              resolve()
+            }
+            logoImg.onerror = () => {
+              // Fallback: just text
+              doc.setTextColor(255, 255, 255)
+              doc.setFontSize(10)
+              doc.setFont("helvetica", "bold")
+              const pdfTitle = companyName ? `${companyName} – Supplement Report` : "Supplement Snap – Project Report"
+              doc.text(pdfTitle, margin, 10)
+              resolve()
+            }
+            logoImg.src = logoDataUrl
+          })
+        } else {
+          doc.setTextColor(255, 255, 255)
+          doc.setFontSize(10)
+          doc.setFont("helvetica", "bold")
+          doc.text(companyName ? `${companyName} – Supplement Report` : "Supplement Snap – Project Report", margin, 10)
+        }
       } catch {
-        // Logo failed — continue without it
+        doc.setTextColor(255, 255, 255)
+        doc.setFontSize(10)
+        doc.setFont("helvetica", "bold")
+        doc.text(companyName ? `${companyName} – Supplement Report` : "Supplement Snap – Project Report", margin, 10)
       }
+    } else {
+      doc.setTextColor(255, 255, 255)
+      doc.setFontSize(10)
+      doc.setFont("helvetica", "bold")
+      const pdfTitle = companyName ? `${companyName} – Supplement Report` : "Supplement Snap – Project Report"
+      doc.text(pdfTitle, margin, 10)
     }
-    y = 24
+    y = 26
 
+    // ── PROJECT INFO ──
     doc.setTextColor(24, 24, 27)
-    doc.setFontSize(18)
+    doc.setFontSize(16)
     doc.setFont("helvetica", "bold")
     doc.text(selectedProject.project_name, margin, y)
+    y += 7
+
+    doc.setFontSize(9)
+    doc.setFont("helvetica", "normal")
+    doc.setTextColor(100, 100, 110)
+    if (selectedProject.property_address) {
+      doc.text(`Property Address: ${selectedProject.property_address}`, margin, y)
+      y += 4.5
+    }
+    const now = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+    doc.text(`Date of Report: ${now}`, margin, y)
+    y += 4.5
+    doc.text(`Total Findings: ${captures.length}`, margin, y)
     y += 8
 
-    doc.setFontSize(10)
-    doc.setFont("helvetica", "normal")
-    doc.setTextColor(113, 113, 122)
-    doc.text(`Property Address: ${selectedProject.property_address || "N/A"}`, margin, y)
-    y += 5
-    const now = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
-    doc.text(`Generated: ${now}`, margin, y)
-    y += 5
-    doc.text(`Findings: ${captures.length}`, margin, y)
-    y += 10
-
-    doc.setDrawColor(228, 228, 231)
-    doc.setLineWidth(0.3)
+    // Separator
+    doc.setDrawColor(200, 200, 210)
+    doc.setLineWidth(0.4)
     doc.line(margin, y, pageWidth - margin, y)
     y += 8
 
+    // ── FINDINGS ──
     for (let i = 0; i < captures.length; i++) {
       const c = captures[i]
-      const urls = c.image_urls && c.image_urls.length > 0 ? c.image_urls : [c.image_url]
+      const urls = c.image_urls && c.image_urls.length > 0 ? c.image_urls : (c.image_url ? [c.image_url] : [])
 
+      // Finding header with number badge
       checkPage(30)
-      doc.setFontSize(12)
+      doc.setFillColor(79, 70, 229)
+      doc.circle(margin + 3, y - 1, 3.5, "F")
+      doc.setTextColor(255, 255, 255)
+      doc.setFontSize(7)
       doc.setFont("helvetica", "bold")
+      doc.text(`${i + 1}`, margin + 3, y, { align: "center" })
+
       doc.setTextColor(24, 24, 27)
-      doc.text(`${i + 1}. ${c.damage_type} – ${c.roof_area}`, margin, y)
-      y += 5
+      doc.setFontSize(11)
+      doc.setFont("helvetica", "bold")
+      doc.text(`${c.damage_type} — ${c.roof_area}`, margin + 10, y)
+      y += 4.5
 
       doc.setFontSize(8)
       doc.setFont("helvetica", "normal")
-      doc.setTextColor(161, 161, 170)
-      doc.text(new Date(c.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }), margin, y)
+      doc.setTextColor(150, 150, 160)
+      doc.text(`Documented: ${new Date(c.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`, margin + 10, y)
       y += 6
 
+      // Field note
       if (c.field_note) {
         checkPage(15)
-        doc.setFontSize(8)
+        doc.setFontSize(7.5)
         doc.setFont("helvetica", "bold")
-        doc.setTextColor(161, 161, 170)
+        doc.setTextColor(130, 130, 140)
         doc.text("FIELD NOTE", margin, y)
-        y += 4
+        y += 3.5
         doc.setFontSize(9)
         doc.setFont("helvetica", "normal")
-        doc.setTextColor(82, 82, 91)
+        doc.setTextColor(60, 60, 70)
         const noteLines = doc.splitTextToSize(c.field_note, contentWidth)
         checkPage(noteLines.length * 4 + 2)
         doc.text(noteLines, margin, y)
         y += noteLines.length * 4 + 3
       }
 
+      // Supplement explanation in bordered box
       if (drafts[c.id]) {
         checkPage(15)
-        doc.setFontSize(8)
+        doc.setFontSize(7.5)
         doc.setFont("helvetica", "bold")
-        doc.setTextColor(161, 161, 170)
+        doc.setTextColor(130, 130, 140)
         doc.text("SUPPLEMENT EXPLANATION", margin, y)
-        y += 4
+        y += 3.5
         doc.setFontSize(9)
         doc.setFont("helvetica", "normal")
-        doc.setTextColor(63, 63, 70)
-        const draftLines = doc.splitTextToSize(drafts[c.id], contentWidth - 6)
-        const boxHeight = draftLines.length * 4 + 4
+        doc.setTextColor(50, 50, 60)
+        const draftLines = doc.splitTextToSize(drafts[c.id], contentWidth - 8)
+        const boxHeight = draftLines.length * 4 + 6
         checkPage(boxHeight + 2)
-        doc.setFillColor(250, 250, 250)
-        doc.roundedRect(margin, y - 2, contentWidth, boxHeight, 2, 2, "F")
-        doc.text(draftLines, margin + 3, y + 2)
+        doc.setFillColor(248, 248, 252)
+        doc.setDrawColor(220, 220, 230)
+        doc.setLineWidth(0.3)
+        doc.roundedRect(margin, y - 2, contentWidth, boxHeight, 2, 2, "FD")
+        doc.text(draftLines, margin + 4, y + 2)
         y += boxHeight + 3
-      } else {
-        checkPage(8)
-        doc.setFontSize(8)
-        doc.setFont("helvetica", "italic")
-        doc.setTextColor(161, 161, 170)
-        doc.text("Draft not available for this finding.", margin, y)
-        y += 6
       }
 
-      if (includePhotos) {
-        // Photos label
+      // Photos
+      if (includePhotos && urls.length > 0 && urls[0] !== "") {
         checkPage(10)
-        doc.setFontSize(8)
+        doc.setFontSize(7.5)
         doc.setFont("helvetica", "bold")
-        doc.setTextColor(161, 161, 170)
-        doc.text("PHOTOS", margin, y)
-        y += 5
+        doc.setTextColor(130, 130, 140)
+        doc.text(`SUPPORTING PHOTOS (${urls.length})`, margin, y)
+        y += 4
 
         for (const url of urls) {
           try {
-            const response = await fetch(url)
-            const blob = await response.blob()
-            const dataUrl = await new Promise<string>((resolve) => {
-              const reader = new FileReader()
-              reader.onloadend = () => resolve(reader.result as string)
-              reader.readAsDataURL(blob)
-            })
+            const dataUrl = await fetchImageDataUrl(url)
+            if (!dataUrl) continue
+            const fmt = getImageFormat(dataUrl)
             const imgProps = doc.getImageProperties(dataUrl)
             const ratio = imgProps.height / imgProps.width
-            const imgW = contentWidth
-            const imgH = contentWidth * ratio
-            const cappedH = Math.min(imgH, 120)
+            const imgW = Math.min(contentWidth, 140)
+            const imgH = imgW * ratio
+            const cappedH = Math.min(imgH, 100)
             checkPage(cappedH + 5)
-            doc.addImage(dataUrl, "JPEG", margin, y, imgW, cappedH)
+            // Photo border
+            doc.setDrawColor(220, 220, 230)
+            doc.setLineWidth(0.3)
+            doc.rect(margin, y, imgW, cappedH)
+            doc.addImage(dataUrl, fmt, margin, y, imgW, cappedH)
             y += cappedH + 4
           } catch {
-            // Skip images that fail to load
+            // Skip
           }
         }
-      } else if (urls.length > 0) {
+      } else if (!includePhotos && urls.length > 0 && urls[0] !== "") {
         checkPage(6)
         doc.setFontSize(8)
         doc.setFont("helvetica", "italic")
-        doc.setTextColor(161, 161, 170)
+        doc.setTextColor(150, 150, 160)
         doc.text(`[${urls.length} photo${urls.length !== 1 ? "s" : ""} attached to this finding]`, margin, y)
-        y += 6
+        y += 5
       }
 
+      // Separator between findings
       if (i < captures.length - 1) {
-        y += 2
+        y += 3
         checkPage(8)
-        doc.setDrawColor(228, 228, 231)
+        doc.setDrawColor(220, 220, 230)
         doc.setLineWidth(0.2)
         doc.line(margin, y, pageWidth - margin, y)
         y += 8
       }
     }
 
-    doc.setFontSize(7)
+    // ── SUMMARY TABLE ──
+    y += 6
+    checkPage(30)
+    doc.setFontSize(8)
+    doc.setFont("helvetica", "bold")
+    doc.setTextColor(130, 130, 140)
+    doc.text("FINDINGS SUMMARY", margin, y)
+    y += 5
+
+    // Table header
+    doc.setFillColor(245, 245, 250)
+    doc.rect(margin, y - 3, contentWidth, 7, "F")
+    doc.setFontSize(7.5)
+    doc.setFont("helvetica", "bold")
+    doc.setTextColor(80, 80, 90)
+    doc.text("#", margin + 2, y + 1)
+    doc.text("Damage Type", margin + 10, y + 1)
+    doc.text("Roof Area", margin + 70, y + 1)
+    doc.text("Date", margin + 110, y + 1)
+    y += 7
+
+    // Table rows
     doc.setFont("helvetica", "normal")
-    doc.setTextColor(161, 161, 170)
-    const footerText = companyName ? `Generated by ${companyName} via Supplement Snap` : "Generated by Supplement Snap"
-    doc.text(footerText, margin, pageHeight - 10)
+    doc.setFontSize(8)
+    for (let i = 0; i < captures.length; i++) {
+      const c = captures[i]
+      checkPage(6)
+      doc.setTextColor(60, 60, 70)
+      doc.text(`${i + 1}`, margin + 2, y)
+      doc.text(c.damage_type, margin + 10, y)
+      doc.text(c.roof_area, margin + 70, y)
+      doc.text(new Date(c.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" }), margin + 110, y)
+      y += 5
+      doc.setDrawColor(235, 235, 240)
+      doc.setLineWidth(0.1)
+      doc.line(margin, y - 1, pageWidth - margin, y - 1)
+    }
+
+    // ── CERTIFICATION LINE ──
+    y += 10
+    checkPage(25)
+    doc.setDrawColor(200, 200, 210)
+    doc.setLineWidth(0.3)
+    doc.line(margin, y, pageWidth - margin, y)
+    y += 8
+    doc.setFontSize(8)
+    doc.setFont("helvetica", "normal")
+    doc.setTextColor(100, 100, 110)
+    doc.text("This supplement documentation was prepared based on concealed conditions discovered", margin, y)
+    y += 4
+    doc.text("during tear-off operations and represents findings not visible during the initial inspection.", margin, y)
+    y += 8
+
+    doc.setFont("helvetica", "bold")
+    doc.setTextColor(60, 60, 70)
+    doc.text("Prepared by: ___________________________________", margin, y)
+    doc.text("Date: ________________", margin + 110, y)
+
+    // ── FOOTER ──
+    const totalPages = doc.getNumberOfPages()
+    for (let p = 1; p <= totalPages; p++) {
+      doc.setPage(p)
+      doc.setFontSize(7)
+      doc.setFont("helvetica", "normal")
+      doc.setTextColor(170, 170, 180)
+      const footerText = companyName ? `Generated by ${companyName} via Supplement Snap` : "Generated by Supplement Snap"
+      doc.text(footerText, margin, pageHeight - 8)
+      doc.text(`Page ${p} of ${totalPages}`, pageWidth - margin, pageHeight - 8, { align: "right" })
+    }
 
     return doc
   }
