@@ -790,7 +790,7 @@ export default function LandingPage() {
               </div>
               <p className="mt-1 text-sm text-zinc-500">Then <span className="font-semibold text-zinc-900">$49</span>/mo</p>
               <div className="mt-5 space-y-2.5">
-                {["Unlimited projects", "AI supplement drafts", "PDF reports & email", "Voice notes", "1 user"].map((f) => (
+                {["Unlimited projects", "AI supplement drafts", "PDF reports & email", "Photo annotations", "Voice notes", "1 user"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
                     <svg className="h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                     <span className="text-sm text-zinc-700">{f}</span>
@@ -813,7 +813,7 @@ export default function LandingPage() {
               </div>
               <p className="mt-1 text-sm text-zinc-500">Then <span className="font-semibold text-zinc-900">$249</span>/mo</p>
               <div className="mt-5 space-y-2.5">
-                {["Everything in Starter", "Up to 5 team members", "Email open tracking", "Photo annotations", "Xactimate CSV export", "Priority support"].map((f) => (
+                {["Everything in Starter", "Up to 5 team members", "Email open tracking", "Xactimate CSV export", "Priority support"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
                     <svg className="h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                     <span className="text-sm text-zinc-700">{f}</span>

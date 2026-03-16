@@ -2249,10 +2249,10 @@ function Home() {
                           onClick={() => openViewer(urls, j)}
                         />
                         <button
-                          onClick={() => { if (!isProUser) { setShowUpgradeModal(true); return }; setAnnotateUrl(url); setAnnotateOpen(true) }}
+                          onClick={() => { if (isFreeUser) { setShowUpgradeModal(true); return }; setAnnotateUrl(url); setAnnotateOpen(true) }}
                           className="absolute bottom-1 right-1 rounded-md bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity"
                         >
-                          Annotate{!isProUser ? " (Pro)" : ""}
+                          Annotate
                         </button>
                       </div>
                     ))}

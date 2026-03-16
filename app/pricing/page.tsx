@@ -16,6 +16,7 @@ const STARTER_FEATURES = [
   "AI-generated supplement report drafts",
   "Professional PDF reports",
   "Email reports to adjusters",
+  "Photo annotations (circles, arrows, labels)",
   "Mobile-friendly workflow",
   "1 user",
 ]
@@ -25,7 +26,6 @@ const PRO_FEATURES = [
   "Up to 5 team members",
   "Team access — crew, foreman, office",
   "Adjuster email open tracking",
-  "Photo annotations (circles, arrows, labels)",
   "Xactimate-ready CSV export",
   "Project search & templates",
   "Priority support",
@@ -221,7 +221,7 @@ export default function PricingPage() {
                   ["Users", "1", "1", "Up to 5"],
                   ["Team access", false, false, true],
                   ["Email open tracking", false, false, true],
-                  ["Photo annotations", false, false, true],
+                  ["Photo annotations", false, true, true],
                   ["Priority support", false, false, true],
                 ].map(([feature, free, starter, pro]) => (
                   <tr key={feature as string}>
