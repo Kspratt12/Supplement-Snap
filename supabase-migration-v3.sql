@@ -15,3 +15,7 @@ ALTER TABLE projects ADD COLUMN IF NOT EXISTS diagram_url text;
 -- Add quantity field to captures for Xactimate accuracy
 ALTER TABLE captures ADD COLUMN IF NOT EXISTS quantity numeric DEFAULT 1;
 ALTER TABLE captures ADD COLUMN IF NOT EXISTS unit text;
+
+-- Draft persistence
+ALTER TABLE captures ADD COLUMN IF NOT EXISTS draft text;
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS last_draft text;

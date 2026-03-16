@@ -332,8 +332,15 @@ function Home() {
     setDrafts({})
     setDraftLoading({})
     setDraftErrors({})
-    setProjectDraft("")
     setProjectDraftError("")
+    // Load saved project draft if available
+    if (selectedProjectId) {
+      supabase.from("projects").select("last_draft").eq("id", selectedProjectId).single().then(({ data }) => {
+        setProjectDraft(data?.last_draft || "")
+      })
+    } else {
+      setProjectDraft("")
+    }
     setShowReport(false)
   }, [selectedProjectId])
 
@@ -382,6 +389,16 @@ function Home() {
       .eq("project_id", projectId)
       .order("created_at", { ascending: false })
     if (data) setCaptures(data)
+    // Restore saved drafts from capture records
+    if (data) {
+      const savedDrafts: Record<string, string> = {}
+      data.forEach((c: any) => {
+        if (c.draft) savedDrafts[c.id] = c.draft
+      })
+      if (Object.keys(savedDrafts).length > 0) {
+        setDrafts((prev) => ({ ...prev, ...savedDrafts }))
+      }
+    }
   }
 
   async function handleCreateProject(e: React.FormEvent) {
@@ -445,6 +462,21 @@ function Home() {
     setCaptures((prev) =>
       prev.map((c) => (c.id === captureId ? { ...c, status: newStatus } : c))
     )
+
+    // Log status change
+    const capture = captures.find((c) => c.id === captureId)
+    if (capture && user) {
+      fetch("/api/activity-log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          projectId: selectedProjectId,
+          action: `Status changed to ${newStatus}`,
+          details: `${capture.damage_type} — ${capture.roof_area}`,
+        }),
+      }).catch(() => {})
+    }
   }
 
   async function bulkUpdateStatus(captureIds: string[], newStatus: CaptureStatus) {
@@ -501,6 +533,8 @@ function Home() {
 
       const { draft } = await res.json()
       setProjectDraft(draft)
+      // Persist project draft
+      supabase.from("projects").update({ last_draft: draft }).eq("id", selectedProjectId).then(() => {})
 
       // Log activity
       fetch("/api/activity-log", {
@@ -543,6 +577,8 @@ function Home() {
 
       const { draft } = await res.json()
       setDrafts((prev) => ({ ...prev, [c.id]: draft }))
+      // Persist draft to capture record
+      supabase.from("captures").update({ draft: draft }).eq("id", c.id).then(() => {})
       // Auto-update status to "Needs Review"
       if (!c.status || c.status === "Captured") {
         updateCaptureStatus(c.id, "Needs Review")
@@ -1538,12 +1574,28 @@ function Home() {
             {/* Diagram upload */}
             <div className="flex items-center gap-2 pt-1">
               {selectedProject.diagram_url ? (
-                <a href={selectedProject.diagram_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-500">
-                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  View Roof Diagram
-                </a>
+                <div className="flex items-center gap-2">
+                  <a href={selectedProject.diagram_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-500">
+                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    View Roof Diagram
+                  </a>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (!confirm("Remove this diagram?")) return
+                      await supabase.from("projects").update({ diagram_url: null }).eq("id", selectedProject.id)
+                      setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, diagram_url: undefined } : p))
+                    }}
+                    className="inline-flex items-center justify-center h-5 w-5 rounded-full hover:bg-red-50 text-zinc-400 hover:text-red-500"
+                    title="Remove diagram"
+                  >
+                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
               ) : (
                 <>
                   <input
@@ -1680,6 +1732,12 @@ function Home() {
                 >
                   Regenerate
                 </button>
+                <span className="inline-flex items-center gap-1 text-xs text-green-600">
+                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Auto-saved
+                </span>
               </div>
             </div>
           )}
