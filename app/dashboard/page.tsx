@@ -173,9 +173,7 @@ export default function DashboardPage() {
             <span className="text-lg font-bold tracking-tight text-zinc-900">Supplement Snap</span>
           </Link>
           <div className="flex items-center gap-3">
-            {isActive && (
-              <Link href="/app" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">My Projects</Link>
-            )}
+            <Link href="/app" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">{isActive ? "My Projects" : "Try Free"}</Link>
             <button
               onClick={async () => { await signOut(); router.push("/") }}
               className="text-sm font-medium text-zinc-500 hover:text-zinc-900"

@@ -114,12 +114,15 @@ function Home() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  // Redirect to login if not authenticated, or pricing if no subscription
+  // Redirect to login if not authenticated — allow free users in with limits
   useEffect(() => {
     if (authLoading || subscriptionLoading) return
     if (!user) { router.replace("/login"); return }
-    if (!hasActiveSubscription(subscriptionStatus)) { router.replace("/dashboard?locked=1"); return }
-  }, [user, authLoading, subscriptionStatus, subscriptionLoading, router])
+  }, [user, authLoading, subscriptionLoading, router])
+
+  const isFreeUser = !hasActiveSubscription(subscriptionStatus)
+  const FREE_PROJECT_LIMIT = 1
+  const FREE_CAPTURE_LIMIT = 3
 
   // Project state
   const [projects, setProjects] = useState<Project[]>([])
@@ -186,6 +189,7 @@ function Home() {
   const [projectDraftError, setProjectDraftError] = useState("")
   const [projectDraftCopied, setProjectDraftCopied] = useState(false)
   const [draftExpanded, setDraftExpanded] = useState(false)
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
 
   // Project report state
   const [showReport, setShowReport] = useState(false)
@@ -510,6 +514,10 @@ function Home() {
   async function handleCreateProject(e: React.FormEvent) {
     e.preventDefault()
     if (!newProjectName.trim()) return
+    if (isFreeUser && projects.length >= FREE_PROJECT_LIMIT) {
+      setShowUpgradeModal(true)
+      return
+    }
 
     setCreatingProject(true)
     const { data, error } = await supabase
@@ -1186,6 +1194,7 @@ function Home() {
   }
 
   async function downloadPdf() {
+    if (isFreeUser) { setShowUpgradeModal(true); return }
     if (!selectedProject || captures.length === 0) return
     setPdfGenerating(true)
     try {
@@ -1201,6 +1210,7 @@ function Home() {
   }
 
   async function exportXactimate() {
+    if (isFreeUser) { setShowUpgradeModal(true); return }
     if (!selectedProject || captures.length === 0) return
     try {
       const res = await fetch("/api/export-xactimate", {
@@ -1245,6 +1255,7 @@ function Home() {
   }
 
   function openEmailModal() {
+    if (isFreeUser) { setShowUpgradeModal(true); return }
     if (!selectedProject) return
     setEmailTo(selectedProject.adjuster_email || "")
     setEmailSubject(`Supplement Request – ${selectedProject.project_name}`)
@@ -1414,6 +1425,11 @@ function Home() {
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
 
+    if (isFreeUser && captures.length >= FREE_CAPTURE_LIMIT) {
+      setShowUpgradeModal(true)
+      return
+    }
+
     if (!selectedProjectId) {
       setStatus("Please select or create a project first.")
       return
@@ -1534,7 +1550,7 @@ function Home() {
 
   const selectedProject = projects.find((p) => p.id === selectedProjectId)
 
-  if (authLoading || subscriptionLoading || !user || !hasActiveSubscription(subscriptionStatus)) return null
+  if (authLoading || subscriptionLoading || !user) return null
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
@@ -2959,6 +2975,40 @@ function Home() {
           a.click()
         }}
       />
+
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 px-0 sm:px-4">
+          <div className="w-full sm:max-w-sm rounded-t-2xl sm:rounded-xl bg-white p-6 shadow-xl">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100">
+              <svg className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+            </div>
+            <h2 className="text-lg font-bold text-zinc-900 text-center">Upgrade to unlock</h2>
+            <p className="mt-2 text-sm text-zinc-500 text-center leading-relaxed">
+              You&apos;ve seen what Supplement Snap can do. Upgrade to get unlimited projects, PDF downloads, email reports to adjusters, and Xactimate CSV export.
+            </p>
+            <div className="mt-2 rounded-lg bg-green-50 border border-green-200 px-3 py-2 text-center">
+              <p className="text-xs font-medium text-green-700">One approved supplement pays for the entire year.</p>
+            </div>
+            <div className="mt-5 flex gap-3">
+              <Link
+                href="/pricing"
+                className="flex-1 rounded-lg bg-indigo-600 px-4 min-h-[48px] flex items-center justify-center text-sm font-semibold text-white hover:bg-indigo-500"
+              >
+                See Plans
+              </Link>
+              <button
+                onClick={() => setShowUpgradeModal(false)}
+                className="flex-1 rounded-lg border border-zinc-300 bg-white px-4 min-h-[48px] text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
+              >
+                Maybe Later
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   )
 }

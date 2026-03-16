@@ -196,35 +196,45 @@ export default function PricingPage() {
 
       {/* Compare */}
       <section className="border-t border-zinc-100 bg-zinc-50 py-20">
-        <div className="mx-auto max-w-3xl px-6">
+        <div className="mx-auto max-w-4xl px-6">
           <h2 className="text-center text-2xl font-bold tracking-tight sm:text-3xl">Compare plans</h2>
           <div className="mt-10 overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-zinc-200">
                   <th className="py-3 text-left font-medium text-zinc-500">Feature</th>
+                  <th className="py-3 text-center font-medium text-green-600">Free</th>
                   <th className="py-3 text-center font-medium text-zinc-500">Starter</th>
                   <th className="py-3 text-center font-medium text-indigo-600">Pro</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100">
                 {[
-                  ["Unlimited projects", true, true],
-                  ["Damage photo capture", true, true],
-                  ["Voice notes (any language)", true, true],
-                  ["AI supplement drafts", true, true],
-                  ["PDF reports", true, true],
-                  ["Email to adjusters", true, true],
-                  ["Users", "1", "Up to 5"],
-                  ["Team access", false, true],
-                  ["Email open tracking", false, true],
-                  ["Photo annotations", false, true],
-                  ["Xactimate CSV export", false, true],
-                  ["Project templates", false, true],
-                  ["Priority support", false, true],
-                ].map(([feature, starter, pro]) => (
+                  ["Projects", "1", "Unlimited", "Unlimited"],
+                  ["Captures per project", "3", "Unlimited", "Unlimited"],
+                  ["Damage photo capture", true, true, true],
+                  ["Voice notes (any language)", true, true, true],
+                  ["AI supplement drafts", true, true, true],
+                  ["PDF reports", false, true, true],
+                  ["Email to adjusters", false, true, true],
+                  ["Xactimate CSV export", false, false, true],
+                  ["Users", "1", "1", "Up to 5"],
+                  ["Team access", false, false, true],
+                  ["Email open tracking", false, false, true],
+                  ["Photo annotations", false, false, true],
+                  ["Priority support", false, false, true],
+                ].map(([feature, free, starter, pro]) => (
                   <tr key={feature as string}>
                     <td className="py-3 text-zinc-700">{feature as string}</td>
+                    <td className="py-3 text-center">
+                      {free === true ? (
+                        <svg className="mx-auto h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      ) : free === false ? (
+                        <span className="text-zinc-300">—</span>
+                      ) : (
+                        <span className="text-zinc-700">{free as string}</span>
+                      )}
+                    </td>
                     <td className="py-3 text-center">
                       {starter === true ? (
                         <svg className="mx-auto h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
