@@ -435,6 +435,55 @@ function Home() {
     // Merge and deduplicate
     const all = [...(ownProjects || []), ...teamProjects]
     const unique = all.filter((p, i) => all.findIndex(x => x.id === p.id) === i)
+
+    // Auto-create a demo project for brand new users
+    if (unique.length === 0 && user?.id) {
+      try {
+        const { data: demo } = await supabase
+          .from("projects")
+          .insert({
+            project_name: "Demo Project — Smith Residence",
+            property_address: "742 Evergreen Terrace, Springfield",
+            user_id: user.id,
+            insurance_company: "State Farm",
+            claim_number: "SF-2026-DEMO",
+            adjuster_name: "John Smith",
+            adjuster_email: "",
+            claim_status: "In Progress",
+          })
+          .select()
+          .single()
+
+        if (demo) {
+          // Add sample captures to the demo project
+          await supabase.from("captures").insert([
+            {
+              project_id: demo.id,
+              damage_type: "Decking",
+              roof_area: "Front",
+              field_note: "3 sheets of rotted OSB decking along the eave edge. Wood is soft and deteriorated from moisture exposure.",
+              image_url: "",
+              status: "Captured",
+            },
+            {
+              project_id: demo.id,
+              damage_type: "Flashing",
+              roof_area: "Chimney",
+              field_note: "Step flashing severely corroded with multiple separation points. Not visible prior to shingle removal.",
+              image_url: "",
+              status: "Captured",
+            },
+          ])
+
+          setProjects([demo])
+          setSelectedProjectId(demo.id)
+          return
+        }
+      } catch {
+        // Demo creation failed — not critical
+      }
+    }
+
     setProjects(unique)
   }
 
@@ -1934,6 +1983,32 @@ function Home() {
           )}
         </section>
       )}
+
+      {/* Damage Checklist Reminder */}
+      {selectedProject && captures.length > 0 && !showReport && (() => {
+        const documented = new Set(captures.map(c => c.damage_type))
+        const common = ["Decking", "Flashing", "Ice & Water", "Vent / Pipe Boot", "Drip Edge"]
+        const unchecked = common.filter(d => !documented.has(d))
+        if (unchecked.length === 0) return null
+        return (
+          <section className="mb-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
+            <div className="flex items-start gap-3">
+              <svg className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <p className="text-sm font-semibold text-amber-800">Before you generate — did your crew check these?</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {unchecked.map(d => (
+                    <span key={d} className="rounded-full border border-amber-300 bg-white px-3 py-1 text-xs font-medium text-amber-700">{d}</span>
+                  ))}
+                </div>
+                <p className="mt-2 text-xs text-amber-600">Adding more findings increases your supplement value. Tap &ldquo;+ Add Capture&rdquo; above if anything was missed.</p>
+              </div>
+            </div>
+          </section>
+        )
+      })()}
 
       {/* Generate Project Report button */}
       {selectedProject && captures.length > 0 && !showReport && (
