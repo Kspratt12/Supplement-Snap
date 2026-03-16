@@ -1,11 +1,13 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 
 const ROLES = ["Owner", "Project Manager", "Sales Rep", "Estimator", "Other"] as const
 
 export default function DemoPage() {
+  const router = useRouter()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [company, setCompany] = useState("")
@@ -50,7 +52,20 @@ export default function DemoPage() {
         throw new Error(data?.error || `Request failed (${res.status})`)
       }
 
-      setSubmitted(true)
+      // Send confirmation email to the user
+      fetch("/api/send-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: email,
+          subject: "Your Supplement Snap Demo Request",
+          message: `Hi ${name},\n\nThank you for requesting a demo of Supplement Snap. We received your request and will reach out within 1 business day to schedule a walkthrough.\n\nDuring the demo, you'll see:\n• How crews capture damage during tear-off\n• How supplement documentation is generated with AI\n• How PDF reports are sent directly to adjusters\n\nWe look forward to showing you how Supplement Snap helps roofing teams recover more supplement revenue.\n\n— The Supplement Snap Team`,
+          projectName: "Demo Confirmation",
+          propertyAddress: "",
+        }),
+      }).catch(() => {})
+
+      router.push("/demo-confirmation")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.")
     } finally {
