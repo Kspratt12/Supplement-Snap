@@ -1,9 +1,11 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { jsPDF } from "jspdf"
 import { supabase } from "../../lib/supabase"
+import { useAuth } from "../../lib/auth-context"
 
 // Web Speech API type declarations
 interface SpeechRecognitionEvent extends Event {
@@ -80,6 +82,14 @@ type Capture = {
 }
 
 export default function Home() {
+  const { user, loading: authLoading, signOut } = useAuth()
+  const router = useRouter()
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!authLoading && !user) router.replace("/login")
+  }, [user, authLoading, router])
+
   // Project state
   const [projects, setProjects] = useState<Project[]>([])
   const [selectedProjectId, setSelectedProjectId] = useState("")
@@ -209,10 +219,10 @@ export default function Home() {
     setIsRecording(true)
   }
 
-  // Load projects on mount
+  // Load projects when user is available
   useEffect(() => {
-    loadProjects()
-  }, [])
+    if (user) loadProjects()
+  }, [user])
 
   // Load captures when selected project changes
   useEffect(() => {
@@ -230,9 +240,11 @@ export default function Home() {
   }, [selectedProjectId])
 
   async function loadProjects() {
+    if (!user) return
     const { data } = await supabase
       .from("projects")
       .select("*")
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false })
     if (data) setProjects(data)
   }
@@ -256,6 +268,7 @@ export default function Home() {
       .insert({
         project_name: newProjectName.trim(),
         property_address: newProjectAddress.trim(),
+        user_id: user?.id,
       })
       .select()
       .single()
@@ -882,11 +895,13 @@ export default function Home() {
 
   const selectedProject = projects.find((p) => p.id === selectedProjectId)
 
+  if (authLoading || !user) return null
+
   return (
     <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
       {/* App header */}
       <header className="mb-8 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/dashboard" className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-bold">
             S
           </div>
@@ -897,12 +912,20 @@ export default function Home() {
             </p>
           </div>
         </Link>
-        <Link
-          href="/"
-          className="text-xs font-medium text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
-        >
-          Back to Site
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/dashboard"
+            className="text-xs font-medium text-zinc-400 hover:text-zinc-600"
+          >
+            Dashboard
+          </Link>
+          <button
+            onClick={async () => { await signOut(); router.push("/") }}
+            className="text-xs font-medium text-zinc-400 hover:text-zinc-600"
+          >
+            Log Out
+          </button>
+        </div>
       </header>
 
       {/* Project selector */}

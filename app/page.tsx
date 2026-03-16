@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { NavLinks } from "../lib/nav-links"
 
 export default function LandingPage() {
   return (
@@ -12,26 +13,7 @@ export default function LandingPage() {
             </div>
             <span className="text-lg font-bold tracking-tight">Supplement Snap</span>
           </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/pricing"
-              className="hidden text-sm font-medium text-zinc-600 hover:text-zinc-900 sm:block"
-            >
-              Pricing
-            </Link>
-            <Link
-              href="/app"
-              className="text-sm font-medium text-zinc-600 hover:text-zinc-900"
-            >
-              Open App
-            </Link>
-            <Link
-              href="/demo"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
-            >
-              Book a Demo
-            </Link>
-          </div>
+          <NavLinks />
         </div>
       </nav>
 
