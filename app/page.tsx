@@ -616,7 +616,7 @@ export default function LandingPage() {
             {/* Starter */}
             <div className="rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
               <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Starter</p>
-              <p className="mt-1 text-xs text-zinc-400">For solo crews</p>
+              <p className="mt-1 text-xs text-zinc-400">For solo crews — first project free</p>
               <div className="mt-4">
                 <span className="text-3xl font-extrabold text-zinc-900">$497</span>
                 <span className="ml-1 text-sm text-zinc-500">setup</span>
