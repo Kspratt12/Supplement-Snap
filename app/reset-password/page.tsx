@@ -94,7 +94,7 @@ export default function ResetPasswordPage() {
         </div>
       </nav>
 
-      <div className="flex flex-1 items-center justify-center px-4 py-16">
+      <div className="flex flex-1 items-start pt-8 sm:items-center sm:pt-0 justify-center px-4 py-16">
         <div className="w-full max-w-sm">
           {success ? (
             <div className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm text-center">

@@ -22,6 +22,7 @@ export function SiteFooter() {
             <div className="mt-3 flex flex-col gap-2">
               <Link href="/pricing" className="text-xs text-zinc-500 hover:text-zinc-700">Pricing</Link>
               <Link href="/demo" className="text-xs text-zinc-500 hover:text-zinc-700">Book a Demo</Link>
+              <Link href="/blog" className="text-xs text-zinc-500 hover:text-zinc-700">Blog</Link>
               <Link href="/terms" className="text-xs text-zinc-500 hover:text-zinc-700">Terms of Service</Link>
               <Link href="/privacy" className="text-xs text-zinc-500 hover:text-zinc-700">Privacy Policy</Link>
               <Link href="/refund-policy" className="text-xs text-zinc-500 hover:text-zinc-700">Refund Policy</Link>

@@ -42,17 +42,19 @@ export function InteractiveDemo() {
       className="rounded-2xl border border-zinc-200 bg-white shadow-lg overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setTimeout(() => setIsPaused(false), 3000)}
     >
-      {/* Step indicator */}
+      {/* Step indicator — fixed height to prevent layout shift */}
       <div className="flex border-b border-zinc-100">
         {STEPS.map((s, i) => (
           <button
             key={i}
             onClick={() => setStep(i)}
-            className={`flex-1 px-3 py-3 text-xs font-medium transition-all ${
+            className={`flex-1 px-3 py-3 text-xs font-medium transition-colors border-b-2 ${
               i === step
-                ? "bg-indigo-50 text-indigo-700 border-b-2 border-indigo-600"
-                : "text-zinc-400 hover:text-zinc-600"
+                ? "bg-indigo-50 text-indigo-700 border-indigo-600"
+                : "text-zinc-400 hover:text-zinc-600 border-transparent"
             }`}
           >
             <span className="hidden sm:inline">{s.label}</span>
@@ -61,8 +63,8 @@ export function InteractiveDemo() {
         ))}
       </div>
 
-      {/* Screen area */}
-      <div className="relative bg-gradient-to-br from-zinc-50 to-white" style={{ height: "400px" }}>
+      {/* Screen area — fixed height, all steps absolutely positioned */}
+      <div className="relative bg-gradient-to-br from-zinc-50 to-white" style={{ height: "380px" }}>
         {/* Progress bar */}
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-zinc-100 z-10">
           <div
@@ -215,8 +217,8 @@ export function InteractiveDemo() {
 
       </div>
 
-      {/* Step description — outside the fixed-height area */}
-      <div className="px-6 py-4 text-center border-t border-zinc-100">
+      {/* Step description — fixed height to prevent layout shift */}
+      <div className="px-6 py-4 text-center border-t border-zinc-100" style={{ minHeight: "72px" }}>
         <p className="text-base font-semibold text-zinc-900">{STEPS[step].label}</p>
         <p className="mt-1 text-sm text-zinc-500">{STEPS[step].description}</p>
       </div>

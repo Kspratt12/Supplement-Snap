@@ -58,7 +58,7 @@ export default function SignupPage() {
   if (authLoading) return null
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4">
+    <div className="flex min-h-screen items-start pt-16 sm:items-center sm:pt-0 justify-center bg-zinc-50 px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-2.5">
