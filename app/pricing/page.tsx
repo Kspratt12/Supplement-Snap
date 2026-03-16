@@ -219,16 +219,20 @@ export default function PricingPage() {
 
       {/* Footer */}
       <footer className="border-t border-zinc-100 py-10">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
-          <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded bg-indigo-600 text-xs font-bold text-white">
-              S
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+            <div className="flex items-center gap-2">
+              <div className="flex h-6 w-6 items-center justify-center rounded bg-indigo-600 text-xs font-bold text-white">S</div>
+              <span className="text-sm font-semibold">Supplement Snap</span>
             </div>
-            <span className="text-sm font-semibold">Supplement Snap</span>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-zinc-400">
+              <Link href="/terms" className="hover:text-zinc-600">Terms</Link>
+              <Link href="/privacy" className="hover:text-zinc-600">Privacy</Link>
+              <Link href="/refund-policy" className="hover:text-zinc-600">Refund Policy</Link>
+              <Link href="/demo" className="hover:text-zinc-600">Book a Demo</Link>
+            </div>
+            <p className="text-xs text-zinc-400">&copy; {new Date().getFullYear()} Supplement Snap</p>
           </div>
-          <p className="text-xs text-zinc-400">
-            &copy; {new Date().getFullYear()} Supplement Snap. All rights reserved.
-          </p>
         </div>
       </footer>
     </div>
