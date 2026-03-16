@@ -478,25 +478,42 @@ export default function LandingPage() {
 
       {/* Built for Real Workflows */}
       <section className="border-t border-zinc-100 bg-zinc-50 py-20">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Why Roofers Choose It</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            Built for real roofing workflows
-          </h2>
-          <div className="mx-auto mt-10 max-w-md text-left">
-            {[
-              "Capture findings during tear-off from any phone",
-              "Organize documentation by project and address",
-              "Generate supplement language in seconds with AI",
-              "Export PDF reports and email adjusters the same day",
-            ].map((item) => (
-              <div key={item} className="flex items-start gap-3 py-3 border-b border-zinc-200 last:border-0">
-                <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="text-sm text-zinc-700">{item}</span>
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="grid gap-12 sm:grid-cols-2 sm:items-start">
+            {/* Left — title and description */}
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Why Roofers Choose It</p>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+                Built for real roofing workflows
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-zinc-500">
+                Supplement Snap was designed around real roofing supplement workflows. From tear-off inspections to adjuster documentation, every step is built to help crews capture hidden damage and generate clear supplement reports.
+              </p>
+            </div>
+
+            {/* Right — feature list */}
+            <div>
+              <div className="space-y-0">
+                {[
+                  "Capture hidden damage during tear-off from any phone",
+                  "Document decking rot, flashing failure, and code violations",
+                  "Organize findings by roof area and project address",
+                  "Generate professional supplement language instantly",
+                  "Export clean reports ready for adjuster review",
+                  "Send documentation to the office or adjuster the same day",
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-3 border-b border-zinc-200 py-3 last:border-0">
+                    <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm text-zinc-700">{item}</span>
+                  </div>
+                ))}
               </div>
-            ))}
+              <p className="mt-4 text-xs text-zinc-400">
+                Designed to work in the field during real roofing tear-offs.
+              </p>
+            </div>
           </div>
         </div>
       </section>
