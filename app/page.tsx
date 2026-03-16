@@ -758,11 +758,32 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="mx-auto mt-12 grid gap-6 sm:grid-cols-2 max-w-3xl">
+          <div className="mx-auto mt-12 grid gap-6 sm:grid-cols-3 max-w-5xl">
+            {/* Free */}
+            <div className="rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
+              <p className="text-sm font-semibold uppercase tracking-wider text-green-600">Free</p>
+              <p className="mt-1 text-xs text-zinc-400">Try it on your next job</p>
+              <div className="mt-4">
+                <span className="text-3xl font-extrabold text-zinc-900">$0</span>
+              </div>
+              <p className="mt-1 text-sm text-zinc-500">No credit card required</p>
+              <div className="mt-5 space-y-2.5">
+                {["1 demo project", "Damage photo capture", "AI supplement draft", "Voice notes", "See sample PDF"].map((f) => (
+                  <div key={f} className="flex items-center gap-2.5">
+                    <svg className="h-4 w-4 flex-shrink-0 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-sm text-zinc-700">{f}</span>
+                  </div>
+                ))}
+              </div>
+              <Link href="/signup" className="mt-6 block w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
+                Start Free Project
+              </Link>
+            </div>
+
             {/* Starter */}
             <div className="rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
               <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Starter</p>
-              <p className="mt-1 text-xs text-zinc-400">For solo crews — first project free</p>
+              <p className="mt-1 text-xs text-zinc-400">For solo crews</p>
               <div className="mt-4">
                 <span className="text-3xl font-extrabold text-zinc-900">$497</span>
                 <span className="ml-1 text-sm text-zinc-500">setup</span>
@@ -776,7 +797,7 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-              <Link href="/pricing" className="mt-6 block w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
+              <Link href="/pricing" className="mt-6 block w-full rounded-lg bg-indigo-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
                 Get Started
               </Link>
             </div>
