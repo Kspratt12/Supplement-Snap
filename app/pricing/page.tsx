@@ -6,45 +6,51 @@ import { SiteFooter } from "../../lib/site-footer"
 
 export const metadata: Metadata = {
   title: "Pricing – Supplement Snap",
-  description: "Simple pricing for roofing teams. Get started with Supplement Snap.",
+  description: "Simple pricing for roofing teams. Starter for solo crews, Pro for growing companies.",
 }
 
-const FEATURES = [
+const STARTER_FEATURES = [
   "Unlimited roofing projects",
-  "Capture roof damage photos directly from the field",
+  "Capture damage photos from the field",
   "Voice-to-note damage documentation",
   "AI-generated supplement report drafts",
-  "Professional PDF supplement reports",
-  "Send documentation directly to adjusters",
-  "Project workflow tracking",
-  "Mobile-friendly field workflow",
+  "Professional PDF reports",
+  "Email reports to adjusters",
+  "Mobile-friendly workflow",
+  "1 user",
 ]
 
-const WHO_FOR = [
-  "Contractors documenting hidden damage during tear-off",
-  "Teams that want cleaner supplement writeups",
-  "Offices that need reports sent faster to adjusters",
-  "Companies tired of messy photo and note workflows",
-]
-
-const STEPS = [
-  { num: "1", text: "Book a quick onboarding call" },
-  { num: "2", text: "We help set up your workflow" },
-  { num: "3", text: "Your team starts capturing and sending reports" },
+const PRO_FEATURES = [
+  "Everything in Starter, plus:",
+  "Up to 5 team members",
+  "Team access — crew, foreman, office",
+  "Adjuster email open tracking",
+  "Photo annotations (circles, arrows, labels)",
+  "Xactimate-ready CSV export",
+  "Project search & templates",
+  "Priority support",
 ]
 
 const FAQ = [
   {
-    q: "Do I need my crew to install anything?",
-    a: "No, Supplement Snap works in the browser on mobile and desktop. No app store downloads required.",
+    q: "What's the difference between Starter and Pro?",
+    a: "Starter is for solo contractors or single-crew operations. Pro adds team access so your foreman, office staff, and crew can all see projects in real-time, plus email tracking, photo annotations, and Xactimate export.",
   },
   {
-    q: "Can I send reports the same day?",
-    a: "Yes, reports can be generated, exported, and emailed as soon as findings are captured.",
+    q: "Can I upgrade from Starter to Pro later?",
+    a: "Yes. Contact us and we'll move you to Pro. Your projects and data stay exactly the same.",
   },
   {
-    q: "Is this only for large roofing companies?",
-    a: "No, it works for owner-operators, small teams, and growing roofing companies.",
+    q: "Do I need special equipment?",
+    a: "No. Any smartphone with a camera works. Your crew is already carrying everything they need.",
+  },
+  {
+    q: "What if my crew speaks Spanish?",
+    a: "Voice notes are automatically translated to English. Your crew speaks in their language, and the system converts it for the supplement report.",
+  },
+  {
+    q: "Is it worth the investment?",
+    a: "One approved supplement typically recovers $1,500–$3,200. Both plans pay for themselves on the first job.",
   },
 ]
 
@@ -55,24 +61,12 @@ export default function PricingPage() {
       <nav className="border-b border-zinc-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">
-              S
-            </div>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">S</div>
             <span className="text-lg font-bold tracking-tight">Supplement Snap</span>
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/" className="hidden text-sm font-medium text-zinc-600 hover:text-zinc-900 sm:block">
-              Home
-            </Link>
-            <Link href="/app" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">
-              Open App
-            </Link>
-            <Link
-              href="/demo"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
-            >
-              Book a Demo
-            </Link>
+            <Link href="/" className="hidden text-sm font-medium text-zinc-600 hover:text-zinc-900 sm:block">Home</Link>
+            <Link href="/demo" className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">Book a Demo</Link>
           </div>
         </div>
       </nav>
@@ -83,7 +77,7 @@ export default function PricingPage() {
           Simple pricing for roofing teams
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-zinc-500 sm:text-lg">
-          Capture hidden roof damage during tear-offs and generate clean supplement documentation adjusters approve faster.
+          One approved supplement pays for the entire platform. Choose the plan that fits your team.
         </p>
       </section>
 
@@ -92,129 +86,144 @@ export default function PricingPage() {
       </Suspense>
       <TestModeBanner isTestMode={(process.env.STRIPE_SECRET_KEY || "").startsWith("sk_test_")} />
 
-      {/* Value Props */}
-      <section className="mx-auto max-w-md px-6 pt-10 pb-2">
-        <p className="mb-4 text-center text-xs font-semibold uppercase tracking-wider text-zinc-400">Why roofing companies use Supplement Snap</p>
-        <div className="space-y-3">
-          {[
-            "Capture hidden damage the moment it appears during tear-off",
-            "Generate adjuster-ready supplement documentation automatically",
-            "Send clean reports to the office or adjuster the same day",
-          ].map((item) => (
-            <div key={item} className="flex items-start gap-2.5">
-              <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-              <span className="text-sm text-zinc-600">{item}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Pricing Card */}
-      <section className="mx-auto max-w-md px-6 py-16">
-        <div className="rounded-2xl border-2 border-indigo-600 bg-white p-8 shadow-xl sm:p-10">
-          <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Starter Plan</p>
+      {/* Pricing Cards */}
+      <section className="mx-auto max-w-4xl px-6 py-16">
+        <div className="grid gap-6 sm:grid-cols-2">
+          {/* Starter */}
+          <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-8 shadow-sm">
+            <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Starter</p>
+            <p className="mt-1 text-xs text-zinc-400">For solo crews</p>
             <div className="mt-5">
-              <span className="text-5xl font-extrabold text-zinc-900">$497</span>
-              <span className="ml-2 text-sm text-zinc-500">one-time setup</span>
+              <span className="text-4xl font-extrabold text-zinc-900">$497</span>
+              <span className="ml-1 text-sm text-zinc-500">setup</span>
             </div>
-            <p className="mt-2 text-base text-zinc-500">
+            <p className="mt-1 text-sm text-zinc-500">
               Then <span className="font-semibold text-zinc-900">$49</span>/month
             </p>
-          </div>
 
-          <div className="mt-8 border-t border-zinc-100 pt-8">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-400">Everything included</p>
-            <div className="space-y-3">
-              {FEATURES.map((f) => (
-                <div key={f} className="flex items-start gap-3">
-                  <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
+              {STARTER_FEATURES.map((f) => (
+                <div key={f} className="flex items-start gap-2.5">
+                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                   <span className="text-sm text-zinc-700">{f}</span>
                 </div>
               ))}
             </div>
+
+            <CheckoutButton plan="starter" label="Start with Starter" />
           </div>
 
-          <CheckoutButton />
-          <p className="mt-3 text-center text-xs text-zinc-400">
-            Designed for roofing crews documenting hidden damage during real tear-offs.
-          </p>
+          {/* Pro */}
+          <div className="rounded-2xl border-2 border-indigo-600 bg-white p-7 sm:p-8 shadow-xl relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo-600 px-4 py-1 text-xs font-semibold text-white">
+              Most Popular
+            </div>
+            <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Pro</p>
+            <p className="mt-1 text-xs text-zinc-400">For teams up to 5</p>
+            <div className="mt-5">
+              <span className="text-4xl font-extrabold text-zinc-900">$979</span>
+              <span className="ml-1 text-sm text-zinc-500">setup</span>
+            </div>
+            <p className="mt-1 text-sm text-zinc-500">
+              Then <span className="font-semibold text-zinc-900">$249</span>/month
+            </p>
+
+            <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
+              {PRO_FEATURES.map((f) => (
+                <div key={f} className="flex items-start gap-2.5">
+                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-sm text-zinc-700">{f}</span>
+                </div>
+              ))}
+            </div>
+
+            <CheckoutButton plan="pro" label="Start with Pro" />
+            <p className="mt-3 text-center text-xs text-zinc-400">
+              Best value for companies with multiple crews.
+            </p>
+          </div>
         </div>
+
+        <p className="mt-8 text-center text-sm text-zinc-500">
+          Need more than 5 users? <Link href="/demo" className="font-medium text-indigo-600 hover:text-indigo-500">Contact us</Link> for custom team pricing.
+        </p>
       </section>
 
       {/* ROI */}
       <section className="mx-auto max-w-2xl px-6 pb-16">
         <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-6 text-center sm:p-8">
-          <h2 className="text-lg font-bold text-zinc-900">One approved supplement can cover the software.</h2>
+          <h2 className="text-lg font-bold text-zinc-900">One approved supplement pays for the entire platform.</h2>
           <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-zinc-500">
-            Roofing crews often discover additional damage during tear-off that isn&apos;t included in the original claim. Supplement Snap helps document that damage properly so it can be submitted and approved faster.
-          </p>
-          <p className="mt-3 text-sm font-medium text-zinc-700">
-            Even one approved supplement can easily cover the cost of the platform.
+            Crews discover $1,500–$3,200 in hidden damage on a typical job. Proper documentation means that money gets approved instead of left on the table.
           </p>
         </div>
       </section>
 
-      {/* Who This Is For */}
+      {/* Compare */}
       <section className="border-t border-zinc-100 bg-zinc-50 py-20">
         <div className="mx-auto max-w-3xl px-6">
-          <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Who This Is For</p>
-            <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
-              Built for roofing teams that need speed in the field
-            </h2>
-          </div>
-          <div className="mx-auto mt-10 max-w-lg">
-            {WHO_FOR.map((item) => (
-              <div key={item} className="flex items-start gap-3 border-b border-zinc-200 py-4 last:border-0">
-                <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="text-sm text-zinc-700">{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* What Happens Next */}
-      <section className="border-t border-zinc-100 py-20">
-        <div className="mx-auto max-w-3xl px-6">
-          <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Getting Started</p>
-            <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
-              What happens after you get started
-            </h2>
-          </div>
-          <div className="mx-auto mt-12 flex max-w-lg flex-col gap-6 sm:flex-row sm:gap-0">
-            {STEPS.map((step, i) => (
-              <div key={step.num} className="flex flex-1 flex-col items-center text-center">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold text-white">
-                  {step.num}
-                </div>
-                {i < STEPS.length - 1 && (
-                  <div className="hidden h-px w-full bg-zinc-200 sm:block sm:mt-5" />
-                )}
-                <p className="mt-4 text-sm font-medium text-zinc-700">{step.text}</p>
-              </div>
-            ))}
+          <h2 className="text-center text-2xl font-bold tracking-tight sm:text-3xl">Compare plans</h2>
+          <div className="mt-10 overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-zinc-200">
+                  <th className="py-3 text-left font-medium text-zinc-500">Feature</th>
+                  <th className="py-3 text-center font-medium text-zinc-500">Starter</th>
+                  <th className="py-3 text-center font-medium text-indigo-600">Pro</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-100">
+                {[
+                  ["Unlimited projects", true, true],
+                  ["Damage photo capture", true, true],
+                  ["Voice notes (any language)", true, true],
+                  ["AI supplement drafts", true, true],
+                  ["PDF reports", true, true],
+                  ["Email to adjusters", true, true],
+                  ["Users", "1", "Up to 5"],
+                  ["Team access", false, true],
+                  ["Email open tracking", false, true],
+                  ["Photo annotations", false, true],
+                  ["Xactimate CSV export", false, true],
+                  ["Project templates", false, true],
+                  ["Priority support", false, true],
+                ].map(([feature, starter, pro]) => (
+                  <tr key={feature as string}>
+                    <td className="py-3 text-zinc-700">{feature as string}</td>
+                    <td className="py-3 text-center">
+                      {starter === true ? (
+                        <svg className="mx-auto h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      ) : starter === false ? (
+                        <span className="text-zinc-300">—</span>
+                      ) : (
+                        <span className="text-zinc-700">{starter as string}</span>
+                      )}
+                    </td>
+                    <td className="py-3 text-center">
+                      {pro === true ? (
+                        <svg className="mx-auto h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      ) : pro === false ? (
+                        <span className="text-zinc-300">—</span>
+                      ) : (
+                        <span className="font-medium text-indigo-600">{pro as string}</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="border-t border-zinc-100 bg-zinc-50 py-20">
+      <section className="border-t border-zinc-100 py-20">
         <div className="mx-auto max-w-2xl px-6">
-          <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">FAQ</p>
-            <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
-              Common questions
-            </h2>
-          </div>
+          <h2 className="text-center text-2xl font-bold tracking-tight sm:text-3xl">Common questions</h2>
           <div className="mt-10 space-y-0 divide-y divide-zinc-200">
             {FAQ.map((item) => (
               <div key={item.q} className="py-5">
@@ -227,23 +236,17 @@ export default function PricingPage() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="border-t border-zinc-100 py-20">
+      <section className="border-t border-zinc-100 bg-zinc-50 py-20">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
             Ready to stop leaving supplement money behind?
           </h2>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link
-              href="/demo"
-              className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
-            >
+            <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
               Book a Demo
             </Link>
-            <Link
-              href="/app"
-              className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
-            >
-              Open App
+            <Link href="/signup" className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
+              Get Started
             </Link>
           </div>
         </div>

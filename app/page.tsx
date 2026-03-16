@@ -556,54 +556,55 @@ export default function LandingPage() {
             <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
               Simple pricing for roofing teams
             </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
+              One approved supplement pays for the entire platform.
+            </p>
           </div>
 
-          <div className="mx-auto mt-12 max-w-md">
-            <div className="rounded-2xl border-2 border-indigo-600 bg-white p-8 shadow-lg">
-              <div className="text-center">
-                <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Starter Plan</p>
-                <div className="mt-4">
-                  <span className="text-4xl font-extrabold text-zinc-900">$497</span>
-                  <span className="ml-1 text-sm text-zinc-500">one-time setup</span>
-                </div>
-                <p className="mt-1 text-sm text-zinc-500">
-                  Then <span className="font-semibold text-zinc-900">$49</span>/month
-                </p>
+          <div className="mx-auto mt-12 grid gap-6 sm:grid-cols-2 max-w-3xl">
+            {/* Starter */}
+            <div className="rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
+              <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Starter</p>
+              <p className="mt-1 text-xs text-zinc-400">For solo crews</p>
+              <div className="mt-4">
+                <span className="text-3xl font-extrabold text-zinc-900">$497</span>
+                <span className="ml-1 text-sm text-zinc-500">setup</span>
               </div>
-
-              <div className="mt-8 space-y-3">
-                {[
-                  "Unlimited projects",
-                  "Capture photos from the field",
-                  "AI supplement draft generation",
-                  "Project PDF reports",
-                  "Email reports to adjusters",
-                  "Mobile-friendly workflow",
-                ].map((feature) => (
-                  <div key={feature} className="flex items-center gap-3">
-                    <svg className="h-4.5 w-4.5 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm text-zinc-700">{feature}</span>
+              <p className="mt-1 text-sm text-zinc-500">Then <span className="font-semibold text-zinc-900">$49</span>/mo</p>
+              <div className="mt-5 space-y-2.5">
+                {["Unlimited projects", "AI supplement drafts", "PDF reports & email", "Voice notes", "1 user"].map((f) => (
+                  <div key={f} className="flex items-center gap-2.5">
+                    <svg className="h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-sm text-zinc-700">{f}</span>
                   </div>
                 ))}
               </div>
+              <Link href="/pricing" className="mt-6 block w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
+                Get Started
+              </Link>
+            </div>
 
-              <Link
-                href="/signup"
-                className="mt-8 block w-full rounded-lg bg-indigo-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
-              >
-                Start Now
+            {/* Pro */}
+            <div className="rounded-2xl border-2 border-indigo-600 bg-white p-7 shadow-lg relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo-600 px-3 py-0.5 text-xs font-semibold text-white">Most Popular</div>
+              <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Pro</p>
+              <p className="mt-1 text-xs text-zinc-400">For teams up to 5</p>
+              <div className="mt-4">
+                <span className="text-3xl font-extrabold text-zinc-900">$979</span>
+                <span className="ml-1 text-sm text-zinc-500">setup</span>
+              </div>
+              <p className="mt-1 text-sm text-zinc-500">Then <span className="font-semibold text-zinc-900">$249</span>/mo</p>
+              <div className="mt-5 space-y-2.5">
+                {["Everything in Starter", "Up to 5 team members", "Email open tracking", "Photo annotations", "Xactimate CSV export", "Priority support"].map((f) => (
+                  <div key={f} className="flex items-center gap-2.5">
+                    <svg className="h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-sm text-zinc-700">{f}</span>
+                  </div>
+                ))}
+              </div>
+              <Link href="/pricing" className="mt-6 block w-full rounded-lg bg-indigo-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+                Start with Pro
               </Link>
-              <Link
-                href="/demo"
-                className="mt-3 block w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
-              >
-                Book a Demo First
-              </Link>
-              <p className="mt-4 text-center text-xs text-zinc-400">
-                One approved supplement pays for the entire platform.
-              </p>
             </div>
           </div>
         </div>

@@ -5,20 +5,7 @@ import { useSearchParams } from "next/navigation"
 import { useAuth } from "../../lib/auth-context"
 import { trackEvent } from "../../lib/analytics"
 
-/*
- * ─── STRIPE TEST CHECKLIST ───────────────────────────────────────
- * 1. Confirm STRIPE_SECRET_KEY is set (env var, starts with sk_test_ for test mode)
- * 2. Confirm STRIPE_PRICE_SETUP is set (one-time $497 price ID)
- * 3. Confirm STRIPE_PRICE_MONTHLY is set (recurring $49/mo price ID)
- * 4. Click "Get Started" on /pricing
- * 5. Confirm Stripe checkout page opens
- * 6. Use test card: 4242 4242 4242 4242, any future exp, any CVC
- * 7. Confirm success redirect goes to /success
- * 8. Confirm cancel redirect goes to /pricing?canceled=true
- * ─────────────────────────────────────────────────────────────────
- */
-
-export function CheckoutButton() {
+export function CheckoutButton({ plan = "starter", label = "Get Started" }: { plan?: string; label?: string }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const { user } = useAuth()
@@ -30,7 +17,7 @@ export function CheckoutButton() {
       const res = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user?.email, userId: user?.id }),
+        body: JSON.stringify({ email: user?.email, userId: user?.id, plan }),
       })
       const data = await res.json()
 
@@ -65,7 +52,7 @@ export function CheckoutButton() {
             Redirecting to checkout...
           </span>
         ) : (
-          "Get Started"
+          label
         )}
       </button>
     </>
@@ -91,7 +78,7 @@ export function TestModeBanner({ isTestMode }: { isTestMode: boolean }) {
   if (!isTestMode) return null
 
   return (
-    <div className="mx-auto max-w-md px-6 pt-4">
+    <div className="mx-auto max-w-3xl px-6 pt-4">
       <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-center text-xs font-medium text-amber-700">
         Test Mode Active — No real charges will be made
       </div>

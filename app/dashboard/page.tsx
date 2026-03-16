@@ -29,6 +29,7 @@ export default function DashboardPage() {
   const [showSampleReport, setShowSampleReport] = useState(false)
   const [showVoiceRecord, setShowVoiceRecord] = useState(false)
   const [showPhotoCapture, setShowPhotoCapture] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     if (!authLoading && !user) router.replace("/login")
@@ -305,14 +306,29 @@ export default function DashboardPage() {
         {/* Projects list */}
         {isActive && (
           <>
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-base sm:text-lg font-semibold text-zinc-900">Your Projects</h2>
-              <Link
-                href="/app"
-                className="rounded-lg bg-indigo-600 px-4 min-h-[44px] flex items-center text-sm font-medium text-white hover:bg-indigo-500"
-              >
-                + New Project
-              </Link>
+              <div className="flex gap-2">
+                {projects.length > 0 && (
+                  <div className="relative flex-1 sm:flex-none">
+                    <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search projects..."
+                      className="w-full sm:w-48 rounded-lg border border-zinc-300 bg-white pl-9 pr-3 min-h-[44px] text-sm text-zinc-900 placeholder:text-zinc-400"
+                    />
+                  </div>
+                )}
+                <Link
+                  href="/app"
+                  className="rounded-lg bg-indigo-600 px-4 min-h-[44px] flex items-center text-sm font-medium text-white hover:bg-indigo-500 flex-shrink-0"
+                >
+                  + New Project
+                </Link>
+              </div>
             </div>
 
             {loadingProjects ? (
@@ -330,7 +346,11 @@ export default function DashboardPage() {
               </div>
             ) : (
               <div className="space-y-3">
-                {projects.map((p) => (
+                {projects.filter((p) => {
+                  if (!searchQuery.trim()) return true
+                  const q = searchQuery.toLowerCase()
+                  return p.project_name.toLowerCase().includes(q) || (p.property_address || "").toLowerCase().includes(q)
+                }).map((p) => (
                   <Link
                     key={p.id}
                     href={`/app?project=${p.id}`}

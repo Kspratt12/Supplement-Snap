@@ -16,37 +16,46 @@ export async function POST(request: Request) {
     }
 
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
-
-    const priceSetup = process.env.STRIPE_PRICE_SETUP
-    const priceMonthly = process.env.STRIPE_PRICE_MONTHLY
-
-    if (!priceSetup || !priceMonthly) {
-      return NextResponse.json(
-        { error: "Stripe price IDs not configured. Add STRIPE_PRICE_SETUP and STRIPE_PRICE_MONTHLY." },
-        { status: 500 }
-      )
-    }
-
     const origin = request.headers.get("origin") || "http://localhost:3000"
 
-    // Accept optional email and userId to pre-fill checkout and link user
     let customerEmail: string | undefined
     let userId: string | undefined
+    let plan: string = "starter"
     try {
       const body = await request.json()
       customerEmail = body.email
       userId = body.userId
+      plan = body.plan || "starter"
     } catch {
       // No body or invalid JSON is fine
+    }
+
+    // Determine price IDs based on plan
+    let priceSetup: string | undefined
+    let priceMonthly: string | undefined
+
+    if (plan === "pro") {
+      priceSetup = process.env.STRIPE_PRICE_PRO_SETUP
+      priceMonthly = process.env.STRIPE_PRICE_PRO_MONTHLY
+    } else {
+      priceSetup = process.env.STRIPE_PRICE_SETUP
+      priceMonthly = process.env.STRIPE_PRICE_MONTHLY
+    }
+
+    if (!priceSetup || !priceMonthly) {
+      return NextResponse.json(
+        { error: `Stripe price IDs not configured for ${plan} plan.` },
+        { status: 500 }
+      )
     }
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
       ...(customerEmail ? { customer_email: customerEmail } : {}),
-      metadata: { supabase_user_id: userId || "" },
+      metadata: { supabase_user_id: userId || "", plan },
       subscription_data: {
-        metadata: { supabase_user_id: userId || "" },
+        metadata: { supabase_user_id: userId || "", plan },
       },
       line_items: [
         {
