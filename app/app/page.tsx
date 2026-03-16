@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { useRouter } from "next/navigation"
+import { Suspense, useEffect, useRef, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { jsPDF } from "jspdf"
 import { supabase } from "../../lib/supabase"
@@ -82,9 +82,18 @@ type Capture = {
   created_at: string
 }
 
-export default function Home() {
+export default function AppPage() {
+  return (
+    <Suspense fallback={null}>
+      <Home />
+    </Suspense>
+  )
+}
+
+function Home() {
   const { user, loading: authLoading, signOut, subscriptionStatus, subscriptionLoading } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   // Redirect to login if not authenticated, or pricing if no subscription
   useEffect(() => {
@@ -279,6 +288,15 @@ export default function Home() {
         .catch(() => {})
     }
   }, [user])
+
+  // Auto-select project from URL parameter
+  useEffect(() => {
+    const projectParam = searchParams.get("project")
+    if (projectParam && projects.length > 0 && !selectedProjectId) {
+      const match = projects.find(p => p.id === projectParam)
+      if (match) setSelectedProjectId(match.id)
+    }
+  }, [projects, searchParams, selectedProjectId])
 
   // Load captures when selected project changes
   useEffect(() => {
