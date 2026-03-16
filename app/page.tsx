@@ -31,16 +31,16 @@ export default function LandingPage() {
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
-            href="/demo"
+            href="/pricing"
             className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
           >
-            Book a Demo
+            Get Started
           </Link>
           <Link
-            href="/app"
+            href="/demo"
             className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
           >
-            Open App
+            Book a Demo
           </Link>
         </div>
         <p className="mx-auto mt-6 max-w-lg text-sm text-zinc-400">

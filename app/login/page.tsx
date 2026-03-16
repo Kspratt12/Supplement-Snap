@@ -62,7 +62,10 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700">Password</label>
+            <div className="mb-1.5 flex items-center justify-between">
+              <label className="block text-sm font-medium text-zinc-700">Password</label>
+              <span className="text-xs text-zinc-400 cursor-default" title="Coming soon">Forgot password?</span>
+            </div>
             <input
               type="password"
               required

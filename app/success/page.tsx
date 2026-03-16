@@ -1,14 +1,15 @@
-import type { Metadata } from "next"
-import Link from "next/link"
+"use client"
 
-export const metadata: Metadata = {
-  title: "Welcome – Supplement Snap",
-}
+import Link from "next/link"
+import { useAuth } from "../../lib/auth-context"
 
 export default function SuccessPage() {
+  const { user, loading } = useAuth()
+
+  if (loading) return null
+
   return (
     <div className="flex min-h-screen flex-col bg-white text-zinc-900">
-      {/* Nav */}
       <nav className="border-b border-zinc-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5">
@@ -17,13 +18,12 @@ export default function SuccessPage() {
             </div>
             <span className="text-lg font-bold tracking-tight">Supplement Snap</span>
           </Link>
-          <Link href="/app" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">
-            Open App
+          <Link href={user ? "/dashboard" : "/login"} className="text-sm font-medium text-zinc-600 hover:text-zinc-900">
+            {user ? "Dashboard" : "Log In"}
           </Link>
         </div>
       </nav>
 
-      {/* Content */}
       <main className="flex flex-1 items-center justify-center px-6 py-20">
         <div className="max-w-md text-center">
           <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
@@ -44,27 +44,53 @@ export default function SuccessPage() {
             Payment received successfully.
           </div>
 
-          <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-6">
-            <p className="text-sm font-semibold text-zinc-700">Next step</p>
-            <p className="mt-1 text-sm text-zinc-500">
-              Book your onboarding call so we can get your team set up and running fast.
-            </p>
-          </div>
-
-          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link
-              href="/demo"
-              className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
-            >
-              Book Onboarding Call
-            </Link>
-            <Link
-              href="/app"
-              className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
-            >
-              Open App
-            </Link>
-          </div>
+          {user ? (
+            <>
+              <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-6">
+                <p className="text-sm font-semibold text-zinc-700">Next step</p>
+                <p className="mt-1 text-sm text-zinc-500">
+                  Book your onboarding call so we can get your team set up and running fast.
+                </p>
+              </div>
+              <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+                <Link
+                  href="/demo"
+                  className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
+                >
+                  Book Onboarding Call
+                </Link>
+                <Link
+                  href="/dashboard"
+                  className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
+                >
+                  Go to Dashboard
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-6">
+                <p className="text-sm font-semibold text-zinc-700">Create your account</p>
+                <p className="mt-1 text-sm text-zinc-500">
+                  Set up your login so you can access your projects and start capturing damage.
+                </p>
+              </div>
+              <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+                <Link
+                  href="/signup"
+                  className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
+                >
+                  Create Account
+                </Link>
+                <Link
+                  href="/login"
+                  className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
+                >
+                  Log In
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </main>
     </div>
