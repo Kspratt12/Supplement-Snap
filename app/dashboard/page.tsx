@@ -62,7 +62,6 @@ export default function DashboardPage() {
 
     setProjects(projectsWithCounts)
 
-    // Check if any capture has been sent (for onboarding checklist)
     if (projectsData.length > 0) {
       const projectIds = projectsData.map((p: { id: string }) => p.id)
       const { count: sentCount } = await supabase
@@ -99,6 +98,8 @@ export default function DashboardPage() {
 
   const isActive = hasActiveSubscription(subscriptionStatus)
   const userName = user.user_metadata?.full_name || user.email?.split("@")[0] || "there"
+  const totalCaptures = projects.reduce((sum, p) => sum + p.capture_count, 0)
+  const hasAnyData = projects.length > 0 || totalCaptures > 0 || reportCount > 0
 
   const statusBadge: Record<string, { text: string; color: string }> = {
     active: { text: "Active", color: "bg-green-50 text-green-700 border-green-200" },
@@ -113,18 +114,18 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-zinc-50">
       {/* Nav */}
       <nav className="border-b border-zinc-100 bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2.5">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
+          <Link href="/" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">S</div>
             <span className="text-lg font-bold tracking-tight text-zinc-900">Supplement Snap</span>
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {isActive && (
-              <Link href="/app" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">Open App</Link>
+              <Link href="/app" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">My Projects</Link>
             )}
             <button
               onClick={async () => { await signOut(); router.push("/") }}
-              className="text-sm font-medium text-zinc-600 hover:text-zinc-900"
+              className="text-sm font-medium text-zinc-500 hover:text-zinc-900"
             >
               Log Out
             </button>
@@ -132,39 +133,44 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      <main className="mx-auto max-w-5xl px-6 py-10">
+      <main className="mx-auto max-w-5xl px-4 sm:px-6 py-6 sm:py-10">
         {/* Banners */}
         <Suspense fallback={null}>
           <ResetSuccessBanner />
         </Suspense>
 
-        {/* 1. Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Welcome back, {userName}</h1>
-            <p className="mt-1 text-sm text-zinc-500">Manage your subscription, review your projects, and jump back into the app.</p>
-          </div>
-          {isActive && (
-            <div className="flex gap-2">
-              <button
-                onClick={() => setShowPhotoCapture(true)}
-                className="flex items-center gap-2 rounded-lg bg-indigo-600 px-5 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
-              >
-                <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-                </svg>
-                <span className="hidden sm:inline">Capture Damage</span>
-              </button>
-              <Link
-                href="/app"
-                className="flex items-center rounded-lg border border-zinc-300 bg-white px-5 min-h-[48px] text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
-              >
-                Create Project
-              </Link>
-            </div>
-          )}
+        {/* Header — bigger text, mobile friendly */}
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900">Welcome back, {userName}</h1>
+          <p className="mt-1 text-sm text-zinc-500">
+            {isActive ? "Ready to capture damage and generate reports." : "Get started by activating your subscription."}
+          </p>
         </div>
+
+        {/* ── MAIN ACTION BUTTONS (mobile-first, big tap targets) ── */}
+        {isActive && (
+          <div className="mb-6 sm:mb-8 grid grid-cols-2 gap-3">
+            <button
+              onClick={() => setShowPhotoCapture(true)}
+              className="flex flex-col items-center gap-2 rounded-xl bg-indigo-600 px-4 py-5 sm:py-6 text-white shadow-md hover:bg-indigo-500 active:bg-indigo-700"
+            >
+              <svg className="h-7 w-7 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+              </svg>
+              <span className="text-sm sm:text-base font-semibold">Take Photo</span>
+            </button>
+            <button
+              onClick={() => setShowVoiceRecord(true)}
+              className="flex flex-col items-center gap-2 rounded-xl bg-white border-2 border-indigo-600 px-4 py-5 sm:py-6 text-indigo-600 shadow-md hover:bg-indigo-50 active:bg-indigo-100"
+            >
+              <svg className="h-7 w-7 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+              </svg>
+              <span className="text-sm sm:text-base font-semibold">Voice Note</span>
+            </button>
+          </div>
+        )}
 
         {/* Onboarding checklist */}
         {!subscriptionLoading && !loadingProjects && (
@@ -176,221 +182,174 @@ export default function DashboardPage() {
               hasSentReport={hasSentReport}
             />
             {!isActive && (
-              <p className="mb-6 -mt-4 text-center text-xs text-zinc-400">
+              <p className="mb-6 -mt-4 text-center text-sm text-zinc-400">
                 Start your subscription to begin capturing roof damage and generating supplement reports.
               </p>
             )}
           </>
         )}
 
-        {/* Activity Overview */}
-        {!subscriptionLoading && !loadingProjects && (
-          <div className="mb-8">
-            <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">Activity Overview</h2>
-            <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
-              {/* Projects */}
-              <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-50">
-                    <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-zinc-900">{isActive ? projects.length : 0}</p>
-                    <p className="text-xs text-zinc-500">Projects</p>
-                  </div>
-                </div>
+        {/* Activity Overview — only show when user has data */}
+        {!subscriptionLoading && !loadingProjects && isActive && hasAnyData && (
+          <div className="mb-6 sm:mb-8">
+            <h2 className="mb-3 text-sm font-semibold text-zinc-500">Your Activity</h2>
+            <div className="grid gap-3 grid-cols-3">
+              <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-zinc-900">{projects.length}</p>
+                <p className="mt-1 text-xs sm:text-sm text-zinc-500">Projects</p>
               </div>
-              {/* Captures */}
-              <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-50">
-                    <svg className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-zinc-900">{isActive ? projects.reduce((sum, p) => sum + p.capture_count, 0) : 0}</p>
-                    <p className="text-xs text-zinc-500">Captures</p>
-                  </div>
-                </div>
+              <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-zinc-900">{totalCaptures}</p>
+                <p className="mt-1 text-xs sm:text-sm text-zinc-500">Captures</p>
               </div>
-              {/* Reports */}
-              <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-50">
-                    <svg className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-zinc-900">{isActive ? reportCount : 0}</p>
-                    <p className="text-xs text-zinc-500">Reports Generated</p>
-                  </div>
-                </div>
+              <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-zinc-900">{reportCount}</p>
+                <p className="mt-1 text-xs sm:text-sm text-zinc-500">Reports</p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Top row: Subscription + Quick Record | Quick Actions */}
-        <div className="mb-8 grid gap-4 sm:grid-cols-2 items-start">
-          {/* Left column: Plan + Quick Record stacked */}
-          <div className="space-y-4">
-            {/* 2. Subscription card */}
-            {!subscriptionLoading && (
-              <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Plan</p>
-                <div className="mt-3 flex items-center gap-2">
+        {/* Plan + Quick Actions row */}
+        <div className="mb-6 sm:mb-8 grid gap-4 sm:grid-cols-2 items-start">
+          {/* Subscription card — compact */}
+          {!subscriptionLoading && (
+            <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
                   <span className="text-base font-bold text-zinc-900">Starter</span>
                   <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${badge.color}`}>
                     {badge.text}
                   </span>
                 </div>
                 {isActive && (
-                  <p className="mt-1 text-xs text-zinc-400">$49/mo after setup</p>
+                  <button
+                    onClick={openBillingPortal}
+                    disabled={portalLoading}
+                    className="text-xs font-medium text-zinc-400 hover:text-zinc-600 disabled:opacity-50"
+                  >
+                    {portalLoading ? "..." : "Billing"}
+                  </button>
                 )}
-                <div className="mt-4 flex gap-2">
-                  {isActive ? (
-                    <>
-                      <Link
-                        href="/app"
-                        className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
-                      >
-                        Open App
-                      </Link>
-                      <button
-                        onClick={openBillingPortal}
-                        disabled={portalLoading}
-                        className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-50"
-                      >
-                        {portalLoading ? "Loading..." : "Manage Billing"}
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        href="/pricing"
-                        className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
-                      >
-                        Start Subscription
-                      </Link>
-                      <Link
-                        href="/pricing"
-                        className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
-                      >
-                        View Plans
-                      </Link>
-                    </>
-                  )}
-                </div>
               </div>
-            )}
-
-            {/* Quick Voice Record card */}
-            <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Quick Voice Record</p>
-              <p className="mt-2 text-sm text-zinc-500">Record a damage note by voice — any language, auto-translated to English.</p>
-              <button
-                onClick={() => {
-                  if (isActive) {
-                    setShowVoiceRecord(true)
-                  } else {
-                    setShowSubModal(true)
-                  }
-                }}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
-              >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
-                </svg>
-                Record Damage Note
-              </button>
+              {isActive ? (
+                <div className="mt-3">
+                  <Link
+                    href="/app"
+                    className="flex w-full items-center justify-center rounded-lg bg-indigo-600 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
+                  >
+                    Go to Projects
+                  </Link>
+                </div>
+              ) : (
+                <div className="mt-3 flex gap-2">
+                  <Link
+                    href="/pricing"
+                    className="flex-1 flex items-center justify-center rounded-lg bg-indigo-600 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
+                  >
+                    Start Subscription
+                  </Link>
+                  <Link
+                    href="/pricing"
+                    className="flex items-center justify-center rounded-lg border border-zinc-300 bg-white px-4 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                  >
+                    Plans
+                  </Link>
+                </div>
+              )}
             </div>
-          </div>
+          )}
 
-          {/* 4. Quick Actions */}
-          <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Quick Actions</p>
-            <div className="mt-3 space-y-2">
+          {/* Quick Actions — simplified for active users */}
+          <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm">
+            <h2 className="text-sm font-semibold text-zinc-500 mb-3">Quick Actions</h2>
+            <div className="space-y-1">
               {isActive ? (
-                <button
-                  onClick={() => setShowPhotoCapture(true)}
-                  className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
-                >
-                  <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-                  </svg>
-                  Capture Damage
-                  <span className="ml-auto text-xs text-zinc-400 hidden sm:inline">Photo</span>
-                </button>
+                <>
+                  <button
+                    onClick={() => setShowPhotoCapture(true)}
+                    className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
+                  >
+                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                    </svg>
+                    Capture Damage Photo
+                  </button>
+                  <button
+                    onClick={() => setShowVoiceRecord(true)}
+                    className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
+                  >
+                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+                    </svg>
+                    Record Voice Note
+                  </button>
+                  <Link
+                    href="/app"
+                    className="flex items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
+                  >
+                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Generate Report
+                  </Link>
+                  <button
+                    onClick={() => setShowSampleReport(true)}
+                    className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
+                  >
+                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    View Sample Report
+                  </button>
+                </>
               ) : (
-                <button
-                  onClick={() => setShowSubModal(true)}
-                  className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
-                >
-                  <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-                  </svg>
-                  Capture Damage
-                </button>
+                <>
+                  <button
+                    onClick={() => setShowSubModal(true)}
+                    className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
+                  >
+                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                    </svg>
+                    Capture Damage
+                  </button>
+                  <button
+                    onClick={() => setShowSubModal(true)}
+                    className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
+                  >
+                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Generate Report
+                  </button>
+                  <button
+                    onClick={() => setShowSampleReport(true)}
+                    className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
+                  >
+                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    View Sample Report
+                  </button>
+                </>
               )}
-              {isActive ? (
-                <Link
-                  href="/app"
-                  className="flex items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
-                >
-                  <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Generate Report
-                </Link>
-              ) : (
-                <button
-                  onClick={() => setShowSubModal(true)}
-                  className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
-                >
-                  <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Generate Report
-                </button>
-              )}
-              <button
-                onClick={() => setShowSampleReport(true)}
-                className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
-              >
-                <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                View Sample Supplement Report
-              </button>
-              <Link
-                href="/pricing"
-                className="flex items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
-              >
-                <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-                </svg>
-                View Pricing
-              </Link>
             </div>
           </div>
         </div>
 
-        {/* 5. Locked paywall */}
+        {/* Locked paywall */}
         {!subscriptionLoading && !isActive && (
-          <div className="mb-8 rounded-xl border border-amber-200 bg-amber-50 p-6 text-center">
+          <div className="mb-6 sm:mb-8 rounded-xl border border-amber-200 bg-amber-50 p-5 sm:p-6 text-center">
             <svg className="mx-auto h-8 w-8 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
             </svg>
             <p className="mt-3 text-sm font-medium text-amber-800">
-              An active subscription is required to capture damage and generate supplement reports.
+              Activate your subscription to start capturing damage and generating supplement reports.
             </p>
             <Link
               href="/pricing"
@@ -401,11 +360,17 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* 3. Projects list */}
+        {/* Projects list */}
         {isActive && (
           <>
-            <div className="mb-4">
-              <h2 className="text-base font-semibold text-zinc-900">Recent Projects</h2>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-base sm:text-lg font-semibold text-zinc-900">Your Projects</h2>
+              <Link
+                href="/app"
+                className="rounded-lg bg-indigo-600 px-4 min-h-[44px] flex items-center text-sm font-medium text-white hover:bg-indigo-500"
+              >
+                + New Project
+              </Link>
             </div>
 
             {loadingProjects ? (
@@ -414,15 +379,15 @@ export default function DashboardPage() {
                 <span className="text-sm">Loading projects...</span>
               </div>
             ) : projects.length === 0 ? (
-              <div className="rounded-xl border border-dashed border-zinc-300 bg-white px-6 py-14 text-center">
+              <div className="rounded-xl border border-dashed border-zinc-300 bg-white px-6 py-10 sm:py-14 text-center">
                 <svg className="mx-auto h-10 w-10 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                 </svg>
-                <h3 className="mt-3 text-sm font-semibold text-zinc-900">No projects yet</h3>
+                <h3 className="mt-3 text-sm sm:text-base font-semibold text-zinc-900">No projects yet</h3>
                 <p className="mt-1 text-sm text-zinc-500">Create your first project to start capturing damage.</p>
                 <Link
                   href="/app"
-                  className="mt-4 inline-block rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
+                  className="mt-4 inline-flex items-center rounded-lg bg-indigo-600 px-5 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
                 >
                   Create Your First Project
                 </Link>
@@ -430,27 +395,23 @@ export default function DashboardPage() {
             ) : (
               <div className="space-y-3">
                 {projects.map((p) => (
-                  <div
+                  <Link
                     key={p.id}
-                    className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white p-5 shadow-sm"
+                    href={`/app?project=${p.id}`}
+                    className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm hover:border-indigo-200 hover:shadow-md transition-all active:bg-zinc-50"
                   >
-                    <div>
-                      <h3 className="text-sm font-semibold text-zinc-900">{p.project_name}</h3>
-                      <p className="mt-0.5 text-xs text-zinc-500">{p.property_address || "No address"}</p>
+                    <div className="min-w-0">
+                      <h3 className="text-sm sm:text-base font-semibold text-zinc-900 truncate">{p.project_name}</h3>
+                      <p className="mt-0.5 text-xs sm:text-sm text-zinc-500 truncate">{p.property_address || "No address"}</p>
                       <div className="mt-2 flex items-center gap-3 text-xs text-zinc-400">
                         <span>{p.capture_count} capture{p.capture_count !== 1 ? "s" : ""}</span>
-                        <span>{new Date(p.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                        <span>{new Date(p.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
                       </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Link
-                        href={`/app?project=${p.id}`}
-                        className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
-                      >
-                        Open Project
-                      </Link>
-                    </div>
-                  </div>
+                    <svg className="h-5 w-5 text-zinc-300 flex-shrink-0 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
                 ))}
               </div>
             )}
@@ -458,14 +419,13 @@ export default function DashboardPage() {
         )}
 
 
-
         {/* Subscription Required Modal */}
         {showSubModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-            <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 px-0 sm:px-4">
+            <div className="w-full sm:max-w-sm rounded-t-2xl sm:rounded-xl bg-white p-6 shadow-xl">
               <h2 className="text-lg font-bold text-zinc-900">Subscription Required</h2>
               <p className="mt-2 text-sm leading-relaxed text-zinc-500">
-                Activate your subscription to start capturing damage and generate supplement reports.
+                Activate your subscription to start capturing damage and generating supplement reports.
               </p>
               <div className="mt-6 flex gap-3">
                 <Link
@@ -487,10 +447,10 @@ export default function DashboardPage() {
 
         {/* Sample Report Modal */}
         {showSampleReport && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-            <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-xl bg-white shadow-xl">
-              <div className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-100 bg-white px-6 py-4 rounded-t-xl">
-                <h2 className="text-lg font-bold text-zinc-900">Sample Supplement Report</h2>
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 px-0 sm:px-4">
+            <div className="w-full sm:max-w-lg max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-xl bg-white shadow-xl">
+              <div className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-100 bg-white px-5 sm:px-6 py-4 rounded-t-2xl sm:rounded-t-xl">
+                <h2 className="text-base sm:text-lg font-bold text-zinc-900">Sample Report</h2>
                 <button
                   onClick={() => setShowSampleReport(false)}
                   className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-zinc-100"
@@ -501,24 +461,22 @@ export default function DashboardPage() {
                 </button>
               </div>
 
-              <div className="px-6 py-4">
+              <div className="px-5 sm:px-6 py-4">
                 <p className="text-sm leading-relaxed text-zinc-500">
-                  This is an example of the supplement report that can be generated and sent to adjusters after documenting damage in the field.
+                  This is what your supplement report looks like when sent to an adjuster.
                 </p>
               </div>
 
-              {/* Report preview */}
-              <div className="mx-6 mb-6 overflow-hidden rounded-xl border border-zinc-200">
+              <div className="mx-5 sm:mx-6 mb-6 overflow-hidden rounded-xl border border-zinc-200">
                 <div className="bg-indigo-600 px-5 py-3">
                   <p className="text-xs font-semibold text-white tracking-wide">Supplement Snap — Project Report</p>
                 </div>
-                <div className="px-5 py-5">
+                <div className="px-4 sm:px-5 py-5">
                   <p className="text-sm font-bold text-zinc-900">Smith Residence</p>
                   <p className="mt-1 text-xs text-zinc-500">742 Evergreen Terrace, Springfield</p>
                   <p className="text-xs text-zinc-500">Inspection Date: March 12, 2026</p>
 
                   <div className="mt-4 h-px bg-zinc-200" />
-
                   <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-zinc-400">Findings</p>
 
                   <div className="mt-3 space-y-4">
@@ -527,7 +485,7 @@ export default function DashboardPage() {
                       <div>
                         <p className="text-sm font-semibold text-zinc-900">Decking — Front Slope</p>
                         <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                          Three sheets of rotted OSB decking discovered along the eave edge during tear-off. Wood was soft and deteriorated from prolonged moisture exposure. Damage was concealed beneath existing shingles.
+                          Three sheets of rotted OSB decking discovered along the eave edge during tear-off. Damage was concealed beneath existing shingles.
                         </p>
                       </div>
                     </div>
@@ -536,7 +494,7 @@ export default function DashboardPage() {
                       <div>
                         <p className="text-sm font-semibold text-zinc-900">Flashing — Chimney</p>
                         <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                          Step flashing along the chimney wall severely corroded with multiple separation points. Counter flashing seal had failed at the mortar joint. Not visible prior to shingle removal.
+                          Step flashing severely corroded with multiple separation points. Not visible prior to shingle removal.
                         </p>
                       </div>
                     </div>
@@ -545,14 +503,13 @@ export default function DashboardPage() {
                       <div>
                         <p className="text-sm font-semibold text-zinc-900">Ice &amp; Water Shield — Valley</p>
                         <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                          No ice and water shield membrane present in the main valley. Current building code requires installation. Concealed under existing roofing materials.
+                          No ice and water shield membrane present in the main valley. Current building code requires installation.
                         </p>
                       </div>
                     </div>
                   </div>
 
                   <div className="mt-4 h-px bg-zinc-200" />
-
                   <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-zinc-400">Supporting Photos</p>
                   <div className="mt-3 grid grid-cols-3 gap-2">
                     <div className="aspect-square rounded-lg bg-gradient-to-br from-amber-100 to-amber-50 border border-zinc-200" />
@@ -561,22 +518,21 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="mt-4 h-px bg-zinc-200" />
-
                   <div className="mt-4 rounded-lg bg-zinc-50 px-4 py-3">
                     <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Summary</p>
                     <p className="mt-2 text-xs leading-relaxed text-zinc-600">
-                      3 supplement items documented during tear-off. All findings represent concealed conditions not visible during initial inspection. Documentation and photos ready for adjuster review.
+                      3 supplement items documented during tear-off. Documentation and photos ready for adjuster review.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="border-t border-zinc-100 px-6 py-4">
+              <div className="border-t border-zinc-100 px-5 sm:px-6 py-4">
                 <button
                   onClick={() => setShowSampleReport(false)}
                   className="w-full rounded-lg border border-zinc-300 bg-white min-h-[48px] text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
                 >
-                  Close Preview
+                  Close
                 </button>
               </div>
             </div>
