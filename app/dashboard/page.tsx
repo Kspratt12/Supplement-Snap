@@ -121,7 +121,9 @@ export default function DashboardPage() {
         .eq("user_id", user!.id)
         .gt("open_count", 0)
       setEmailOpens(count || 0)
-    } catch {}
+    } catch {
+      // email_tracking table may not exist yet
+    }
 
     setLoadingProjects(false)
   }
@@ -308,19 +310,19 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Inactive — subscription CTA */}
+        {/* Free tier — try the app */}
         {!subscriptionLoading && !isActive && (
           <div className="mb-6 sm:mb-8 grid grid-cols-2 gap-3">
-            <button
-              onClick={() => setShowSubModal(true)}
-              className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 min-h-[52px] text-sm font-medium text-zinc-700 shadow-sm hover:bg-zinc-50 active:bg-zinc-100"
+            <Link
+              href="/app"
+              className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 min-h-[52px] text-sm font-medium text-zinc-700 shadow-sm hover:border-indigo-200 hover:shadow-md active:bg-zinc-50 transition-all"
             >
               <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
               </svg>
-              Capture Damage
-            </button>
+              Try Free Project
+            </Link>
             <button
               onClick={() => setShowSampleReport(true)}
               className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 min-h-[52px] text-sm font-medium text-zinc-700 shadow-sm hover:bg-zinc-50 active:bg-zinc-100"
@@ -334,20 +336,17 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Locked paywall */}
+        {/* Upgrade prompt for free users */}
         {!subscriptionLoading && !isActive && (
-          <div className="mb-6 sm:mb-8 rounded-xl border border-amber-200 bg-amber-50 p-5 sm:p-6 text-center">
-            <svg className="mx-auto h-8 w-8 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-            </svg>
-            <p className="mt-3 text-sm font-medium text-amber-800">
-              Activate your subscription to start capturing damage and generating supplement reports.
+          <div className="mb-6 sm:mb-8 rounded-xl border border-indigo-200 bg-indigo-50 p-5 sm:p-6 text-center">
+            <p className="text-sm font-medium text-indigo-800">
+              You&apos;re on the free plan. Upgrade to unlock unlimited projects, PDF downloads, and email reports.
             </p>
             <Link
               href="/pricing"
-              className="mt-4 inline-flex items-center rounded-lg bg-indigo-600 px-6 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
+              className="mt-3 inline-flex items-center rounded-lg bg-indigo-600 px-6 min-h-[44px] text-sm font-semibold text-white hover:bg-indigo-500"
             >
-              Start Subscription
+              See Plans
             </Link>
           </div>
         )}
