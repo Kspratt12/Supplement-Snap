@@ -867,8 +867,8 @@ function Home() {
         y += boxHeight + 3
       }
 
-      // Photos — always attempt to include them
-      if (urls.length > 0 && urls[0] !== "") {
+      // Photos
+      if (includePhotos && urls.length > 0 && urls[0] !== "") {
         let photosLoaded = 0
         checkPage(10)
         doc.setFontSize(7.5)
@@ -908,6 +908,13 @@ function Home() {
           doc.text(`[${urls.length} photo${urls.length !== 1 ? "s" : ""} captured — see project in Supplement Snap for images]`, margin, y)
           y += 5
         }
+      } else if (!includePhotos && urls.length > 0 && urls[0] !== "") {
+        checkPage(6)
+        doc.setFontSize(8)
+        doc.setFont("helvetica", "italic")
+        doc.setTextColor(150, 150, 160)
+        doc.text(`[${urls.length} photo${urls.length !== 1 ? "s" : ""} attached to this finding]`, margin, y)
+        y += 5
       }
 
       // Separator between findings
@@ -1075,7 +1082,15 @@ function Home() {
       if (!doc) throw new Error("Failed to generate PDF")
 
       // Get base64 PDF content (strip the data:... prefix)
-      const pdfBase64 = doc.output("datauristring").split(",")[1]
+      let pdfBase64 = doc.output("datauristring").split(",")[1]
+
+      // If PDF is too large for Vercel (>3.5MB base64), rebuild without photos
+      if (pdfBase64.length > 3_500_000) {
+        const smallDoc = await buildPdfDoc(false)
+        if (smallDoc) {
+          pdfBase64 = smallDoc.output("datauristring").split(",")[1]
+        }
+      }
       const safeName = selectedProject.project_name.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, "-")
 
       const res = await fetch("/api/send-report", {
