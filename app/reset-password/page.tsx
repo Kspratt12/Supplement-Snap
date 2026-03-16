@@ -66,11 +66,25 @@ export default function ResetPasswordPage() {
       setError(error.message)
       setLoading(false)
     } else {
+      // Send confirmation email
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user?.email) {
+        fetch("/api/send-report", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: user.email,
+            subject: "Password Changed – Supplement Snap",
+            message: `Your Supplement Snap password was successfully changed on ${new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} at ${new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}.\n\nIf you did not make this change, please contact support immediately.`,
+            projectName: "Account Security",
+            propertyAddress: "",
+          }),
+        }).catch(() => {})
+      }
+
       setSuccess(true)
       setLoading(false)
-      // Sign out so they log in fresh with the new password
-      await supabase.auth.signOut()
-      setTimeout(() => router.push("/login"), 2500)
+      setTimeout(() => router.push("/dashboard?reset=1"), 2500)
     }
   }
 

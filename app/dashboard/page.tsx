@@ -111,9 +111,10 @@ export default function DashboardPage() {
       </nav>
 
       <main className="mx-auto max-w-5xl px-6 py-10">
-        {/* Locked banner */}
+        {/* Banners */}
         <Suspense fallback={null}>
           <LockedBanner />
+          <ResetSuccessBanner />
         </Suspense>
 
         {/* 1. Header */}
@@ -340,6 +341,27 @@ function LockedBanner() {
       >
         Start Subscription
       </Link>
+    </div>
+  )
+}
+
+function ResetSuccessBanner() {
+  const searchParams = useSearchParams()
+  if (searchParams.get("reset") !== "1") return null
+
+  return (
+    <div className="mb-6 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-center">
+      <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
+        <svg className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <p className="text-sm font-medium text-green-700">
+        Password changed successfully
+      </p>
+      <p className="mt-1 text-xs text-green-600">
+        A confirmation email has been sent to your inbox.
+      </p>
     </div>
   )
 }
