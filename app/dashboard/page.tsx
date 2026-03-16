@@ -6,7 +6,7 @@ import Link from "next/link"
 import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { OnboardingChecklist } from "./onboarding-checklist"
-import { QuickCapture } from "./quick-capture"
+import { QuickVoiceRecord, QuickPhotoCapture } from "./quick-capture"
 
 type ProjectWithCount = {
   id: string
@@ -26,7 +26,8 @@ export default function DashboardPage() {
   const [reportCount, setReportCount] = useState(0)
   const [showSubModal, setShowSubModal] = useState(false)
   const [showSampleReport, setShowSampleReport] = useState(false)
-  const [showQuickCapture, setShowQuickCapture] = useState(false)
+  const [showVoiceRecord, setShowVoiceRecord] = useState(false)
+  const [showPhotoCapture, setShowPhotoCapture] = useState(false)
 
   useEffect(() => {
     if (!authLoading && !user) router.replace("/login")
@@ -146,7 +147,7 @@ export default function DashboardPage() {
           {isActive && (
             <div className="flex gap-2">
               <button
-                onClick={() => setShowQuickCapture(true)}
+                onClick={() => setShowPhotoCapture(true)}
                 className="flex items-center gap-2 rounded-lg bg-indigo-600 px-5 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
               >
                 <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -288,14 +289,14 @@ export default function DashboardPage() {
               </div>
             )}
 
-            {/* Quick Record card */}
+            {/* Quick Voice Record card */}
             <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Quick Record</p>
-              <p className="mt-2 text-sm text-zinc-500">Capture damage fast — snap a photo or record a voice note.</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Quick Voice Record</p>
+              <p className="mt-2 text-sm text-zinc-500">Record a damage note by voice — any language, auto-translated to English.</p>
               <button
                 onClick={() => {
                   if (isActive) {
-                    setShowQuickCapture(true)
+                    setShowVoiceRecord(true)
                   } else {
                     setShowSubModal(true)
                   }
@@ -303,10 +304,9 @@ export default function DashboardPage() {
                 className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
                 </svg>
-                Quick Capture
+                Record Damage Note
               </button>
             </div>
           </div>
@@ -317,7 +317,7 @@ export default function DashboardPage() {
             <div className="mt-3 space-y-2">
               {isActive ? (
                 <button
-                  onClick={() => setShowQuickCapture(true)}
+                  onClick={() => setShowPhotoCapture(true)}
                   className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
                 >
                   <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -325,7 +325,7 @@ export default function DashboardPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
                   </svg>
                   Capture Damage
-                  <span className="ml-auto text-xs text-zinc-400 hidden sm:inline">Quick capture</span>
+                  <span className="ml-auto text-xs text-zinc-400 hidden sm:inline">Photo</span>
                 </button>
               ) : (
                 <button
@@ -583,12 +583,22 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Quick Capture Modal */}
+        {/* Quick Voice Record Modal */}
         {user && (
-          <QuickCapture
+          <QuickVoiceRecord
             userId={user.id}
-            open={showQuickCapture}
-            onClose={() => setShowQuickCapture(false)}
+            open={showVoiceRecord}
+            onClose={() => setShowVoiceRecord(false)}
+            onSaved={() => loadProjects()}
+          />
+        )}
+
+        {/* Quick Photo Capture Modal */}
+        {user && (
+          <QuickPhotoCapture
+            userId={user.id}
+            open={showPhotoCapture}
+            onClose={() => setShowPhotoCapture(false)}
             onSaved={() => loadProjects()}
           />
         )}
