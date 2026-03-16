@@ -50,38 +50,117 @@ export default function LandingPage() {
 
       {/* Product Preview */}
       <section className="mx-auto max-w-5xl px-6 pb-20">
-        <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 shadow-lg">
-          <div className="flex items-center gap-1.5 border-b border-zinc-200 bg-zinc-100 px-4 py-3">
-            <span className="h-2.5 w-2.5 rounded-full bg-zinc-300" />
-            <span className="h-2.5 w-2.5 rounded-full bg-zinc-300" />
-            <span className="h-2.5 w-2.5 rounded-full bg-zinc-300" />
+        <div className="mb-12 text-center">
+          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Product</p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            See Supplement Snap in action
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
+            From roof capture to adjuster-ready report.
+          </p>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-3">
+          {/* Card 1 — Dashboard */}
+          <div className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm hover:shadow-md">
+            <div className="relative h-48 bg-gradient-to-br from-indigo-50 to-zinc-50 p-5">
+              <div className="rounded-lg border border-zinc-200 bg-white p-3 shadow-sm">
+                <div className="mb-2 flex items-center gap-2">
+                  <div className="h-6 w-6 rounded bg-indigo-600" />
+                  <div className="h-3 w-20 rounded bg-zinc-200" />
+                </div>
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <div className="h-2.5 w-24 rounded bg-zinc-100" />
+                    <div className="h-4 w-12 rounded-full bg-green-100" />
+                  </div>
+                  <div className="h-2 w-32 rounded bg-zinc-100" />
+                </div>
+                <div className="mt-3 space-y-1.5">
+                  <div className="flex items-center justify-between rounded-lg border border-zinc-100 px-2 py-1.5">
+                    <div className="h-2.5 w-20 rounded bg-zinc-200" />
+                    <div className="h-2 w-8 rounded bg-indigo-100" />
+                  </div>
+                  <div className="flex items-center justify-between rounded-lg border border-zinc-100 px-2 py-1.5">
+                    <div className="h-2.5 w-16 rounded bg-zinc-200" />
+                    <div className="h-2 w-8 rounded bg-indigo-100" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="p-5">
+              <h3 className="text-sm font-semibold text-zinc-900">Dashboard</h3>
+              <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                Manage projects and subscription from one place.
+              </p>
+            </div>
           </div>
-          <div className="p-6 sm:p-10">
-            <div className="grid gap-6 sm:grid-cols-3">
-              <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
-                <div className="mb-3 h-32 rounded-lg bg-gradient-to-br from-zinc-200 to-zinc-100" />
-                <div className="flex gap-1.5">
-                  <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Decking</span>
-                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">Front</span>
+
+          {/* Card 2 — Capture */}
+          <div className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm hover:shadow-md">
+            <div className="relative h-48 bg-gradient-to-br from-indigo-50 to-zinc-50 p-5">
+              <div className="rounded-lg border border-zinc-200 bg-white p-3 shadow-sm">
+                <div className="mb-2 h-2.5 w-16 rounded bg-zinc-300" />
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="flex h-14 flex-col items-center justify-center rounded-lg border-2 border-dashed border-zinc-200 bg-zinc-50">
+                    <div className="h-5 w-5 rounded-full bg-zinc-200" />
+                    <div className="mt-1 h-1.5 w-10 rounded bg-zinc-200" />
+                  </div>
+                  <div className="flex h-14 flex-col items-center justify-center rounded-lg border-2 border-dashed border-zinc-200 bg-zinc-50">
+                    <div className="h-5 w-5 rounded-full bg-zinc-200" />
+                    <div className="mt-1 h-1.5 w-10 rounded bg-zinc-200" />
+                  </div>
                 </div>
-                <p className="mt-2 text-xs text-zinc-400">Rotted decking found along eave edge, 4x8 section requires full replacement...</p>
-              </div>
-              <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
-                <div className="mb-3 h-32 rounded-lg bg-gradient-to-br from-zinc-200 to-zinc-100" />
-                <div className="flex gap-1.5">
-                  <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Flashing</span>
-                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">Chimney</span>
+                <div className="mt-2 space-y-1.5">
+                  <div className="flex gap-1.5">
+                    <div className="h-4 w-14 rounded-full bg-indigo-100" />
+                    <div className="h-4 w-10 rounded-full bg-zinc-100" />
+                  </div>
+                  <div className="h-6 w-full rounded bg-zinc-50 border border-zinc-100" />
                 </div>
-                <p className="mt-2 text-xs text-zinc-400">Step flashing corroded at chimney wall, counter flashing missing top seal...</p>
               </div>
-              <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
-                <div className="mb-3 h-32 rounded-lg bg-gradient-to-br from-zinc-200 to-zinc-100" />
-                <div className="flex gap-1.5">
-                  <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Ice &amp; Water</span>
-                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">Valley</span>
+            </div>
+            <div className="p-5">
+              <h3 className="text-sm font-semibold text-zinc-900">Capture workflow</h3>
+              <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                Photograph hidden damage and tag roof areas instantly.
+              </p>
+            </div>
+          </div>
+
+          {/* Card 3 — Report */}
+          <div className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm hover:shadow-md">
+            <div className="relative h-48 bg-gradient-to-br from-indigo-50 to-zinc-50 p-5">
+              <div className="rounded-lg border border-zinc-200 bg-white p-3 shadow-sm">
+                <div className="mb-2 flex items-center gap-2">
+                  <div className="h-3 w-3 rounded bg-indigo-500" />
+                  <div className="h-2.5 w-24 rounded bg-zinc-300" />
                 </div>
-                <p className="mt-2 text-xs text-zinc-400">No ice and water shield present in valley, code requires I&amp;W in all valleys...</p>
+                <div className="h-px bg-zinc-100" />
+                <div className="mt-2 space-y-2">
+                  <div className="flex items-start gap-2">
+                    <div className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[6px] font-bold text-indigo-600">1</div>
+                    <div className="flex-1 space-y-1">
+                      <div className="h-2.5 w-20 rounded bg-zinc-200" />
+                      <div className="h-2 w-full rounded bg-zinc-50" />
+                      <div className="h-2 w-3/4 rounded bg-zinc-50" />
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <div className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[6px] font-bold text-indigo-600">2</div>
+                    <div className="flex-1 space-y-1">
+                      <div className="h-2.5 w-16 rounded bg-zinc-200" />
+                      <div className="h-2 w-full rounded bg-zinc-50" />
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
+            <div className="p-5">
+              <h3 className="text-sm font-semibold text-zinc-900">Supplement report</h3>
+              <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                Generate professional documentation ready for adjusters.
+              </p>
             </div>
           </div>
         </div>
