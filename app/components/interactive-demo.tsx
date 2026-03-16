@@ -62,9 +62,9 @@ export function InteractiveDemo() {
       </div>
 
       {/* Screen area */}
-      <div className="relative bg-gradient-to-br from-zinc-50 to-white p-6 sm:p-8" style={{ minHeight: "340px" }}>
+      <div className="relative bg-gradient-to-br from-zinc-50 to-white" style={{ height: "400px" }}>
         {/* Progress bar */}
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-zinc-100">
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-zinc-100 z-10">
           <div
             className="h-full bg-indigo-600 transition-all duration-[4000ms] ease-linear"
             style={{ width: isPaused ? `${((step + 0.5) / STEPS.length) * 100}%` : `${((step + 1) / STEPS.length) * 100}%` }}
@@ -72,7 +72,7 @@ export function InteractiveDemo() {
         </div>
 
         {/* Step 1: Capture */}
-        <div className={`transition-all duration-500 ${step === 0 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 absolute inset-0 pointer-events-none p-6 sm:p-8"}`}>
+        <div className={`absolute inset-0 p-6 sm:p-8 transition-opacity duration-500 ${step === 0 ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <div className="mx-auto max-w-sm">
             <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
               {/* Phone camera mockup */}
@@ -112,7 +112,7 @@ export function InteractiveDemo() {
         </div>
 
         {/* Step 2: Tag */}
-        <div className={`transition-all duration-500 ${step === 1 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 absolute inset-0 pointer-events-none p-6 sm:p-8"}`}>
+        <div className={`absolute inset-0 p-6 sm:p-8 transition-opacity duration-500 ${step === 1 ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <div className="mx-auto max-w-sm">
             <div className="rounded-xl border border-zinc-200 bg-white shadow-sm p-4 space-y-3">
               <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">New Capture</p>
@@ -147,7 +147,7 @@ export function InteractiveDemo() {
         </div>
 
         {/* Step 3: Generate */}
-        <div className={`transition-all duration-500 ${step === 2 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 absolute inset-0 pointer-events-none p-6 sm:p-8"}`}>
+        <div className={`absolute inset-0 p-6 sm:p-8 transition-opacity duration-500 ${step === 2 ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <div className="mx-auto max-w-sm">
             <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
               <div className="bg-indigo-600 px-4 py-2">
@@ -177,7 +177,7 @@ export function InteractiveDemo() {
         </div>
 
         {/* Step 4: Send */}
-        <div className={`transition-all duration-500 ${step === 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 absolute inset-0 pointer-events-none p-6 sm:p-8"}`}>
+        <div className={`absolute inset-0 p-6 sm:p-8 transition-opacity duration-500 ${step === 3 ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <div className="mx-auto max-w-sm">
             <div className="rounded-xl border border-zinc-200 bg-white shadow-sm p-4 space-y-3">
               <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Send Report</p>
@@ -213,11 +213,12 @@ export function InteractiveDemo() {
           </div>
         </div>
 
-        {/* Step description */}
-        <div className="mt-6 text-center">
-          <p className="text-base font-semibold text-zinc-900">{STEPS[step].label}</p>
-          <p className="mt-1 text-sm text-zinc-500">{STEPS[step].description}</p>
-        </div>
+      </div>
+
+      {/* Step description — outside the fixed-height area */}
+      <div className="px-6 py-4 text-center border-t border-zinc-100">
+        <p className="text-base font-semibold text-zinc-900">{STEPS[step].label}</p>
+        <p className="mt-1 text-sm text-zinc-500">{STEPS[step].description}</p>
       </div>
     </div>
   )

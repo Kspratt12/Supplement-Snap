@@ -28,6 +28,15 @@ textarea {
   transition: all 0.15s ease;
 }
 
+/* Prevent iOS auto-zoom on input focus (requires font-size >= 16px) */
+@media screen and (max-width: 639px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
 /* Better focus rings */
 select:focus,
 input:focus,

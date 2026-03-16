@@ -288,7 +288,7 @@ export default function DashboardPage() {
         {isActive && (
           <div className="mb-6 sm:mb-8 grid grid-cols-2 gap-3">
             <Link
-              href="/app"
+              href={projects.length > 0 ? `/app?project=${projects[0].id}` : "/app"}
               className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 min-h-[52px] text-sm font-medium text-zinc-700 shadow-sm hover:border-indigo-200 hover:shadow-md active:bg-zinc-50 transition-all"
             >
               <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
