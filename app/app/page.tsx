@@ -153,6 +153,7 @@ function Home() {
   const [showMap, setShowMap] = useState(false)
   const [addressSuggestions, setAddressSuggestions] = useState<Array<{ display_name: string; lat: string; lon: string }>>([])
   const [addressSearch, setAddressSearch] = useState("")
+  const [addressEditing, setAddressEditing] = useState(false)
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null)
   // Quantity/unit for capture form
   const [quantity, setQuantity] = useState("1")
@@ -389,9 +390,13 @@ function Home() {
     if (!selectedProject) return
     setAddressSearch(address)
     setAddressSuggestions([])
-    if (!confirm(`Update project address to:\n\n${address}\n\nSave this change?`)) return
+    if (!confirm(`Update project address to:\n\n${address}\n\nSave this change?`)) {
+      setAddressEditing(false)
+      return
+    }
     await supabase.from("projects").update({ property_address: address }).eq("id", selectedProject.id)
     setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, property_address: address } : p))
+    setAddressEditing(false)
   }
 
   async function loadProjects() {
@@ -1766,14 +1771,16 @@ function Home() {
                   <div className="flex gap-2">
                     <input
                       type="text"
-                      value={addressSearch || selectedProject.property_address || ""}
-                      onChange={(e) => searchAddress(e.target.value)}
+                      value={addressEditing ? addressSearch : (selectedProject.property_address || "")}
+                      onChange={(e) => { setAddressEditing(true); searchAddress(e.target.value) }}
                       onKeyDown={async (e) => {
                         if (e.key === "Enter" && addressSearch.trim()) {
                           await selectAddress(addressSearch.trim())
+                          setAddressEditing(false)
                         }
                       }}
-                      onFocus={() => setAddressSearch(selectedProject.property_address || "")}
+                      onFocus={() => { setAddressEditing(true); setAddressSearch(selectedProject.property_address || "") }}
+                      onBlur={() => { setTimeout(() => { if (addressSuggestions.length === 0) setAddressEditing(false) }, 200) }}
                       placeholder="Search address..."
                       className="flex-1 rounded border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400"
                     />
