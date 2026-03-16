@@ -151,6 +151,9 @@ function Home() {
   const [diagramFile, setDiagramFile] = useState<File | null>(null)
   const [diagramUploading, setDiagramUploading] = useState(false)
   const [showMap, setShowMap] = useState(false)
+  const [addressSuggestions, setAddressSuggestions] = useState<Array<{ display_name: string; lat: string; lon: string }>>([])
+  const [addressSearch, setAddressSearch] = useState("")
+  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null)
   // Quantity/unit for capture form
   const [quantity, setQuantity] = useState("1")
   const [unit, setUnit] = useState("")
@@ -354,7 +357,42 @@ function Home() {
     }
     setShowReport(false)
     setShowMap(false)
+    setAddressSuggestions([])
+    setAddressSearch("")
   }, [selectedProjectId])
+
+  function searchAddress(query: string) {
+    setAddressSearch(query)
+    if (searchTimeout) clearTimeout(searchTimeout)
+    if (query.length < 3) {
+      setAddressSuggestions([])
+      return
+    }
+    const timeout = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&countrycodes=us&limit=5&q=${encodeURIComponent(query)}`,
+          { headers: { "Accept": "application/json" } }
+        )
+        if (res.ok) {
+          const data = await res.json()
+          setAddressSuggestions(data)
+        }
+      } catch {
+        setAddressSuggestions([])
+      }
+    }, 300)
+    setSearchTimeout(timeout)
+  }
+
+  async function selectAddress(address: string) {
+    if (!selectedProject) return
+    setAddressSearch(address)
+    setAddressSuggestions([])
+    if (!confirm(`Update project address to:\n\n${address}\n\nSave this change?`)) return
+    await supabase.from("projects").update({ property_address: address }).eq("id", selectedProject.id)
+    setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, property_address: address } : p))
+  }
 
   async function loadProjects() {
     if (!user) return
@@ -1714,7 +1752,7 @@ function Home() {
                     )}
                     <button
                       type="button"
-                      onClick={() => setShowMap(false)}
+                      onClick={() => { setShowMap(false); setAddressSuggestions([]); setAddressSearch("") }}
                       className="flex h-5 w-5 items-center justify-center rounded hover:bg-zinc-200 text-zinc-400 hover:text-zinc-600"
                     >
                       <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1723,37 +1761,49 @@ function Home() {
                     </button>
                   </div>
                 </div>
-                {/* Editable address */}
-                <div className="flex gap-2 border-b border-zinc-100 px-3 py-2 bg-white">
-                  <input
-                    type="text"
-                    defaultValue={selectedProject.property_address || ""}
-                    placeholder="Enter property address..."
-                    onKeyDown={async (e) => {
-                      if (e.key === "Enter") {
-                        const input = e.target as HTMLInputElement
-                        const newAddress = input.value.trim()
-                        if (!newAddress || !selectedProject) return
-                        await supabase.from("projects").update({ property_address: newAddress }).eq("id", selectedProject.id)
-                        setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, property_address: newAddress } : p))
-                      }
-                    }}
-                    className="flex-1 rounded border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400"
-                  />
-                  <button
-                    type="button"
-                    onClick={async (e) => {
-                      const input = (e.target as HTMLElement).previousElementSibling as HTMLInputElement
-                      if (!input) return
-                      const newAddress = input.value.trim()
-                      if (!newAddress || !selectedProject) return
-                      await supabase.from("projects").update({ property_address: newAddress }).eq("id", selectedProject.id)
-                      setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, property_address: newAddress } : p))
-                    }}
-                    className="rounded bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
-                  >
-                    Update
-                  </button>
+                {/* Editable address with autocomplete */}
+                <div className="relative border-b border-zinc-100 px-3 py-2 bg-white">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={addressSearch || selectedProject.property_address || ""}
+                      onChange={(e) => searchAddress(e.target.value)}
+                      onKeyDown={async (e) => {
+                        if (e.key === "Enter" && addressSearch.trim()) {
+                          await selectAddress(addressSearch.trim())
+                        }
+                      }}
+                      onFocus={() => setAddressSearch(selectedProject.property_address || "")}
+                      placeholder="Search address..."
+                      className="flex-1 rounded border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => { if (addressSearch.trim()) selectAddress(addressSearch.trim()) }}
+                      className="rounded bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                    >
+                      Update
+                    </button>
+                  </div>
+                  {/* Autocomplete suggestions dropdown */}
+                  {addressSuggestions.length > 0 && (
+                    <div className="absolute left-3 right-3 top-full z-20 mt-1 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-lg">
+                      {addressSuggestions.map((s, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => selectAddress(s.display_name)}
+                          className="flex w-full items-start gap-2 px-3 py-2 text-left text-xs text-zinc-700 hover:bg-indigo-50 hover:text-indigo-700 border-b border-zinc-50 last:border-0"
+                        >
+                          <svg className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                          <span className="line-clamp-2">{s.display_name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 {selectedProject.property_address && (
                   <iframe
