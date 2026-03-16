@@ -63,27 +63,41 @@ export default function LandingPage() {
         <div className="grid gap-6 sm:grid-cols-3">
           {/* Card 1 — Dashboard */}
           <div className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm hover:shadow-md">
-            <div className="relative h-48 bg-gradient-to-br from-indigo-50 to-zinc-50 p-5">
-              <div className="rounded-lg border border-zinc-200 bg-white p-3 shadow-sm">
-                <div className="mb-2 flex items-center gap-2">
-                  <div className="h-6 w-6 rounded bg-indigo-600" />
-                  <div className="h-3 w-20 rounded bg-zinc-200" />
+            <div className="relative bg-gradient-to-br from-indigo-50 to-zinc-50 p-4">
+              {/* Browser frame */}
+              <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
+                <div className="flex items-center gap-1 border-b border-zinc-100 bg-zinc-50 px-2.5 py-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
                 </div>
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <div className="h-2.5 w-24 rounded bg-zinc-100" />
-                    <div className="h-4 w-12 rounded-full bg-green-100" />
+                <div className="p-3">
+                  <div className="mb-2 flex items-center gap-1.5">
+                    <div className="flex h-4 w-4 items-center justify-center rounded bg-indigo-600 text-[6px] font-bold text-white">S</div>
+                    <span className="text-[8px] font-bold text-zinc-700">Welcome back, Kelvin</span>
                   </div>
-                  <div className="h-2 w-32 rounded bg-zinc-100" />
-                </div>
-                <div className="mt-3 space-y-1.5">
-                  <div className="flex items-center justify-between rounded-lg border border-zinc-100 px-2 py-1.5">
-                    <div className="h-2.5 w-20 rounded bg-zinc-200" />
-                    <div className="h-2 w-8 rounded bg-indigo-100" />
+                  <div className="mb-2 rounded border border-zinc-100 p-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[7px] font-semibold text-zinc-500">PLAN</span>
+                      <span className="rounded-full bg-green-100 px-1.5 py-0.5 text-[6px] font-medium text-green-700">Active</span>
+                    </div>
+                    <p className="mt-1 text-[8px] font-semibold text-zinc-800">Starter</p>
                   </div>
-                  <div className="flex items-center justify-between rounded-lg border border-zinc-100 px-2 py-1.5">
-                    <div className="h-2.5 w-16 rounded bg-zinc-200" />
-                    <div className="h-2 w-8 rounded bg-indigo-100" />
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between rounded border border-zinc-100 px-2 py-1.5">
+                      <div>
+                        <p className="text-[7px] font-semibold text-zinc-700">Smith Residence</p>
+                        <p className="text-[6px] text-zinc-400">3 captures</p>
+                      </div>
+                      <span className="text-[6px] font-medium text-indigo-600">Open →</span>
+                    </div>
+                    <div className="flex items-center justify-between rounded border border-zinc-100 px-2 py-1.5">
+                      <div>
+                        <p className="text-[7px] font-semibold text-zinc-700">Johnson Property</p>
+                        <p className="text-[6px] text-zinc-400">5 captures</p>
+                      </div>
+                      <span className="text-[6px] font-medium text-indigo-600">Open →</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -91,67 +105,89 @@ export default function LandingPage() {
             <div className="p-5">
               <h3 className="text-sm font-semibold text-zinc-900">Dashboard</h3>
               <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                Manage projects and subscription from one place.
+                Manage projects, track subscription status, and jump into any job.
               </p>
             </div>
           </div>
 
           {/* Card 2 — Capture */}
           <div className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm hover:shadow-md">
-            <div className="relative h-48 bg-gradient-to-br from-indigo-50 to-zinc-50 p-5">
-              <div className="rounded-lg border border-zinc-200 bg-white p-3 shadow-sm">
-                <div className="mb-2 h-2.5 w-16 rounded bg-zinc-300" />
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="flex h-14 flex-col items-center justify-center rounded-lg border-2 border-dashed border-zinc-200 bg-zinc-50">
-                    <div className="h-5 w-5 rounded-full bg-zinc-200" />
-                    <div className="mt-1 h-1.5 w-10 rounded bg-zinc-200" />
-                  </div>
-                  <div className="flex h-14 flex-col items-center justify-center rounded-lg border-2 border-dashed border-zinc-200 bg-zinc-50">
-                    <div className="h-5 w-5 rounded-full bg-zinc-200" />
-                    <div className="mt-1 h-1.5 w-10 rounded bg-zinc-200" />
-                  </div>
+            <div className="relative bg-gradient-to-br from-indigo-50 to-zinc-50 p-4">
+              <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
+                <div className="flex items-center gap-1 border-b border-zinc-100 bg-zinc-50 px-2.5 py-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
                 </div>
-                <div className="mt-2 space-y-1.5">
-                  <div className="flex gap-1.5">
-                    <div className="h-4 w-14 rounded-full bg-indigo-100" />
-                    <div className="h-4 w-10 rounded-full bg-zinc-100" />
+                <div className="p-3">
+                  <p className="mb-2 text-[7px] font-semibold uppercase tracking-wider text-zinc-400">New Capture</p>
+                  <div className="mb-2 text-[7px] font-medium text-zinc-600">Photos (2)</div>
+                  <div className="mb-2 grid grid-cols-3 gap-1">
+                    <div className="aspect-square rounded bg-gradient-to-br from-amber-100 to-amber-50 border border-zinc-200" />
+                    <div className="aspect-square rounded bg-gradient-to-br from-red-100 to-red-50 border border-zinc-200" />
+                    <div className="flex aspect-square items-center justify-center rounded border-2 border-dashed border-zinc-200 bg-zinc-50">
+                      <span className="text-[7px] text-zinc-400">+ Add</span>
+                    </div>
                   </div>
-                  <div className="h-6 w-full rounded bg-zinc-50 border border-zinc-100" />
+                  <div className="mb-1.5 flex gap-1">
+                    <span className="rounded-full bg-indigo-50 px-1.5 py-0.5 text-[6px] font-medium text-indigo-700">Decking</span>
+                    <span className="rounded-full bg-zinc-100 px-1.5 py-0.5 text-[6px] font-medium text-zinc-600">Front</span>
+                  </div>
+                  <div className="rounded border border-zinc-100 px-1.5 py-1">
+                    <p className="text-[6px] text-zinc-400">3 sheets of rotted decking found...</p>
+                  </div>
+                  <div className="mt-1.5 h-4 rounded bg-indigo-600 flex items-center justify-center">
+                    <span className="text-[6px] font-semibold text-white">Save Capture</span>
+                  </div>
                 </div>
               </div>
             </div>
             <div className="p-5">
               <h3 className="text-sm font-semibold text-zinc-900">Capture workflow</h3>
               <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                Photograph hidden damage and tag roof areas instantly.
+                Photograph damage, tag roof areas, and add field notes from the field.
               </p>
             </div>
           </div>
 
           {/* Card 3 — Report */}
           <div className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm hover:shadow-md">
-            <div className="relative h-48 bg-gradient-to-br from-indigo-50 to-zinc-50 p-5">
-              <div className="rounded-lg border border-zinc-200 bg-white p-3 shadow-sm">
-                <div className="mb-2 flex items-center gap-2">
-                  <div className="h-3 w-3 rounded bg-indigo-500" />
-                  <div className="h-2.5 w-24 rounded bg-zinc-300" />
+            <div className="relative bg-gradient-to-br from-indigo-50 to-zinc-50 p-4">
+              <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
+                <div className="bg-indigo-600 px-3 py-1.5">
+                  <p className="text-[7px] font-semibold text-white">Supplement Snap — Project Report</p>
                 </div>
-                <div className="h-px bg-zinc-100" />
-                <div className="mt-2 space-y-2">
-                  <div className="flex items-start gap-2">
-                    <div className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[6px] font-bold text-indigo-600">1</div>
-                    <div className="flex-1 space-y-1">
-                      <div className="h-2.5 w-20 rounded bg-zinc-200" />
-                      <div className="h-2 w-full rounded bg-zinc-50" />
-                      <div className="h-2 w-3/4 rounded bg-zinc-50" />
+                <div className="p-3">
+                  <p className="text-[8px] font-bold text-zinc-800">Smith Residence</p>
+                  <p className="text-[6px] text-zinc-400">742 Evergreen Terrace • Mar 12, 2026</p>
+                  <div className="mt-2 h-px bg-zinc-100" />
+                  <div className="mt-2 space-y-1.5">
+                    <div className="flex items-start gap-1.5">
+                      <span className="mt-0.5 flex h-3 w-3 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[5px] font-bold text-indigo-700">1</span>
+                      <div>
+                        <p className="text-[7px] font-semibold text-zinc-700">Decking — Front</p>
+                        <p className="text-[5px] text-zinc-400 leading-relaxed">Rotted OSB discovered along eave edge...</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <span className="mt-0.5 flex h-3 w-3 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[5px] font-bold text-indigo-700">2</span>
+                      <div>
+                        <p className="text-[7px] font-semibold text-zinc-700">Flashing — Chimney</p>
+                        <p className="text-[5px] text-zinc-400 leading-relaxed">Step flashing corroded at chimney wall...</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <span className="mt-0.5 flex h-3 w-3 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[5px] font-bold text-indigo-700">3</span>
+                      <div>
+                        <p className="text-[7px] font-semibold text-zinc-700">Ice &amp; Water — Valley</p>
+                        <p className="text-[5px] text-zinc-400 leading-relaxed">No I&amp;W shield present in valley...</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-start gap-2">
-                    <div className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[6px] font-bold text-indigo-600">2</div>
-                    <div className="flex-1 space-y-1">
-                      <div className="h-2.5 w-16 rounded bg-zinc-200" />
-                      <div className="h-2 w-full rounded bg-zinc-50" />
-                    </div>
+                  <div className="mt-2 flex gap-1">
+                    <div className="h-5 flex-1 rounded bg-gradient-to-br from-amber-100 to-amber-50 border border-zinc-200" />
+                    <div className="h-5 flex-1 rounded bg-gradient-to-br from-red-100 to-red-50 border border-zinc-200" />
+                    <div className="h-5 flex-1 rounded bg-gradient-to-br from-blue-100 to-blue-50 border border-zinc-200" />
                   </div>
                 </div>
               </div>
@@ -159,7 +195,7 @@ export default function LandingPage() {
             <div className="p-5">
               <h3 className="text-sm font-semibold text-zinc-900">Supplement report</h3>
               <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                Generate professional documentation ready for adjusters.
+                Generate PDF reports with findings, narratives, and photos for adjusters.
               </p>
             </div>
           </div>
