@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { Suspense } from "react"
-import { CheckoutButton, CancelBanner } from "./checkout-button"
+import { CheckoutButton, CancelBanner, TestModeBanner } from "./checkout-button"
 
 export const metadata: Metadata = {
   title: "Pricing – Supplement Snap",
@@ -90,6 +90,7 @@ export default function PricingPage() {
       <Suspense fallback={null}>
         <CancelBanner />
       </Suspense>
+      <TestModeBanner isTestMode={(process.env.STRIPE_SECRET_KEY || "").startsWith("sk_test_")} />
 
       {/* Pricing Card */}
       <section className="mx-auto max-w-md px-6 py-16">

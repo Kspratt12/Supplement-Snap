@@ -40,10 +40,14 @@ export default function SuccessPage() {
             Your account setup is in progress. We&apos;ll have everything ready for your team shortly.
           </p>
 
-          <div className="mt-8 rounded-xl border border-zinc-200 bg-zinc-50 p-6">
+          <div className="mt-6 rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+            Payment received successfully.
+          </div>
+
+          <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-6">
             <p className="text-sm font-semibold text-zinc-700">Next step</p>
             <p className="mt-1 text-sm text-zinc-500">
-              Book your onboarding demo so we can get your team running fast.
+              Book your onboarding call so we can get your team set up and running fast.
             </p>
           </div>
 

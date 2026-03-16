@@ -1,6 +1,11 @@
 import Stripe from "stripe"
 import { NextResponse } from "next/server"
 
+export async function GET() {
+  const key = process.env.STRIPE_SECRET_KEY || ""
+  return NextResponse.json({ testMode: key.startsWith("sk_test_") })
+}
+
 export async function POST(request: Request) {
   try {
     if (!process.env.STRIPE_SECRET_KEY) {
@@ -22,7 +27,6 @@ export async function POST(request: Request) {
       )
     }
 
-    // Get the origin for redirect URLs
     const origin = request.headers.get("origin") || "http://localhost:3000"
 
     const session = await stripe.checkout.sessions.create({
