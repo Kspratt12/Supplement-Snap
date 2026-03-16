@@ -34,6 +34,10 @@ export const metadata: Metadata = {
       "Capture hidden roofing damage during tear-off, generate supplement documentation, and send adjuster-ready reports in minutes.",
   },
   metadataBase: new URL("https://supplement-snap.vercel.app"),
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
