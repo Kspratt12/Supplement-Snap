@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
     const resend = new Resend(process.env.RESEND_API_KEY)
 
-    const { to, subject, message, pdfBase64, fileName, projectName, propertyAddress, projectId, companyName } = await request.json()
+    const { to, subject, message, pdfBase64, fileName, projectName, propertyAddress, projectId, userId, companyName } = await request.json()
 
     if (!to || !subject) {
       return NextResponse.json(
@@ -33,6 +33,7 @@ export async function POST(request: Request) {
         .from("email_tracking")
         .insert({
           project_id: projectId || null,
+          user_id: userId || null,
           recipient_email: to,
           subject: subject,
         })

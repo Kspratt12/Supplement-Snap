@@ -113,11 +113,12 @@ export default function DashboardPage() {
       setReportCount(sc)
     }
 
-    // Check email opens
+    // Check email opens (scoped to user)
     try {
       const { count } = await supabase
         .from("email_tracking")
         .select("*", { count: "exact", head: true })
+        .eq("user_id", user!.id)
         .gt("open_count", 0)
       setEmailOpens(count || 0)
     } catch {}

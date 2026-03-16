@@ -1237,6 +1237,7 @@ function Home() {
           projectName: selectedProject.project_name,
           propertyAddress: selectedProject.property_address || "",
           projectId: selectedProjectId,
+          userId: user.id,
           companyName: companyName || "",
         }),
       })
