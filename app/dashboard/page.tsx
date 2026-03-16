@@ -7,6 +7,7 @@ import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { OnboardingChecklist } from "./onboarding-checklist"
 import { QuickVoiceRecord, QuickPhotoCapture } from "./quick-capture"
+import { TeamManager } from "./team-manager"
 
 type ProjectWithCount = {
   id: string
@@ -353,6 +354,12 @@ export default function DashboardPage() {
           </>
         )}
 
+        {/* Team Manager */}
+        {isActive && user && (
+          <div className="mt-6 sm:mt-8">
+            <TeamManager userId={user.id} />
+          </div>
+        )}
 
         {/* Subscription Required Modal */}
         {showSubModal && (

@@ -1,5 +1,6 @@
 import { Resend } from "resend"
 import { NextResponse } from "next/server"
+import { createClient } from "@supabase/supabase-js"
 
 export async function POST(request: Request) {
   try {
@@ -12,13 +13,38 @@ export async function POST(request: Request) {
 
     const resend = new Resend(process.env.RESEND_API_KEY)
 
-    const { to, subject, message, pdfBase64, fileName, projectName, propertyAddress } = await request.json()
+    const { to, subject, message, pdfBase64, fileName, projectName, propertyAddress, projectId } = await request.json()
 
     if (!to || !subject) {
       return NextResponse.json(
         { error: "Recipient email and subject are required" },
         { status: 400 }
       )
+    }
+
+    // Create email tracking record
+    let trackingPixelHtml = ""
+    try {
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+        process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+      )
+      const { data: trackData } = await supabase
+        .from("email_tracking")
+        .insert({
+          project_id: projectId || null,
+          recipient_email: to,
+          subject: subject,
+        })
+        .select("tracking_token")
+        .single()
+
+      if (trackData?.tracking_token) {
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://supplement-snap.vercel.app"
+        trackingPixelHtml = `<img src="${siteUrl}/api/email-track?t=${trackData.tracking_token}" width="1" height="1" style="display:none" alt="" />`
+      }
+    } catch {
+      // Tracking failed silently — email still sends
     }
 
     // Build HTML email body
@@ -43,6 +69,7 @@ ${message}
             Sent via Supplement Snap
           </p>
         </div>
+        ${trackingPixelHtml}
       </div>
     `
 
