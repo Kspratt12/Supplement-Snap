@@ -233,7 +233,7 @@ export default function DashboardPage() {
         )}
 
         {/* Top row: Subscription + Quick Actions */}
-        <div className="mb-8 grid gap-4 sm:grid-cols-2">
+        <div className="mb-8 grid gap-4 sm:grid-cols-2 items-start">
           {/* 2. Subscription card */}
           {!subscriptionLoading && (
             <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
