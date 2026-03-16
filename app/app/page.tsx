@@ -110,7 +110,7 @@ export default function AppPage() {
 }
 
 function Home() {
-  const { user, loading: authLoading, signOut, subscriptionStatus, subscriptionLoading } = useAuth()
+  const { user, loading: authLoading, signOut, subscriptionStatus, subscriptionPlan, subscriptionLoading } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -121,6 +121,7 @@ function Home() {
   }, [user, authLoading, subscriptionLoading, router])
 
   const isFreeUser = !hasActiveSubscription(subscriptionStatus)
+  const isProUser = hasActiveSubscription(subscriptionStatus) && subscriptionPlan === "pro"
   const FREE_PROJECT_LIMIT = 1
   const FREE_CAPTURE_LIMIT = 3
 
@@ -1217,7 +1218,7 @@ function Home() {
   }
 
   async function exportXactimate() {
-    if (isFreeUser) { setShowUpgradeModal(true); return }
+    if (!isProUser) { setShowUpgradeModal(true); return }
     if (!selectedProject || captures.length === 0) return
     try {
       const res = await fetch("/api/export-xactimate", {
@@ -2248,10 +2249,10 @@ function Home() {
                           onClick={() => openViewer(urls, j)}
                         />
                         <button
-                          onClick={() => { setAnnotateUrl(url); setAnnotateOpen(true) }}
+                          onClick={() => { if (!isProUser) { setShowUpgradeModal(true); return }; setAnnotateUrl(url); setAnnotateOpen(true) }}
                           className="absolute bottom-1 right-1 rounded-md bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity"
                         >
-                          Annotate
+                          Annotate{!isProUser ? " (Pro)" : ""}
                         </button>
                       </div>
                     ))}
