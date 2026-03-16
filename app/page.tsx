@@ -44,9 +44,10 @@ export default function LandingPage() {
             Book a Demo
           </Link>
         </div>
-        <p className="mx-auto mt-6 max-w-lg text-sm text-zinc-400">
-          Built for roofing contractors who need faster supplement documentation from the field.
-        </p>
+        <div className="mx-auto mt-6 flex items-center gap-2 justify-center">
+          <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">New</span>
+          <span className="text-sm text-zinc-500">Try your first project free — no credit card required</span>
+        </div>
       </section>
 
       {/* Revenue Impact — moved up for maximum persuasion */}
@@ -421,6 +422,56 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Built for Insurance Restoration */}
+      <section className="border-t border-zinc-100 bg-zinc-50 py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Insurance-Ready</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Built for insurance restoration workflows
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
+              Track claims from tear-off to approval. Everything adjusters need, organized the way your team works.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                title: "Claim Tracking",
+                desc: "Insurance company, claim number, policy, date of loss, and adjuster contact — all attached to every project.",
+                icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
+              },
+              {
+                title: "Photos in Reports",
+                desc: "Damage photos are embedded directly in your PDF report. Adjusters see the evidence right next to the narrative.",
+                icon: "M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z",
+              },
+              {
+                title: "Xactimate Pricing",
+                desc: "CSV export maps to real Xactimate line codes with unit pricing. Import directly — no manual entry.",
+                icon: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z",
+              },
+              {
+                title: "Roof Diagrams",
+                desc: "Attach EagleView reports or roof sketches to any project. Everything the adjuster needs in one place.",
+                icon: "M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5",
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-50">
+                  <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-zinc-900">{item.title}</h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-zinc-500">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section id="how-it-works" className="border-t border-zinc-100 bg-zinc-50 py-20">
         <div className="mx-auto max-w-5xl px-6">
@@ -662,20 +713,20 @@ export default function LandingPage() {
             Ready to capture what you&apos;re owed?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
-            Book a demo and see how Supplement Snap helps your crew document damage and send supplement reports faster.
+            Try your first project free, or book a demo to see how Supplement Snap helps your crew document damage and recover more supplement revenue.
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
-              href="/demo"
+              href="/signup?trial=1"
               className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
             >
-              Book a Demo
+              Start Free Project
             </Link>
             <Link
-              href="/signup"
+              href="/demo"
               className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
             >
-              Get Started
+              Book a Demo
             </Link>
           </div>
         </div>

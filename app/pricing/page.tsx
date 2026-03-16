@@ -33,6 +33,10 @@ const PRO_FEATURES = [
 
 const FAQ = [
   {
+    q: "Can I try it before paying?",
+    a: "Yes! Create a free account and complete your first project at no cost — no credit card required. You'll be able to capture damage, generate an AI supplement draft, and see a sample PDF report. When you're ready to send reports and unlock unlimited projects, choose a plan.",
+  },
+  {
     q: "What's the difference between Starter and Pro?",
     a: "Starter is for solo contractors or single-crew operations. Pro adds team access so your foreman, office staff, and crew can all see projects in real-time, plus email tracking, photo annotations, and Xactimate export.",
   },
@@ -79,6 +83,18 @@ export default function PricingPage() {
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-zinc-500 sm:text-lg">
           One approved supplement pays for the entire platform. Choose the plan that fits your team.
         </p>
+        <div className="mx-auto mt-8 max-w-md rounded-xl border-2 border-green-200 bg-green-50 px-6 py-4">
+          <p className="text-sm font-semibold text-green-800">Try Supplement Snap free</p>
+          <p className="mt-1 text-xs text-green-700">
+            Create your first project at no cost. No credit card required. See the value before you commit.
+          </p>
+          <Link
+            href="/signup?trial=1"
+            className="mt-3 inline-block rounded-lg bg-green-600 px-5 py-2 text-sm font-semibold text-white hover:bg-green-500"
+          >
+            Start Free Project
+          </Link>
+        </div>
       </section>
 
       <Suspense fallback={null}>
@@ -92,7 +108,7 @@ export default function PricingPage() {
           {/* Starter */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-8 shadow-sm">
             <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Starter</p>
-            <p className="mt-1 text-xs text-zinc-400">For solo crews</p>
+            <p className="mt-1 text-xs text-zinc-400">For solo crews — first project free</p>
             <div className="mt-5">
               <span className="text-4xl font-extrabold text-zinc-900">$497</span>
               <span className="ml-1 text-sm text-zinc-500">setup</span>

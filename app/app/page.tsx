@@ -58,6 +58,15 @@ type Project = {
   project_name: string
   property_address: string
   created_at: string
+  insurance_company?: string
+  claim_number?: string
+  policy_number?: string
+  date_of_loss?: string
+  adjuster_name?: string
+  adjuster_email?: string
+  adjuster_phone?: string
+  claim_status?: string
+  diagram_url?: string
 }
 
 const CAPTURE_STATUSES = ["Captured", "Needs Review", "Ready to Send", "Sent"] as const
@@ -119,6 +128,21 @@ function Home() {
   const [status, setStatus] = useState("")
   const [saving, setSaving] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
+  // Claim info toggle
+  const [showClaimInfo, setShowClaimInfo] = useState(false)
+  // New project claim fields
+  const [newInsuranceCompany, setNewInsuranceCompany] = useState("")
+  const [newClaimNumber, setNewClaimNumber] = useState("")
+  const [newPolicyNumber, setNewPolicyNumber] = useState("")
+  const [newDateOfLoss, setNewDateOfLoss] = useState("")
+  const [newAdjusterName, setNewAdjusterName] = useState("")
+  const [newAdjusterEmail, setNewAdjusterEmail] = useState("")
+  // Diagram upload state
+  const [diagramFile, setDiagramFile] = useState<File | null>(null)
+  const [diagramUploading, setDiagramUploading] = useState(false)
+  // Quantity/unit for capture form
+  const [quantity, setQuantity] = useState("1")
+  const [unit, setUnit] = useState("")
 
   // Voice recording state
   const [isRecording, setIsRecording] = useState(false)
@@ -371,6 +395,13 @@ function Home() {
         project_name: newProjectName.trim(),
         property_address: newProjectAddress.trim(),
         user_id: user?.id,
+        insurance_company: newInsuranceCompany.trim() || null,
+        claim_number: newClaimNumber.trim() || null,
+        policy_number: newPolicyNumber.trim() || null,
+        date_of_loss: newDateOfLoss || null,
+        adjuster_name: newAdjusterName.trim() || null,
+        adjuster_email: newAdjusterEmail.trim() || null,
+        claim_status: "In Progress",
       })
       .select()
       .single()
@@ -380,7 +411,14 @@ function Home() {
       setSelectedProjectId(data.id)
       setNewProjectName("")
       setNewProjectAddress("")
+      setNewInsuranceCompany("")
+      setNewClaimNumber("")
+      setNewPolicyNumber("")
+      setNewDateOfLoss("")
+      setNewAdjusterName("")
+      setNewAdjusterEmail("")
       setShowNewProject(false)
+      setShowClaimInfo(false)
     }
     setCreatingProject(false)
   }
@@ -730,7 +768,33 @@ function Home() {
     doc.text(`Date of Report: ${now}`, margin, y)
     y += 4.5
     doc.text(`Total Findings: ${captures.length}`, margin, y)
-    y += 8
+    y += 5
+
+    // Claim info
+    if (selectedProject.insurance_company || selectedProject.claim_number) {
+      y += 2
+      if (selectedProject.insurance_company) {
+        doc.text(`Insurance Company: ${selectedProject.insurance_company}`, margin, y)
+        y += 4.5
+      }
+      if (selectedProject.claim_number) {
+        doc.text(`Claim Number: ${selectedProject.claim_number}`, margin, y)
+        y += 4.5
+      }
+      if (selectedProject.policy_number) {
+        doc.text(`Policy Number: ${selectedProject.policy_number}`, margin, y)
+        y += 4.5
+      }
+      if (selectedProject.date_of_loss) {
+        doc.text(`Date of Loss: ${new Date(selectedProject.date_of_loss + "T00:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`, margin, y)
+        y += 4.5
+      }
+      if (selectedProject.adjuster_name) {
+        doc.text(`Adjuster: ${selectedProject.adjuster_name}${selectedProject.adjuster_email ? ` (${selectedProject.adjuster_email})` : ""}`, margin, y)
+        y += 4.5
+      }
+    }
+    y += 3
 
     // Separator
     doc.setDrawColor(200, 200, 210)
@@ -954,6 +1018,8 @@ function Home() {
             damage_type: c.damage_type,
             roof_area: c.roof_area,
             field_note: c.field_note,
+            quantity: (c as any).quantity || 1,
+            unit: (c as any).unit || "",
           })),
         }),
       })
@@ -985,7 +1051,7 @@ function Home() {
 
   function openEmailModal() {
     if (!selectedProject) return
-    setEmailTo("")
+    setEmailTo(selectedProject.adjuster_email || "")
     setEmailSubject(`Supplement Request – ${selectedProject.project_name}`)
     setEmailMessage(`Hello,\n\nDuring tear-off operations on this roofing claim, concealed damage was discovered that was not visible during the initial inspection.\n\nPlease see the attached supplement documentation and supporting photos.\n\nThank you.`)
     setEmailStatus("")
@@ -1000,8 +1066,8 @@ function Home() {
     setEmailError("")
 
     try {
-      // Build PDF without photos to keep email attachment small
-      const doc = await buildPdfDoc(false)
+      // Build PDF with photos for adjuster review
+      const doc = await buildPdfDoc(true)
       if (!doc) throw new Error("Failed to generate PDF")
 
       // Get base64 PDF content (strip the data:... prefix)
@@ -1201,6 +1267,8 @@ function Home() {
       roof_area: roofArea,
       field_note: fieldNote,
       status: "Captured",
+      quantity: parseInt(quantity) || 1,
+      unit: unit || null,
     }
     const coreRow = {
       project_id: selectedProjectId,
@@ -1252,6 +1320,8 @@ function Home() {
     setDamageType("")
     setRoofArea("")
     setFieldNote("")
+    setQuantity("1")
+    setUnit("")
     setSaving(false)
 
     await loadCaptures(selectedProjectId)
@@ -1337,9 +1407,75 @@ function Home() {
               type="text"
               value={newProjectAddress}
               onChange={(e) => setNewProjectAddress(e.target.value)}
-              placeholder="Property address (optional)"
+              placeholder="Property address"
               className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
             />
+
+            {/* Claim info toggle */}
+            <button
+              type="button"
+              onClick={() => setShowClaimInfo(!showClaimInfo)}
+              className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              <svg className={`h-3.5 w-3.5 transition-transform ${showClaimInfo ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+              {showClaimInfo ? "Hide" : "Add"} Insurance / Claim Info
+            </button>
+
+            {showClaimInfo && (
+              <div className="space-y-2.5 rounded-lg border border-zinc-100 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-800/30">
+                <div className="grid grid-cols-2 gap-2">
+                  <input
+                    type="text"
+                    value={newInsuranceCompany}
+                    onChange={(e) => setNewInsuranceCompany(e.target.value)}
+                    placeholder="Insurance company"
+                    className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  />
+                  <input
+                    type="text"
+                    value={newClaimNumber}
+                    onChange={(e) => setNewClaimNumber(e.target.value)}
+                    placeholder="Claim #"
+                    className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <input
+                    type="text"
+                    value={newPolicyNumber}
+                    onChange={(e) => setNewPolicyNumber(e.target.value)}
+                    placeholder="Policy #"
+                    className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  />
+                  <input
+                    type="date"
+                    value={newDateOfLoss}
+                    onChange={(e) => setNewDateOfLoss(e.target.value)}
+                    placeholder="Date of loss"
+                    className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <input
+                    type="text"
+                    value={newAdjusterName}
+                    onChange={(e) => setNewAdjusterName(e.target.value)}
+                    placeholder="Adjuster name"
+                    className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  />
+                  <input
+                    type="email"
+                    value={newAdjusterEmail}
+                    onChange={(e) => setNewAdjusterEmail(e.target.value)}
+                    placeholder="Adjuster email"
+                    className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  />
+                </div>
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={creatingProject || !newProjectName.trim()}
@@ -1352,16 +1488,83 @@ function Home() {
 
         {/* Selected project info */}
         {selectedProject && (
-          <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500">
-            <svg className="h-3.5 w-3.5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <span>{selectedProject.property_address || "No address"}</span>
-            <span className="text-zinc-300 dark:text-zinc-700">|</span>
-            <span className="font-medium text-zinc-600 dark:text-zinc-400">
-              {captures.length} capture{captures.length !== 1 ? "s" : ""}
-            </span>
+          <div className="mt-3 space-y-2">
+            <div className="flex items-center gap-2 text-xs text-zinc-500">
+              <svg className="h-3.5 w-3.5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>{selectedProject.property_address || "No address"}</span>
+              <span className="text-zinc-300 dark:text-zinc-700">|</span>
+              <span className="font-medium text-zinc-600 dark:text-zinc-400">
+                {captures.length} capture{captures.length !== 1 ? "s" : ""}
+              </span>
+            </div>
+            {(selectedProject.insurance_company || selectedProject.claim_number) && (
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-zinc-500">
+                {selectedProject.insurance_company && (
+                  <span><span className="font-medium text-zinc-600">Ins:</span> {selectedProject.insurance_company}</span>
+                )}
+                {selectedProject.claim_number && (
+                  <span><span className="font-medium text-zinc-600">Claim:</span> {selectedProject.claim_number}</span>
+                )}
+                {selectedProject.date_of_loss && (
+                  <span><span className="font-medium text-zinc-600">DOL:</span> {new Date(selectedProject.date_of_loss + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                )}
+                {selectedProject.adjuster_name && (
+                  <span><span className="font-medium text-zinc-600">Adj:</span> {selectedProject.adjuster_name}</span>
+                )}
+              </div>
+            )}
+            {/* Diagram upload */}
+            <div className="flex items-center gap-2 pt-1">
+              {selectedProject.diagram_url ? (
+                <a href={selectedProject.diagram_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-500">
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  View Roof Diagram
+                </a>
+              ) : (
+                <>
+                  <input
+                    id="diagram-input"
+                    type="file"
+                    accept="image/*,.pdf"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0]
+                      if (!file || !selectedProject) return
+                      setDiagramUploading(true)
+                      try {
+                        const fileName = `diagrams/${Date.now()}-${file.name}`
+                        const { error: uploadError } = await supabase.storage.from("test-uploads").upload(fileName, file)
+                        if (uploadError) throw uploadError
+                        const { data: urlData } = supabase.storage.from("test-uploads").getPublicUrl(fileName)
+                        await supabase.from("projects").update({ diagram_url: urlData.publicUrl }).eq("id", selectedProject.id)
+                        setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, diagram_url: urlData.publicUrl } : p))
+                      } catch (err) {
+                        console.error("Diagram upload failed:", err)
+                      } finally {
+                        setDiagramUploading(false)
+                        e.target.value = ""
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => document.getElementById("diagram-input")?.click()}
+                    disabled={diagramUploading}
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-indigo-600 disabled:opacity-50"
+                  >
+                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                    </svg>
+                    {diagramUploading ? "Uploading..." : "Upload Roof Diagram / EagleView"}
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         )}
       </section>
@@ -1829,6 +2032,39 @@ function Home() {
                 </option>
               ))}
             </select>
+          </div>
+
+          {/* Quantity & Unit */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                Quantity
+              </label>
+              <input
+                type="number"
+                min="1"
+                step="1"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              />
+            </div>
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                Unit
+              </label>
+              <select
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+              >
+                <option value="">Auto-detect</option>
+                <option value="SF">SF (sq ft)</option>
+                <option value="LF">LF (linear ft)</option>
+                <option value="SQ">SQ (squares)</option>
+                <option value="EA">EA (each)</option>
+              </select>
+            </div>
           </div>
 
           <div>

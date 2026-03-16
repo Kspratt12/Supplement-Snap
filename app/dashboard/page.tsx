@@ -18,6 +18,11 @@ type ProjectWithCount = {
   property_address: string
   created_at: string
   capture_count: number
+  insurance_company?: string
+  claim_number?: string
+  claim_status?: string
+  adjuster_name?: string
+  date_of_loss?: string
 }
 
 export default function DashboardPage() {
@@ -337,6 +342,29 @@ export default function DashboardPage() {
         {/* Projects list */}
         {isActive && (
           <>
+          {/* Claim Pipeline */}
+          {projects.length > 0 && (
+            <div className="mb-6 sm:mb-8">
+              <h2 className="mb-3 text-sm font-semibold text-zinc-500">Claim Pipeline</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[
+                  { status: "In Progress", color: "bg-blue-50 border-blue-200 text-blue-700" },
+                  { status: "Ready to Submit", color: "bg-amber-50 border-amber-200 text-amber-700" },
+                  { status: "Submitted", color: "bg-indigo-50 border-indigo-200 text-indigo-700" },
+                  { status: "Approved", color: "bg-green-50 border-green-200 text-green-700" },
+                ].map(({ status, color }) => {
+                  const count = projects.filter(p => (p.claim_status || "In Progress") === status).length
+                  return (
+                    <div key={status} className={`rounded-xl border p-3 sm:p-4 text-center ${color}`}>
+                      <p className="text-xl sm:text-2xl font-bold">{count}</p>
+                      <p className="mt-0.5 text-xs font-medium">{status}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
             <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-base sm:text-lg font-semibold text-zinc-900">Your Projects</h2>
               <div className="flex gap-2">
@@ -390,9 +418,20 @@ export default function DashboardPage() {
                     <div className="min-w-0">
                       <h3 className="text-sm sm:text-base font-semibold text-zinc-900 truncate">{p.project_name}</h3>
                       <p className="mt-0.5 text-xs sm:text-sm text-zinc-500 truncate">{p.property_address || "No address"}</p>
-                      <div className="mt-2 flex items-center gap-3 text-xs text-zinc-400">
+                      <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-zinc-400">
                         <span>{p.capture_count} capture{p.capture_count !== 1 ? "s" : ""}</span>
                         <span>{new Date(p.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                        {p.insurance_company && (
+                          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-zinc-500">{p.insurance_company}</span>
+                        )}
+                        {p.claim_status && p.claim_status !== "In Progress" && (
+                          <span className={`rounded-full px-2 py-0.5 font-medium ${
+                            p.claim_status === "Approved" ? "bg-green-50 text-green-600" :
+                            p.claim_status === "Submitted" ? "bg-indigo-50 text-indigo-600" :
+                            p.claim_status === "Ready to Submit" ? "bg-amber-50 text-amber-600" :
+                            "bg-zinc-100 text-zinc-500"
+                          }`}>{p.claim_status}</span>
+                        )}
                       </div>
                     </div>
                     <svg className="h-5 w-5 text-zinc-300 flex-shrink-0 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
