@@ -8,6 +8,9 @@ import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { OnboardingChecklist } from "./onboarding-checklist"
 import { QuickVoiceRecord, QuickPhotoCapture } from "./quick-capture"
 import { TeamManager } from "./team-manager"
+import { ProAnalytics } from "./pro-analytics"
+import { AdjusterContacts } from "./adjuster-contacts"
+import { CompanySettings } from "./company-settings"
 
 type ProjectWithCount = {
   id: string
@@ -374,10 +377,30 @@ export default function DashboardPage() {
           </>
         )}
 
-        {/* Team Manager */}
+        {/* Pro Features Section */}
         {isActive && user && (
-          <div className="mt-6 sm:mt-8">
-            <TeamManager userId={user.id} />
+          <div className="mt-6 sm:mt-8 space-y-4">
+            {/* Pro Analytics */}
+            {hasAnyData && (
+              <div>
+                <h2 className="mb-3 text-sm font-semibold text-zinc-500">Pro Insights</h2>
+                <ProAnalytics
+                  userId={user.id}
+                  projectCount={projects.length}
+                  captureCount={totalCaptures}
+                  reportCount={reportCount}
+                />
+              </div>
+            )}
+
+            {/* Team + Contacts + Branding */}
+            <div className="grid gap-4 sm:grid-cols-2 items-start">
+              <div className="space-y-4">
+                <TeamManager userId={user.id} />
+                <AdjusterContacts userId={user.id} />
+              </div>
+              <CompanySettings userId={user.id} />
+            </div>
           </div>
         )}
 
