@@ -35,7 +35,6 @@ export function CompanySettings({ userId }: { userId: string }) {
     })
     setSaving(false)
     setSaved(true)
-    setTimeout(() => setSaved(false), 3000)
   }
 
   async function handleLogoUpload(file: File) {
@@ -46,6 +45,7 @@ export function CompanySettings({ userId }: { userId: string }) {
     if (!error) {
       const { data } = supabase.storage.from("test-uploads").getPublicUrl(filename)
       setLogoUrl(data.publicUrl)
+      setSaved(false)
     }
     setUploading(false)
   }
@@ -93,7 +93,7 @@ export function CompanySettings({ userId }: { userId: string }) {
           <label className="text-xs font-medium text-zinc-500">Company Name</label>
           <input
             value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
+            onChange={(e) => { setCompanyName(e.target.value); setSaved(false) }}
             placeholder="Smith Roofing LLC"
             className="mt-1 block w-full rounded-lg border border-zinc-300 px-3 min-h-[44px] text-sm text-zinc-900 placeholder:text-zinc-400"
           />

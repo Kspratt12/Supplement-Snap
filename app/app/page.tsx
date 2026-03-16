@@ -611,17 +611,25 @@ function Home() {
     // Add company logo if available (skip for email to reduce payload size)
     if (companyLogoUrl && includePhotos) {
       try {
+        // Fetch logo as blob to avoid CORS issues
+        const logoRes = await fetch(companyLogoUrl)
+        const logoBlob = await logoRes.blob()
+        const logoDataUrl = await new Promise<string>((resolve) => {
+          const reader = new FileReader()
+          reader.onloadend = () => resolve(reader.result as string)
+          reader.readAsDataURL(logoBlob)
+        })
+
         const logoImg = new Image()
-        logoImg.crossOrigin = "anonymous"
         await new Promise<void>((resolve) => {
           logoImg.onload = () => {
             const logoH = 10
             const logoW = (logoImg.width / logoImg.height) * logoH
-            doc.addImage(logoImg, "PNG", pageWidth - margin - logoW, 2, logoW, logoH)
+            doc.addImage(logoDataUrl, "PNG", pageWidth - margin - logoW, 2, logoW, logoH)
             resolve()
           }
           logoImg.onerror = () => resolve()
-          logoImg.src = companyLogoUrl
+          logoImg.src = logoDataUrl
         })
       } catch {
         // Logo failed — continue without it
