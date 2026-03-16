@@ -1002,6 +1002,47 @@ function Home() {
       doc.line(margin, y - 1, pageWidth - margin, y - 1)
     }
 
+    // ── ROOF DIAGRAM (if uploaded) ──
+    if (selectedProject.diagram_url) {
+      y += 6
+      checkPage(30)
+      doc.setFontSize(8)
+      doc.setFont("helvetica", "bold")
+      doc.setTextColor(130, 130, 140)
+      doc.text("ROOF DIAGRAM", margin, y)
+      y += 4
+
+      try {
+        const diagramDataUrl = await fetchImageDataUrl(selectedProject.diagram_url)
+        if (diagramDataUrl) {
+          const fmt = getImageFormat(diagramDataUrl)
+          const imgProps = doc.getImageProperties(diagramDataUrl)
+          const ratio = imgProps.height / imgProps.width
+          const imgW = Math.min(contentWidth, 160)
+          const imgH = imgW * ratio
+          const cappedH = Math.min(imgH, 140)
+          checkPage(cappedH + 5)
+          doc.setDrawColor(220, 220, 230)
+          doc.setLineWidth(0.3)
+          doc.rect(margin, y, imgW, cappedH)
+          doc.addImage(diagramDataUrl, fmt, margin, y, imgW, cappedH)
+          y += cappedH + 4
+        } else {
+          doc.setFontSize(8)
+          doc.setFont("helvetica", "italic")
+          doc.setTextColor(150, 150, 160)
+          doc.text("[Roof diagram attached to project]", margin, y)
+          y += 5
+        }
+      } catch {
+        doc.setFontSize(8)
+        doc.setFont("helvetica", "italic")
+        doc.setTextColor(150, 150, 160)
+        doc.text("[Roof diagram attached to project]", margin, y)
+        y += 5
+      }
+    }
+
     // ── CERTIFICATION LINE ──
     y += 10
     checkPage(25)
