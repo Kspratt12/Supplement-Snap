@@ -120,8 +120,8 @@ export default function DashboardPage() {
         {/* 1. Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Your Projects</h1>
-            <p className="mt-1 text-sm text-zinc-500">Manage roofing supplement documentation.</p>
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Welcome back, {userName}</h1>
+            <p className="mt-1 text-sm text-zinc-500">Manage your subscription, review your projects, and jump back into the app.</p>
           </div>
           {isActive ? (
             <Link
@@ -312,12 +312,6 @@ export default function DashboardPage() {
           </>
         )}
 
-        {/* Welcome note for new users */}
-        {!subscriptionLoading && isActive && !loadingProjects && projects.length > 0 && (
-          <p className="mt-6 text-center text-xs text-zinc-400">
-            Welcome back, {userName}. You have {projects.length} project{projects.length !== 1 ? "s" : ""}.
-          </p>
-        )}
       </main>
     </div>
   )
