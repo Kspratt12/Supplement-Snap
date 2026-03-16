@@ -608,8 +608,8 @@ function Home() {
     const pdfTitle = companyName ? `${companyName} – Supplement Report` : "Supplement Snap – Project Report"
     doc.text(pdfTitle, margin, 9)
 
-    // Add company logo if available
-    if (companyLogoUrl) {
+    // Add company logo if available (skip for email to reduce payload size)
+    if (companyLogoUrl && includePhotos) {
       try {
         const logoImg = new Image()
         logoImg.crossOrigin = "anonymous"

@@ -99,23 +99,17 @@ export function CompanySettings({ userId }: { userId: string }) {
           />
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className="rounded-lg bg-indigo-600 px-4 min-h-[40px] text-xs font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
-          >
-            {saving ? "Saving..." : "Save Branding"}
-          </button>
-          {saved && (
-            <span className="text-xs text-green-600 flex items-center gap-1">
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-              Saved
-            </span>
-          )}
-        </div>
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className={`w-full rounded-lg px-4 min-h-[44px] text-sm font-medium transition-colors ${
+            saved
+              ? "bg-green-600 text-white"
+              : "bg-indigo-600 text-white hover:bg-indigo-500"
+          } disabled:opacity-50`}
+        >
+          {saving ? "Saving..." : saved ? "Branding Saved!" : "Save Branding"}
+        </button>
       </div>
     </div>
   )
