@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useSearchParams } from "next/navigation"
+import { useAuth } from "../../lib/auth-context"
 
 /*
  * ─── STRIPE TEST CHECKLIST ───────────────────────────────────────
@@ -19,6 +20,7 @@ import { useSearchParams } from "next/navigation"
 export function CheckoutButton() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const { user } = useAuth()
 
   async function handleCheckout() {
     setLoading(true)
@@ -26,6 +28,8 @@ export function CheckoutButton() {
     try {
       const res = await fetch("/api/create-checkout-session", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user?.email }),
       })
       const data = await res.json()
 

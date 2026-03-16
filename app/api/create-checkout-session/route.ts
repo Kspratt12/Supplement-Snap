@@ -29,9 +29,19 @@ export async function POST(request: Request) {
 
     const origin = request.headers.get("origin") || "http://localhost:3000"
 
+    // Accept optional email to pre-fill checkout
+    let customerEmail: string | undefined
+    try {
+      const body = await request.json()
+      customerEmail = body.email
+    } catch {
+      // No body or invalid JSON is fine
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
+      ...(customerEmail ? { customer_email: customerEmail } : {}),
       line_items: [
         {
           price: priceSetup,

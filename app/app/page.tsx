@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { jsPDF } from "jspdf"
 import { supabase } from "../../lib/supabase"
-import { useAuth } from "../../lib/auth-context"
+import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 
 // Web Speech API type declarations
 interface SpeechRecognitionEvent extends Event {
@@ -82,13 +82,15 @@ type Capture = {
 }
 
 export default function Home() {
-  const { user, loading: authLoading, signOut } = useAuth()
+  const { user, loading: authLoading, signOut, subscriptionStatus, subscriptionLoading } = useAuth()
   const router = useRouter()
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated, or pricing if no subscription
   useEffect(() => {
-    if (!authLoading && !user) router.replace("/login")
-  }, [user, authLoading, router])
+    if (authLoading || subscriptionLoading) return
+    if (!user) { router.replace("/login"); return }
+    if (!hasActiveSubscription(subscriptionStatus)) { router.replace("/dashboard"); return }
+  }, [user, authLoading, subscriptionStatus, subscriptionLoading, router])
 
   // Project state
   const [projects, setProjects] = useState<Project[]>([])
@@ -895,7 +897,7 @@ export default function Home() {
 
   const selectedProject = projects.find((p) => p.id === selectedProjectId)
 
-  if (authLoading || !user) return null
+  if (authLoading || subscriptionLoading || !user || !hasActiveSubscription(subscriptionStatus)) return null
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
