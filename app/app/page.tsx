@@ -185,6 +185,7 @@ function Home() {
   const [projectDraftLoading, setProjectDraftLoading] = useState(false)
   const [projectDraftError, setProjectDraftError] = useState("")
   const [projectDraftCopied, setProjectDraftCopied] = useState(false)
+  const [draftExpanded, setDraftExpanded] = useState(false)
 
   // Project report state
   const [showReport, setShowReport] = useState(false)
@@ -638,6 +639,7 @@ function Home() {
 
       const { draft } = await res.json()
       setProjectDraft(draft)
+      setDraftExpanded(true)
       // Persist project draft
       supabase.from("projects").update({ last_draft: draft }).eq("id", selectedProjectId).then(() => {})
 
@@ -1915,15 +1917,29 @@ function Home() {
           )}
 
           {projectDraft && (
-            <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-              <div className="mb-4 flex items-center gap-2">
-                <svg className="h-4 w-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            <div className="rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+              {/* Collapsible header */}
+              <button
+                type="button"
+                onClick={() => setDraftExpanded(!draftExpanded)}
+                className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-xl transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <svg className="h-4 w-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+                    Project Supplement Draft
+                  </p>
+                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-green-700">Saved</span>
+                </div>
+                <svg className={`h-4 w-4 text-zinc-400 transition-transform ${draftExpanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
-                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                  Project Supplement Draft
-                </p>
-              </div>
+              </button>
+
+              {draftExpanded && (
+              <div className="px-5 pb-5">
 
               {/* Findings summary */}
               <div className="mb-4 rounded-lg border border-zinc-100 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-800/30">
@@ -1979,34 +1995,26 @@ function Home() {
                   Auto-saved
                 </span>
               </div>
+              </div>
+              )}
             </div>
           )}
         </section>
       )}
 
-      {/* Damage Checklist Reminder */}
+      {/* Damage Checklist Reminder — subtle hint */}
       {selectedProject && captures.length > 0 && !showReport && (() => {
         const documented = new Set(captures.map(c => c.damage_type))
         const common = ["Decking", "Flashing", "Ice & Water", "Vent / Pipe Boot", "Drip Edge"]
         const unchecked = common.filter(d => !documented.has(d))
-        if (unchecked.length === 0) return null
+        if (unchecked.length === 0 || unchecked.length === common.length) return null
         return (
-          <section className="mb-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
-            <div className="flex items-start gap-3">
-              <svg className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <div>
-                <p className="text-sm font-semibold text-amber-800">Before you generate — did your crew check these?</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {unchecked.map(d => (
-                    <span key={d} className="rounded-full border border-amber-300 bg-white px-3 py-1 text-xs font-medium text-amber-700">{d}</span>
-                  ))}
-                </div>
-                <p className="mt-2 text-xs text-amber-600">Adding more findings increases your supplement value. Tap &ldquo;+ Add Capture&rdquo; above if anything was missed.</p>
-              </div>
-            </div>
-          </section>
+          <div className="mb-4 flex items-center gap-2 px-1 text-xs text-zinc-400">
+            <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Not yet documented: {unchecked.join(", ")}</span>
+          </div>
         )
       })()}
 
