@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { NavLinks } from "../../lib/nav-links"
+import { SiteFooter } from "../../lib/site-footer"
 
 export const metadata: Metadata = {
   title: "Roofing Supplement Report Example | Supplement Snap",
@@ -106,13 +107,7 @@ export default function SupplementReportExamplePage() {
         </div>
       </main>
 
-      <footer className="border-t border-zinc-100 py-10">
-        <div className="mx-auto max-w-6xl px-6 text-center">
-          <Link href="/" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-            &larr; Back to Supplement Snap
-          </Link>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

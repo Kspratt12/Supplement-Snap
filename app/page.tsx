@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { NavLinks } from "../lib/nav-links"
+import { SiteFooter } from "../lib/site-footer"
 
 export default function LandingPage() {
   return (
@@ -772,26 +773,43 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-100 py-10">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
-            <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded bg-indigo-600 text-xs font-bold text-white">S</div>
-              <span className="text-sm font-semibold">Supplement Snap</span>
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-zinc-400">
-              <Link href="/terms" className="hover:text-zinc-600">Terms of Service</Link>
-              <Link href="/privacy" className="hover:text-zinc-600">Privacy Policy</Link>
-              <Link href="/refund-policy" className="hover:text-zinc-600">Refund Policy</Link>
-              <Link href="/demo" className="hover:text-zinc-600">Book a Demo</Link>
-            </div>
-            <p className="text-xs text-zinc-400">
-              &copy; {new Date().getFullYear()} Supplement Snap
+      {/* Roofing Supplement Resources */}
+      <section className="border-t border-zinc-100 py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Learn More</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Roofing Supplement Resources
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
+              Learn how roofing supplements work, what documentation adjusters expect, and how contractors capture hidden damage during tear-off.
             </p>
           </div>
+
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { href: "/roofing-supplement-software", title: "Roofing Supplement Software", desc: "Why supplements get missed and how software helps crews capture findings faster." },
+              { href: "/roofing-supplement-report-example", title: "Supplement Report Example", desc: "See what a professional supplement report looks like and what it includes." },
+              { href: "/how-roofing-supplements-work", title: "How Roofing Supplements Work", desc: "The step-by-step process from hidden damage discovery to adjuster approval." },
+              { href: "/hidden-roof-damage-tear-off", title: "Hidden Damage During Tear-Off", desc: "Common concealed conditions crews find when shingles come off." },
+              { href: "/roofing-supplement-documentation", title: "Supplement Documentation", desc: "What documentation adjusters expect and how to capture it during tear-off." },
+            ].map((r) => (
+              <Link
+                key={r.href}
+                href={r.href}
+                className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm hover:border-indigo-200 hover:shadow-md transition-all"
+              >
+                <h3 className="text-sm font-semibold text-zinc-900">{r.title}</h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-zinc-500">{r.desc}</p>
+                <p className="mt-3 text-xs font-medium text-indigo-600">Read more &rarr;</p>
+              </Link>
+            ))}
+          </div>
         </div>
-      </footer>
+      </section>
+
+      {/* Footer */}
+      <SiteFooter />
     </div>
   )
 }
