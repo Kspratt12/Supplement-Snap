@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Link from "next/link"
 
 type ChecklistProps = {
@@ -36,11 +37,26 @@ const STEPS = [
   },
 ]
 
+const STORAGE_KEY = "ss_onboarding_state"
+
 export function OnboardingChecklist({ isActive, hasProjects, hasCaptures, hasSentReport }: ChecklistProps) {
   const completed = [isActive, hasProjects, hasCaptures, hasSentReport]
   const completedCount = completed.filter(Boolean).length
 
+  const [dismissed, setDismissed] = useState(false)
+  const [minimized, setMinimized] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved === "dismissed") setDismissed(true)
+    else if (saved === "minimized") setMinimized(true)
+    setLoaded(true)
+  }, [])
+
   if (completedCount === 4) return null
+  if (!loaded) return null
+  if (dismissed) return null
 
   function isStepComplete(index: number) {
     return completed[index]
@@ -49,6 +65,65 @@ export function OnboardingChecklist({ isActive, hasProjects, hasCaptures, hasSen
   function isStepLocked(index: number) {
     if (index === 0) return false
     return !isActive
+  }
+
+  function handleMinimize() {
+    setMinimized(!minimized)
+    localStorage.setItem(STORAGE_KEY, !minimized ? "minimized" : "")
+  }
+
+  function handleDismiss() {
+    setDismissed(true)
+    localStorage.setItem(STORAGE_KEY, "dismissed")
+  }
+
+  function handleRestore() {
+    setMinimized(false)
+    localStorage.removeItem(STORAGE_KEY)
+  }
+
+  // Minimized state: compact bar
+  if (minimized) {
+    return (
+      <div className="mb-8 rounded-xl border border-zinc-200 bg-white px-5 py-3 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <h2 className="text-sm font-semibold text-zinc-900">Getting Started</h2>
+            <span className="text-xs text-zinc-400">{completedCount} of {STEPS.length} completed</span>
+            <div className="flex items-center gap-1">
+              {STEPS.map((_, i) => (
+                <div
+                  key={i}
+                  className={`h-1.5 w-4 rounded-full ${
+                    isStepComplete(i) ? "bg-indigo-600" : "bg-zinc-200"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={handleRestore}
+              className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
+              title="Expand"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={handleDismiss}
+              className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
+              title="Dismiss"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -60,15 +135,35 @@ export function OnboardingChecklist({ isActive, hasProjects, hasCaptures, hasSen
             {completedCount} of {STEPS.length} steps completed
           </p>
         </div>
-        <div className="flex items-center gap-1.5">
-          {STEPS.map((_, i) => (
-            <div
-              key={i}
-              className={`h-1.5 w-6 rounded-full ${
-                isStepComplete(i) ? "bg-indigo-600" : "bg-zinc-200"
-              }`}
-            />
-          ))}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            {STEPS.map((_, i) => (
+              <div
+                key={i}
+                className={`h-1.5 w-6 rounded-full ${
+                  isStepComplete(i) ? "bg-indigo-600" : "bg-zinc-200"
+                }`}
+              />
+            ))}
+          </div>
+          <button
+            onClick={handleMinimize}
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
+            title="Minimize"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+            </svg>
+          </button>
+          <button
+            onClick={handleDismiss}
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
+            title="Dismiss checklist"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
       </div>
 
