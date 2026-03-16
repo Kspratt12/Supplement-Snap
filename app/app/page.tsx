@@ -867,8 +867,9 @@ function Home() {
         y += boxHeight + 3
       }
 
-      // Photos
-      if (includePhotos && urls.length > 0 && urls[0] !== "") {
+      // Photos — always attempt to include them
+      if (urls.length > 0 && urls[0] !== "") {
+        let photosLoaded = 0
         checkPage(10)
         doc.setFontSize(7.5)
         doc.setFont("helvetica", "bold")
@@ -893,17 +894,20 @@ function Home() {
             doc.rect(margin, y, imgW, cappedH)
             doc.addImage(dataUrl, fmt, margin, y, imgW, cappedH)
             y += cappedH + 4
+            photosLoaded++
           } catch {
-            // Skip
+            // Skip failed photo
           }
         }
-      } else if (!includePhotos && urls.length > 0 && urls[0] !== "") {
-        checkPage(6)
-        doc.setFontSize(8)
-        doc.setFont("helvetica", "italic")
-        doc.setTextColor(150, 150, 160)
-        doc.text(`[${urls.length} photo${urls.length !== 1 ? "s" : ""} attached to this finding]`, margin, y)
-        y += 5
+
+        // If no photos loaded (CORS or fetch failure), show note
+        if (photosLoaded === 0) {
+          doc.setFontSize(8)
+          doc.setFont("helvetica", "italic")
+          doc.setTextColor(150, 150, 160)
+          doc.text(`[${urls.length} photo${urls.length !== 1 ? "s" : ""} captured — see project in Supplement Snap for images]`, margin, y)
+          y += 5
+        }
       }
 
       // Separator between findings
