@@ -65,11 +65,9 @@ export default function DashboardPage() {
         body: JSON.stringify({ userId: user?.id }),
       })
       const data = await res.json()
-      if (data.url) {
-        window.location.href = data.url
-      }
+      if (data.url) window.location.href = data.url
     } catch {
-      // Portal failed silently
+      // Portal failed
     } finally {
       setPortalLoading(false)
     }
@@ -80,19 +78,20 @@ export default function DashboardPage() {
   const isActive = hasActiveSubscription(subscriptionStatus)
   const userName = user.user_metadata?.full_name || user.email?.split("@")[0] || "there"
 
-  const statusLabel: Record<string, { text: string; color: string }> = {
-    active: { text: "Active", color: "bg-green-50 text-green-700" },
-    trialing: { text: "Trial", color: "bg-blue-50 text-blue-700" },
-    past_due: { text: "Past Due", color: "bg-amber-50 text-amber-700" },
-    canceled: { text: "Canceled", color: "bg-red-50 text-red-600" },
-    inactive: { text: "No Plan", color: "bg-zinc-100 text-zinc-600" },
+  const statusBadge: Record<string, { text: string; color: string }> = {
+    active: { text: "Active", color: "bg-green-50 text-green-700 border-green-200" },
+    trialing: { text: "Trial", color: "bg-blue-50 text-blue-700 border-blue-200" },
+    past_due: { text: "Past Due", color: "bg-amber-50 text-amber-700 border-amber-200" },
+    canceled: { text: "Canceled", color: "bg-red-50 text-red-600 border-red-200" },
+    inactive: { text: "Inactive", color: "bg-zinc-100 text-zinc-500 border-zinc-200" },
   }
-  const badge = statusLabel[subscriptionStatus] || statusLabel.inactive
+  const badge = statusBadge[subscriptionStatus] || statusBadge.inactive
 
   return (
     <div className="min-h-screen bg-zinc-50">
+      {/* Nav */}
       <nav className="border-b border-zinc-100 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">S</div>
             <span className="text-lg font-bold tracking-tight text-zinc-900">Supplement Snap</span>
@@ -111,77 +110,156 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      <main className="mx-auto max-w-3xl px-6 py-10">
+      <main className="mx-auto max-w-5xl px-6 py-10">
+        {/* Locked banner */}
         <Suspense fallback={null}>
           <LockedBanner />
         </Suspense>
 
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Your Dashboard</h1>
-          <p className="mt-1 text-sm text-zinc-500">Welcome back, {userName}</p>
+        {/* 1. Header */}
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Your Projects</h1>
+            <p className="mt-1 text-sm text-zinc-500">Manage roofing supplement documentation.</p>
+          </div>
+          {isActive ? (
+            <Link
+              href="/app"
+              className="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
+            >
+              Create Project
+            </Link>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-100 px-5 py-2.5 text-sm font-semibold text-zinc-400 cursor-not-allowed">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+              </svg>
+              Create Project
+            </span>
+          )}
         </div>
 
-        {/* Subscription status card */}
-        {!subscriptionLoading && (
-          <div className="mb-8 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Subscription</p>
-                <div className="mt-2 flex items-center gap-2">
-                  <span className="text-sm font-semibold text-zinc-900">Starter Plan</span>
-                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${badge.color}`}>
-                    {badge.text}
-                  </span>
-                </div>
+        {/* Top row: Subscription + Quick Actions */}
+        <div className="mb-8 grid gap-4 sm:grid-cols-2">
+          {/* 2. Subscription card */}
+          {!subscriptionLoading && (
+            <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Plan</p>
+              <div className="mt-3 flex items-center gap-2">
+                <span className="text-base font-bold text-zinc-900">Starter</span>
+                <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${badge.color}`}>
+                  {badge.text}
+                </span>
               </div>
-              <div className="flex gap-2">
+              {isActive && (
+                <p className="mt-1 text-xs text-zinc-400">$49/mo after setup</p>
+              )}
+              <div className="mt-4 flex gap-2">
                 {isActive ? (
-                  <button
-                    onClick={openBillingPortal}
-                    disabled={portalLoading}
-                    className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-50"
-                  >
-                    {portalLoading ? "Loading..." : "Manage Billing"}
-                  </button>
+                  <>
+                    <Link
+                      href="/app"
+                      className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                    >
+                      Open App
+                    </Link>
+                    <button
+                      onClick={openBillingPortal}
+                      disabled={portalLoading}
+                      className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-50"
+                    >
+                      {portalLoading ? "Loading..." : "Manage Billing"}
+                    </button>
+                  </>
                 ) : (
-                  <Link
-                    href="/pricing"
-                    className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
-                  >
-                    Subscribe
-                  </Link>
+                  <>
+                    <Link
+                      href="/pricing"
+                      className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                    >
+                      Start Subscription
+                    </Link>
+                    <Link
+                      href="/pricing"
+                      className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+                    >
+                      View Plans
+                    </Link>
+                  </>
                 )}
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Paywall message */}
+          {/* 4. Quick Actions */}
+          <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Quick Actions</p>
+            <div className="mt-3 space-y-2">
+              {isActive ? (
+                <Link
+                  href="/app"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                >
+                  <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                  </svg>
+                  Capture Damage
+                </Link>
+              ) : (
+                <div className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-400">
+                  <svg className="h-5 w-5 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                  </svg>
+                  Capture Damage
+                  <span className="ml-auto text-xs text-zinc-300">Locked</span>
+                </div>
+              )}
+              <Link
+                href={isActive ? "/app" : "/pricing"}
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+              >
+                <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Generate Report
+              </Link>
+              <Link
+                href="/pricing"
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+              >
+                <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                </svg>
+                View Pricing
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* 5. Locked paywall */}
         {!subscriptionLoading && !isActive && (
-          <div className="mb-8 rounded-xl border border-amber-200 bg-amber-50 p-5 text-center">
-            <p className="text-sm font-medium text-amber-800">
-              An active subscription is required to use Supplement Snap.
+          <div className="mb-8 rounded-xl border border-amber-200 bg-amber-50 p-6 text-center">
+            <svg className="mx-auto h-8 w-8 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+            <p className="mt-3 text-sm font-medium text-amber-800">
+              An active subscription is required to capture damage and generate supplement reports.
             </p>
             <Link
               href="/pricing"
-              className="mt-3 inline-block rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+              className="mt-4 inline-block rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
             >
-              View Plans
+              Start Subscription
             </Link>
           </div>
         )}
 
-        {/* Projects section — only show if subscribed */}
+        {/* 3. Projects list */}
         {isActive && (
           <>
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-base font-semibold text-zinc-900">Your Projects</h2>
-              <Link
-                href="/app"
-                className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
-              >
-                + New Project
-              </Link>
+            <div className="mb-4">
+              <h2 className="text-base font-semibold text-zinc-900">Recent Projects</h2>
             </div>
 
             {loadingProjects ? (
@@ -190,7 +268,7 @@ export default function DashboardPage() {
                 <span className="text-sm">Loading projects...</span>
               </div>
             ) : projects.length === 0 ? (
-              <div className="rounded-xl border border-dashed border-zinc-300 bg-white px-6 py-12 text-center">
+              <div className="rounded-xl border border-dashed border-zinc-300 bg-white px-6 py-14 text-center">
                 <svg className="mx-auto h-10 w-10 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                 </svg>
@@ -198,18 +276,17 @@ export default function DashboardPage() {
                 <p className="mt-1 text-sm text-zinc-500">Create your first project to start capturing damage.</p>
                 <Link
                   href="/app"
-                  className="mt-4 inline-block rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+                  className="mt-4 inline-block rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
                 >
-                  Create Project
+                  Create Your First Project
                 </Link>
               </div>
             ) : (
               <div className="space-y-3">
                 {projects.map((p) => (
-                  <Link
+                  <div
                     key={p.id}
-                    href={`/app?project=${p.id}`}
-                    className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white p-5 shadow-sm hover:border-indigo-200 hover:shadow-md"
+                    className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white p-5 shadow-sm"
                   >
                     <div>
                       <h3 className="text-sm font-semibold text-zinc-900">{p.project_name}</h3>
@@ -219,12 +296,26 @@ export default function DashboardPage() {
                         <span>{new Date(p.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
                       </div>
                     </div>
-                    <span className="text-xs font-medium text-indigo-600">Open &rarr;</span>
-                  </Link>
+                    <div className="flex gap-2">
+                      <Link
+                        href={`/app?project=${p.id}`}
+                        className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                      >
+                        Open Project
+                      </Link>
+                    </div>
+                  </div>
                 ))}
               </div>
             )}
           </>
+        )}
+
+        {/* Welcome note for new users */}
+        {!subscriptionLoading && isActive && !loadingProjects && projects.length > 0 && (
+          <p className="mt-6 text-center text-xs text-zinc-400">
+            Welcome back, {userName}. You have {projects.length} project{projects.length !== 1 ? "s" : ""}.
+          </p>
         )}
       </main>
     </div>
