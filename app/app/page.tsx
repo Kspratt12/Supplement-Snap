@@ -514,9 +514,16 @@ function Home() {
   async function handleCreateProject(e: React.FormEvent) {
     e.preventDefault()
     if (!newProjectName.trim()) return
-    if (isFreeUser && projects.length >= FREE_PROJECT_LIMIT) {
-      setShowUpgradeModal(true)
-      return
+    if (isFreeUser) {
+      // Count ALL projects ever created (not just current) to prevent delete-and-recreate
+      const { count } = await supabase
+        .from("projects")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", user?.id)
+      if ((count || 0) >= FREE_PROJECT_LIMIT) {
+        setShowUpgradeModal(true)
+        return
+      }
     }
 
     setCreatingProject(true)
@@ -1425,9 +1432,15 @@ function Home() {
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
 
-    if (isFreeUser && captures.length >= FREE_CAPTURE_LIMIT) {
-      setShowUpgradeModal(true)
-      return
+    if (isFreeUser) {
+      const { count } = await supabase
+        .from("captures")
+        .select("*", { count: "exact", head: true })
+        .eq("project_id", selectedProjectId)
+      if ((count || 0) >= FREE_CAPTURE_LIMIT) {
+        setShowUpgradeModal(true)
+        return
+      }
     }
 
     if (!selectedProjectId) {
