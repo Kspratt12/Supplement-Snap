@@ -97,6 +97,10 @@ UPDATE email_tracking et
   WHERE et.project_id = p.id
     AND et.user_id IS NULL;
 
+-- Add follow-up columns for auto follow-up emails
+ALTER TABLE email_tracking ADD COLUMN IF NOT EXISTS follow_up_at timestamptz;
+ALTER TABLE email_tracking ADD COLUMN IF NOT EXISTS followed_up_at timestamptz;
+
 -- ============================================================
 -- STEP 5: Enable RLS on all tables
 -- ============================================================

@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
     const resend = new Resend(process.env.RESEND_API_KEY)
 
-    const { to, subject, message, pdfBase64, fileName, projectName, propertyAddress, projectId, userId, companyName } = await request.json()
+    const { to, subject, message, pdfBase64, fileName, projectName, propertyAddress, projectId, userId, companyName, followUpDays } = await request.json()
 
     if (!to || !subject) {
       return NextResponse.json(
@@ -36,6 +36,7 @@ export async function POST(request: Request) {
           user_id: userId || null,
           recipient_email: to,
           subject: subject,
+          follow_up_at: followUpDays ? new Date(Date.now() + followUpDays * 86400000).toISOString() : null,
         })
         .select("tracking_token")
         .single()

@@ -208,6 +208,7 @@ function Home() {
   const [emailSending, setEmailSending] = useState(false)
   const [emailStatus, setEmailStatus] = useState<"" | "sent" | "error">("")
   const [emailError, setEmailError] = useState("")
+  const [emailFollowUp, setEmailFollowUp] = useState(true)
 
   // Photo viewer keyboard navigation
   useEffect(() => {
@@ -1239,6 +1240,7 @@ function Home() {
           projectId: selectedProjectId,
           userId: user?.id,
           companyName: companyName || "",
+          followUpDays: emailFollowUp ? 3 : 0,
         }),
       })
 
@@ -1990,6 +1992,22 @@ function Home() {
               <p>Generated: {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
             </div>
 
+            {/* Estimated Supplement Value */}
+            {captures.length > 0 && (
+              <div className="mt-3 rounded-lg bg-green-50 border border-green-200 px-4 py-3 flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-green-700">Estimated Supplement Value</p>
+                  <p className="text-2xl font-extrabold text-green-700">
+                    ${captures.reduce((sum, c) => sum + (SUPPLEMENT_ESTIMATES[c.damage_type] || 200) * (Number((c as Record<string, unknown>).quantity) || 1), 0).toLocaleString()}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-green-600">{captures.length} finding{captures.length !== 1 ? "s" : ""} documented</p>
+                  <p className="text-xs text-green-600">Based on avg supplement values</p>
+                </div>
+              </div>
+            )}
+
             <div className="mt-3 flex flex-wrap gap-2">
               <button
                 type="button"
@@ -2717,6 +2735,16 @@ function Home() {
                   <div className="rounded-lg bg-zinc-50 px-3 py-2 text-xs text-zinc-500">
                     The PDF report with all findings and photos will be attached automatically.
                   </div>
+
+                  <label className="flex items-center gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={emailFollowUp}
+                      onChange={(e) => setEmailFollowUp(e.target.checked)}
+                      className="h-4 w-4 rounded border-zinc-300 text-indigo-600"
+                    />
+                    <span className="text-sm text-zinc-600">Send automatic follow-up in 3 days if not opened</span>
+                  </label>
 
                   {emailStatus === "error" && (
                     <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">

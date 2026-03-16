@@ -36,6 +36,7 @@ Rules:
 - Write 2-4 sentences maximum.
 - Use professional, insurance-friendly language.
 - State that the damage was discovered during tear-off and was not visible prior to shingle removal.
+- Where applicable, reference the relevant building code requirement (e.g., IRC R905.2.8.2 for ice barrier, IRC R903.2 for flashing, IRC R906.1 for ventilation, local building code for decking replacement). Only cite a code if it genuinely applies to the damage type.
 - Do NOT invent specific measurements or dimensions unless the field note includes them.
 - Do NOT reference Xactimate codes.
 - Do NOT use generic AI filler language.
