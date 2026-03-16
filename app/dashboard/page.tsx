@@ -24,6 +24,7 @@ export default function DashboardPage() {
   const [hasSentReport, setHasSentReport] = useState(false)
   const [reportCount, setReportCount] = useState(0)
   const [showSubModal, setShowSubModal] = useState(false)
+  const [showSampleReport, setShowSampleReport] = useState(false)
 
   useEffect(() => {
     if (!authLoading && !user) router.replace("/login")
@@ -141,23 +142,42 @@ export default function DashboardPage() {
             <p className="mt-1 text-sm text-zinc-500">Manage your subscription, review your projects, and jump back into the app.</p>
           </div>
           {isActive && (
-            <Link
-              href="/app"
-              className="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
-            >
-              Create Project
-            </Link>
+            <div className="flex gap-2">
+              <Link
+                href="/app"
+                className="flex items-center gap-2 rounded-lg bg-indigo-600 px-5 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
+              >
+                <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                </svg>
+                <span className="hidden sm:inline">Capture Damage</span>
+              </Link>
+              <Link
+                href="/app"
+                className="flex items-center rounded-lg border border-zinc-300 bg-white px-5 min-h-[48px] text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
+              >
+                Create Project
+              </Link>
+            </div>
           )}
         </div>
 
         {/* Onboarding checklist */}
         {!subscriptionLoading && !loadingProjects && (
-          <OnboardingChecklist
-            isActive={isActive}
-            hasProjects={projects.length > 0}
-            hasCaptures={projects.some((p) => p.capture_count > 0)}
-            hasSentReport={hasSentReport}
-          />
+          <>
+            <OnboardingChecklist
+              isActive={isActive}
+              hasProjects={projects.length > 0}
+              hasCaptures={projects.some((p) => p.capture_count > 0)}
+              hasSentReport={hasSentReport}
+            />
+            {!isActive && (
+              <p className="mb-6 -mt-4 text-center text-xs text-zinc-400">
+                Start your subscription to begin capturing roof damage and generating supplement reports.
+              </p>
+            )}
+          </>
         )}
 
         {/* Activity Overview */}
@@ -271,18 +291,19 @@ export default function DashboardPage() {
               {isActive ? (
                 <Link
                   href="/app"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                  className="flex items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
                 >
                   <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
                   </svg>
                   Capture Damage
+                  <span className="ml-auto text-xs text-zinc-400">Speak damage notes instead of typing</span>
                 </Link>
               ) : (
                 <button
                   onClick={() => setShowSubModal(true)}
-                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                  className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
                 >
                   <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
@@ -294,7 +315,7 @@ export default function DashboardPage() {
               {isActive ? (
                 <Link
                   href="/app"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                  className="flex items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
                 >
                   <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -304,7 +325,7 @@ export default function DashboardPage() {
               ) : (
                 <button
                   onClick={() => setShowSubModal(true)}
-                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                  className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
                 >
                   <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -312,9 +333,19 @@ export default function DashboardPage() {
                   Generate Report
                 </button>
               )}
+              <button
+                onClick={() => setShowSampleReport(true)}
+                className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+              >
+                <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                View Sample Supplement Report
+              </button>
               <Link
                 href="/pricing"
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                className="flex items-center gap-3 rounded-lg px-3 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
               >
                 <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
@@ -336,7 +367,7 @@ export default function DashboardPage() {
             </p>
             <Link
               href="/pricing"
-              className="mt-4 inline-block rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
+              className="mt-4 inline-flex items-center rounded-lg bg-indigo-600 px-6 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
             >
               Start Subscription
             </Link>
@@ -412,15 +443,113 @@ export default function DashboardPage() {
               <div className="mt-6 flex gap-3">
                 <Link
                   href="/pricing"
-                  className="flex-1 rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-500"
+                  className="flex-1 rounded-lg bg-indigo-600 px-4 min-h-[48px] flex items-center justify-center text-sm font-semibold text-white hover:bg-indigo-500"
                 >
                   Start Subscription
                 </Link>
                 <button
                   onClick={() => setShowSubModal(false)}
-                  className="flex-1 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
+                  className="flex-1 rounded-lg border border-zinc-300 bg-white px-4 min-h-[48px] text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
                 >
                   Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Sample Report Modal */}
+        {showSampleReport && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+            <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-xl bg-white shadow-xl">
+              <div className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-100 bg-white px-6 py-4 rounded-t-xl">
+                <h2 className="text-lg font-bold text-zinc-900">Sample Supplement Report</h2>
+                <button
+                  onClick={() => setShowSampleReport(false)}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-zinc-100"
+                >
+                  <svg className="h-5 w-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="px-6 py-4">
+                <p className="text-sm leading-relaxed text-zinc-500">
+                  This is an example of the supplement report that can be generated and sent to adjusters after documenting damage in the field.
+                </p>
+              </div>
+
+              {/* Report preview */}
+              <div className="mx-6 mb-6 overflow-hidden rounded-xl border border-zinc-200">
+                <div className="bg-indigo-600 px-5 py-3">
+                  <p className="text-xs font-semibold text-white tracking-wide">Supplement Snap — Project Report</p>
+                </div>
+                <div className="px-5 py-5">
+                  <p className="text-sm font-bold text-zinc-900">Smith Residence</p>
+                  <p className="mt-1 text-xs text-zinc-500">742 Evergreen Terrace, Springfield</p>
+                  <p className="text-xs text-zinc-500">Inspection Date: March 12, 2026</p>
+
+                  <div className="mt-4 h-px bg-zinc-200" />
+
+                  <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-zinc-400">Findings</p>
+
+                  <div className="mt-3 space-y-4">
+                    <div className="flex items-start gap-2.5">
+                      <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">1</span>
+                      <div>
+                        <p className="text-sm font-semibold text-zinc-900">Decking — Front Slope</p>
+                        <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                          Three sheets of rotted OSB decking discovered along the eave edge during tear-off. Wood was soft and deteriorated from prolonged moisture exposure. Damage was concealed beneath existing shingles.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2.5">
+                      <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">2</span>
+                      <div>
+                        <p className="text-sm font-semibold text-zinc-900">Flashing — Chimney</p>
+                        <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                          Step flashing along the chimney wall severely corroded with multiple separation points. Counter flashing seal had failed at the mortar joint. Not visible prior to shingle removal.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2.5">
+                      <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">3</span>
+                      <div>
+                        <p className="text-sm font-semibold text-zinc-900">Ice &amp; Water Shield — Valley</p>
+                        <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                          No ice and water shield membrane present in the main valley. Current building code requires installation. Concealed under existing roofing materials.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 h-px bg-zinc-200" />
+
+                  <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-zinc-400">Supporting Photos</p>
+                  <div className="mt-3 grid grid-cols-3 gap-2">
+                    <div className="aspect-square rounded-lg bg-gradient-to-br from-amber-100 to-amber-50 border border-zinc-200" />
+                    <div className="aspect-square rounded-lg bg-gradient-to-br from-red-100 to-red-50 border border-zinc-200" />
+                    <div className="aspect-square rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 border border-zinc-200" />
+                  </div>
+
+                  <div className="mt-4 h-px bg-zinc-200" />
+
+                  <div className="mt-4 rounded-lg bg-zinc-50 px-4 py-3">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Summary</p>
+                    <p className="mt-2 text-xs leading-relaxed text-zinc-600">
+                      3 supplement items documented during tear-off. All findings represent concealed conditions not visible during initial inspection. Documentation and photos ready for adjuster review.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-zinc-100 px-6 py-4">
+                <button
+                  onClick={() => setShowSampleReport(false)}
+                  className="w-full rounded-lg border border-zinc-300 bg-white min-h-[48px] text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
+                >
+                  Close Preview
                 </button>
               </div>
             </div>
