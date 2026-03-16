@@ -166,6 +166,80 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* What Damage Gets Documented */}
+      <section className="border-t border-zinc-100 bg-zinc-50 py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Documentation</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              What damage gets documented
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
+              During tear-off, crews capture the hidden issues that insurance supplements often miss.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-6 sm:grid-cols-3">
+            {/* Rotten Decking */}
+            <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
+              <div className="flex h-40 items-center justify-center bg-gradient-to-br from-amber-50 to-orange-50">
+                <svg className="h-14 w-14 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                </svg>
+              </div>
+              <div className="p-5">
+                <h3 className="text-sm font-semibold text-zinc-900">Rotten Decking</h3>
+                <p className="mt-2 text-xs leading-relaxed text-zinc-500">
+                  Decking rot discovered during tear-off often requires additional sheathing replacement that must be documented for supplements.
+                </p>
+                <div className="mt-3 flex gap-1.5">
+                  <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Decking</span>
+                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">Front slope</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Flashing Failure */}
+            <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
+              <div className="flex h-40 items-center justify-center bg-gradient-to-br from-red-50 to-orange-50">
+                <svg className="h-14 w-14 text-red-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                </svg>
+              </div>
+              <div className="p-5">
+                <h3 className="text-sm font-semibold text-zinc-900">Flashing Failure</h3>
+                <p className="mt-2 text-xs leading-relaxed text-zinc-500">
+                  Step flashing or counter flashing failures around chimneys and walls require proper documentation for adjuster approval.
+                </p>
+                <div className="mt-3 flex gap-1.5">
+                  <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Flashing</span>
+                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">Chimney</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Ice & Water Shield */}
+            <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
+              <div className="flex h-40 items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50">
+                <svg className="h-14 w-14 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                </svg>
+              </div>
+              <div className="p-5">
+                <h3 className="text-sm font-semibold text-zinc-900">Ice &amp; Water Shield Missing</h3>
+                <p className="mt-2 text-xs leading-relaxed text-zinc-500">
+                  Code compliance issues like missing ice and water shield can be documented and added to supplement requests.
+                </p>
+                <div className="mt-3 flex gap-1.5">
+                  <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Ice &amp; Water</span>
+                  <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">Valley</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section id="how-it-works" className="border-t border-zinc-100 bg-zinc-50 py-20">
         <div className="mx-auto max-w-5xl px-6">
