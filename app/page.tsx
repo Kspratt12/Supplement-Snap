@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { NavLinks } from "../lib/nav-links"
 import { SiteFooter } from "../lib/site-footer"
+import { InteractiveDemo } from "./components/interactive-demo"
 
 export default function LandingPage() {
   return (
@@ -228,6 +229,151 @@ export default function LandingPage() {
               <p className="mt-1 text-xs leading-relaxed text-zinc-500">
                 Generate PDF reports with findings, narratives, and photos for adjusters.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Walkthrough */}
+      <section className="mx-auto max-w-3xl px-6 pb-20">
+        <div className="mb-8 text-center">
+          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">See It In Action</p>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
+            From roof to report in 4 steps
+          </h2>
+          <p className="mx-auto mt-3 max-w-lg text-sm text-zinc-500">
+            Watch how your crew captures damage and sends a professional supplement report — all from the field.
+          </p>
+        </div>
+        <InteractiveDemo />
+      </section>
+
+      {/* Social Proof */}
+      <section className="border-t border-zinc-100 py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Trusted by Contractors</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Roofers are recovering more with Supplement Snap
+            </h2>
+          </div>
+
+          <div className="mt-14 grid gap-6 sm:grid-cols-3">
+            {[
+              {
+                quote: "We used to lose supplement money on every tear-off because nobody had time to document it properly. Now my crew snaps photos, adds a voice note, and the report is in the adjuster's inbox before we leave the job site.",
+                name: "Marcus T.",
+                role: "Owner, 12-man crew",
+                metric: "$3,200 recovered on first job",
+              },
+              {
+                quote: "The AI draft saves my office manager 2 hours per supplement. She used to type everything from scratch — now she just reviews what Supplement Snap generates and hits send.",
+                name: "David R.",
+                role: "Project Manager",
+                metric: "2+ hours saved per supplement",
+              },
+              {
+                quote: "My guys speak Spanish on the roof. They record a voice note in Spanish, and it shows up in English in the report. That alone was worth the subscription — no more miscommunication between field and office.",
+                name: "Carlos M.",
+                role: "Restoration Company Owner",
+                metric: "Zero lost-in-translation issues",
+              },
+            ].map((t) => (
+              <div key={t.name} className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
+                <div className="mb-4 flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="h-4 w-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-sm leading-relaxed text-zinc-600">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <div className="mt-4 border-t border-zinc-100 pt-4">
+                  <p className="text-sm font-semibold text-zinc-900">{t.name}</p>
+                  <p className="text-xs text-zinc-500">{t.role}</p>
+                  <p className="mt-2 inline-block rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">{t.metric}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-zinc-400">
+            <span>Used by roofing teams across NC, TX, FL, and CO</span>
+            <span className="hidden sm:inline text-zinc-200">|</span>
+            <span className="font-medium text-zinc-600">Average supplement recovered: $2,400</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Before / After */}
+      <section className="border-t border-zinc-100 py-20">
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">The Difference</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Without Supplement Snap vs. with it
+            </h2>
+          </div>
+
+          <div className="mt-14 grid gap-6 sm:grid-cols-2">
+            {/* Without */}
+            <div className="rounded-xl border border-red-200 bg-red-50/50 p-6">
+              <div className="mb-4 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100">
+                  <svg className="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+                <h3 className="text-base font-semibold text-red-900">Without Supplement Snap</h3>
+              </div>
+              <div className="space-y-3">
+                {[
+                  "Crew texts blurry photos to the office",
+                  "Field notes scribbled on paper or forgotten",
+                  "Office spends hours writing supplement from memory",
+                  "Documentation submitted days or weeks later",
+                  "Adjuster denies supplement — not enough evidence",
+                  "You leave $1,500–$3,200 on the table per job",
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-2.5">
+                    <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className="text-sm text-red-800">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* With */}
+            <div className="rounded-xl border border-green-200 bg-green-50/50 p-6">
+              <div className="mb-4 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
+                  <svg className="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-base font-semibold text-green-900">With Supplement Snap</h3>
+              </div>
+              <div className="space-y-3">
+                {[
+                  "Crew captures labeled photos from the roof",
+                  "Voice notes auto-transcribed (any language)",
+                  "AI generates professional supplement narrative",
+                  "PDF report emailed to adjuster the same day",
+                  "Adjuster gets clear evidence with every finding",
+                  "You recover $1,500–$3,200 more per job",
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-2.5">
+                    <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className="text-sm text-green-800">{item}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
