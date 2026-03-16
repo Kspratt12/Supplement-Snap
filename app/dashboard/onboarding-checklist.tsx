@@ -104,7 +104,7 @@ export function OnboardingChecklist({ isActive, hasProjects, hasCaptures, hasSen
           <div className="flex items-center gap-1">
             <button
               onClick={handleRestore}
-              className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700"
               title="Expand"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -113,7 +113,7 @@ export function OnboardingChecklist({ isActive, hasProjects, hasCaptures, hasSen
             </button>
             <button
               onClick={handleDismiss}
-              className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700"
               title="Dismiss"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -148,7 +148,7 @@ export function OnboardingChecklist({ isActive, hasProjects, hasCaptures, hasSen
           </div>
           <button
             onClick={handleMinimize}
-            className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700"
             title="Minimize"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -157,7 +157,7 @@ export function OnboardingChecklist({ isActive, hasProjects, hasCaptures, hasSen
           </button>
           <button
             onClick={handleDismiss}
-            className="flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700"
             title="Dismiss checklist"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
