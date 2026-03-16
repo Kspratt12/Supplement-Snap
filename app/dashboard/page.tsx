@@ -86,9 +86,13 @@ export default function DashboardPage() {
         body: JSON.stringify({ userId: user?.id }),
       })
       const data = await res.json()
-      if (data.url) window.location.href = data.url
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        alert("Unable to open billing portal. Please contact support.")
+      }
     } catch {
-      // Portal failed
+      alert("Unable to open billing portal. Please try again.")
     } finally {
       setPortalLoading(false)
     }
