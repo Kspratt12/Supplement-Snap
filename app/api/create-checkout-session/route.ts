@@ -29,11 +29,13 @@ export async function POST(request: Request) {
 
     const origin = request.headers.get("origin") || "http://localhost:3000"
 
-    // Accept optional email to pre-fill checkout
+    // Accept optional email and userId to pre-fill checkout and link user
     let customerEmail: string | undefined
+    let userId: string | undefined
     try {
       const body = await request.json()
       customerEmail = body.email
+      userId = body.userId
     } catch {
       // No body or invalid JSON is fine
     }
@@ -42,6 +44,10 @@ export async function POST(request: Request) {
       mode: "subscription",
       payment_method_types: ["card"],
       ...(customerEmail ? { customer_email: customerEmail } : {}),
+      metadata: { supabase_user_id: userId || "" },
+      subscription_data: {
+        metadata: { supabase_user_id: userId || "" },
+      },
       line_items: [
         {
           price: priceSetup,

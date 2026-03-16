@@ -35,29 +35,32 @@ export async function POST(request: Request) {
         const customerId = session.customer as string
         const subscriptionId = session.subscription as string
         const customerEmail = session.customer_details?.email
+        // Prefer user ID from metadata, fall back to email lookup
+        const metadataUserId = session.metadata?.supabase_user_id
 
-        if (!customerEmail) break
+        let userId = metadataUserId || null
 
-        // Find the Supabase user by email
-        const { data: users } = await supabaseAdmin.auth.admin.listUsers()
-        const matchedUser = users?.users?.find(
-          (u) => u.email?.toLowerCase() === customerEmail.toLowerCase()
-        )
+        if (!userId && customerEmail) {
+          const { data: users } = await supabaseAdmin.auth.admin.listUsers()
+          const matched = users?.users?.find(
+            (u) => u.email?.toLowerCase() === customerEmail.toLowerCase()
+          )
+          userId = matched?.id || null
+        }
 
-        if (matchedUser) {
-          // Upsert subscription record
+        if (userId) {
           await supabaseAdmin.from("subscriptions").upsert(
             {
-              user_id: matchedUser.id,
+              user_id: userId,
               stripe_customer_id: customerId,
               stripe_subscription_id: subscriptionId,
+              stripe_customer_email: customerEmail || "",
               status: "active",
               updated_at: new Date().toISOString(),
             },
             { onConflict: "user_id" }
           )
-        } else {
-          // User hasn't signed up yet — store by customer ID for later linking
+        } else if (customerEmail) {
           await supabaseAdmin.from("subscriptions").insert({
             stripe_customer_id: customerId,
             stripe_subscription_id: subscriptionId,
@@ -65,6 +68,27 @@ export async function POST(request: Request) {
             status: "active",
           })
         }
+        break
+      }
+
+      case "customer.subscription.updated": {
+        const sub = event.data.object as Stripe.Subscription
+        const customerId = sub.customer as string
+        const statusMap: Record<string, string> = {
+          active: "active",
+          trialing: "trialing",
+          past_due: "past_due",
+          canceled: "canceled",
+          unpaid: "inactive",
+          incomplete: "inactive",
+          incomplete_expired: "inactive",
+          paused: "inactive",
+        }
+        const mappedStatus = statusMap[sub.status] || "inactive"
+        await supabaseAdmin
+          .from("subscriptions")
+          .update({ status: mappedStatus, updated_at: new Date().toISOString() })
+          .eq("stripe_customer_id", customerId)
         break
       }
 
@@ -89,8 +113,8 @@ export async function POST(request: Request) {
       }
 
       case "customer.subscription.deleted": {
-        const subscription = event.data.object as Stripe.Subscription
-        const customerId = subscription.customer as string
+        const sub = event.data.object as Stripe.Subscription
+        const customerId = sub.customer as string
         await supabaseAdmin
           .from("subscriptions")
           .update({ status: "canceled", updated_at: new Date().toISOString() })

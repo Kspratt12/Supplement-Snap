@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useEffect, useState, Suspense } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
@@ -112,6 +112,10 @@ export default function DashboardPage() {
       </nav>
 
       <main className="mx-auto max-w-3xl px-6 py-10">
+        <Suspense fallback={null}>
+          <LockedBanner />
+        </Suspense>
+
         <div className="mb-6">
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Your Dashboard</h1>
           <p className="mt-1 text-sm text-zinc-500">Welcome back, {userName}</p>
@@ -223,6 +227,28 @@ export default function DashboardPage() {
           </>
         )}
       </main>
+    </div>
+  )
+}
+
+function LockedBanner() {
+  const searchParams = useSearchParams()
+  if (searchParams.get("locked") !== "1") return null
+
+  return (
+    <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-center">
+      <p className="text-sm font-medium text-red-700">
+        An active subscription is required to use Supplement Snap.
+      </p>
+      <p className="mt-1 text-xs text-red-500">
+        Your account is set up, but app access is locked until you have an active plan.
+      </p>
+      <Link
+        href="/pricing"
+        className="mt-3 inline-block rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+      >
+        Start Subscription
+      </Link>
     </div>
   )
 }

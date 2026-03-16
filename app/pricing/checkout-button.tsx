@@ -29,7 +29,7 @@ export function CheckoutButton() {
       const res = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user?.email }),
+        body: JSON.stringify({ email: user?.email, userId: user?.id }),
       })
       const data = await res.json()
 

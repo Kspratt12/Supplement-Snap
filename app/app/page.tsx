@@ -89,7 +89,7 @@ export default function Home() {
   useEffect(() => {
     if (authLoading || subscriptionLoading) return
     if (!user) { router.replace("/login"); return }
-    if (!hasActiveSubscription(subscriptionStatus)) { router.replace("/dashboard"); return }
+    if (!hasActiveSubscription(subscriptionStatus)) { router.replace("/dashboard?locked=1"); return }
   }, [user, authLoading, subscriptionStatus, subscriptionLoading, router])
 
   // Project state
