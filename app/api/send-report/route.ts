@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
     const resend = new Resend(process.env.RESEND_API_KEY)
 
-    const { to, subject, message, pdfBase64, fileName, projectName, propertyAddress, projectId } = await request.json()
+    const { to, subject, message, pdfBase64, fileName, projectName, propertyAddress, projectId, companyName } = await request.json()
 
     if (!to || !subject) {
       return NextResponse.json(
@@ -47,26 +47,59 @@ export async function POST(request: Request) {
       // Tracking failed silently — email still sends
     }
 
+    // Use company branding if available
+    const brandName = companyName || "Supplement Snap"
+    const headerTitle = companyName ? `${companyName} – Supplement Report` : "Supplement Snap – Project Report"
+    const footerText = companyName ? `Sent by ${companyName} via Supplement Snap` : "Sent via Supplement Snap"
+
     // Build HTML email body
     const htmlBody = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #27272a;">
-        <div style="background-color: #4f46e5; padding: 16px 24px; border-radius: 8px 8px 0 0;">
-          <h2 style="color: #ffffff; margin: 0; font-size: 16px;">Supplement Snap – Project Report</h2>
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #27272a;">
+        <div style="background-color: #4f46e5; padding: 18px 24px; border-radius: 10px 10px 0 0;">
+          <h2 style="color: #ffffff; margin: 0; font-size: 16px; font-weight: 600;">${headerTitle}</h2>
         </div>
-        <div style="border: 1px solid #e4e4e7; border-top: none; padding: 24px; border-radius: 0 0 8px 8px;">
-          <p style="margin: 0 0 4px 0; font-size: 14px; color: #71717a;">Project</p>
-          <p style="margin: 0 0 16px 0; font-size: 16px; font-weight: 600;">${projectName}</p>
-          ${propertyAddress ? `
-            <p style="margin: 0 0 4px 0; font-size: 14px; color: #71717a;">Property Address</p>
-            <p style="margin: 0 0 16px 0; font-size: 16px;">${propertyAddress}</p>
-          ` : ""}
+        <div style="border: 1px solid #e4e4e7; border-top: none; padding: 28px 24px; border-radius: 0 0 10px 10px;">
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <tr>
+              <td style="padding: 0 0 4px 0;">
+                <span style="font-size: 12px; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.5px;">Project</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 0 0 16px 0;">
+                <span style="font-size: 17px; font-weight: 700; color: #18181b;">${projectName}</span>
+              </td>
+            </tr>
+            ${propertyAddress ? `
+            <tr>
+              <td style="padding: 0 0 4px 0;">
+                <span style="font-size: 12px; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.5px;">Property Address</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 0 0 16px 0;">
+                <span style="font-size: 15px; color: #3f3f46;">${propertyAddress}</span>
+              </td>
+            </tr>
+            ` : ""}
+            <tr>
+              <td style="padding: 0 0 4px 0;">
+                <span style="font-size: 12px; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.5px;">From</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 0 0 8px 0;">
+                <span style="font-size: 15px; color: #3f3f46;">${brandName}</span>
+              </td>
+            </tr>
+          </table>
           <hr style="border: none; border-top: 1px solid #e4e4e7; margin: 16px 0;" />
-          <div style="white-space: pre-wrap; font-size: 14px; line-height: 1.6; color: #3f3f46;">
+          <div style="white-space: pre-wrap; font-size: 14px; line-height: 1.7; color: #3f3f46;">
 ${message}
           </div>
-          <hr style="border: none; border-top: 1px solid #e4e4e7; margin: 16px 0;" />
-          <p style="font-size: 12px; color: #a1a1aa; margin: 0;">
-            Sent via Supplement Snap
+          <hr style="border: none; border-top: 1px solid #e4e4e7; margin: 20px 0 12px 0;" />
+          <p style="font-size: 11px; color: #a1a1aa; margin: 0;">
+            ${footerText}
           </p>
         </div>
         ${trackingPixelHtml}
@@ -74,9 +107,10 @@ ${message}
     `
 
     const fromAddress = process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.com"
+    const fromName = companyName ? `${companyName} via Supplement Snap` : "Supplement Snap"
 
     const { error } = await resend.emails.send({
-      from: `Supplement Snap <${fromAddress}>`,
+      from: `${fromName} <${fromAddress}>`,
       to: [to],
       subject,
       html: htmlBody,

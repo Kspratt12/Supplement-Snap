@@ -587,12 +587,38 @@ function Home() {
   async function fetchImageDataUrl(url: string): Promise<string | null> {
     try {
       if (!url || url === "") return null
-      const res = await fetch(url)
-      const blob = await res.blob()
-      return await new Promise<string>((resolve) => {
-        const reader = new FileReader()
-        reader.onloadend = () => resolve(reader.result as string)
-        reader.readAsDataURL(blob)
+
+      // Method 1: fetch as blob (works for same-origin and CORS-enabled)
+      try {
+        const res = await fetch(url)
+        if (res.ok) {
+          const blob = await res.blob()
+          return await new Promise<string>((resolve) => {
+            const reader = new FileReader()
+            reader.onloadend = () => resolve(reader.result as string)
+            reader.readAsDataURL(blob)
+          })
+        }
+      } catch {}
+
+      // Method 2: canvas approach (fallback for CORS issues)
+      return await new Promise<string | null>((resolve) => {
+        const img = new Image()
+        img.crossOrigin = "anonymous"
+        img.onload = () => {
+          const canvas = document.createElement("canvas")
+          canvas.width = img.width
+          canvas.height = img.height
+          const ctx = canvas.getContext("2d")
+          if (ctx) {
+            ctx.drawImage(img, 0, 0)
+            resolve(canvas.toDataURL("image/png"))
+          } else {
+            resolve(null)
+          }
+        }
+        img.onerror = () => resolve(null)
+        img.src = url
       })
     } catch {
       return null
@@ -993,6 +1019,8 @@ function Home() {
           fileName: `${safeName}-Report.pdf`,
           projectName: selectedProject.project_name,
           propertyAddress: selectedProject.property_address || "",
+          projectId: selectedProjectId,
+          companyName: companyName || "",
         }),
       })
 
