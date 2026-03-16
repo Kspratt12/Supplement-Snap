@@ -45,13 +45,41 @@ export default function DashboardPage() {
 
   async function loadProjects() {
     setLoadingProjects(true)
-    const { data: projectsData } = await supabase
+
+    // Own projects
+    const { data: ownData } = await supabase
       .from("projects")
       .select("*")
       .eq("user_id", user!.id)
       .order("created_at", { ascending: false })
 
-    if (!projectsData) {
+    // Team projects (where user is a member)
+    let teamData: typeof ownData = []
+    try {
+      const { data: memberships } = await supabase
+        .from("team_members")
+        .select("owner_id")
+        .eq("member_email", user!.email)
+        .eq("status", "active")
+
+      if (memberships && memberships.length > 0) {
+        const ownerIds = memberships.map(m => m.owner_id)
+        const { data: shared } = await supabase
+          .from("projects")
+          .select("*")
+          .in("user_id", ownerIds)
+          .order("created_at", { ascending: false })
+        teamData = shared || []
+      }
+    } catch {
+      // team_members table may not exist
+    }
+
+    // Merge and deduplicate
+    const allProjects = [...(ownData || []), ...(teamData || [])]
+    const projectsData = allProjects.filter((p, i) => allProjects.findIndex(x => x.id === p.id) === i)
+
+    if (projectsData.length === 0) {
       setLoadingProjects(false)
       return
     }
