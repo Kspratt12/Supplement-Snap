@@ -23,7 +23,6 @@ export default function DashboardPage() {
   const [portalLoading, setPortalLoading] = useState(false)
   const [hasSentReport, setHasSentReport] = useState(false)
   const [reportCount, setReportCount] = useState(0)
-  const [linkCopied, setLinkCopied] = useState(false)
   const [showSubModal, setShowSubModal] = useState(false)
 
   useEffect(() => {
@@ -400,72 +399,7 @@ export default function DashboardPage() {
           </>
         )}
 
-        {/* Referral */}
-        <div className="mt-8 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-          <div className="flex items-start gap-3">
-            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-indigo-50">
-              <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-              </svg>
-            </div>
-            <div className="min-w-0 flex-1">
-              <h2 className="text-sm font-semibold text-zinc-900">Refer another roofing company</h2>
-              <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                Know another contractor losing supplement money during tear-off? Share Supplement Snap and help them document hidden damage and generate adjuster-ready supplement reports.
-              </p>
-            </div>
-          </div>
 
-          {/* Referral link */}
-          <div className="mt-4 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2.5">
-            <p className="truncate text-xs font-mono text-zinc-600">
-              {`${typeof window !== "undefined" ? window.location.origin : "https://supplement-snap.vercel.app"}/signup?ref=${user.id}`}
-            </p>
-          </div>
-
-          {/* Buttons */}
-          <div className="mt-3 flex gap-2">
-            <button
-              onClick={() => {
-                const url = `${window.location.origin}/signup?ref=${user.id}`
-                navigator.clipboard.writeText(url).then(() => {
-                  setLinkCopied(true)
-                  setTimeout(() => setLinkCopied(false), 2500)
-                })
-              }}
-              className="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
-            >
-              {linkCopied ? (
-                <>
-                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Copied!
-                </>
-              ) : (
-                <>
-                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
-                  </svg>
-                  Copy Referral Link
-                </>
-              )}
-            </button>
-            <a
-              href={`mailto:?subject=${encodeURIComponent("Check out Supplement Snap for roofing supplements")}&body=${encodeURIComponent(`We started using Supplement Snap to document hidden damage during tear-off and generate supplement reports for adjusters.\n\nThought you might find it useful too.\n\n${typeof window !== "undefined" ? window.location.origin : "https://supplement-snap.vercel.app"}/signup?ref=${user.id}`)}`}
-              className="flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
-            >
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-              </svg>
-              Share via Email
-            </a>
-          </div>
-
-          <p className="mt-3 text-xs text-zinc-400">
-            Invite another roofing company and earn a free month when they activate a subscription.
-          </p>
-        </div>
 
         {/* Subscription Required Modal */}
         {showSubModal && (
