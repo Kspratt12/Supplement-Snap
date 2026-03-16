@@ -49,6 +49,35 @@ export default function LandingPage() {
         </p>
       </section>
 
+      {/* Revenue Impact — moved up for maximum persuasion */}
+      <section className="mx-auto max-w-3xl px-6 pb-16">
+        <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-lg">
+          <div className="border-b border-zinc-100 px-6 py-4 sm:px-8">
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Typical Roof Claim</p>
+            <p className="mt-1 text-2xl font-extrabold text-zinc-900 sm:text-3xl">$12,000</p>
+          </div>
+          <div className="border-b border-zinc-100 px-6 py-4 sm:px-8">
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Hidden Damage Found During Tear-Off</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {["Rotten decking", "Flashing failure", "Missing ice & water shield"].map((item) => (
+                <span key={item} className="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">{item}</span>
+              ))}
+            </div>
+          </div>
+          <div className="border-b border-zinc-100 bg-green-50 px-6 py-4 sm:px-8">
+            <p className="text-xs font-semibold uppercase tracking-wider text-green-700">Supplement Approved</p>
+            <p className="mt-1 text-2xl font-extrabold text-green-700 sm:text-3xl">+$3,200</p>
+          </div>
+          <div className="px-6 py-4 sm:px-8">
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Final Claim Value</p>
+            <p className="mt-1 text-2xl font-extrabold text-indigo-600 sm:text-3xl">$15,200</p>
+          </div>
+        </div>
+        <p className="mt-6 text-center text-sm text-zinc-500">
+          Every documented item is a line item the adjuster can approve. When damage goes undocumented, the money stays on the table.
+        </p>
+      </section>
+
       {/* Product Preview */}
       <section className="mx-auto max-w-5xl px-6 pb-20">
         <div className="mb-12 text-center">
@@ -561,188 +590,66 @@ export default function LandingPage() {
               </div>
 
               <Link
-                href="/demo"
+                href="/signup"
                 className="mt-8 block w-full rounded-lg bg-indigo-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
               >
-                Book a Demo
+                Start Now
               </Link>
-              <p className="mt-3 text-center text-xs text-zinc-400">
-                We&apos;ll handle setup and get your team running fast.
+              <Link
+                href="/demo"
+                className="mt-3 block w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
+              >
+                Book a Demo First
+              </Link>
+              <p className="mt-4 text-center text-xs text-zinc-400">
+                One approved supplement pays for the entire platform.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Revenue Impact */}
-      <section className="border-t border-zinc-100 bg-zinc-50 py-20">
+      {/* FAQ */}
+      <section className="border-t border-zinc-100 py-20">
         <div className="mx-auto max-w-3xl px-6">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Revenue Impact</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">FAQ</p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              How one documented supplement can change a job
+              Common questions from contractors
             </h2>
           </div>
-
-          <div className="mt-12 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-lg">
-            {/* Typical claim */}
-            <div className="border-b border-zinc-100 px-6 py-5 sm:px-8">
-              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Typical Roof Claim</p>
-              <p className="mt-2 text-3xl font-extrabold text-zinc-900">$12,000</p>
-            </div>
-
-            {/* Hidden damage found */}
-            <div className="border-b border-zinc-100 px-6 py-5 sm:px-8">
-              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Hidden Damage Discovered During Tear-Off</p>
-              <div className="mt-3 space-y-2">
-                {["Rotten decking", "Flashing failure", "Missing ice and water shield"].map((item) => (
-                  <div key={item} className="flex items-center gap-2.5">
-                    <svg className="h-4 w-4 flex-shrink-0 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                    </svg>
-                    <span className="text-sm text-zinc-700">{item}</span>
-                  </div>
-                ))}
+          <div className="mt-12 space-y-0 divide-y divide-zinc-200">
+            {[
+              {
+                q: "How long does it take to set up?",
+                a: "About 5 minutes. Create an account, start a project, and your crew can begin capturing damage immediately from any phone."
+              },
+              {
+                q: "Does it work without cell service?",
+                a: "Photos and voice notes are saved on your phone. Once you have signal, everything syncs automatically. You just need a connection to generate the AI supplement draft."
+              },
+              {
+                q: "Do I need special equipment?",
+                a: "No. Any smartphone with a camera works. Your crew is already carrying everything they need."
+              },
+              {
+                q: "Can my office staff see what the crew captures?",
+                a: "Yes. Everything is saved to the cloud by project. Office staff can log in from any device and see all captures, notes, and reports."
+              },
+              {
+                q: "What if my crew speaks Spanish?",
+                a: "Voice notes are automatically translated to English. Your crew speaks in their language, and the system converts it for the supplement report."
+              },
+              {
+                q: "Is $497 worth it for one crew?",
+                a: "One approved supplement typically recovers $1,500–$3,200. The platform pays for itself on the first job."
+              },
+            ].map((faq) => (
+              <div key={faq.q} className="py-5">
+                <h3 className="text-sm font-semibold text-zinc-900">{faq.q}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-500">{faq.a}</p>
               </div>
-            </div>
-
-            {/* Supplement approved */}
-            <div className="border-b border-zinc-100 bg-green-50 px-6 py-5 sm:px-8">
-              <p className="text-xs font-semibold uppercase tracking-wider text-green-700">Supplement Approved by Insurance</p>
-              <p className="mt-2 text-3xl font-extrabold text-green-700">+$3,200</p>
-            </div>
-
-            {/* Final claim */}
-            <div className="px-6 py-5 sm:px-8">
-              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Final Claim Value</p>
-              <p className="mt-2 text-3xl font-extrabold text-indigo-600">$15,200</p>
-            </div>
-          </div>
-
-          <div className="mt-8 text-center">
-            <p className="text-sm leading-relaxed text-zinc-600">
-              Every documented item during tear-off is a line item the adjuster can approve. When damage goes undocumented, the supplement is never requested.
-            </p>
-            <p className="mt-3 text-sm font-medium text-zinc-900">
-              Supplement Snap helps crews capture those hidden conditions before the roof is installed.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Real Supplement Examples */}
-      <section className="border-t border-zinc-100 py-20">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Proven Results</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              Real supplement approvals from documented damage
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
-              When hidden conditions are properly documented during tear-off, adjusters approve the additional work. Here are examples of what crews recover.
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-6 sm:grid-cols-3">
-            <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50">
-                <svg className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
-                </svg>
-              </div>
-              <p className="text-xs font-medium text-zinc-500">Hidden damage</p>
-              <h3 className="mt-1 text-sm font-semibold text-zinc-900">Rotten decking discovered during tear-off</h3>
-              <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-2xl font-bold text-green-700">$3,200</span>
-                <span className="text-sm font-medium text-green-600">approved</span>
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-red-50">
-                <svg className="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                </svg>
-              </div>
-              <p className="text-xs font-medium text-zinc-500">Hidden damage</p>
-              <h3 className="mt-1 text-sm font-semibold text-zinc-900">Chimney flashing failure</h3>
-              <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-2xl font-bold text-green-700">$1,850</span>
-                <span className="text-sm font-medium text-green-600">approved</span>
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50">
-                <svg className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                </svg>
-              </div>
-              <p className="text-xs font-medium text-zinc-500">Hidden damage</p>
-              <h3 className="mt-1 text-sm font-semibold text-zinc-900">Ice and water shield missing in valley</h3>
-              <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-2xl font-bold text-green-700">$2,400</span>
-                <span className="text-sm font-medium text-green-600">approved</span>
-              </div>
-            </div>
-          </div>
-
-          <p className="mt-10 text-center text-sm text-zinc-500">
-            Documenting hidden conditions with photos and field notes helps increase the value of approved supplement claims.
-          </p>
-        </div>
-      </section>
-
-      {/* For Roofing Company Owners */}
-      <section className="border-t border-zinc-100 py-20">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Business Impact</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              Built for roofing companies that want to<br className="hidden sm:block" /> recover more supplement revenue
-            </h2>
-          </div>
-
-          <div className="mt-14 grid gap-8 sm:grid-cols-2">
-            <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">1</div>
-              <div>
-                <h3 className="text-base font-semibold text-zinc-900">Crews capture damage during tear-off</h3>
-                <p className="mt-1 text-sm leading-relaxed text-zinc-500">
-                  Field crews document hidden damage the moment it&apos;s exposed — photos, damage type, location, and field notes captured on-site.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">2</div>
-              <div>
-                <h3 className="text-base font-semibold text-zinc-900">Office receives organized documentation</h3>
-                <p className="mt-1 text-sm leading-relaxed text-zinc-500">
-                  All findings are saved by project, organized with tags, and accessible from any device. No more hunting through text messages or photo rolls.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">3</div>
-              <div>
-                <h3 className="text-base font-semibold text-zinc-900">Reports are ready to submit to adjusters</h3>
-                <p className="mt-1 text-sm leading-relaxed text-zinc-500">
-                  Generate professional PDF reports with AI-written supplement language and email them directly to insurance adjusters the same day.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">4</div>
-              <div>
-                <h3 className="text-base font-semibold text-zinc-900">More approved supplements means more revenue per job</h3>
-                <p className="mt-1 text-sm leading-relaxed text-zinc-500">
-                  Every documented finding is a recoverable line item. Proper documentation turns missed damage into approved supplement dollars.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -764,10 +671,10 @@ export default function LandingPage() {
               Book a Demo
             </Link>
             <Link
-              href="/app"
+              href="/signup"
               className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
             >
-              Open App
+              Get Started
             </Link>
           </div>
         </div>
