@@ -53,6 +53,16 @@ const ROOF_AREAS = [
   "Eave",
 ] as const
 
+const SUPPLEMENT_ESTIMATES: Record<string, number> = {
+  "Decking": 450,
+  "Flashing": 550,
+  "Vent / Pipe Boot": 85,
+  "Drip Edge": 275,
+  "Ice & Water": 350,
+  "Multiple Layers": 650,
+  "Other": 200,
+}
+
 type Project = {
   id: string
   project_name: string
@@ -2325,9 +2335,14 @@ function Home() {
             <h2 className="text-base font-semibold text-zinc-900">
               Captures
             </h2>
-            <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
-              {captures.length}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
+                ~${captures.reduce((sum, c) => sum + (SUPPLEMENT_ESTIMATES[c.damage_type] || 200), 0).toLocaleString()} est.
+              </span>
+              <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
+                {captures.length}
+              </span>
+            </div>
           </div>
 
           {/* Status filter */}
@@ -2426,6 +2441,9 @@ function Home() {
                       </span>
                       <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
                         {c.roof_area}
+                      </span>
+                      <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
+                        ~${SUPPLEMENT_ESTIMATES[c.damage_type] || 200}
                       </span>
                     </div>
                     <span className="text-xs text-zinc-400">

@@ -52,8 +52,8 @@ export function ProAnalytics({ userId, projectCount, captureCount, reportCount }
   const emailsOpened = emails.filter(e => e.opened_at).length
   const emailsSent = emails.length
 
-  // Estimate supplement value documented (avg $2,400 per report)
-  const estimatedValue = reportCount * 2400
+  // Estimate supplement value documented (avg $800 per capture)
+  const estimatedValue = captureCount * 800
 
   return (
     <div className="space-y-4">

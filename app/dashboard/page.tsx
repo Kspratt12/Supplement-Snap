@@ -38,6 +38,7 @@ export default function DashboardPage() {
   const [showVoiceRecord, setShowVoiceRecord] = useState(false)
   const [showPhotoCapture, setShowPhotoCapture] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
+  const [emailOpens, setEmailOpens] = useState(0)
 
   useEffect(() => {
     if (!authLoading && !user) router.replace("/login")
@@ -111,6 +112,15 @@ export default function DashboardPage() {
       setHasSentReport(sc > 0)
       setReportCount(sc)
     }
+
+    // Check email opens
+    try {
+      const { count } = await supabase
+        .from("email_tracking")
+        .select("*", { count: "exact", head: true })
+        .gt("open_count", 0)
+      setEmailOpens(count || 0)
+    } catch {}
 
     setLoadingProjects(false)
   }
@@ -253,7 +263,7 @@ export default function DashboardPage() {
         {!subscriptionLoading && !loadingProjects && isActive && hasAnyData && (
           <div className="mb-6 sm:mb-8">
             <h2 className="mb-3 text-sm font-semibold text-zinc-500">Your Activity</h2>
-            <div className="grid gap-3 grid-cols-3">
+            <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
               <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm text-center">
                 <p className="text-2xl sm:text-3xl font-bold text-zinc-900">{projects.length}</p>
                 <p className="mt-1 text-xs sm:text-sm text-zinc-500">Projects</p>
@@ -265,6 +275,10 @@ export default function DashboardPage() {
               <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm text-center">
                 <p className="text-2xl sm:text-3xl font-bold text-zinc-900">{reportCount}</p>
                 <p className="mt-1 text-xs sm:text-sm text-zinc-500">Reports</p>
+              </div>
+              <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm text-center">
+                <p className={`text-2xl sm:text-3xl font-bold ${emailOpens > 0 ? "text-green-600" : "text-zinc-900"}`}>{emailOpens}</p>
+                <p className="mt-1 text-xs sm:text-sm text-zinc-500">Emails Opened</p>
               </div>
             </div>
           </div>
