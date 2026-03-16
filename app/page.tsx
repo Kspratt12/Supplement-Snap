@@ -556,8 +556,64 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Real Supplement Examples */}
+      {/* Revenue Impact */}
       <section className="border-t border-zinc-100 bg-zinc-50 py-20">
+        <div className="mx-auto max-w-3xl px-6">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Revenue Impact</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              How one documented supplement can change a job
+            </h2>
+          </div>
+
+          <div className="mt-12 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-lg">
+            {/* Typical claim */}
+            <div className="border-b border-zinc-100 px-6 py-5 sm:px-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Typical Roof Claim</p>
+              <p className="mt-2 text-3xl font-extrabold text-zinc-900">$12,000</p>
+            </div>
+
+            {/* Hidden damage found */}
+            <div className="border-b border-zinc-100 px-6 py-5 sm:px-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Hidden Damage Discovered During Tear-Off</p>
+              <div className="mt-3 space-y-2">
+                {["Rotten decking", "Flashing failure", "Missing ice and water shield"].map((item) => (
+                  <div key={item} className="flex items-center gap-2.5">
+                    <svg className="h-4 w-4 flex-shrink-0 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                    <span className="text-sm text-zinc-700">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Supplement approved */}
+            <div className="border-b border-zinc-100 bg-green-50 px-6 py-5 sm:px-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-green-700">Supplement Approved by Insurance</p>
+              <p className="mt-2 text-3xl font-extrabold text-green-700">+$3,200</p>
+            </div>
+
+            {/* Final claim */}
+            <div className="px-6 py-5 sm:px-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Final Claim Value</p>
+              <p className="mt-2 text-3xl font-extrabold text-indigo-600">$15,200</p>
+            </div>
+          </div>
+
+          <div className="mt-8 text-center">
+            <p className="text-sm leading-relaxed text-zinc-600">
+              Every documented item during tear-off is a line item the adjuster can approve. When damage goes undocumented, the supplement is never requested.
+            </p>
+            <p className="mt-3 text-sm font-medium text-zinc-900">
+              Supplement Snap helps crews capture those hidden conditions before the roof is installed.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Real Supplement Examples */}
+      <section className="border-t border-zinc-100 py-20">
         <div className="mx-auto max-w-5xl px-6">
           <div className="text-center">
             <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Proven Results</p>
