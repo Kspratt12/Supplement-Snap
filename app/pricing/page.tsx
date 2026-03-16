@@ -10,15 +10,14 @@ export const metadata: Metadata = {
 }
 
 const FEATURES = [
-  "Unlimited projects",
-  "Capture field photos on mobile or desktop",
-  "Voice-to-note capture",
-  "AI supplement draft generation",
-  "Project report generation",
-  "PDF export",
-  "Email reports to adjusters",
-  "Project status workflow",
-  "Mobile-friendly interface",
+  "Unlimited roofing projects",
+  "Capture roof damage photos directly from the field",
+  "Voice-to-note damage documentation",
+  "AI-generated supplement report drafts",
+  "Professional PDF supplement reports",
+  "Send documentation directly to adjusters",
+  "Project workflow tracking",
+  "Mobile-friendly field workflow",
 ]
 
 const WHO_FOR = [
@@ -84,7 +83,7 @@ export default function PricingPage() {
           Simple pricing for roofing teams
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-zinc-500 sm:text-lg">
-          Get your crew set up with Supplement Snap and start documenting supplement-worthy damage faster from the field.
+          Capture hidden roof damage during tear-offs and generate clean supplement documentation adjusters approve faster.
         </p>
       </section>
 
@@ -92,6 +91,25 @@ export default function PricingPage() {
         <CancelBanner />
       </Suspense>
       <TestModeBanner isTestMode={(process.env.STRIPE_SECRET_KEY || "").startsWith("sk_test_")} />
+
+      {/* Value Props */}
+      <section className="mx-auto max-w-md px-6 pt-10 pb-2">
+        <p className="mb-4 text-center text-xs font-semibold uppercase tracking-wider text-zinc-400">Why roofing companies use Supplement Snap</p>
+        <div className="space-y-3">
+          {[
+            "Capture hidden damage the moment it appears during tear-off",
+            "Generate adjuster-ready supplement documentation automatically",
+            "Send clean reports to the office or adjuster the same day",
+          ].map((item) => (
+            <div key={item} className="flex items-start gap-2.5">
+              <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span className="text-sm text-zinc-600">{item}</span>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Pricing Card */}
       <section className="mx-auto max-w-md px-6 py-16">
@@ -123,7 +141,20 @@ export default function PricingPage() {
 
           <CheckoutButton />
           <p className="mt-3 text-center text-xs text-zinc-400">
-            We&apos;ll help set up your team and get you running fast.
+            Designed for roofing crews documenting hidden damage during real tear-offs.
+          </p>
+        </div>
+      </section>
+
+      {/* ROI */}
+      <section className="mx-auto max-w-2xl px-6 pb-16">
+        <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-6 text-center sm:p-8">
+          <h2 className="text-lg font-bold text-zinc-900">One approved supplement can cover the software.</h2>
+          <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-zinc-500">
+            Roofing crews often discover additional damage during tear-off that isn&apos;t included in the original claim. Supplement Snap helps document that damage properly so it can be submitted and approved faster.
+          </p>
+          <p className="mt-3 text-sm font-medium text-zinc-700">
+            Even one approved supplement can easily cover the cost of the platform.
           </p>
         </div>
       </section>
