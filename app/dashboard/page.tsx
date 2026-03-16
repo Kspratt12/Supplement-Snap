@@ -139,12 +139,30 @@ export default function DashboardPage() {
           <ResetSuccessBanner />
         </Suspense>
 
-        {/* Header — bigger text, mobile friendly */}
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900">Welcome back, {userName}</h1>
-          <p className="mt-1 text-sm text-zinc-500">
-            {isActive ? "Ready to capture damage and generate reports." : "Get started by activating your subscription."}
-          </p>
+        {/* Header with plan badge */}
+        <div className="mb-6 sm:mb-8 flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900">Welcome back, {userName}</h1>
+            <p className="mt-1 text-sm text-zinc-500">
+              {isActive ? "Ready to capture damage and generate reports." : "Get started by activating your subscription."}
+            </p>
+          </div>
+          {!subscriptionLoading && (
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${badge.color}`}>
+                {badge.text}
+              </span>
+              {isActive && (
+                <button
+                  onClick={openBillingPortal}
+                  disabled={portalLoading}
+                  className="text-xs font-medium text-zinc-400 hover:text-zinc-600 disabled:opacity-50"
+                >
+                  {portalLoading ? "..." : "Billing"}
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         {/* ── MAIN ACTION BUTTONS (mobile-first, big tap targets) ── */}
@@ -210,137 +228,56 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Plan + Quick Actions row */}
-        <div className="mb-6 sm:mb-8 grid gap-4 sm:grid-cols-2 items-start">
-          {/* Subscription card — compact */}
-          {!subscriptionLoading && (
-            <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-base font-bold text-zinc-900">Starter</span>
-                  <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${badge.color}`}>
-                    {badge.text}
-                  </span>
-                </div>
-                {isActive && (
-                  <button
-                    onClick={openBillingPortal}
-                    disabled={portalLoading}
-                    className="text-xs font-medium text-zinc-400 hover:text-zinc-600 disabled:opacity-50"
-                  >
-                    {portalLoading ? "..." : "Billing"}
-                  </button>
-                )}
-              </div>
-              {isActive ? (
-                <div className="mt-3">
-                  <Link
-                    href="/app"
-                    className="flex w-full items-center justify-center rounded-lg bg-indigo-600 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
-                  >
-                    Go to Projects
-                  </Link>
-                </div>
-              ) : (
-                <div className="mt-3 flex gap-2">
-                  <Link
-                    href="/pricing"
-                    className="flex-1 flex items-center justify-center rounded-lg bg-indigo-600 min-h-[48px] text-sm font-semibold text-white hover:bg-indigo-500"
-                  >
-                    Start Subscription
-                  </Link>
-                  <Link
-                    href="/pricing"
-                    className="flex items-center justify-center rounded-lg border border-zinc-300 bg-white px-4 min-h-[48px] text-sm font-medium text-zinc-700 hover:bg-zinc-50"
-                  >
-                    Plans
-                  </Link>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Quick Actions — simplified for active users */}
-          <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm">
-            <h2 className="text-sm font-semibold text-zinc-500 mb-3">Quick Actions</h2>
-            <div className="space-y-1">
-              {isActive ? (
-                <>
-                  <button
-                    onClick={() => setShowPhotoCapture(true)}
-                    className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
-                  >
-                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-                    </svg>
-                    Capture Damage Photo
-                  </button>
-                  <button
-                    onClick={() => setShowVoiceRecord(true)}
-                    className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
-                  >
-                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
-                    </svg>
-                    Record Voice Note
-                  </button>
-                  <Link
-                    href="/app"
-                    className="flex items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
-                  >
-                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Generate Report
-                  </Link>
-                  <button
-                    onClick={() => setShowSampleReport(true)}
-                    className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
-                  >
-                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    View Sample Report
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => setShowSubModal(true)}
-                    className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
-                  >
-                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-                    </svg>
-                    Capture Damage
-                  </button>
-                  <button
-                    onClick={() => setShowSubModal(true)}
-                    className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
-                  >
-                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Generate Report
-                  </button>
-                  <button
-                    onClick={() => setShowSampleReport(true)}
-                    className="flex w-full items-center gap-3 rounded-lg px-3 min-h-[52px] text-sm font-medium text-zinc-700 hover:bg-zinc-50 active:bg-zinc-100"
-                  >
-                    <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    View Sample Report
-                  </button>
-                </>
-              )}
-            </div>
+        {/* Quick Actions — only non-duplicate items */}
+        {isActive && (
+          <div className="mb-6 sm:mb-8 grid grid-cols-2 gap-3">
+            <Link
+              href="/app"
+              className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 min-h-[52px] text-sm font-medium text-zinc-700 shadow-sm hover:border-indigo-200 hover:shadow-md active:bg-zinc-50 transition-all"
+            >
+              <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Generate Report
+            </Link>
+            <button
+              onClick={() => setShowSampleReport(true)}
+              className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 min-h-[52px] text-sm font-medium text-zinc-700 shadow-sm hover:border-indigo-200 hover:shadow-md active:bg-zinc-50 transition-all"
+            >
+              <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Sample Report
+            </button>
           </div>
-        </div>
+        )}
+
+        {/* Inactive — subscription CTA */}
+        {!subscriptionLoading && !isActive && (
+          <div className="mb-6 sm:mb-8 grid grid-cols-2 gap-3">
+            <button
+              onClick={() => setShowSubModal(true)}
+              className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 min-h-[52px] text-sm font-medium text-zinc-700 shadow-sm hover:bg-zinc-50 active:bg-zinc-100"
+            >
+              <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+              </svg>
+              Capture Damage
+            </button>
+            <button
+              onClick={() => setShowSampleReport(true)}
+              className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 min-h-[52px] text-sm font-medium text-zinc-700 shadow-sm hover:bg-zinc-50 active:bg-zinc-100"
+            >
+              <svg className="h-5 w-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Sample Report
+            </button>
+          </div>
+        )}
 
         {/* Locked paywall */}
         {!subscriptionLoading && !isActive && (
