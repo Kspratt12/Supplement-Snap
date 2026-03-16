@@ -113,6 +113,8 @@ export default function Home() {
   // Voice recording state
   const [isRecording, setIsRecording] = useState(false)
   const [speechSupported, setSpeechSupported] = useState(false)
+  const [translating, setTranslating] = useState(false)
+  const [translated, setTranslated] = useState(false)
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
 
   // Captures + drafts
@@ -176,6 +178,36 @@ export default function Home() {
     )
   }, [])
 
+  async function translateNote(text: string) {
+    setTranslating(true)
+    setTranslated(false)
+    try {
+      const res = await fetch("/api/translate-note", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      })
+      if (!res.ok) return
+      const data = await res.json()
+      if (data.translated && data.text) {
+        setFieldNote((prev) => {
+          // Replace the original transcript (appended earlier) with the translation
+          const idx = prev.lastIndexOf(text)
+          if (idx !== -1) {
+            return prev.slice(0, idx) + data.text + prev.slice(idx + text.length)
+          }
+          return prev
+        })
+        setTranslated(true)
+        setTimeout(() => setTranslated(false), 4000)
+      }
+    } catch {
+      // Translation failed — keep original text
+    } finally {
+      setTranslating(false)
+    }
+  }
+
   function toggleRecording() {
     if (isRecording && recognitionRef.current) {
       recognitionRef.current.stop()
@@ -189,7 +221,6 @@ export default function Home() {
     const recognition = new SpeechRecognitionAPI()
     recognition.continuous = true
     recognition.interimResults = false
-    recognition.lang = "en-US"
 
     recognition.onresult = (event) => {
       let transcript = ""
@@ -203,6 +234,8 @@ export default function Home() {
           const separator = prev && !prev.endsWith(" ") ? " " : ""
           return prev + separator + transcript
         })
+        // Translate non-English speech
+        translateNote(transcript)
       }
     }
 
@@ -1489,6 +1522,20 @@ export default function Home() {
                   </>
                 )}
               </button>
+            )}
+            {translating && (
+              <p className="mt-2 flex items-center gap-1.5 text-xs text-indigo-600 dark:text-indigo-400">
+                <span className="h-3 w-3 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent dark:border-indigo-400 dark:border-t-transparent" />
+                Translating to English...
+              </p>
+            )}
+            {translated && !translating && (
+              <p className="mt-2 flex items-center gap-1.5 text-xs text-green-600 dark:text-green-400">
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Translated to English
+              </p>
             )}
           </div>
 
