@@ -24,6 +24,7 @@ export default function DashboardPage() {
   const [hasSentReport, setHasSentReport] = useState(false)
   const [reportCount, setReportCount] = useState(0)
   const [linkCopied, setLinkCopied] = useState(false)
+  const [showSubModal, setShowSubModal] = useState(false)
 
   useEffect(() => {
     if (!authLoading && !user) router.replace("/login")
@@ -131,7 +132,6 @@ export default function DashboardPage() {
       <main className="mx-auto max-w-5xl px-6 py-10">
         {/* Banners */}
         <Suspense fallback={null}>
-          <LockedBanner />
           <ResetSuccessBanner />
         </Suspense>
 
@@ -141,20 +141,13 @@ export default function DashboardPage() {
             <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Welcome back, {userName}</h1>
             <p className="mt-1 text-sm text-zinc-500">Manage your subscription, review your projects, and jump back into the app.</p>
           </div>
-          {isActive ? (
+          {isActive && (
             <Link
               href="/app"
               className="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500"
             >
               Create Project
             </Link>
-          ) : (
-            <span className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-100 px-5 py-2.5 text-sm font-semibold text-zinc-400 cursor-not-allowed">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-              </svg>
-              Create Project
-            </span>
           )}
         </div>
 
@@ -217,11 +210,6 @@ export default function DashboardPage() {
                 </div>
               </div>
             </div>
-            {!isActive && (
-              <p className="mt-3 text-center text-xs text-zinc-400">
-                Activate your subscription to begin capturing damage.
-              </p>
-            )}
           </div>
         )}
 
@@ -293,23 +281,38 @@ export default function DashboardPage() {
                   Capture Damage
                 </Link>
               ) : (
-                <div className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-400">
-                  <svg className="h-5 w-5 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                <button
+                  onClick={() => setShowSubModal(true)}
+                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                >
+                  <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
                   </svg>
                   Capture Damage
-                  <span className="ml-auto text-xs text-zinc-300">Locked</span>
-                </div>
+                </button>
               )}
-              <Link
-                href={isActive ? "/app" : "/pricing"}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
-              >
-                <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Generate Report
-              </Link>
+              {isActive ? (
+                <Link
+                  href="/app"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                >
+                  <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Generate Report
+                </Link>
+              ) : (
+                <button
+                  onClick={() => setShowSubModal(true)}
+                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+                >
+                  <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Generate Report
+                </button>
+              )}
               <Link
                 href="/pricing"
                 className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
@@ -464,29 +467,33 @@ export default function DashboardPage() {
           </p>
         </div>
 
+        {/* Subscription Required Modal */}
+        {showSubModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+            <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
+              <h2 className="text-lg font-bold text-zinc-900">Subscription Required</h2>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-500">
+                Activate your subscription to start capturing damage and generate supplement reports.
+              </p>
+              <div className="mt-6 flex gap-3">
+                <Link
+                  href="/pricing"
+                  className="flex-1 rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-500"
+                >
+                  Start Subscription
+                </Link>
+                <button
+                  onClick={() => setShowSubModal(false)}
+                  className="flex-1 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
       </main>
-    </div>
-  )
-}
-
-function LockedBanner() {
-  const searchParams = useSearchParams()
-  if (searchParams.get("locked") !== "1") return null
-
-  return (
-    <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-center">
-      <p className="text-sm font-medium text-red-700">
-        An active subscription is required to use Supplement Snap.
-      </p>
-      <p className="mt-1 text-xs text-red-500">
-        Your account is set up, but app access is locked until you have an active plan.
-      </p>
-      <Link
-        href="/pricing"
-        className="mt-3 inline-block rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
-      >
-        Start Subscription
-      </Link>
     </div>
   )
 }
