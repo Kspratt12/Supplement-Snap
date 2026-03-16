@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/dashboard", "/app", "/admin", "/api/"],
     },
-    sitemap: "https://supplement-snap.vercel.app/sitemap.xml",
+    sitemap: "https://supplementsnap.io/sitemap.xml",
   }
 }
