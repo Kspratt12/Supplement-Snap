@@ -42,8 +42,12 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://supplementsnap.io"),
   icons: {
-    icon: "/favicon.svg",
-    apple: "/favicon.svg",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/favicon.svg" },
+    ],
   },
 };
 
