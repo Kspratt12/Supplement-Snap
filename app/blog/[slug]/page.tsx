@@ -1403,20 +1403,27 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const article = ARTICLES.find((a) => a.slug === slug)
   if (!article) return {}
+  const firstImage = article.images ? Object.values(article.images)[0] : null
+  const ogImage = firstImage ? `https://supplementsnap.io${firstImage.src}` : "https://supplementsnap.io/og-default.png"
   return {
     title: article.metaTitle,
     description: article.metaDescription,
+    alternates: {
+      canonical: `https://supplementsnap.io/blog/${slug}`,
+    },
     openGraph: {
       title: article.metaTitle,
       description: article.metaDescription,
       type: "article",
       publishedTime: article.publishedDate,
       url: `https://supplementsnap.io/blog/${slug}`,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: firstImage?.alt || article.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: article.metaTitle,
       description: article.metaDescription,
+      images: [ogImage],
     },
   }
 }
@@ -1426,6 +1433,9 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
   const article = ARTICLES.find((a) => a.slug === slug)
   if (!article) return null
 
+  const firstImg = article.images ? Object.values(article.images)[0] : null
+  const wordCount = article.sections.reduce((sum, s) => sum + s.content.split(/\s+/).length, 0)
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -1433,10 +1443,13 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
     description: article.metaDescription,
     datePublished: article.publishedDate,
     dateModified: article.publishedDate,
+    wordCount,
+    ...(firstImg && { image: `https://supplementsnap.io${firstImg.src}` }),
     author: {
       "@type": "Person",
       name: "Kelvin Spratt",
       jobTitle: "Founder",
+      url: "https://supplementsnap.io",
       worksFor: {
         "@type": "Organization",
         name: "Supplement Snap",
@@ -1447,6 +1460,10 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
       "@type": "Organization",
       name: "Supplement Snap",
       url: "https://supplementsnap.io",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://supplementsnap.io/favicon.png",
+      },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
