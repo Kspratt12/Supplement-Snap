@@ -328,6 +328,9 @@ const ARTICLES: Article[] = [
     metaDescription: "Compare the three categories of roofing software: CRM, estimating, and supplement tools. Learn what each does, when you need each one, and where the gaps are costing you money.",
     publishedDate: "2026-03-23",
     highlight: { label: "Revenue Gap", value: "$20,000–$30,000/mo", subtext: "Left on the table by contractors with no supplement tool (10 jobs/month)" },
+    images: {
+      3: { src: "/blog/roofing-software-comparison/supplement-snap-dashboard.png", alt: "Supplement Snap dashboard showing roofing projects, capture counts, claim pipeline, and activity stats" },
+    },
     sections: [
       {
         heading: "The three categories of roofing software",
@@ -366,6 +369,10 @@ const ARTICLES: Article[] = [
     metaDescription: "Learn how to build an Xactimate roof estimate for insurance supplements. Covers key line codes like RFG SHTHN, RFG FLSH, RFG I&WS, pricing benchmarks, and common mistakes that get supplements denied.",
     publishedDate: "2026-03-24",
     highlight: { label: "Sample Supplement Total", value: "$1,438", subtext: "Typical supplement value using standard Xactimate codes + O&P" },
+    images: {
+      0: { src: "/blog/xactimate-roof-estimate-supplements/xactimate.gif", alt: "Xactimate roofing estimate software interface showing line codes and pricing for insurance claims" },
+      6: { src: "/blog/xactimate-roof-estimate-supplements/supplement-snap-export.png", alt: "Supplement Snap project report showing $1,300 estimated supplement value with Xactimate line codes and CSV export option" },
+    },
     sections: [
       {
         heading: "What is Xactimate and why does it matter for roofing supplements?",
@@ -404,6 +411,9 @@ const ARTICLES: Article[] = [
     metaDescription: "Why the initial roof replacement estimate is always lower than the final cost, what gets missed in adjuster inspections, and how supplements bridge the gap between estimate and actual cost.",
     publishedDate: "2026-03-25",
     highlight: { label: "Annual Revenue Left Behind", value: "$192,000–$288,000", subtext: "For a contractor doing 8-12 insurance roofs/month without supplements" },
+    images: {
+      5: { src: "/blog/roof-replacement-estimate-vs-final-cost/supplement-snap-project-value.png", alt: "Supplement Snap app showing project with $1,300 estimated supplement value and damage capture workflow" },
+    },
     sections: [
       {
         heading: "Why the initial estimate is always lower than the final cost",
