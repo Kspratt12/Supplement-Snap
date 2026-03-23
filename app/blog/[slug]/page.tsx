@@ -132,18 +132,17 @@ function ChecklistCard({ title, items }: { title: string; items: Array<{ text: s
 
 function TimelineVisual({ items }: { items: Array<{ time: string; title: string; desc: string; color?: string }> }) {
   return (
-    <div className="my-8 relative overflow-hidden">
-      <div className="absolute left-5 top-0 bottom-0 w-px bg-indigo-200" />
-      <div className="space-y-6">
+    <div className="my-8">
+      <div className="space-y-4">
         {items.map((item, i) => (
-          <div key={i} className="relative flex items-start gap-3 sm:gap-5 pl-1">
-            <div className={`relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 ${item.color === "green" ? "border-green-500 bg-green-50" : item.color === "red" ? "border-red-400 bg-red-50" : "border-indigo-500 bg-indigo-50"}`}>
-              <span className="text-xs font-bold text-zinc-700">{item.time}</span>
-            </div>
-            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm min-w-0 flex-1">
+          <div key={i} className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
+            <div className="flex items-center gap-3 mb-2">
+              <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border-2 ${item.color === "green" ? "border-green-500 bg-green-50" : item.color === "red" ? "border-red-400 bg-red-50" : "border-indigo-500 bg-indigo-50"}`}>
+                <span className="text-[10px] font-bold text-zinc-700 leading-tight text-center">{item.time}</span>
+              </div>
               <h4 className="text-sm font-bold text-zinc-900">{item.title}</h4>
-              <p className="mt-1 text-sm text-zinc-500">{item.desc}</p>
             </div>
+            <p className="text-sm text-zinc-500">{item.desc}</p>
           </div>
         ))}
       </div>
@@ -846,6 +845,9 @@ const ARTICLES: Article[] = [
       { text: "NOAA Storm Events Database", url: "https://www.ncdc.noaa.gov/stormevents/" },
     ],
     highlight: { label: "Storm Season Tip", value: "Same-Day Documentation", subtext: "Contractors who document damage during tear-off recover 2-3x more in supplements" },
+    images: {
+      0: { src: "/blog/storm-damage-roof-repair-near-me/contractor-homeowner.jpg", alt: "Roofing contractor discussing storm damage repair options with a homeowner" },
+    },
     visuals: {
       1: { type: "checklist", data: {
         title: "What to Look For in a Storm Damage Contractor",
@@ -933,6 +935,9 @@ const ARTICLES: Article[] = [
       { text: "Verisk Xactimate", url: "https://www.verisk.com/insurance/products/xactimate/" },
     ],
     highlight: { label: "CRM Blind Spot", value: "$2,000+/job", subtext: "Supplement revenue that CRMs don't help you recover" },
+    images: {
+      0: { src: "/blog/best-roofing-crm/roofing-office.jpg", alt: "Roofing contractor using CRM software on a computer screen" },
+    },
     visuals: {
       1: { type: "matrix", data: {
         headers: ["Feature", "JobNimbus", "AccuLynx", "Leap", "RoofLink"],
@@ -1017,6 +1022,9 @@ const ARTICLES: Article[] = [
       { text: "Insurance Information Institute", url: "https://www.iii.org" },
     ],
     highlight: { label: "Storm Damage Market", value: "$15B+", subtext: "Annual U.S. insurance payouts for storm-related roof damage" },
+    images: {
+      1: { src: "/blog/storm-damage-roof-repair/storm-roof.jpg", alt: "Roof with visible storm damage showing wind-lifted and missing shingles" },
+    },
     visuals: {
       0: { type: "damage-cards", data: [
         { icon: "wind", title: "Wind Damage", desc: "Lifted, creased, or missing shingles caused by high winds. Often starts at edges and ridgelines where uplift pressure is greatest.", value: "58 mph+" },
@@ -1091,6 +1099,9 @@ const ARTICLES: Article[] = [
       { text: "International Building Code (ICC)", url: "https://www.iccsafe.org" },
     ],
     highlight: { label: "Hidden Damage Found", value: "70-90%", subtext: "Of insurance tear-offs reveal damage not in the original estimate" },
+    images: {
+      1: { src: "/blog/roof-damage-repair-guide/damaged-roof.jpg", alt: "Close-up of damaged roof showing cracked shingles, water stains, and deteriorated decking" },
+    },
     visuals: {
       0: { type: "damage-cards", data: [
         { icon: "hail", title: "Storm Damage", desc: "Wind, hail, and debris damage from severe weather events. Usually covered by homeowner's insurance when properly documented.", value: "Insurance" },
@@ -1174,6 +1185,9 @@ const ARTICLES: Article[] = [
       { text: "ASTM Roofing Standards", url: "https://www.astm.org" },
     ],
     highlight: { label: "Reports That Get Approved", value: "3x faster", subtext: "When they include tagged photos, narratives, and Xactimate codes" },
+    images: {
+      0: { src: "/blog/roof-inspection-report/roof-inspection.jpg", alt: "Contractor inspecting a roof and documenting damage with a phone" },
+    },
     visuals: {
       1: { type: "checklist", data: {
         title: "Roof Inspection Report Essentials",
