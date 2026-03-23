@@ -371,7 +371,7 @@ const ARTICLES: Article[] = [
     highlight: { label: "Sample Supplement Total", value: "$1,438", subtext: "Typical supplement value using standard Xactimate codes + O&P" },
     images: {
       0: { src: "/blog/xactimate-roof-estimate-supplements/xactimate.gif", alt: "Xactimate roofing estimate software interface showing line codes and pricing for insurance claims" },
-      6: { src: "/blog/xactimate-roof-estimate-supplements/supplement-snap-export.png", alt: "Supplement Snap project report showing $1,300 estimated supplement value with Xactimate line codes and CSV export option" },
+      3: { src: "/blog/xactimate-roof-estimate-supplements/supplement-snap-export.png", alt: "Supplement Snap project report showing $1,300 estimated supplement value with Xactimate line codes and CSV export option" },
     },
     sections: [
       {
