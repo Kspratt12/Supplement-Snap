@@ -414,7 +414,7 @@ const ARTICLES: Article[] = [
   },
 ]
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   return ARTICLES.map((a) => ({ slug: a.slug }))
 }
 
