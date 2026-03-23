@@ -16,6 +16,7 @@ type Article = {
   images?: Record<number, BlogImage>
   visuals?: Record<number, Visual>
   sections: Array<{ heading: string; content: string }>
+  externalLinks?: Array<{ text: string; url: string }>
 }
 
 /* ── Visual Components ── */
@@ -123,7 +124,11 @@ const ARTICLES: Article[] = [
     title: "How to Write a Roofing Supplement That Gets Approved",
     metaTitle: "How to Write a Roofing Supplement for Insurance | Step-by-Step Guide",
     metaDescription: "Learn how to write a roofing supplement that insurance adjusters approve. Step-by-step guide with documentation tips, Xactimate codes, and common mistakes to avoid.",
-    publishedDate: "2026-03-10",
+    publishedDate: "2026-01-15",
+    externalLinks: [
+      { text: "NRCA Roofing Manual: Best Practices", url: "https://www.nrca.net" },
+      { text: "Verisk Xactimate Official Site", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
     highlight: { label: "Average Supplement Recovery", value: "$1,500–$3,200", subtext: "Per job when properly documented" },
     visuals: {
       1: { type: "compare", data: {
@@ -176,7 +181,11 @@ const ARTICLES: Article[] = [
     title: "Roofing Supplement Denied? Here's What to Do Next",
     metaTitle: "Roofing Supplement Denied? What to Do Next | Contractor Guide",
     metaDescription: "Your roofing supplement was denied by the insurance company. Here's what to do next, from re-documenting damage to filing appeals and preventing future denials.",
-    publishedDate: "2026-03-12",
+    publishedDate: "2026-01-28",
+    externalLinks: [
+      { text: "National Association of Insurance Commissioners (NAIC)", url: "https://www.naic.org" },
+      { text: "NRCA: Contractor Resources", url: "https://www.nrca.net" },
+    ],
     highlight: { label: "Denial Rate With Weak Docs", value: "60–80%", subtext: "Supplements without photos and narratives get denied" },
     visuals: {
       1: { type: "steps", data: [
@@ -222,7 +231,11 @@ const ARTICLES: Article[] = [
     title: "Xactimate Codes for Roofing Supplements: Complete Reference",
     metaTitle: "Xactimate Codes for Roofing Supplements | Complete Code List",
     metaDescription: "Complete list of Xactimate line codes for roofing supplements: decking, flashing, ice & water shield, pipe boots, drip edge, tear-off, and more.",
-    publishedDate: "2026-03-08",
+    externalLinks: [
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+      { text: "NRCA Roofing Standards", url: "https://www.nrca.net" },
+    ],
+    publishedDate: "2026-02-05",
     highlight: { label: "Most Used Code", value: "RFG SHTHN", subtext: "Sheathing replacement. The #1 supplement line item on insurance tear-offs." },
     visuals: {
       0: { type: "codes", data: [
@@ -276,7 +289,11 @@ const ARTICLES: Article[] = [
     title: "How Much Do Roofing Supplements Pay? Real Numbers for Contractors",
     metaTitle: "How Much Do Roofing Supplements Pay? | Real Revenue Numbers",
     metaDescription: "How much do roofing supplements actually pay? Real revenue data from contractors on average supplement values, what gets approved, and how to maximize recovery.",
-    publishedDate: "2026-03-14",
+    publishedDate: "2026-02-18",
+    externalLinks: [
+      { text: "Insurance Information Institute: Homeowners Claims", url: "https://www.iii.org" },
+      { text: "NRCA: Roofing Industry Data", url: "https://www.nrca.net" },
+    ],
     highlight: { label: "Average Per Job", value: "$1,500–$3,200", subtext: "Hidden damage recovery on a typical insurance tear-off" },
     visuals: {
       1: { type: "stats", data: [
@@ -325,7 +342,11 @@ const ARTICLES: Article[] = [
     title: "The Roofing Supplement Process Explained: From Tear-Off to Approval",
     metaTitle: "Roofing Supplement Process Explained | From Tear-Off to Approval",
     metaDescription: "Complete guide to the roofing supplement process, from discovering hidden damage during tear-off to getting insurance approval. Written for contractors.",
-    publishedDate: "2026-03-06",
+    publishedDate: "2026-02-27",
+    externalLinks: [
+      { text: "International Building Code (ICC)", url: "https://www.iccsafe.org" },
+      { text: "NRCA: Roofing Manual", url: "https://www.nrca.net" },
+    ],
     highlight: { label: "Jobs With Supplementable Damage", value: "70–90%", subtext: "Of insurance tear-offs have at least one hidden finding" },
     visuals: {
       0: { type: "steps", data: [
@@ -373,7 +394,12 @@ const ARTICLES: Article[] = [
     title: "Roof Tear-Off Cost in 2026: What Contractors and Homeowners Should Know",
     metaTitle: "Roof Tear-Off Cost in 2026 | Pricing by Size, Material & Pitch",
     metaDescription: "What does a roof tear-off cost in 2026? Breakdown by roof size, material, pitch, and layers, plus hidden costs discovered during tear-off and how supplements recover them.",
-    publishedDate: "2026-03-20",
+    publishedDate: "2026-03-05",
+    externalLinks: [
+      { text: "RSMeans Construction Cost Data", url: "https://www.rsmeans.com" },
+      { text: "NRCA: Roofing Tear-Off Guidelines", url: "https://www.nrca.net" },
+      { text: "EPA: Roofing Material Disposal", url: "https://www.epa.gov/smm/best-practices-reducing-reusing-and-recycling-construction-and-demolition-materials" },
+    ],
     highlight: { label: "Average Tear-Off Cost", value: "$1,000–$1,800", subtext: "Per square (100 SF) including labor and disposal" },
     images: {
       1: { src: "/blog/roof-tear-off-cost/tear-off-in-progress.jpg", alt: "Roof mid-tear-off showing exposed decking and damaged shingles being removed" },
@@ -415,7 +441,11 @@ const ARTICLES: Article[] = [
     title: "Best Roof Estimating Software for Contractors in 2026",
     metaTitle: "Best Roof Estimating Software for Contractors in 2026 | Comparison Guide",
     metaDescription: "Compare the best roof estimating software for contractors in 2026. Satellite measurement, field documentation, CRM, and supplement tools. What to look for and how they work together.",
-    publishedDate: "2026-03-21",
+    publishedDate: "2026-03-10",
+    externalLinks: [
+      { text: "Verisk Xactimate", url: "https://www.verisk.com/insurance/products/xactimate/" },
+      { text: "EagleView Roof Measurement", url: "https://www.eagleview.com" },
+    ],
     highlight: { label: "Key Insight", value: "$1,500–$3,200", subtext: "Average supplement recovery per job (the gap most software misses)" },
     images: {
       1: { src: "/blog/best-roof-estimating-software/satellite-roof-measurement.png", alt: "Satellite roof measurement showing 3D roof model with panel dimensions and pitch data" },
@@ -458,7 +488,12 @@ const ARTICLES: Article[] = [
     title: "Hail Damage Roof Inspection: What Gets Missed and How to Document It",
     metaTitle: "Hail Damage Roof Inspection | What Gets Missed & How to Document It",
     metaDescription: "How to inspect a roof for hail damage, what adjusters commonly miss, hidden damage found during tear-off, and how to document everything for successful supplements.",
-    publishedDate: "2026-03-22",
+    publishedDate: "2026-03-14",
+    externalLinks: [
+      { text: "NOAA Storm Prediction Center", url: "https://www.spc.noaa.gov" },
+      { text: "IBHS: Hail Damage Research", url: "https://ibhs.org" },
+      { text: "NRCA: Storm Damage Resources", url: "https://www.nrca.net" },
+    ],
     highlight: { label: "Storm Season Revenue", value: "$30,000–$64,000", subtext: "Additional monthly revenue from supplements on 20 hail damage re-roofs" },
     images: {
       1: { src: "/blog/hail-damage-roof-inspection/hail-damaged-shingles.jpg", alt: "Close-up of hail-damaged roof shingles showing circular impact marks and granule loss" },
@@ -500,7 +535,11 @@ const ARTICLES: Article[] = [
     title: "Roofing Software Comparison: CRM vs. Estimating vs. Supplement Tools",
     metaTitle: "Roofing Software Comparison: CRM vs. Estimating vs. Supplement Tools",
     metaDescription: "Compare the three categories of roofing software: CRM, estimating, and supplement tools. Learn what each does, when you need each one, and where the gaps are costing you money.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-03-17",
+    externalLinks: [
+      { text: "NRCA: Technology in Roofing", url: "https://www.nrca.net" },
+      { text: "Verisk Xactimate", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
     highlight: { label: "Revenue Gap", value: "$20,000–$30,000/mo", subtext: "Left on the table by contractors with no supplement tool (10 jobs/month)" },
     images: {
       3: { src: "/blog/roofing-software-comparison/supplement-snap-dashboard.png", alt: "Supplement Snap dashboard showing roofing projects, capture counts, claim pipeline, and activity stats" },
@@ -541,7 +580,11 @@ const ARTICLES: Article[] = [
     title: "How to Build an Xactimate Roof Estimate for Insurance Supplements",
     metaTitle: "How to Build an Xactimate Roof Estimate for Supplements | Contractor Guide",
     metaDescription: "Learn how to build an Xactimate roof estimate for insurance supplements. Covers key line codes like RFG SHTHN, RFG FLSH, RFG I&WS, pricing benchmarks, and common mistakes that get supplements denied.",
-    publishedDate: "2026-03-24",
+    publishedDate: "2026-03-20",
+    externalLinks: [
+      { text: "Verisk Xactimate Official Documentation", url: "https://www.verisk.com/insurance/products/xactimate/" },
+      { text: "International Building Code (ICC)", url: "https://www.iccsafe.org" },
+    ],
     highlight: { label: "Sample Supplement Total", value: "$1,438", subtext: "Typical supplement value using standard Xactimate codes + O&P" },
     images: {
       0: { src: "/blog/xactimate-roof-estimate-supplements/xactimate.gif", alt: "Xactimate roofing estimate software interface showing line codes and pricing for insurance claims" },
@@ -583,7 +626,12 @@ const ARTICLES: Article[] = [
     title: "Roof Replacement Estimate vs. Final Cost: Why Supplements Close the Gap",
     metaTitle: "Roof Replacement Estimate vs. Final Cost: Why Supplements Close the Gap",
     metaDescription: "Why the initial roof replacement estimate is always lower than the final cost, what gets missed in adjuster inspections, and how supplements bridge the gap between estimate and actual cost.",
-    publishedDate: "2026-03-25",
+    publishedDate: "2026-03-23",
+    externalLinks: [
+      { text: "Insurance Information Institute", url: "https://www.iii.org" },
+      { text: "NRCA: Roof Replacement Standards", url: "https://www.nrca.net" },
+      { text: "Verisk Property Estimating", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
     highlight: { label: "Annual Revenue Left Behind", value: "$192,000–$288,000", subtext: "For a contractor doing 8-12 insurance roofs/month without supplements" },
     images: {
       5: { src: "/blog/roof-replacement-estimate-vs-final-cost/supplement-snap-project-value.png", alt: "Supplement Snap app showing project with $1,300 estimated supplement value and damage capture workflow" },
@@ -781,9 +829,14 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
     datePublished: article.publishedDate,
     dateModified: article.publishedDate,
     author: {
-      "@type": "Organization",
-      name: "Supplement Snap",
-      url: "https://supplementsnap.io",
+      "@type": "Person",
+      name: "Kelvin Spratt",
+      jobTitle: "Founder",
+      worksFor: {
+        "@type": "Organization",
+        name: "Supplement Snap",
+        url: "https://supplementsnap.io",
+      },
     },
     publisher: {
       "@type": "Organization",
@@ -816,7 +869,13 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
         <div className="mb-10">
           <Link href="/blog" className="text-xs font-medium text-indigo-600 hover:text-indigo-500">&larr; All Articles</Link>
           <h1 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">{article.title}</h1>
-          <p className="mt-3 text-sm text-zinc-400">Published {new Date(article.publishedDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</p>
+          <div className="mt-4 flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold text-white">KS</div>
+            <div>
+              <p className="text-sm font-medium text-zinc-900">Kelvin Spratt</p>
+              <p className="text-xs text-zinc-400">Founder, Supplement Snap &middot; {new Date(article.publishedDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</p>
+            </div>
+          </div>
         </div>
 
         {article.highlight && (
@@ -849,6 +908,21 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
           ))}
         </div>
 
+        {/* External Links */}
+        {article.externalLinks && article.externalLinks.length > 0 && (
+          <div className="mt-12 rounded-xl border border-zinc-200 bg-zinc-50 p-6">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">References & Resources</h3>
+            <div className="mt-3 space-y-2">
+              {article.externalLinks.map((link, i) => (
+                <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-500">
+                  <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                  {link.text}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* CTA */}
         <div className="mt-16 rounded-xl border border-indigo-200 bg-indigo-50 p-6 text-center">
           <h3 className="text-lg font-bold text-zinc-900">Ready to streamline your supplement process?</h3>
@@ -856,8 +930,8 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
             Supplement Snap helps your crew capture hidden damage during tear-off and generate adjuster-ready reports in minutes.
           </p>
           <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link href="/demo" className="rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500">
-              Book a Free Walkthrough
+            <Link href="/signup" className="rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500">
+              Start Free Trial
             </Link>
             <Link href="/pricing" className="rounded-lg border border-zinc-300 bg-white px-6 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
               See Pricing
