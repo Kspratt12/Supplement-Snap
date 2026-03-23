@@ -4,6 +4,7 @@ import { SiteFooter } from "../../../lib/site-footer"
 import { NavLinks } from "../../../lib/nav-links"
 
 type BlogImage = { src: string; alt: string }
+type Visual = { type: "stats" | "steps" | "codes" | "compare"; data: any }
 
 type Article = {
   slug: string
@@ -13,7 +14,107 @@ type Article = {
   publishedDate: string
   highlight?: { label: string; value: string; subtext: string }
   images?: Record<number, BlogImage>
+  visuals?: Record<number, Visual>
   sections: Array<{ heading: string; content: string }>
+}
+
+/* ── Visual Components ── */
+
+function StatsGrid({ items }: { items: Array<{ label: string; value: string; color?: string }> }) {
+  return (
+    <div className="my-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {items.map((item, i) => (
+        <div key={i} className="rounded-xl border border-zinc-200 bg-white p-5 text-center shadow-sm">
+          <p className={`text-2xl font-extrabold ${item.color || "text-indigo-600"}`}>{item.value}</p>
+          <p className="mt-1 text-xs text-zinc-500">{item.label}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function StepsFlow({ items }: { items: Array<{ num: string; title: string; desc: string }> }) {
+  return (
+    <div className="my-8 space-y-4">
+      {items.map((item, i) => (
+        <div key={i} className="flex items-start gap-4 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-sm font-bold text-white">
+            {item.num}
+          </div>
+          <div>
+            <h4 className="text-sm font-bold text-zinc-900">{item.title}</h4>
+            <p className="mt-1 text-sm text-zinc-500">{item.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function CodesTable({ items }: { items: Array<{ code: string; desc: string; unit: string; price: string }> }) {
+  return (
+    <div className="my-8 overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-zinc-50 border-b border-zinc-200">
+            <th className="px-4 py-3 text-left font-semibold text-zinc-900">Code</th>
+            <th className="px-4 py-3 text-left font-semibold text-zinc-900">Description</th>
+            <th className="px-4 py-3 text-center font-semibold text-zinc-900">Unit</th>
+            <th className="px-4 py-3 text-right font-semibold text-zinc-900">Avg Price</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-zinc-100">
+          {items.map((item, i) => (
+            <tr key={i} className="bg-white">
+              <td className="px-4 py-3 font-mono text-xs font-semibold text-indigo-600">{item.code}</td>
+              <td className="px-4 py-3 text-zinc-600">{item.desc}</td>
+              <td className="px-4 py-3 text-center text-zinc-500">{item.unit}</td>
+              <td className="px-4 py-3 text-right font-semibold text-zinc-900">{item.price}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function CompareCard({ before, after }: { before: { label: string; items: string[] }; after: { label: string; items: string[] } }) {
+  return (
+    <div className="my-8 grid gap-4 sm:grid-cols-2">
+      <div className="rounded-xl border border-red-200 bg-red-50 p-5">
+        <div className="flex items-center gap-2">
+          <svg className="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+          <h4 className="text-sm font-bold text-red-700">{before.label}</h4>
+        </div>
+        <ul className="mt-3 space-y-2">
+          {before.items.map((item, i) => (
+            <li key={i} className="text-sm text-red-600">{item}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="rounded-xl border border-green-200 bg-green-50 p-5">
+        <div className="flex items-center gap-2">
+          <svg className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+          <h4 className="text-sm font-bold text-green-700">{after.label}</h4>
+        </div>
+        <ul className="mt-3 space-y-2">
+          {after.items.map((item, i) => (
+            <li key={i} className="text-sm text-green-700">{item}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+function VisualBlock({ visual }: { visual: Visual }) {
+  switch (visual.type) {
+    case "stats": return <StatsGrid items={visual.data} />
+    case "steps": return <StepsFlow items={visual.data} />
+    case "codes": return <CodesTable items={visual.data} />
+    case "compare": return <CompareCard before={visual.data.before} after={visual.data.after} />
+    default: return null
+  }
 }
 
 const ARTICLES: Article[] = [
@@ -23,6 +124,22 @@ const ARTICLES: Article[] = [
     metaTitle: "How to Write a Roofing Supplement for Insurance | Step-by-Step Guide",
     metaDescription: "Learn how to write a roofing supplement that insurance adjusters approve. Step-by-step guide with documentation tips, Xactimate codes, and common mistakes to avoid.",
     publishedDate: "2026-03-10",
+    highlight: { label: "Average Supplement Recovery", value: "$1,500–$3,200", subtext: "Per job when properly documented" },
+    visuals: {
+      1: { type: "compare", data: {
+        before: { label: "Why Supplements Get Denied", items: ["Blurry or missing photos", "No written narrative", "Submitted weeks late", "Vague descriptions", "No building code references"] },
+        after: { label: "What Gets Approved", items: ["Clear photos with context + detail", "Professional damage narrative", "Submitted same day", "Specific measurements and locations", "Building code citations included"] },
+      }},
+      4: { type: "codes", data: [
+        { code: "RFG SHTHN", desc: "Sheathing, plywood/OSB", unit: "SF", price: "$2.18" },
+        { code: "RFG RFLT30", desc: "Roofing felt, 30#", unit: "SF", price: "$0.52" },
+        { code: "RFG FLSH", desc: "Step/counter flashing", unit: "LF", price: "$8.75" },
+        { code: "RFG VENT", desc: "Pipe jack/boot", unit: "EA", price: "$85.00" },
+        { code: "RFG DRIP", desc: "Drip edge, aluminum", unit: "LF", price: "$4.25" },
+        { code: "RFG I&WS", desc: "Ice & water shield", unit: "SF", price: "$1.85" },
+        { code: "RFG TEAR", desc: "Remove additional layer", unit: "SQ", price: "$45.00" },
+      ]},
+    },
     sections: [
       {
         heading: "What is a roofing supplement?",
@@ -60,6 +177,19 @@ const ARTICLES: Article[] = [
     metaTitle: "Roofing Supplement Denied? What to Do Next | Contractor Guide",
     metaDescription: "Your roofing supplement was denied by the insurance company. Here's what to do next, from re-documenting damage to filing appeals and preventing future denials.",
     publishedDate: "2026-03-12",
+    highlight: { label: "Denial Rate With Weak Docs", value: "60–80%", subtext: "Supplements without photos and narratives get denied" },
+    visuals: {
+      1: { type: "steps", data: [
+        { num: "1", title: "Review the denial reason", desc: "Read the denial letter carefully. The stated reason tells you exactly what to fix." },
+        { num: "2", title: "Gather additional evidence", desc: "Pull together clear photos, measurements, and location details for each finding." },
+        { num: "3", title: "Write a stronger narrative", desc: "Address the denial reason directly. Be specific, professional, and reference your photos." },
+        { num: "4", title: "Resubmit as a complete package", desc: "Send a fresh PDF report with all evidence. Don't just reply to the denial email." },
+      ]},
+      4: { type: "compare", data: {
+        before: { label: "Why It Was Denied", items: ["Blurry photos from camera roll", "No written explanation", "Submitted 3 weeks later", "Generic line items", "No proof damage was concealed"] },
+        after: { label: "How to Get It Approved", items: ["Tagged photos with damage type + location", "Professional narrative per finding", "Submitted same day as tear-off", "Correct Xactimate codes + quantities", "Statement that damage was under shingles"] },
+      }},
+    },
     sections: [
       {
         heading: "Why your roofing supplement was denied",
@@ -93,6 +223,19 @@ const ARTICLES: Article[] = [
     metaTitle: "Xactimate Codes for Roofing Supplements | Complete Code List",
     metaDescription: "Complete list of Xactimate line codes for roofing supplements: decking, flashing, ice & water shield, pipe boots, drip edge, tear-off, and more.",
     publishedDate: "2026-03-08",
+    highlight: { label: "Most Used Code", value: "RFG SHTHN", subtext: "Sheathing replacement. The #1 supplement line item on insurance tear-offs." },
+    visuals: {
+      0: { type: "codes", data: [
+        { code: "RFG SHTHN", desc: "Sheathing, plywood/OSB, R&R", unit: "SF", price: "$2.18" },
+        { code: "RFG RFLT30", desc: "Roofing felt, 30#", unit: "SF", price: "$0.52" },
+        { code: "RFG FLSH", desc: "Step/counter flashing, aluminum", unit: "LF", price: "$8.75" },
+        { code: "RFG I&WS", desc: "Ice & water shield membrane", unit: "SF", price: "$1.85" },
+        { code: "RFG VENT", desc: "Pipe jack/boot, R&R", unit: "EA", price: "$85.00" },
+        { code: "RFG DRIP", desc: "Drip edge, aluminum, R&R", unit: "LF", price: "$4.25" },
+        { code: "RFG TEAR", desc: "Remove additional layer", unit: "SQ", price: "$45.00" },
+        { code: "RFG HAUL", desc: "Haul debris, additional layer", unit: "SQ", price: "$22.50" },
+      ]},
+    },
     sections: [
       {
         heading: "Why Xactimate codes matter for supplements",
@@ -134,6 +277,22 @@ const ARTICLES: Article[] = [
     metaTitle: "How Much Do Roofing Supplements Pay? | Real Revenue Numbers",
     metaDescription: "How much do roofing supplements actually pay? Real revenue data from contractors on average supplement values, what gets approved, and how to maximize recovery.",
     publishedDate: "2026-03-14",
+    highlight: { label: "Average Per Job", value: "$1,500–$3,200", subtext: "Hidden damage recovery on a typical insurance tear-off" },
+    visuals: {
+      1: { type: "stats", data: [
+        { label: "Decking replacement (3+ sheets)", value: "$200–$600", color: "text-zinc-900" },
+        { label: "Step & counter flashing", value: "$300–$800", color: "text-zinc-900" },
+        { label: "Ice & water shield", value: "$200–$500", color: "text-zinc-900" },
+        { label: "Multiple layer removal", value: "$400–$1,000", color: "text-zinc-900" },
+        { label: "Pipe boot replacement", value: "$85–$340", color: "text-zinc-900" },
+        { label: "Drip edge (full perimeter)", value: "$150–$400", color: "text-zinc-900" },
+      ]},
+      3: { type: "stats", data: [
+        { label: "Monthly revenue (no supplements)", value: "$120,000" },
+        { label: "Monthly revenue (with supplements)", value: "$144,000", color: "text-green-600" },
+        { label: "Additional annual revenue", value: "$288,000", color: "text-green-600" },
+      ]},
+    },
     sections: [
       {
         heading: "The short answer: $1,500–$3,200 per job",
@@ -167,6 +326,21 @@ const ARTICLES: Article[] = [
     metaTitle: "Roofing Supplement Process Explained | From Tear-Off to Approval",
     metaDescription: "Complete guide to the roofing supplement process, from discovering hidden damage during tear-off to getting insurance approval. Written for contractors.",
     publishedDate: "2026-03-06",
+    highlight: { label: "Jobs With Supplementable Damage", value: "70–90%", subtext: "Of insurance tear-offs have at least one hidden finding" },
+    visuals: {
+      0: { type: "steps", data: [
+        { num: "1", title: "Crew discovers hidden damage", desc: "During tear-off, concealed conditions are exposed: rotted decking, corroded flashing, missing ice & water shield." },
+        { num: "2", title: "Document at the point of discovery", desc: "Photograph each finding with context and detail shots. Tag the damage type, roof area, and add field notes." },
+        { num: "3", title: "Generate the supplement report", desc: "AI writes a professional narrative. Xactimate line codes and pricing are mapped automatically." },
+        { num: "4", title: "Email to the adjuster same day", desc: "Send a branded PDF report directly to the insurance adjuster before the crew leaves the job site." },
+        { num: "5", title: "Adjuster reviews and approves", desc: "Clear documentation with photos, narratives, and correct codes leads to faster approvals." },
+      ]},
+      3: { type: "stats", data: [
+        { label: "Adjuster review time", value: "3–14 days" },
+        { label: "Approval rate with strong docs", value: "High", color: "text-green-600" },
+        { label: "Typical approval timeline", value: "Same week", color: "text-indigo-600" },
+      ]},
+    },
     sections: [
       {
         heading: "What happens when your crew finds hidden damage",
@@ -371,7 +545,7 @@ const ARTICLES: Article[] = [
     highlight: { label: "Sample Supplement Total", value: "$1,438", subtext: "Typical supplement value using standard Xactimate codes + O&P" },
     images: {
       0: { src: "/blog/xactimate-roof-estimate-supplements/xactimate.gif", alt: "Xactimate roofing estimate software interface showing line codes and pricing for insurance claims" },
-      3: { src: "/blog/xactimate-roof-estimate-supplements/supplement-snap-export.png", alt: "Supplement Snap project report showing $1,300 estimated supplement value with Xactimate line codes and CSV export option" },
+      5: { src: "/blog/xactimate-roof-estimate-supplements/supplement-snap-export.png", alt: "Supplement Snap project report showing $1,300 estimated supplement value with Xactimate line codes and CSV export option" },
     },
     sections: [
       {
@@ -670,6 +844,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
                   />
                 </div>
               )}
+              {article.visuals?.[i] && <VisualBlock visual={article.visuals[i]} />}
             </section>
           ))}
         </div>
