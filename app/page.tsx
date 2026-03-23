@@ -2,6 +2,7 @@ import Link from "next/link"
 import { NavLinks } from "../lib/nav-links"
 import { SiteFooter } from "../lib/site-footer"
 import { InteractiveDemo } from "./components/interactive-demo"
+import { CheckoutButton } from "./pricing/checkout-button"
 
 export default function LandingPage() {
   return (
@@ -797,9 +798,7 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-              <Link href="/pricing" className="mt-6 block w-full rounded-lg bg-indigo-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-                Buy Now
-              </Link>
+              <CheckoutButton plan="starter" label="Buy Now" />
             </div>
 
             {/* Pro */}
@@ -820,9 +819,7 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-              <Link href="/pricing" className="mt-6 block w-full rounded-lg bg-indigo-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-                Buy Now
-              </Link>
+              <CheckoutButton plan="pro" label="Buy Now" />
             </div>
           </div>
         </div>

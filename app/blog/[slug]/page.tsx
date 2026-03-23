@@ -124,7 +124,7 @@ const ARTICLES: Article[] = [
     title: "How to Write a Roofing Supplement That Gets Approved",
     metaTitle: "How to Write a Roofing Supplement for Insurance | Step-by-Step Guide",
     metaDescription: "Learn how to write a roofing supplement that insurance adjusters approve. Step-by-step guide with documentation tips, Xactimate codes, and common mistakes to avoid.",
-    publishedDate: "2026-01-15",
+    publishedDate: "2026-03-23",
     externalLinks: [
       { text: "NRCA Roofing Manual: Best Practices", url: "https://www.nrca.net" },
       { text: "Verisk Xactimate Official Site", url: "https://www.verisk.com/insurance/products/xactimate/" },
@@ -181,7 +181,7 @@ const ARTICLES: Article[] = [
     title: "Roofing Supplement Denied? Here's What to Do Next",
     metaTitle: "Roofing Supplement Denied? What to Do Next | Contractor Guide",
     metaDescription: "Your roofing supplement was denied by the insurance company. Here's what to do next, from re-documenting damage to filing appeals and preventing future denials.",
-    publishedDate: "2026-01-28",
+    publishedDate: "2026-03-23",
     externalLinks: [
       { text: "National Association of Insurance Commissioners (NAIC)", url: "https://www.naic.org" },
       { text: "NRCA: Contractor Resources", url: "https://www.nrca.net" },
@@ -235,7 +235,7 @@ const ARTICLES: Article[] = [
       { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
       { text: "NRCA Roofing Standards", url: "https://www.nrca.net" },
     ],
-    publishedDate: "2026-02-05",
+    publishedDate: "2026-03-23",
     highlight: { label: "Most Used Code", value: "RFG SHTHN", subtext: "Sheathing replacement. The #1 supplement line item on insurance tear-offs." },
     visuals: {
       0: { type: "codes", data: [
@@ -289,7 +289,7 @@ const ARTICLES: Article[] = [
     title: "How Much Do Roofing Supplements Pay? Real Numbers for Contractors",
     metaTitle: "How Much Do Roofing Supplements Pay? | Real Revenue Numbers",
     metaDescription: "How much do roofing supplements actually pay? Real revenue data from contractors on average supplement values, what gets approved, and how to maximize recovery.",
-    publishedDate: "2026-02-18",
+    publishedDate: "2026-03-23",
     externalLinks: [
       { text: "Insurance Information Institute: Homeowners Claims", url: "https://www.iii.org" },
       { text: "NRCA: Roofing Industry Data", url: "https://www.nrca.net" },
@@ -342,7 +342,7 @@ const ARTICLES: Article[] = [
     title: "The Roofing Supplement Process Explained: From Tear-Off to Approval",
     metaTitle: "Roofing Supplement Process Explained | From Tear-Off to Approval",
     metaDescription: "Complete guide to the roofing supplement process, from discovering hidden damage during tear-off to getting insurance approval. Written for contractors.",
-    publishedDate: "2026-02-27",
+    publishedDate: "2026-03-23",
     externalLinks: [
       { text: "International Building Code (ICC)", url: "https://www.iccsafe.org" },
       { text: "NRCA: Roofing Manual", url: "https://www.nrca.net" },
@@ -394,7 +394,7 @@ const ARTICLES: Article[] = [
     title: "Roof Tear-Off Cost in 2026: What Contractors and Homeowners Should Know",
     metaTitle: "Roof Tear-Off Cost in 2026 | Pricing by Size, Material & Pitch",
     metaDescription: "What does a roof tear-off cost in 2026? Breakdown by roof size, material, pitch, and layers, plus hidden costs discovered during tear-off and how supplements recover them.",
-    publishedDate: "2026-03-05",
+    publishedDate: "2026-03-23",
     externalLinks: [
       { text: "RSMeans Construction Cost Data", url: "https://www.rsmeans.com" },
       { text: "NRCA: Roofing Tear-Off Guidelines", url: "https://www.nrca.net" },
@@ -441,7 +441,7 @@ const ARTICLES: Article[] = [
     title: "Best Roof Estimating Software for Contractors in 2026",
     metaTitle: "Best Roof Estimating Software for Contractors in 2026 | Comparison Guide",
     metaDescription: "Compare the best roof estimating software for contractors in 2026. Satellite measurement, field documentation, CRM, and supplement tools. What to look for and how they work together.",
-    publishedDate: "2026-03-10",
+    publishedDate: "2026-03-23",
     externalLinks: [
       { text: "Verisk Xactimate", url: "https://www.verisk.com/insurance/products/xactimate/" },
       { text: "EagleView Roof Measurement", url: "https://www.eagleview.com" },
@@ -488,7 +488,7 @@ const ARTICLES: Article[] = [
     title: "Hail Damage Roof Inspection: What Gets Missed and How to Document It",
     metaTitle: "Hail Damage Roof Inspection | What Gets Missed & How to Document It",
     metaDescription: "How to inspect a roof for hail damage, what adjusters commonly miss, hidden damage found during tear-off, and how to document everything for successful supplements.",
-    publishedDate: "2026-03-14",
+    publishedDate: "2026-03-23",
     externalLinks: [
       { text: "NOAA Storm Prediction Center", url: "https://www.spc.noaa.gov" },
       { text: "IBHS: Hail Damage Research", url: "https://ibhs.org" },
@@ -535,7 +535,7 @@ const ARTICLES: Article[] = [
     title: "Roofing Software Comparison: CRM vs. Estimating vs. Supplement Tools",
     metaTitle: "Roofing Software Comparison: CRM vs. Estimating vs. Supplement Tools",
     metaDescription: "Compare the three categories of roofing software: CRM, estimating, and supplement tools. Learn what each does, when you need each one, and where the gaps are costing you money.",
-    publishedDate: "2026-03-17",
+    publishedDate: "2026-03-23",
     externalLinks: [
       { text: "NRCA: Technology in Roofing", url: "https://www.nrca.net" },
       { text: "Verisk Xactimate", url: "https://www.verisk.com/insurance/products/xactimate/" },
@@ -581,7 +581,7 @@ const ARTICLES: Article[] = [
     title: "How to Build an Xactimate Roof Estimate for Insurance Supplements",
     metaTitle: "How to Build an Xactimate Roof Estimate for Supplements | Contractor Guide",
     metaDescription: "Learn how to build an Xactimate roof estimate for insurance supplements. Covers key line codes like RFG SHTHN, RFG FLSH, RFG I&WS, pricing benchmarks, and common mistakes that get supplements denied.",
-    publishedDate: "2026-03-20",
+    publishedDate: "2026-03-23",
     externalLinks: [
       { text: "Verisk Xactimate Official Documentation", url: "https://www.verisk.com/insurance/products/xactimate/" },
       { text: "International Building Code (ICC)", url: "https://www.iccsafe.org" },
