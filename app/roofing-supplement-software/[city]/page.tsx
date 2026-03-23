@@ -67,7 +67,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
-            Start Free Trial
+            Book a Demo
           </Link>
           <Link href="/pricing" className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
             See Pricing
@@ -164,7 +164,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
-              Start Free Trial
+              Book a Demo
             </Link>
             <Link href="/pricing" className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
               See Pricing

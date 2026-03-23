@@ -99,8 +99,8 @@ export default function SupplementDocumentationPage() {
             Supplement Snap makes it easy for crews to document hidden damage during tear-off. Photos, notes, and AI-generated supplement narratives, all saved by project.
           </p>
           <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link href="/signup" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
-              Start Free Trial
+            <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
+              Book a Demo
             </Link>
             <Link href="/pricing" className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
               View Pricing
