@@ -760,14 +760,14 @@ export default function LandingPage() {
 
           <div className="mx-auto mt-12 grid gap-6 sm:grid-cols-3 max-w-5xl">
             {/* Free */}
-            <div className="rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
+            <div className="flex flex-col rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
               <p className="text-sm font-semibold uppercase tracking-wider text-green-600">Free</p>
               <p className="mt-1 text-xs text-zinc-400">Try it on your next job</p>
               <div className="mt-4">
                 <span className="text-3xl font-extrabold text-zinc-900">$0</span>
               </div>
               <p className="mt-1 text-sm text-zinc-500">No credit card required</p>
-              <div className="mt-5 space-y-2.5">
+              <div className="mt-5 flex-1 space-y-2.5">
                 {["1 demo project", "Damage photo capture", "AI supplement draft", "Voice notes", "See sample PDF"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
                     <svg className="h-4 w-4 flex-shrink-0 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
@@ -781,7 +781,7 @@ export default function LandingPage() {
             </div>
 
             {/* Starter */}
-            <div className="rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
+            <div className="flex flex-col rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
               <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Starter</p>
               <p className="mt-1 text-xs text-zinc-400">For solo crews</p>
               <div className="mt-4">
@@ -789,7 +789,7 @@ export default function LandingPage() {
                 <span className="ml-1 text-sm text-zinc-500">/month</span>
               </div>
               <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
-              <div className="mt-5 space-y-2.5">
+              <div className="mt-5 flex-1 space-y-2.5">
                 {["Unlimited projects", "AI supplement drafts", "PDF reports & email", "Photo annotations", "Voice notes", "1 user"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
                     <svg className="h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
@@ -798,12 +798,12 @@ export default function LandingPage() {
                 ))}
               </div>
               <Link href="/pricing" className="mt-6 block w-full rounded-lg bg-indigo-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-                Start Free Trial
+                Buy Now
               </Link>
             </div>
 
             {/* Pro */}
-            <div className="rounded-2xl border-2 border-indigo-600 bg-white p-7 shadow-lg relative">
+            <div className="flex flex-col rounded-2xl border-2 border-indigo-600 bg-white p-7 shadow-lg relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo-600 px-3 py-0.5 text-xs font-semibold text-white">Most Popular</div>
               <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Pro</p>
               <p className="mt-1 text-xs text-zinc-400">For teams up to 5</p>
@@ -812,7 +812,7 @@ export default function LandingPage() {
                 <span className="ml-1 text-sm text-zinc-500">/month</span>
               </div>
               <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
-              <div className="mt-5 space-y-2.5">
+              <div className="mt-5 flex-1 space-y-2.5">
                 {["Everything in Starter", "Up to 5 team members", "Email open tracking", "Xactimate CSV export", "Priority support"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
                     <svg className="h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
@@ -821,7 +821,7 @@ export default function LandingPage() {
                 ))}
               </div>
               <Link href="/pricing" className="mt-6 block w-full rounded-lg bg-indigo-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-                Start Free Trial
+                Buy Now
               </Link>
             </div>
           </div>
