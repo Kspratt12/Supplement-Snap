@@ -132,15 +132,15 @@ function ChecklistCard({ title, items }: { title: string; items: Array<{ text: s
 
 function TimelineVisual({ items }: { items: Array<{ time: string; title: string; desc: string; color?: string }> }) {
   return (
-    <div className="my-8 relative">
+    <div className="my-8 relative overflow-hidden">
       <div className="absolute left-5 top-0 bottom-0 w-px bg-indigo-200" />
       <div className="space-y-6">
         {items.map((item, i) => (
-          <div key={i} className="relative flex items-start gap-5 pl-1">
+          <div key={i} className="relative flex items-start gap-3 sm:gap-5 pl-1">
             <div className={`relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 ${item.color === "green" ? "border-green-500 bg-green-50" : item.color === "red" ? "border-red-400 bg-red-50" : "border-indigo-500 bg-indigo-50"}`}>
               <span className="text-xs font-bold text-zinc-700">{item.time}</span>
             </div>
-            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm flex-1">
+            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm min-w-0 flex-1">
               <h4 className="text-sm font-bold text-zinc-900">{item.title}</h4>
               <p className="mt-1 text-sm text-zinc-500">{item.desc}</p>
             </div>
