@@ -1504,7 +1504,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
                   <img
                     src={article.images[i].src}
                     alt={article.images[i].alt}
-                    className="w-full h-auto"
+                    className="w-full h-auto max-h-96 object-cover"
                     loading="lazy"
                   />
                 </div>
