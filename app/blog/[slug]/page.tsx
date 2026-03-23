@@ -418,8 +418,9 @@ export async function generateStaticParams() {
   return ARTICLES.map((a) => ({ slug: a.slug }))
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const article = ARTICLES.find((a) => a.slug === params.slug)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const article = ARTICLES.find((a) => a.slug === slug)
   if (!article) return {}
   return {
     title: article.metaTitle,
@@ -427,8 +428,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   }
 }
 
-export default function BlogArticle({ params }: { params: { slug: string } }) {
-  const article = ARTICLES.find((a) => a.slug === params.slug)
+export default async function BlogArticle({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const article = ARTICLES.find((a) => a.slug === slug)
   if (!article) return null
 
   const articleSchema = {
@@ -506,7 +508,7 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
         <div className="mt-16 border-t border-zinc-100 pt-10">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">More Articles</h3>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            {ARTICLES.filter((a) => a.slug !== params.slug).slice(0, 4).map((a) => (
+            {ARTICLES.filter((a) => a.slug !== slug).slice(0, 4).map((a) => (
               <Link key={a.slug} href={`/blog/${a.slug}`} className="rounded-lg border border-zinc-200 bg-white p-4 hover:border-indigo-200 hover:shadow-sm">
                 <h4 className="text-sm font-semibold text-zinc-900">{a.title}</h4>
                 <p className="mt-1 text-xs text-indigo-600">Read more &rarr;</p>
