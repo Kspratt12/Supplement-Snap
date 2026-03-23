@@ -1347,9 +1347,35 @@ function RichContent({ text }: { text: string }) {
           )
         }
 
-        // Regular paragraph
+        // Paragraph with multiple "Label: description" lines (like report structure sections)
+        const lines = trimmed.split("\n")
+        if (lines.length > 1 && lines.filter((l) => { const ci = l.indexOf(":"); return ci > 0 && ci < 40; }).length >= 2) {
+          return (
+            <div key={pi} className="space-y-3 my-4">
+              {lines.map((line, li) => {
+                const ci = line.indexOf(":")
+                const hasColon = ci > 0 && ci < 40
+                return (
+                  <p key={li} className="text-base leading-relaxed text-zinc-600">
+                    {hasColon ? (
+                      <><span className="font-semibold text-zinc-900">{line.slice(0, ci)}</span>{line.slice(ci)}</>
+                    ) : line}
+                  </p>
+                )
+              })}
+            </div>
+          )
+        }
+
+        // Regular paragraph - also bold before first colon if it looks like a label
+        const colonIdx = trimmed.indexOf(":")
+        const hasLabelColon = colonIdx > 0 && colonIdx < 40 && !trimmed.startsWith("http") && lines.length === 1
         return (
-          <p key={pi} className="text-base leading-relaxed text-zinc-600">{trimmed}</p>
+          <p key={pi} className="text-base leading-relaxed text-zinc-600">
+            {hasLabelColon ? (
+              <><span className="font-semibold text-zinc-900">{trimmed.slice(0, colonIdx)}</span>{trimmed.slice(colonIdx)}</>
+            ) : trimmed}
+          </p>
         )
       })}
     </div>
