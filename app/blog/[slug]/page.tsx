@@ -662,7 +662,6 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
                     className="w-full h-auto"
                     loading="lazy"
                   />
-                  <p className="px-4 py-2.5 text-xs text-zinc-400 bg-zinc-50">{article.images[i].alt}</p>
                 </div>
               )}
             </section>
