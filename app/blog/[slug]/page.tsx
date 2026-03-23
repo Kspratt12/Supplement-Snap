@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { SiteFooter } from "../../../lib/site-footer"
 import { NavLinks } from "../../../lib/nav-links"
+import { ScrollToTop } from "../../../lib/scroll-to-top"
 
 type BlogImage = { src: string; alt: string }
 type Visual = { type: "stats" | "steps" | "codes" | "compare" | "checklist" | "timeline" | "calculator" | "tip" | "damage-cards" | "matrix"; data: any }
@@ -1455,6 +1456,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
 
   return (
     <div className="bg-white text-zinc-900">
+      <ScrollToTop />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
