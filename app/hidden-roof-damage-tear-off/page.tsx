@@ -28,7 +28,7 @@ export default function HiddenRoofDamagePage() {
         </h1>
 
         <p className="mt-6 text-base leading-relaxed text-zinc-600">
-          Some of the most costly roof damage is invisible until the shingles come off. During tear-off, roofing crews regularly discover conditions that were concealed beneath existing materials — damage that was not and could not be identified during the initial insurance inspection. These findings often qualify for supplement claims if properly documented.
+          Some of the most costly roof damage is invisible until the shingles come off. During tear-off, roofing crews regularly discover conditions that were concealed beneath existing materials, damage that was not and could not be identified during the initial insurance inspection. These findings often qualify for supplement claims if properly documented.
         </p>
 
         <h2 className="mt-12 text-xl font-bold text-zinc-900">Common discoveries during tear-off</h2>
@@ -72,7 +72,7 @@ export default function HiddenRoofDamagePage() {
               <h3 className="text-base font-semibold text-zinc-900">Missing ice and water shield</h3>
             </div>
             <p className="mt-3 text-sm leading-relaxed text-zinc-500">
-              Current building codes require ice and water shield membrane in valleys, along eaves, and around penetrations. Older roofs were often installed without it. When tear-off reveals the absence of required underlayment, the contractor must install it to bring the roof into code compliance — an additional cost that qualifies for supplemental coverage.
+              Current building codes require ice and water shield membrane in valleys, along eaves, and around penetrations. Older roofs were often installed without it. When tear-off reveals the absence of required underlayment, the contractor must install it to bring the roof into code compliance. This is an additional cost that qualifies for supplemental coverage.
             </p>
           </div>
 
@@ -86,14 +86,14 @@ export default function HiddenRoofDamagePage() {
               <h3 className="text-base font-semibold text-zinc-900">Code compliance issues</h3>
             </div>
             <p className="mt-3 text-sm leading-relaxed text-zinc-500">
-              Beyond ice and water shield, tear-off can reveal other code deficiencies — inadequate ventilation, improper drip edge, or insufficient starter strip. When current building codes require corrections, these items can be included in a supplement request with proper documentation.
+              Beyond ice and water shield, tear-off can reveal other code deficiencies: inadequate ventilation, improper drip edge, or insufficient starter strip. When current building codes require corrections, these items can be included in a supplement request with proper documentation.
             </p>
           </div>
         </div>
 
         <h2 className="mt-12 text-xl font-bold text-zinc-900">Why documenting these conditions matters</h2>
         <p className="mt-3 text-base leading-relaxed text-zinc-600">
-          Every hidden condition discovered during tear-off is a potential supplement item — but only if the contractor documents it with clear photos, a description of the damage, and the location on the roof. Without documentation, the damage goes unreported, the supplement is never filed, and the contractor covers the cost out of pocket.
+          Every hidden condition discovered during tear-off is a potential supplement item, but only if the contractor documents it with clear photos, a description of the damage, and the location on the roof. Without documentation, the damage goes unreported, the supplement is never filed, and the contractor covers the cost out of pocket.
         </p>
         <p className="mt-3 text-base leading-relaxed text-zinc-600">
           The best time to capture this evidence is the moment the damage is exposed, before the new materials go down and the evidence is covered again.
@@ -102,7 +102,7 @@ export default function HiddenRoofDamagePage() {
         <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 text-center">
           <h2 className="text-xl font-bold text-zinc-900">Capture hidden damage before it gets covered up</h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-zinc-500">
-            Supplement Snap lets crews document concealed damage during tear-off and generate supplement reports for adjusters — right from the roof.
+            Supplement Snap lets crews document concealed damage during tear-off and generate supplement reports for adjusters, right from the roof.
           </p>
           <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">

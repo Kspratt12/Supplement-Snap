@@ -38,7 +38,7 @@ export default function HowRoofingSupplementsWorkPage() {
             {
               step: "1",
               title: "Initial insurance estimate",
-              text: "The insurance adjuster inspects the property and writes an initial estimate covering visible damage — typically shingle replacement, felt, and basic materials. This estimate is based on what can be seen from the ground or a non-invasive inspection.",
+              text: "The insurance adjuster inspects the property and writes an initial estimate covering visible damage, typically shingle replacement, felt, and basic materials. This estimate is based on what can be seen from the ground or a non-invasive inspection.",
             },
             {
               step: "2",
@@ -48,7 +48,7 @@ export default function HowRoofingSupplementsWorkPage() {
             {
               step: "3",
               title: "Documentation required",
-              text: "To request additional coverage for these items, the contractor must provide clear evidence — photographs of the exposed damage, written descriptions of each finding, and the specific location on the roof where the damage was found.",
+              text: "To request additional coverage for these items, the contractor must provide clear evidence: photographs of the exposed damage, written descriptions of each finding, and the specific location on the roof where the damage was found.",
             },
             {
               step: "4",
@@ -58,7 +58,7 @@ export default function HowRoofingSupplementsWorkPage() {
             {
               step: "5",
               title: "Adjuster review and approval",
-              text: "The insurance adjuster reviews the supplement documentation. If the evidence is clear and the damage qualifies under the policy, the adjuster approves additional payment for the work. Supplements with strong documentation — clear photos, professional narratives, and organized findings — have higher approval rates.",
+              text: "The insurance adjuster reviews the supplement documentation. If the evidence is clear and the damage qualifies under the policy, the adjuster approves additional payment for the work. Supplements with strong documentation (clear photos, professional narratives, and organized findings) have higher approval rates.",
             },
           ].map((item) => (
             <div key={item.step} className="flex items-start gap-4">
@@ -78,7 +78,7 @@ export default function HowRoofingSupplementsWorkPage() {
           The difference between a supplement that gets approved and one that gets denied often comes down to the quality of the documentation. Adjusters need clear, organized evidence to justify additional payments. When findings are documented with photos, professional damage narratives, and specific roof locations, the adjuster has everything they need to approve the claim.
         </p>
         <p className="mt-3 text-base leading-relaxed text-zinc-600">
-          Contractors who document damage in real time during tear-off — rather than trying to reconstruct notes later — consistently produce stronger supplement packages.
+          Contractors who document damage in real time during tear-off, rather than trying to reconstruct notes later, consistently produce stronger supplement packages.
         </p>
 
         <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 text-center">

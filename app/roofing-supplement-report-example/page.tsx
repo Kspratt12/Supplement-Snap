@@ -34,9 +34,9 @@ export default function SupplementReportExamplePage() {
         <h2 className="mt-12 text-xl font-bold text-zinc-900">What a supplement report includes</h2>
         <div className="mt-4 space-y-3">
           {[
-            { title: "Damage description", text: "A clear, factual explanation of what was found — the type of damage, severity, and why it was not visible before tear-off." },
+            { title: "Damage description", text: "A clear, factual explanation of what was found: the type of damage, severity, and why it was not visible before tear-off." },
             { title: "Supporting photos", text: "Photos taken during tear-off showing the exposed damage. These serve as primary evidence for the adjuster." },
-            { title: "Location of damage", text: "The specific roof area where the damage was found — front slope, valley, chimney, eave edge, etc." },
+            { title: "Location of damage", text: "The specific roof area where the damage was found: front slope, valley, chimney, eave edge, etc." },
             { title: "Explanation for adjusters", text: "A professional narrative explaining that the damage was concealed and only discovered after removing existing materials." },
           ].map((item) => (
             <div key={item.title} className="rounded-lg border border-zinc-200 bg-zinc-50 p-4">
@@ -49,7 +49,7 @@ export default function SupplementReportExamplePage() {
         <h2 className="mt-12 text-xl font-bold text-zinc-900">Sample report structure</h2>
         <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-md">
           <div className="bg-indigo-600 px-6 py-3">
-            <p className="text-xs font-semibold text-white tracking-wide">Supplement Snap — Project Report</p>
+            <p className="text-xs font-semibold text-white tracking-wide">Supplement Snap | Project Report</p>
           </div>
           <div className="px-6 py-6">
             <p className="text-sm font-bold text-zinc-900">Smith Residence</p>
@@ -62,9 +62,9 @@ export default function SupplementReportExamplePage() {
 
             <div className="mt-4 space-y-4">
               {[
-                { num: "1", title: "Decking — Front Slope", desc: "Three sheets of rotted OSB decking discovered along the eave edge during tear-off. Wood was soft and deteriorated from prolonged moisture exposure. Damage was concealed beneath existing shingles." },
-                { num: "2", title: "Flashing — Chimney", desc: "Step flashing along the chimney wall was severely corroded with multiple separation points. Counter flashing seal had failed at the mortar joint. Not visible prior to shingle removal." },
-                { num: "3", title: "Ice & Water Shield — Valley", desc: "No ice and water shield membrane present in the main valley. Current building code requires installation. Condition was concealed under existing roofing materials." },
+                { num: "1", title: "Decking: Front Slope", desc: "Three sheets of rotted OSB decking discovered along the eave edge during tear-off. Wood was soft and deteriorated from prolonged moisture exposure. Damage was concealed beneath existing shingles." },
+                { num: "2", title: "Flashing: Chimney", desc: "Step flashing along the chimney wall was severely corroded with multiple separation points. Counter flashing seal had failed at the mortar joint. Not visible prior to shingle removal." },
+                { num: "3", title: "Ice & Water Shield: Valley", desc: "No ice and water shield membrane present in the main valley. Current building code requires installation. Condition was concealed under existing roofing materials." },
               ].map((f) => (
                 <div key={f.num} className="flex items-start gap-2.5">
                   <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">{f.num}</span>
@@ -94,7 +94,7 @@ export default function SupplementReportExamplePage() {
         <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 text-center">
           <h2 className="text-xl font-bold text-zinc-900">Generate reports like this automatically</h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-zinc-500">
-            Supplement Snap turns field captures into professional supplement reports — ready to send to adjusters the same day.
+            Supplement Snap turns field captures into professional supplement reports, ready to send to adjusters the same day.
           </p>
           <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">

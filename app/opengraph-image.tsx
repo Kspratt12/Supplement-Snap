@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og"
 
 export const runtime = "edge"
-export const alt = "Supplement Snap — Roofing Supplement Software"
+export const alt = "Supplement Snap | Roofing Supplement Software"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
@@ -104,7 +104,7 @@ export default function OGImage() {
               padding: "14px 32px",
             }}
           >
-            Try Free — No Credit Card
+            Try Free - No Credit Card
           </div>
           <span style={{ fontSize: "18px", color: "#a1a1aa" }}>
             supplementsnap.io

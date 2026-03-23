@@ -6,7 +6,7 @@ import { SiteFooter } from "../../lib/site-footer"
 export const metadata: Metadata = {
   title: "Roofing Supplement Documentation | Supplement Snap",
   description:
-    "What documentation do insurance adjusters need for roofing supplements? Photos, damage descriptions, locations, and supporting notes — captured during tear-off.",
+    "What documentation do insurance adjusters need for roofing supplements? Photos, damage descriptions, locations, and supporting notes, captured during tear-off.",
 }
 
 export default function SupplementDocumentationPage() {
@@ -28,7 +28,7 @@ export default function SupplementDocumentationPage() {
         </h1>
 
         <p className="mt-6 text-base leading-relaxed text-zinc-600">
-          Insurance adjusters approve supplements based on the quality of the documentation they receive. A supplement request without clear evidence is likely to be denied or delayed. Understanding what adjusters expect — and capturing it during tear-off — is the key to getting supplements approved.
+          Insurance adjusters approve supplements based on the quality of the documentation they receive. A supplement request without clear evidence is likely to be denied or delayed. Understanding what adjusters expect, and capturing it during tear-off, is the key to getting supplements approved.
         </p>
 
         <h2 className="mt-12 text-xl font-bold text-zinc-900">What documentation adjusters expect</h2>
@@ -68,7 +68,7 @@ export default function SupplementDocumentationPage() {
             </div>
             <h3 className="text-sm font-semibold text-zinc-900">Location of damage</h3>
             <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-              Specify exactly where on the roof the damage was found — front slope, back slope, valley, chimney, eave edge, hip, or ridge. Adjusters need to understand the scope and location of each finding.
+              Specify exactly where on the roof the damage was found: front slope, back slope, valley, chimney, eave edge, hip, or ridge. Adjusters need to understand the scope and location of each finding.
             </p>
           </div>
 
@@ -80,7 +80,7 @@ export default function SupplementDocumentationPage() {
             </div>
             <h3 className="text-sm font-semibold text-zinc-900">Supporting notes</h3>
             <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-              Additional context from the field crew — severity of damage, measurements if available, and any relevant observations. These notes add credibility and help the adjuster understand the full picture.
+              Additional context from the field crew: severity of damage, measurements if available, and any relevant observations. These notes add credibility and help the adjuster understand the full picture.
             </p>
           </div>
         </div>
@@ -90,13 +90,13 @@ export default function SupplementDocumentationPage() {
           The best documentation is captured the moment damage is exposed. During tear-off, crews should photograph each finding, note the damage type and roof area, and add a brief field note describing what they see. This information needs to be organized by project so the office can generate a clean supplement report without chasing down scattered photos and text messages.
         </p>
         <p className="mt-3 text-base leading-relaxed text-zinc-600">
-          Mobile-friendly tools allow crews to do this from the roof without slowing down the job. The goal is to make documentation part of the tear-off workflow — not an afterthought.
+          Mobile-friendly tools allow crews to do this from the roof without slowing down the job. The goal is to make documentation part of the tear-off workflow, not an afterthought.
         </p>
 
         <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 text-center">
           <h2 className="text-xl font-bold text-zinc-900">Capture supplement documentation from the field</h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-zinc-500">
-            Supplement Snap makes it easy for crews to document hidden damage during tear-off — photos, notes, and AI-generated supplement narratives, all saved by project.
+            Supplement Snap makes it easy for crews to document hidden damage during tear-off. Photos, notes, and AI-generated supplement narratives, all saved by project.
           </p>
           <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">

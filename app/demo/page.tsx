@@ -43,7 +43,7 @@ export default function DemoPage() {
             See Supplement Snap in Action
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-500">
-            Pick a time below. I&apos;ll screen share and walk you through how your crew captures hidden damage and sends adjuster-ready reports — all from the field.
+            Pick a time below. I&apos;ll screen share and walk you through how your crew captures hidden damage and sends adjuster-ready reports, all from the field.
           </p>
         </div>
 
@@ -71,7 +71,7 @@ export default function DemoPage() {
             </div>
 
             <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-              <h2 className="text-sm font-semibold text-zinc-900">No pitch — just a demo</h2>
+              <h2 className="text-sm font-semibold text-zinc-900">No pitch, just a demo</h2>
               <p className="mt-2 text-xs leading-relaxed text-zinc-500">
                 This is a 15-minute screen share where I walk you through the tool on a real project. You&apos;ll see exactly how it works and can ask questions. No pressure, no sales pitch.
               </p>

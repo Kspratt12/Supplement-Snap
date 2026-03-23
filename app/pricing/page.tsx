@@ -24,7 +24,7 @@ const STARTER_FEATURES = [
 const PRO_FEATURES = [
   "Everything in Starter, plus:",
   "Up to 5 team members",
-  "Team access — crew, foreman, office",
+  "Team access for crew, foreman, and office",
   "Adjuster email open tracking",
   "Xactimate-ready CSV export",
   "Project search & templates",
@@ -34,7 +34,7 @@ const PRO_FEATURES = [
 const FAQ = [
   {
     q: "Can I try it before paying?",
-    a: "Yes! Every paid plan starts with a 14-day free trial — no credit card required. You'll get full access to capture damage, generate AI supplement drafts, create PDF reports, and email adjusters. If it doesn't pay for itself on your first job, cancel anytime.",
+    a: "Yes! Every paid plan starts with a 14-day free trial, no credit card required. You'll get full access to capture damage, generate AI supplement drafts, create PDF reports, and email adjusters. If it doesn't pay for itself on your first job, cancel anytime.",
   },
   {
     q: "What's the difference between Starter and Pro?",
@@ -98,7 +98,7 @@ export default function PricingPage() {
           Simple pricing for roofing teams
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-zinc-500 sm:text-lg">
-          One approved supplement pays for the entire platform. Start with a 14-day free trial — no credit card required.
+          One approved supplement pays for the entire platform. Start with a 14-day free trial, no credit card required.
         </p>
       </section>
 

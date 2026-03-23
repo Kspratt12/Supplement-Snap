@@ -23,12 +23,13 @@ export function generateStaticParams() {
   return CITIES.map((city) => ({ city: city.slug }))
 }
 
-export function generateMetadata({ params }: { params: { city: string } }): Metadata {
-  const city = CITIES.find((c) => c.slug === params.city)
+export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+  const { city: citySlug } = await params
+  const city = CITIES.find((c) => c.slug === citySlug)
   if (!city) return {}
   return {
     title: `Roofing Supplement Software in ${city.name}, NC | Supplement Snap`,
-    description: `Roofing contractors in ${city.name}, ${city.state} use Supplement Snap to capture hidden damage during tear-off, generate AI supplement reports, and email adjusters — all from the field.`,
+    description: `Roofing contractors in ${city.name}, ${city.state} use Supplement Snap to capture hidden damage during tear-off, generate AI supplement reports, and email adjusters from the field.`,
     openGraph: {
       title: `Roofing Supplement Software in ${city.name}, NC | Supplement Snap`,
       description: `Roofing contractors in ${city.name}, ${city.state} use Supplement Snap to capture hidden damage during tear-off, generate AI supplement reports, and email adjusters.`,
@@ -36,8 +37,9 @@ export function generateMetadata({ params }: { params: { city: string } }): Meta
   }
 }
 
-export default function CityPage({ params }: { params: { city: string } }) {
-  const city = CITIES.find((c) => c.slug === params.city)
+export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
+  const { city: citySlug } = await params
+  const city = CITIES.find((c) => c.slug === citySlug)
   if (!city) return null
 
   return (

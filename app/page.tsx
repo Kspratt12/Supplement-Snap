@@ -29,7 +29,7 @@ export default function LandingPage() {
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl">
           Stop leaving money on the table during tear-off. Supplement Snap helps roofing crews
           capture hidden damage, generate supplement documentation, and email adjuster-ready
-          PDF reports — all in minutes.
+          PDF reports, all in minutes.
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -47,7 +47,7 @@ export default function LandingPage() {
         </div>
         <div className="mx-auto mt-6 flex items-center gap-2 justify-center">
           <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">New</span>
-          <span className="text-sm text-zinc-500">Try your first project free — no credit card required</span>
+          <span className="text-sm text-zinc-500">Try your first project free, no credit card required</span>
         </div>
       </section>
 
@@ -187,7 +187,7 @@ export default function LandingPage() {
             <div className="relative bg-gradient-to-br from-indigo-50 to-zinc-50 p-4">
               <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
                 <div className="bg-indigo-600 px-3 py-1.5">
-                  <p className="text-[7px] font-semibold text-white">Supplement Snap — Project Report</p>
+                  <p className="text-[7px] font-semibold text-white">Supplement Snap | Project Report</p>
                 </div>
                 <div className="p-3">
                   <p className="text-[8px] font-bold text-zinc-800">Smith Residence</p>
@@ -197,21 +197,21 @@ export default function LandingPage() {
                     <div className="flex items-start gap-1.5">
                       <span className="mt-0.5 flex h-3 w-3 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[5px] font-bold text-indigo-700">1</span>
                       <div>
-                        <p className="text-[7px] font-semibold text-zinc-700">Decking — Front</p>
+                        <p className="text-[7px] font-semibold text-zinc-700">Decking: Front</p>
                         <p className="text-[5px] text-zinc-400 leading-relaxed">Rotted OSB discovered along eave edge...</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-1.5">
                       <span className="mt-0.5 flex h-3 w-3 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[5px] font-bold text-indigo-700">2</span>
                       <div>
-                        <p className="text-[7px] font-semibold text-zinc-700">Flashing — Chimney</p>
+                        <p className="text-[7px] font-semibold text-zinc-700">Flashing: Chimney</p>
                         <p className="text-[5px] text-zinc-400 leading-relaxed">Step flashing corroded at chimney wall...</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-1.5">
                       <span className="mt-0.5 flex h-3 w-3 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[5px] font-bold text-indigo-700">3</span>
                       <div>
-                        <p className="text-[7px] font-semibold text-zinc-700">Ice &amp; Water — Valley</p>
+                        <p className="text-[7px] font-semibold text-zinc-700">Ice &amp; Water: Valley</p>
                         <p className="text-[5px] text-zinc-400 leading-relaxed">No I&amp;W shield present in valley...</p>
                       </div>
                     </div>
@@ -242,7 +242,7 @@ export default function LandingPage() {
             From roof to report in 4 steps
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-sm text-zinc-500">
-            Watch how your crew captures damage and sends a professional supplement report — all from the field.
+            Watch how your crew captures damage and sends a professional supplement report, all from the field.
           </p>
         </div>
         <InteractiveDemo />
@@ -267,13 +267,13 @@ export default function LandingPage() {
                 metric: "$3,200 recovered on first job",
               },
               {
-                quote: "The AI draft saves my office manager 2 hours per supplement. She used to type everything from scratch — now she just reviews what Supplement Snap generates and hits send.",
+                quote: "The AI draft saves my office manager 2 hours per supplement. She used to type everything from scratch. Now she just reviews what Supplement Snap generates and hits send.",
                 name: "David R.",
                 role: "Project Manager",
                 metric: "2+ hours saved per supplement",
               },
               {
-                quote: "My guys speak Spanish on the roof. They record a voice note in Spanish, and it shows up in English in the report. That alone was worth the subscription — no more miscommunication between field and office.",
+                quote: "My guys speak Spanish on the roof. They record a voice note in Spanish, and it shows up in English in the report. That alone was worth the subscription. No more miscommunication between field and office.",
                 name: "Carlos M.",
                 role: "Restoration Company Owner",
                 metric: "Zero lost-in-translation issues",
@@ -334,7 +334,7 @@ export default function LandingPage() {
                   "Field notes scribbled on paper or forgotten",
                   "Office spends hours writing supplement from memory",
                   "Documentation submitted days or weeks later",
-                  "Adjuster denies supplement — not enough evidence",
+                  "Adjuster denies supplement due to insufficient evidence",
                   "You leave $1,500–$3,200 on the table per job",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5">
@@ -470,7 +470,7 @@ export default function LandingPage() {
           <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-lg">
             {/* Report header bar */}
             <div className="bg-indigo-600 px-6 py-3 sm:px-8">
-              <p className="text-xs font-semibold text-white tracking-wide">Supplement Snap — Project Report</p>
+              <p className="text-xs font-semibold text-white tracking-wide">Supplement Snap | Project Report</p>
             </div>
 
             <div className="px-6 py-6 sm:px-8 sm:py-8">
@@ -496,7 +496,7 @@ export default function LandingPage() {
                 <div className="flex items-start gap-2.5">
                   <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">1</span>
                   <div>
-                    <p className="text-sm font-semibold text-zinc-900">Decking — Front Slope</p>
+                    <p className="text-sm font-semibold text-zinc-900">Decking: Front Slope</p>
                     <p className="mt-1 text-xs leading-relaxed text-zinc-500">
                       During tear-off of the front slope, three sheets of rotted OSB decking were discovered along the eave edge. Wood was soft and deteriorated from prolonged moisture exposure. This damage was concealed beneath the existing shingles and underlayment.
                     </p>
@@ -509,7 +509,7 @@ export default function LandingPage() {
                 <div className="flex items-start gap-2.5">
                   <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">2</span>
                   <div>
-                    <p className="text-sm font-semibold text-zinc-900">Flashing — Chimney</p>
+                    <p className="text-sm font-semibold text-zinc-900">Flashing: Chimney</p>
                     <p className="mt-1 text-xs leading-relaxed text-zinc-500">
                       Step flashing along the chimney wall was found to be severely corroded with multiple separation points. Counter flashing seal at the mortar joint had failed, allowing water intrusion behind the flashing system.
                     </p>
@@ -522,7 +522,7 @@ export default function LandingPage() {
                 <div className="flex items-start gap-2.5">
                   <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">3</span>
                   <div>
-                    <p className="text-sm font-semibold text-zinc-900">Ice &amp; Water Shield — Valley</p>
+                    <p className="text-sm font-semibold text-zinc-900">Ice &amp; Water Shield: Valley</p>
                     <p className="mt-1 text-xs leading-relaxed text-zinc-500">
                       No ice and water shield membrane was present in the main valley. Current building code requires ice and water shield in all valley areas. Installation is necessary to bring the roof system into compliance.
                     </p>
@@ -539,15 +539,15 @@ export default function LandingPage() {
               <div className="grid grid-cols-3 gap-2">
                 <div>
                   <div className="aspect-square rounded-lg bg-gradient-to-br from-amber-100 to-amber-50 border border-zinc-200" />
-                  <p className="mt-1.5 text-[10px] text-zinc-400">Photo 1 — Decking rot exposure</p>
+                  <p className="mt-1.5 text-[10px] text-zinc-400">Photo 1: Decking rot exposure</p>
                 </div>
                 <div>
                   <div className="aspect-square rounded-lg bg-gradient-to-br from-red-100 to-red-50 border border-zinc-200" />
-                  <p className="mt-1.5 text-[10px] text-zinc-400">Photo 2 — Flashing corrosion</p>
+                  <p className="mt-1.5 text-[10px] text-zinc-400">Photo 2: Flashing corrosion</p>
                 </div>
                 <div>
                   <div className="aspect-square rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 border border-zinc-200" />
-                  <p className="mt-1.5 text-[10px] text-zinc-400">Photo 3 — Valley underlayment absence</p>
+                  <p className="mt-1.5 text-[10px] text-zinc-400">Photo 3: Valley underlayment absence</p>
                 </div>
               </div>
 
@@ -585,7 +585,7 @@ export default function LandingPage() {
             {[
               {
                 title: "Claim Tracking",
-                desc: "Insurance company, claim number, policy, date of loss, and adjuster contact — all attached to every project.",
+                desc: "Insurance company, claim number, policy, date of loss, and adjuster contact, all attached to every project.",
                 icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
               },
               {
@@ -595,7 +595,7 @@ export default function LandingPage() {
               },
               {
                 title: "Xactimate Pricing",
-                desc: "CSV export maps to real Xactimate line codes with unit pricing. Import directly — no manual entry.",
+                desc: "CSV export maps to real Xactimate line codes with unit pricing. Import directly, no manual entry.",
                 icon: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z",
               },
               {
@@ -627,7 +627,7 @@ export default function LandingPage() {
               Three steps from roof to supplement
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
-              Your crew captures damage on-site. The office gets a professional supplement draft — ready to submit.
+              Your crew captures damage on-site. The office gets a professional supplement draft, ready to submit.
             </p>
           </div>
           <div className="mt-14 grid gap-8 sm:grid-cols-3">
@@ -635,7 +635,7 @@ export default function LandingPage() {
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">1</div>
               <h3 className="text-base font-semibold">Snap the damage</h3>
               <p className="mt-2 text-sm leading-relaxed text-zinc-500">
-                During tear-off, your crew photographs each area of damage — decking, flashing, pipe boots, code violations — right from their phone.
+                During tear-off, your crew photographs each area of damage (decking, flashing, pipe boots, code violations) right from their phone.
               </p>
             </div>
             <div className="rounded-xl border border-zinc-200 bg-white p-6">
@@ -649,7 +649,7 @@ export default function LandingPage() {
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">3</div>
               <h3 className="text-base font-semibold">Generate and send</h3>
               <p className="mt-2 text-sm leading-relaxed text-zinc-500">
-                One click generates a professional supplement draft, exports a PDF report, and emails it to the adjuster — all from the field.
+                One click generates a professional supplement draft, exports a PDF report, and emails it to the adjuster, all from the field.
               </p>
             </div>
           </div>
@@ -685,7 +685,7 @@ export default function LandingPage() {
               </div>
               <h3 className="text-base font-semibold">Document hidden damage faster</h3>
               <p className="mt-2 text-sm leading-relaxed text-zinc-500">
-                Photos, tags, voice notes, and AI-generated supplement language — captured in real time during tear-off.
+                Photos, tags, voice notes, and AI-generated supplement language, captured in real time during tear-off.
               </p>
             </div>
             <div className="rounded-xl border border-zinc-200 bg-white p-6 text-center">
@@ -788,7 +788,7 @@ export default function LandingPage() {
                 <span className="text-3xl font-extrabold text-zinc-900">$99</span>
                 <span className="ml-1 text-sm text-zinc-500">/month</span>
               </div>
-              <p className="mt-1 text-sm text-zinc-500">14-day free trial — no credit card</p>
+              <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
               <div className="mt-5 space-y-2.5">
                 {["Unlimited projects", "AI supplement drafts", "PDF reports & email", "Photo annotations", "Voice notes", "1 user"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
@@ -811,7 +811,7 @@ export default function LandingPage() {
                 <span className="text-3xl font-extrabold text-zinc-900">$299</span>
                 <span className="ml-1 text-sm text-zinc-500">/month</span>
               </div>
-              <p className="mt-1 text-sm text-zinc-500">14-day free trial — no credit card</p>
+              <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
               <div className="mt-5 space-y-2.5">
                 {["Everything in Starter", "Up to 5 team members", "Email open tracking", "Xactimate CSV export", "Priority support"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
@@ -939,7 +939,7 @@ export default function LandingPage() {
             <p className="mt-2 text-center text-sm text-zinc-500">Guides and real numbers for roofing contractors</p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { href: "/blog/roof-tear-off-cost", title: "Roof Tear-Off Cost in 2026", desc: "What tear-offs actually cost by size, material, and pitch — plus hidden costs and how to recover them." },
+                { href: "/blog/roof-tear-off-cost", title: "Roof Tear-Off Cost in 2026", desc: "What tear-offs actually cost by size, material, and pitch, plus hidden costs and how to recover them." },
                 { href: "/blog/best-roof-estimating-software", title: "Best Roof Estimating Software", desc: "Compare satellite measurement, estimating, CRM, and supplement tools for roofing contractors." },
                 { href: "/blog/roof-replacement-estimate-vs-final-cost", title: "Estimate vs. Final Cost", desc: "Why the initial estimate is always lower and how supplements bridge the gap." },
                 { href: "/blog/hail-damage-roof-inspection", title: "Hail Damage Roof Inspection", desc: "What adjusters miss, hidden damage found during tear-off, and how to document for supplements." },
