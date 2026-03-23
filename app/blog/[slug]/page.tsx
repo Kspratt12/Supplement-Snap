@@ -542,6 +542,7 @@ const ARTICLES: Article[] = [
     ],
     highlight: { label: "Revenue Gap", value: "$20,000–$30,000/mo", subtext: "Left on the table by contractors with no supplement tool (10 jobs/month)" },
     images: {
+      0: { src: "/blog/roofing-software-comparison/Roofers-on-a-job.jpg", alt: "Roofing crew working on a roof tear-off job site documenting hidden damage for supplements" },
       3: { src: "/blog/roofing-software-comparison/supplement-snap-dashboard.png", alt: "Supplement Snap dashboard showing roofing projects, capture counts, claim pipeline, and activity stats" },
     },
     sections: [
