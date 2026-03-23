@@ -579,6 +579,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: article.metaTitle,
     description: article.metaDescription,
+    openGraph: {
+      title: article.metaTitle,
+      description: article.metaDescription,
+      type: "article",
+      publishedTime: article.publishedDate,
+      url: `https://supplementsnap.io/blog/${slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.metaTitle,
+      description: article.metaDescription,
+    },
   }
 }
 
