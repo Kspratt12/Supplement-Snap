@@ -912,6 +912,7 @@ export default function LandingPage() {
             </p>
           </div>
 
+          {/* Resource Pages */}
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
               { href: "/roofing-supplement-software", title: "Roofing Supplement Software", desc: "Why supplements get missed and how software helps crews capture findings faster." },
@@ -930,6 +931,45 @@ export default function LandingPage() {
                 <p className="mt-3 text-xs font-medium text-indigo-600">Read more &rarr;</p>
               </Link>
             ))}
+          </div>
+
+          {/* Featured Blog Articles */}
+          <div className="mt-16">
+            <h3 className="text-center text-lg font-bold text-zinc-900">From the Blog</h3>
+            <p className="mt-2 text-center text-sm text-zinc-500">Guides and real numbers for roofing contractors</p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                { href: "/blog/roof-tear-off-cost", title: "Roof Tear-Off Cost in 2026", desc: "What tear-offs actually cost by size, material, and pitch — plus hidden costs and how to recover them." },
+                { href: "/blog/best-roof-estimating-software", title: "Best Roof Estimating Software", desc: "Compare satellite measurement, estimating, CRM, and supplement tools for roofing contractors." },
+                { href: "/blog/roof-replacement-estimate-vs-final-cost", title: "Estimate vs. Final Cost", desc: "Why the initial estimate is always lower and how supplements bridge the gap." },
+                { href: "/blog/hail-damage-roof-inspection", title: "Hail Damage Roof Inspection", desc: "What adjusters miss, hidden damage found during tear-off, and how to document for supplements." },
+                { href: "/blog/roofing-software-comparison", title: "CRM vs. Estimating vs. Supplement Tools", desc: "The three categories of roofing software and where the revenue gap hides." },
+                { href: "/blog/xactimate-roof-estimate-supplements", title: "Xactimate Roof Estimate Guide", desc: "Line codes, pricing benchmarks, and how to format supplements adjusters approve fast." },
+              ].map((r) => (
+                <Link
+                  key={r.href}
+                  href={r.href}
+                  className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm hover:border-indigo-200 hover:shadow-md transition-all"
+                >
+                  <h3 className="text-sm font-semibold text-zinc-900">{r.title}</h3>
+                  <p className="mt-1.5 text-xs leading-relaxed text-zinc-500">{r.desc}</p>
+                  <p className="mt-3 text-xs font-medium text-indigo-600">Read article &rarr;</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* View All Button */}
+          <div className="mt-12 text-center">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-8 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+            >
+              View All Guides & Resources
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
