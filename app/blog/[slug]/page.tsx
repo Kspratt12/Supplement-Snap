@@ -42,7 +42,7 @@ function StepsFlow({ items }: { items: Array<{ num: string; title: string; desc:
           <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-sm font-bold text-white">
             {item.num}
           </div>
-          <div>
+          <div className="min-w-0">
             <h4 className="text-sm font-bold text-zinc-900">{item.title}</h4>
             <p className="mt-1 text-sm text-zinc-500">{item.desc}</p>
           </div>
@@ -54,14 +54,14 @@ function StepsFlow({ items }: { items: Array<{ num: string; title: string; desc:
 
 function CodesTable({ items }: { items: Array<{ code: string; desc: string; unit: string; price: string }> }) {
   return (
-    <div className="my-8 overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
+    <div className="my-8 overflow-x-auto rounded-xl border border-zinc-200 shadow-sm">
       <table className="w-full text-sm">
         <thead>
           <tr className="bg-zinc-50 border-b border-zinc-200">
-            <th className="px-4 py-3 text-left font-semibold text-zinc-900">Code</th>
+            <th className="px-4 py-3 text-left font-semibold text-zinc-900 whitespace-nowrap">Code</th>
             <th className="px-4 py-3 text-left font-semibold text-zinc-900">Description</th>
-            <th className="px-4 py-3 text-center font-semibold text-zinc-900">Unit</th>
-            <th className="px-4 py-3 text-right font-semibold text-zinc-900">Avg Price</th>
+            <th className="px-4 py-3 text-center font-semibold text-zinc-900 whitespace-nowrap">Unit</th>
+            <th className="px-4 py-3 text-right font-semibold text-zinc-900 whitespace-nowrap">Avg Price</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-100">
@@ -159,9 +159,9 @@ function CalculatorCard({ title, rows, total }: { title: string; rows: Array<{ l
       </div>
       <div className="divide-y divide-zinc-100">
         {rows.map((row, i) => (
-          <div key={i} className="flex items-center justify-between px-5 py-3">
+          <div key={i} className="flex items-center justify-between gap-4 px-5 py-3">
             <span className="text-sm text-zinc-600">{row.label}</span>
-            <span className="text-sm font-semibold text-zinc-900">{row.value}</span>
+            <span className="text-sm font-semibold text-zinc-900 whitespace-nowrap">{row.value}</span>
           </div>
         ))}
       </div>
