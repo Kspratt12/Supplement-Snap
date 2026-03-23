@@ -5,11 +5,11 @@ type EmailType = "welcome" | "subscription_active"
 
 const DASHBOARD_URL = process.env.NEXT_PUBLIC_SITE_URL
   ? `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`
-  : "https://supplementsnap.com/dashboard"
+  : "https://supplementsnap.io/dashboard"
 
 const APP_URL = process.env.NEXT_PUBLIC_SITE_URL
   ? `${process.env.NEXT_PUBLIC_SITE_URL}/app`
-  : "https://supplementsnap.com/app"
+  : "https://supplementsnap.io/app"
 
 function buildWelcomeEmail(name: string): { subject: string; html: string } {
   const greeting = name ? `Hi ${name},` : "Hi there,"

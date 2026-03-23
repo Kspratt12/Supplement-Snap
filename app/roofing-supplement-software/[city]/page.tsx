@@ -63,7 +63,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           <span className="text-indigo-600"> for {city.name} contractors</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500">
-          {city.name} roofing crews find hidden damage on every tear-off. Supplement Snap helps you capture it, document it, and send adjuster-ready reports — before you leave the job site.
+          {city.name} roofing crews find hidden damage on every tear-off. Supplement Snap helps you capture it, document it, and send adjuster-ready reports before you leave the job site.
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
@@ -82,12 +82,12 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             The supplement problem {city.name} roofers face
           </h2>
           <p className="mt-4 text-base leading-relaxed text-zinc-500">
-            During tear-off on homes across {city.name} and {city.county}, crews discover concealed damage — rotted decking, failed flashing, missing ice and water shield. This hidden damage qualifies for insurance supplements worth $1,500–$3,200 per job. But without proper documentation captured in real time, most of that money is left on the table.
+            During tear-off on homes across {city.name} and {city.county}, crews discover concealed damage like rotted decking, failed flashing, and missing ice and water shield. This hidden damage qualifies for insurance supplements worth $1,500–$3,200 per job. But without proper documentation captured in real time, most of that money is left on the table.
           </p>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             {[
               { stat: "$2,400", label: "Average supplement recovered", desc: "Per documented tear-off job" },
-              { stat: "2 min", label: "Time to capture a finding", desc: "Photo, tag, voice note — done" },
+              { stat: "2 min", label: "Time to capture a finding", desc: "Photo, tag, voice note. Done." },
               { stat: "Same day", label: "Report to adjuster", desc: "PDF emailed before you leave" },
             ].map((s) => (
               <div key={s.label} className="rounded-xl border border-zinc-200 bg-white p-5 text-center shadow-sm">
@@ -109,9 +109,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           </h2>
           <div className="mt-10 grid gap-8 sm:grid-cols-3">
             {[
-              { num: "1", title: "Snap the damage", desc: `Your crew photographs hidden damage during tear-off on ${city.name} properties — decking, flashing, pipe boots, code violations — right from their phone.` },
+              { num: "1", title: "Snap the damage", desc: `Your crew photographs hidden damage during tear-off on ${city.name} properties (decking, flashing, pipe boots, code violations) right from their phone.` },
               { num: "2", title: "Tag and describe", desc: "Select the damage type and roof area, add a voice note in any language. Everything syncs to the cloud instantly." },
-              { num: "3", title: "Generate and send", desc: "AI writes a professional supplement narrative. Export a PDF and email it to the adjuster — all from the field." },
+              { num: "3", title: "Generate and send", desc: "AI writes a professional supplement narrative. Export a PDF and email it to the adjuster, all from the field." },
             ].map((step) => (
               <div key={step.num} className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
                 <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">{step.num}</div>
@@ -138,7 +138,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               "Email reports directly to insurance adjusters",
               "Xactimate-ready CSV export with real line codes and pricing",
               "Insurance claim tracking (carrier, claim #, adjuster, date of loss)",
-              "Claim pipeline — track from tear-off to approval",
+              "Claim pipeline: track from tear-off to approval",
               "Team access for crew, foreman, and office staff",
               "Upload EagleView reports and roof diagrams",
             ].map((f) => (
@@ -160,7 +160,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             Ready to recover more supplement revenue in {city.name}?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
-            Book a free 15-minute walkthrough. I&apos;ll screen share and show you how Supplement Snap works on a real project. No pitch — just a demo.
+            Book a free 15-minute walkthrough. I&apos;ll screen share and show you how Supplement Snap works on a real project. No pitch, just a demo.
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
