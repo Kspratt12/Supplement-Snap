@@ -4,7 +4,7 @@ import { SiteFooter } from "../../../lib/site-footer"
 import { NavLinks } from "../../../lib/nav-links"
 
 type BlogImage = { src: string; alt: string }
-type Visual = { type: "stats" | "steps" | "codes" | "compare"; data: any }
+type Visual = { type: "stats" | "steps" | "codes" | "compare" | "checklist" | "timeline" | "calculator" | "tip" | "damage-cards" | "matrix"; data: any }
 
 type Article = {
   slug: string
@@ -108,12 +108,178 @@ function CompareCard({ before, after }: { before: { label: string; items: string
   )
 }
 
+function ChecklistCard({ title, items }: { title: string; items: Array<{ text: string; checked: boolean }> }) {
+  return (
+    <div className="my-8 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
+      <h4 className="text-sm font-bold uppercase tracking-wider text-indigo-600">{title}</h4>
+      <div className="mt-4 space-y-3">
+        {items.map((item, i) => (
+          <div key={i} className="flex items-start gap-3">
+            <div className={`mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded ${item.checked ? "bg-green-100" : "bg-zinc-100"}`}>
+              {item.checked ? (
+                <svg className="h-3.5 w-3.5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+              ) : (
+                <div className="h-2 w-2 rounded-full bg-zinc-300" />
+              )}
+            </div>
+            <span className={`text-sm ${item.checked ? "text-zinc-900" : "text-zinc-400"}`}>{item.text}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function TimelineVisual({ items }: { items: Array<{ time: string; title: string; desc: string; color?: string }> }) {
+  return (
+    <div className="my-8 relative">
+      <div className="absolute left-5 top-0 bottom-0 w-px bg-indigo-200" />
+      <div className="space-y-6">
+        {items.map((item, i) => (
+          <div key={i} className="relative flex items-start gap-5 pl-1">
+            <div className={`relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 ${item.color === "green" ? "border-green-500 bg-green-50" : item.color === "red" ? "border-red-400 bg-red-50" : "border-indigo-500 bg-indigo-50"}`}>
+              <span className="text-xs font-bold text-zinc-700">{item.time}</span>
+            </div>
+            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm flex-1">
+              <h4 className="text-sm font-bold text-zinc-900">{item.title}</h4>
+              <p className="mt-1 text-sm text-zinc-500">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function CalculatorCard({ title, rows, total }: { title: string; rows: Array<{ label: string; value: string }>; total: { label: string; value: string; color?: string } }) {
+  return (
+    <div className="my-8 overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
+      <div className="bg-zinc-50 px-5 py-3 border-b border-zinc-200">
+        <h4 className="text-sm font-bold text-zinc-900">{title}</h4>
+      </div>
+      <div className="divide-y divide-zinc-100">
+        {rows.map((row, i) => (
+          <div key={i} className="flex items-center justify-between px-5 py-3">
+            <span className="text-sm text-zinc-600">{row.label}</span>
+            <span className="text-sm font-semibold text-zinc-900">{row.value}</span>
+          </div>
+        ))}
+      </div>
+      <div className={`flex items-center justify-between px-5 py-4 ${total.color === "green" ? "bg-green-50" : "bg-indigo-50"}`}>
+        <span className={`text-sm font-bold ${total.color === "green" ? "text-green-700" : "text-indigo-700"}`}>{total.label}</span>
+        <span className={`text-lg font-extrabold ${total.color === "green" ? "text-green-700" : "text-indigo-700"}`}>{total.value}</span>
+      </div>
+    </div>
+  )
+}
+
+function TipBox({ type, title, text }: { type: "tip" | "warning" | "info"; title: string; text: string }) {
+  const styles = {
+    tip: { bg: "bg-green-50", border: "border-green-200", icon: "text-green-600", title: "text-green-800", text: "text-green-700" },
+    warning: { bg: "bg-amber-50", border: "border-amber-200", icon: "text-amber-600", title: "text-amber-800", text: "text-amber-700" },
+    info: { bg: "bg-blue-50", border: "border-blue-200", icon: "text-blue-600", title: "text-blue-800", text: "text-blue-700" },
+  }
+  const s = styles[type]
+  return (
+    <div className={`my-6 rounded-xl border ${s.border} ${s.bg} p-5`}>
+      <div className="flex items-start gap-3">
+        <div className="mt-0.5">
+          {type === "tip" && <svg className={`h-5 w-5 ${s.icon}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>}
+          {type === "warning" && <svg className={`h-5 w-5 ${s.icon}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>}
+          {type === "info" && <svg className={`h-5 w-5 ${s.icon}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
+        </div>
+        <div>
+          <h4 className={`text-sm font-bold ${s.title}`}>{title}</h4>
+          <p className={`mt-1 text-sm ${s.text}`}>{text}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function DamageCards({ items }: { items: Array<{ icon: string; title: string; desc: string; value: string }> }) {
+  const iconColors: Record<string, { bg: string; text: string }> = {
+    decking: { bg: "bg-amber-50", text: "text-amber-600" },
+    flashing: { bg: "bg-red-50", text: "text-red-500" },
+    ice: { bg: "bg-blue-50", text: "text-blue-600" },
+    pipe: { bg: "bg-purple-50", text: "text-purple-600" },
+    drip: { bg: "bg-teal-50", text: "text-teal-600" },
+    layers: { bg: "bg-orange-50", text: "text-orange-600" },
+    wind: { bg: "bg-cyan-50", text: "text-cyan-600" },
+    hail: { bg: "bg-indigo-50", text: "text-indigo-600" },
+  }
+  return (
+    <div className="my-8 grid gap-3 sm:grid-cols-2">
+      {items.map((item, i) => {
+        const c = iconColors[item.icon] || { bg: "bg-zinc-50", text: "text-zinc-600" }
+        return (
+          <div key={i} className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${c.bg}`}>
+                  <svg className={`h-5 w-5 ${c.text}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17l-5.384-3.19A1.5 1.5 0 015.5 10.7V7.8a1.5 1.5 0 01.536-1.15l5.384-3.19a1.5 1.5 0 011.56 0l5.384 3.19A1.5 1.5 0 0118.5 7.8v2.9a1.5 1.5 0 01-.536 1.15l-5.384 3.19a1.5 1.5 0 01-1.56 0z" />
+                  </svg>
+                </div>
+                <h4 className="text-sm font-bold text-zinc-900">{item.title}</h4>
+              </div>
+              <span className="text-sm font-extrabold text-indigo-600">{item.value}</span>
+            </div>
+            <p className="mt-2 text-xs text-zinc-500">{item.desc}</p>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+function ComparisonMatrix({ headers, rows }: { headers: string[]; rows: Array<{ feature: string; values: Array<boolean | string> }> }) {
+  return (
+    <div className="my-8 overflow-x-auto rounded-xl border border-zinc-200 shadow-sm">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-zinc-50 border-b border-zinc-200">
+            <th className="px-4 py-3 text-left font-semibold text-zinc-900">Feature</th>
+            {headers.map((h, i) => (
+              <th key={i} className="px-4 py-3 text-center font-semibold text-zinc-900">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-zinc-100">
+          {rows.map((row, i) => (
+            <tr key={i} className="bg-white">
+              <td className="px-4 py-3 text-zinc-700">{row.feature}</td>
+              {row.values.map((val, j) => (
+                <td key={j} className="px-4 py-3 text-center">
+                  {val === true ? (
+                    <svg className="mx-auto h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                  ) : val === false ? (
+                    <span className="text-zinc-300">-</span>
+                  ) : (
+                    <span className="text-sm text-zinc-700">{val}</span>
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function VisualBlock({ visual }: { visual: Visual }) {
   switch (visual.type) {
     case "stats": return <StatsGrid items={visual.data} />
     case "steps": return <StepsFlow items={visual.data} />
     case "codes": return <CodesTable items={visual.data} />
     case "compare": return <CompareCard before={visual.data.before} after={visual.data.after} />
+    case "checklist": return <ChecklistCard title={visual.data.title} items={visual.data.items} />
+    case "timeline": return <TimelineVisual items={visual.data} />
+    case "calculator": return <CalculatorCard title={visual.data.title} rows={visual.data.rows} total={visual.data.total} />
+    case "tip": return <TipBox type={visual.data.type} title={visual.data.title} text={visual.data.text} />
+    case "damage-cards": return <DamageCards items={visual.data} />
+    case "matrix": return <ComparisonMatrix headers={visual.data.headers} rows={visual.data.rows} />
     default: return null
   }
 }
@@ -665,6 +831,405 @@ const ARTICLES: Article[] = [
       {
         heading: "Close the gap with Supplement Snap",
         content: "Supplement Snap was built to make this systematic approach effortless. During tear-off, the crew opens the app and captures each finding: a photo tagged with the damage type and roof area, plus an optional voice note. Voice notes work in any language. Spanish-speaking crews describe findings in Spanish and the system auto-translates to English.\n\nFrom that field data, Supplement Snap generates everything you need:\n\n• A professional supplement narrative for each finding, written in the language adjusters expect\n• Xactimate line items with correct codes, quantities, and current regional pricing\n• An Xactimate-compatible CSV export the adjuster can import directly\n• A branded PDF report with photos, narratives, findings summary, and line items, ready to email\n\nThe entire process from capturing damage on the roof to emailing a complete supplement report takes minutes, not days. Your crew does what they're already doing (finding damage during tear-off) and Supplement Snap turns those findings into revenue.\n\nThe gap between the initial estimate and the final cost will always exist. The question is whether you have a system to capture it. With Supplement Snap, every hidden finding becomes a documented, submitted, trackable supplement, and you get paid for the work you're actually doing."
+      },
+    ],
+  },
+  {
+    slug: "storm-damage-roof-repair-near-me",
+    title: "Storm Damage Roof Repair Near Me: How to Find and Hire the Right Contractor",
+    metaTitle: "Storm Damage Roof Repair Near Me: Find the Right Contractor | 2026 Guide",
+    metaDescription: "Looking for storm damage roof repair near you? Learn how to find a qualified contractor, avoid storm chasers, understand the insurance claim process, and know what to expect with costs.",
+    publishedDate: "2026-03-23",
+    externalLinks: [
+      { text: "Better Business Bureau: Contractor Lookup", url: "https://www.bbb.org" },
+      { text: "NRCA: Find a Contractor", url: "https://www.nrca.net" },
+      { text: "NOAA Storm Events Database", url: "https://www.ncdc.noaa.gov/stormevents/" },
+    ],
+    highlight: { label: "Storm Season Tip", value: "Same-Day Documentation", subtext: "Contractors who document damage during tear-off recover 2-3x more in supplements" },
+    visuals: {
+      1: { type: "checklist", data: {
+        title: "What to Look For in a Storm Damage Contractor",
+        items: [
+          { text: "Licensed and insured in your state with verifiable credentials", checked: true },
+          { text: "Established local presence (office, yard, or warehouse nearby)", checked: true },
+          { text: "Manufacturer certifications (GAF, Owens Corning, CertainTeed)", checked: true },
+          { text: "Experience filing insurance supplements for concealed damage", checked: true },
+          { text: "Willing to meet your adjuster on-site for re-inspection", checked: true },
+          { text: "Provides written scope of work before starting the job", checked: true },
+          { text: "Uses Xactimate-standard pricing and line codes", checked: true },
+          { text: "Offers a workmanship warranty (minimum 5 years)", checked: true },
+          { text: "Has verifiable reviews on Google, BBB, or Angi", checked: true },
+          { text: "Does NOT require large upfront deposits before work begins", checked: false },
+        ],
+      }},
+      2: { type: "tip", data: {
+        type: "warning",
+        title: "Storm Chaser Red Flags",
+        text: "Be cautious of contractors who show up uninvited after a storm, pressure you to sign immediately, ask for full payment upfront, cannot provide a local address, or offer to \"cover your deductible.\" Covering a homeowner's deductible is insurance fraud in most states. Legitimate contractors will never suggest it.",
+      }},
+      3: { type: "steps", data: [
+        { num: "1", title: "File your insurance claim", desc: "Contact your insurance company within 24-48 hours of the storm. They will assign an adjuster and open a claim." },
+        { num: "2", title: "Schedule a contractor inspection", desc: "Have a licensed storm damage contractor inspect your roof independently. They should document all visible damage with photos." },
+        { num: "3", title: "Meet the adjuster on-site", desc: "A good contractor will meet the adjuster during the inspection to ensure all visible damage is captured in the initial estimate." },
+        { num: "4", title: "Review the initial estimate", desc: "The adjuster writes an Xactimate estimate covering visible damage. Review it with your contractor to understand the scope." },
+        { num: "5", title: "Approve the scope and schedule repairs", desc: "Once the claim is approved, sign a contract with your chosen contractor. Work should begin within 1-4 weeks depending on storm volume." },
+        { num: "6", title: "Tear-off and hidden damage discovery", desc: "During tear-off, the crew documents concealed damage (rotted decking, failed flashing, deteriorated pipe boots) for a supplement." },
+        { num: "7", title: "Supplement submission and approval", desc: "Your contractor submits a supplement to the insurance company with photos, narratives, and Xactimate line items for the hidden damage." },
+        { num: "8", title: "Final inspection and completion", desc: "After repairs are complete, the contractor does a final walkthrough. You receive warranty documentation and final paperwork." },
+      ]},
+      5: { type: "calculator", data: {
+        title: "What Storm Damage Roof Repairs Typically Cost",
+        rows: [
+          { label: "Tear-off and disposal (25 SQ avg)", value: "$1,125 - $1,875" },
+          { label: "New architectural shingles (25 SQ)", value: "$4,500 - $6,250" },
+          { label: "Underlayment and starter strip", value: "$625 - $950" },
+          { label: "Ridge cap and ventilation", value: "$375 - $800" },
+          { label: "Pipe boots (3-5 typical)", value: "$255 - $425" },
+          { label: "Drip edge replacement", value: "$150 - $400" },
+          { label: "Common supplement items (decking, flashing, I&WS)", value: "$800 - $2,500" },
+        ],
+        total: { label: "Typical Total (before O&P)", value: "$7,830 - $13,200", color: "text-indigo-600" },
+      }},
+    },
+    sections: [
+      {
+        heading: "What qualifies as storm damage on a roof?",
+        content: "Storm damage to a roof can come from wind, hail, fallen trees, flying debris, or heavy rain that exploits existing vulnerabilities. Each type of storm leaves a different signature on your roofing materials, and understanding what to look for is the first step toward getting a proper repair.\n\nWind damage typically shows up as lifted, creased, or missing shingles. During high winds, the edges and ridge line of the roof take the most force, so you'll often see damage concentrated along the perimeter and at the peak. In severe cases, entire sections of shingles can be peeled back, exposing the underlayment or decking beneath.\n\nHail damage is harder to spot from the ground. Hail impacts create small dents or bruises on asphalt shingles, knocking loose the protective granules. These impacts weaken the shingle's ability to shed water, leading to premature failure. A trained inspector can identify hail hits by their circular pattern and the exposed black substrate where granules have been displaced.\n\nFalling branches and debris cause obvious puncture damage, but they can also crack decking, bend flashing, and dislodge ridge caps. Even if the visible damage looks minor, the underlying structure may have taken a significant hit.\n\nHeavy rain and ice dams don't always damage the roof surface directly, but they can drive water into areas where flashing has failed, where ice and water shield is missing, or where previous repairs were done poorly. The resulting water damage to decking and rafters often isn't visible until tear-off.\n\nIf you've experienced a significant storm, don't assume your roof is fine just because you don't see missing shingles from the ground. Many types of storm damage are only visible from the roof surface, and concealed damage beneath the shingles may not become apparent until a contractor begins the repair."
+      },
+      {
+        heading: "How to find a qualified storm damage contractor near you",
+        content: "Searching for \"storm damage roof repair near me\" will return dozens of results, and after a major storm, your phone may ring with contractors offering free inspections. The challenge is separating qualified local professionals from out-of-town storm chasers who follow weather events from state to state.\n\nStart with these verification steps:\n\n• Check licensing: Every state has different contractor licensing requirements. Verify the contractor's license number through your state's licensing board website. If they can't provide a license number, move on.\n\n• Confirm insurance: Ask for a certificate of insurance showing both general liability and workers' compensation coverage. Call the insurance company listed on the certificate to confirm the policy is active. If a worker is injured on your property and the contractor doesn't carry workers' comp, you could be liable.\n\n• Look for a local presence: A contractor with a local office, warehouse, or yard has a stake in the community. They'll be around to honor warranties and address issues. A contractor operating out of a hotel room two states away may not be.\n\n• Check references and reviews: Look at Google reviews, Better Business Bureau ratings, and Angi profiles. Pay attention to how the contractor responds to negative reviews. Ask for references from recent storm damage jobs in your area.\n\n• Verify manufacturer certifications: Certifications from shingle manufacturers (GAF Master Elite, Owens Corning Platinum, CertainTeed SELECT ShingleMaster) indicate the contractor has met training and performance standards. These certifications also provide extended warranty options for your new roof.\n\n• Ask about supplement experience: This is a detail many homeowners overlook. A contractor experienced with insurance supplements understands how to document concealed damage properly and recover the full cost of repairs from your insurance company. This means you're less likely to face unexpected out-of-pocket costs."
+      },
+      {
+        heading: "Red flags: how to spot storm chasers and avoid scams",
+        content: "Storm chasers are contractors (or people posing as contractors) who travel to areas hit by severe weather, knock on doors, and offer quick roof repairs. Some are legitimate businesses working outside their home market. Many are not. Here's how to protect yourself.\n\nDoor-to-door solicitation right after a storm is the most common storm chaser tactic. A person shows up at your door, says they noticed damage on your roof, and offers a free inspection. They may even climb onto your roof uninvited. While some legitimate companies do canvass after storms, be cautious of anyone who pressures you to sign a contract on the spot.\n\nHigh-pressure sales tactics are a major warning sign. If someone tells you the damage will get worse if you don't act today, that the insurance company will deny your claim if you wait, or that they can only offer this price right now, they're trying to prevent you from doing your due diligence. A legitimate contractor will give you time to verify their credentials and get competing estimates.\n\nRequesting full payment upfront (or even a large deposit) before any work begins is a red flag. Standard practice in the industry is to collect a deposit of no more than 10-20% at contract signing, with the balance due upon completion. Some storm chasers collect full payment and never return.\n\nOffering to \"cover your deductible\" or \"waive your deductible\" is not a favor. It is insurance fraud in most states. The contractor inflates the claim amount to absorb the deductible, which is illegal. If a contractor makes this offer, they are telling you they are willing to commit fraud on your behalf. Walk away.\n\nNo local address or verifiable history is a clear indicator. Ask for a physical business address (not a P.O. box). Search for the company name plus the city to see if they have an established presence. Check how long their website has been active. Storm chasers often set up temporary websites and Google Business profiles for each market they enter.\n\nIf you've already signed a contract with a company you now suspect is illegitimate, check your state's contractor cancellation laws. Many states allow a 3-day right of rescission for home improvement contracts signed at your residence."
+      },
+      {
+        heading: "How the insurance claim process works for storm damage repairs",
+        content: "Understanding the insurance claim process helps you work effectively with both your insurance company and your contractor. Here is the typical timeline from storm to completed repair.\n\nStep 1: File the claim promptly. Contact your insurance company within 24-48 hours of the storm. Most policies have time limits for reporting damage, and delays can complicate your claim. Your insurer will assign a claim number and schedule an adjuster visit.\n\nStep 2: Get an independent contractor inspection. Before the adjuster arrives, have a qualified contractor inspect your roof. They should document all visible damage with photos and provide you with a written assessment. This gives you a baseline to compare against the adjuster's findings.\n\nStep 3: The adjuster inspection. The insurance adjuster will visit your property, inspect the roof, and write an initial estimate using Xactimate. A good practice is to have your contractor present during this inspection so they can point out damage the adjuster might miss. The adjuster's estimate covers only what they can see from the surface.\n\nStep 4: Review the initial estimate. Your contractor should review the adjuster's Xactimate estimate with you. They can identify items that may have been missed or undervalued. If significant visible damage was overlooked, your contractor can request a re-inspection before work begins.\n\nStep 5: Authorize repairs and begin work. Once you're satisfied with the scope, sign a contract with your chosen contractor and schedule the work. Your insurance company issues the first payment (minus your deductible), often held in escrow if you have a mortgage.\n\nStep 6: Tear-off reveals hidden damage. This is the critical phase. When the crew removes the existing roofing materials, they frequently discover concealed damage: rotted decking, corroded flashing, deteriorated pipe boots, missing ice and water shield. This damage was invisible during both your contractor's inspection and the adjuster's visit.\n\nStep 7: Your contractor submits a supplement. The supplement is a formal request for additional insurance payment to cover the concealed damage. It includes photos taken during tear-off, a professional narrative, and Xactimate line items. A well-documented supplement submitted promptly has a high approval rate.\n\nStep 8: Supplement approval and final payment. The insurance company reviews the supplement, may request additional information or a re-inspection, and issues additional payment for approved items. The entire process from claim filing to final supplement approval typically takes 4-8 weeks."
+      },
+      {
+        heading: "Questions to ask before hiring a storm damage contractor",
+        content: "Before you sign a contract, ask these questions. The answers will tell you whether the contractor is qualified, experienced, and trustworthy.\n\n• \"Can I see your license and insurance certificate?\" Any legitimate contractor will have these ready. If they hesitate, make excuses, or say they'll send it later, that's a red flag.\n\n• \"How long have you been operating in this area?\" Local experience matters. A contractor who has worked in your region for years understands local building codes, common roofing issues for your climate, and has relationships with local suppliers and inspectors.\n\n• \"Will you meet my adjuster on-site?\" A contractor willing to be present during the adjuster's inspection is confident in their work and invested in making sure the claim captures all the damage.\n\n• \"How do you handle hidden damage found during tear-off?\" This is a critical question. The answer should involve documentation (photos, narratives), Xactimate-formatted supplements, and prompt submission to the insurance company. If the contractor says they'll \"just add it to the final bill\" or looks confused by the question, they may not have experience with the supplement process.\n\n• \"What does your warranty cover?\" Get the warranty details in writing. Understand what's covered (workmanship, materials, or both), for how long, and what would void the warranty.\n\n• \"Can you provide references from recent storm damage jobs?\" Call the references. Ask if the work was completed on time, if the contractor handled the insurance process smoothly, and if there were any issues after completion.\n\n• \"What is your payment schedule?\" Expect a small deposit at signing (10-20%), with the balance due upon satisfactory completion. Never pay the full amount before work is finished."
+      },
+      {
+        heading: "What the repair process looks like and what to expect with costs",
+        content: "A typical storm damage roof repair follows a predictable sequence, though the timeline can stretch during peak storm season when contractors are in high demand.\n\nThe contractor begins with material delivery, usually 1-3 days before the scheduled start date. Shingle bundles, underlayment rolls, flashing, and accessories are staged in your driveway or yard.\n\nOn the day of repair, the crew arrives early (typically 7-8 AM) and begins by protecting your landscaping and siding with tarps and boards. Tear-off starts at the ridge and works downward, with old shingles and underlayment stripped to the decking. This is when concealed damage is discovered and documented.\n\nAfter tear-off and documentation, the crew makes necessary repairs (replacing decking, installing flashing, adding ice and water shield), then installs new underlayment, shingles, and accessories. A typical single-layer residential roof takes 1-2 days to complete.\n\nRegarding costs, most storm damage roof repairs are covered by homeowner's insurance minus your deductible. The deductible is your out-of-pocket responsibility and typically ranges from $500 to $2,500 depending on your policy. Some policies have separate wind/hail deductibles that may be calculated as a percentage of your coverage (commonly 1-2% of your dwelling coverage).\n\nThe total cost of a storm damage roof replacement varies significantly based on roof size, pitch, complexity, material choice, and regional labor rates. For a typical 25-square residential roof with architectural shingles, the total repair cost (including common supplement items) generally falls between $8,000 and $14,000 before overhead and profit.\n\nThe supplement portion of the cost, covering hidden damage discovered during tear-off, typically adds $800 to $2,500 to the initial estimate. This is additional insurance coverage, not an additional cost to you. A contractor who documents and submits supplements properly ensures the insurance company pays for the full scope of necessary repairs, which protects you from being asked to cover the difference out of pocket."
+      },
+      {
+        heading: "How good contractors document damage for insurance (and how Supplement Snap helps)",
+        content: "The quality of damage documentation separates contractors who recover full insurance value from those who leave thousands of dollars on the table. For homeowners, this matters because thorough documentation means your insurance company pays for all necessary repairs. For contractors, this is the single biggest lever for revenue recovery on insurance jobs.\n\nGood documentation during tear-off includes:\n\n• Wide-angle photos showing the damage in context (where on the roof it is located)\n• Close-up photos showing the damage in detail (the condition of the affected material)\n• A description of each finding: what was found, where, what condition it was in, and why it was concealed\n• Accurate measurements: square footage of damaged decking, linear footage of failed flashing, count of deteriorated pipe boots\n• Xactimate line codes mapped to each finding with correct quantities and current regional pricing\n\nThe challenge is that this documentation needs to happen on the roof, during active tear-off, with a crew that's focused on getting the job done. Most contractors lose critical documentation because the crew takes a few blurry photos on a personal phone, texts them to the office days later, and by the time someone writes up the supplement, the details are incomplete.\n\nSupplement Snap solves this by putting the documentation tool directly in the crew's hands during tear-off. The crew member taps to capture a photo, selects the damage type (decking, flashing, pipe boot, ice and water shield), chooses the roof area, and records a quick voice note describing what they found. Voice notes work in any language, so Spanish-speaking crews describe findings naturally and the system auto-translates to English.\n\nFrom that field data captured in real time, Supplement Snap generates the complete supplement package: AI-written professional narratives, Xactimate line items with correct codes and pricing, an exportable CSV, and a branded PDF report ready to email to the adjuster. The supplement gets submitted the same day the damage is found, while the evidence is fresh and the adjuster can verify it.\n\nFor homeowners, this means your contractor captures every legitimate finding and submits proper documentation so your insurance covers the full repair. For contractors, this means systematic supplement recovery on every insurance job, turning what used to be an afterthought into a reliable revenue stream."
+      },
+    ],
+  },
+  {
+    slug: "best-roofing-crm",
+    title: "Best Roofing CRM in 2026: What to Look For and What's Missing",
+    metaTitle: "Best Roofing CRM in 2026: Features, Options, and the Revenue Gap | Guide",
+    metaDescription: "Compare the best roofing CRMs in 2026: JobNimbus, AccuLynx, Leap, and RoofLink. Learn what features matter, what CRMs don't do, and how to build a complete tech stack that captures supplement revenue.",
+    publishedDate: "2026-03-23",
+    externalLinks: [
+      { text: "NRCA: Technology Resources", url: "https://www.nrca.net" },
+      { text: "Verisk Xactimate", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
+    highlight: { label: "CRM Blind Spot", value: "$2,000+/job", subtext: "Supplement revenue that CRMs don't help you recover" },
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Feature", "JobNimbus", "AccuLynx", "Leap", "RoofLink"],
+        rows: [
+          { feature: "Lead tracking and pipeline", values: [true, true, true, true] },
+          { feature: "Estimate and proposal generation", values: [true, true, true, true] },
+          { feature: "Production scheduling", values: [true, true, true, true] },
+          { feature: "Material ordering integration", values: [true, true, false, true] },
+          { feature: "Photo upload and storage", values: [true, true, true, true] },
+          { feature: "Built-in financing options", values: [false, true, true, false] },
+          { feature: "Xactimate estimate integration", values: [false, true, false, false] },
+          { feature: "Insurance claim tracking", values: [false, true, false, false] },
+          { feature: "Supplement documentation and narratives", values: [false, false, false, false] },
+          { feature: "AI-generated supplement reports", values: [false, false, false, false] },
+          { feature: "Xactimate CSV export for supplements", values: [false, false, false, false] },
+          { feature: "Field crew damage capture tool", values: [false, false, false, false] },
+        ],
+      }},
+      2: { type: "compare", data: {
+        before: { label: "What Your CRM Does", items: ["Tracks leads from first contact to close", "Generates estimates and proposals", "Schedules production crews", "Stores job photos and documents", "Manages customer communication", "Reports on sales pipeline and revenue"] },
+        after: { label: "What Your CRM Misses", items: ["Documenting hidden damage during tear-off", "Generating supplement narratives from field data", "Mapping findings to Xactimate line codes", "Creating insurance-ready PDF supplement reports", "Exporting Xactimate-compatible CSV files", "Tracking supplement status and recovery rates"] },
+      }},
+      4: { type: "calculator", data: {
+        title: "The Revenue Impact of Adding Supplement Tools",
+        rows: [
+          { label: "Insurance roofs per month", value: "10 jobs" },
+          { label: "Jobs with supplementable hidden damage", value: "8 jobs (80%)" },
+          { label: "Average supplement recovery per job", value: "$2,100" },
+          { label: "Monthly supplement revenue (with proper tools)", value: "$16,800" },
+          { label: "Monthly supplement revenue (without tools)", value: "$2,100 (1-2 jobs)" },
+          { label: "Revenue difference per month", value: "$14,700" },
+          { label: "Cost of supplement tool (monthly)", value: "$149" },
+        ],
+        total: { label: "Net Annual Revenue Gain", value: "$174,612", color: "text-emerald-600" },
+      }},
+      5: { type: "tip", data: {
+        type: "info",
+        title: "The Complete Roofing Tech Stack",
+        text: "Your CRM handles the customer journey from lead to signed contract. Your estimating tool handles pricing and proposals. Your supplement tool handles the revenue recovery after tear-off. Together, they cover the full lifecycle of an insurance roofing job: win the job, price the job, and get paid fully for the job.",
+      }},
+    },
+    sections: [
+      {
+        heading: "What does a roofing CRM actually do?",
+        content: "A customer relationship management (CRM) system for roofing companies is a centralized platform that tracks every interaction with a homeowner from the first phone call or website inquiry through the completed job and beyond. At its core, a roofing CRM replaces the spreadsheets, sticky notes, and scattered text messages that most growing roofing companies rely on before they invest in software.\n\nThe primary functions of a roofing CRM include:\n\n• Lead management: Capturing incoming leads from phone calls, web forms, canvassing, and referrals, then tracking each lead through your sales pipeline (new lead, appointment set, inspection completed, estimate sent, contract signed, job scheduled, job complete).\n\n• Contact and job records: Maintaining a complete history for each homeowner and job, including contact information, property details, inspection notes, photos, estimates, contracts, invoices, and communication logs.\n\n• Production management: Scheduling crews, tracking job status, managing material orders, and coordinating the workflow from contract signing through final inspection.\n\n• Communication tools: Sending automated text messages and emails to homeowners at each stage of the process (appointment reminders, job status updates, payment requests).\n\n• Reporting and analytics: Tracking key metrics like lead conversion rate, average job value, revenue by salesperson, and pipeline value.\n\nFor roofing companies doing more than a handful of jobs per month, a CRM is essential. Without one, leads fall through the cracks, follow-ups get missed, and the owner spends their evenings trying to remember which jobs need scheduling and which invoices haven't been sent.\n\nBut here is the important distinction that most CRM marketing overlooks: a CRM is designed to manage the customer relationship and the sales process. It helps you win jobs and manage production. It does not help you recover the full revenue from the jobs you've already won. That's a different problem entirely, and it's the one most roofing companies don't realize they have."
+      },
+      {
+        heading: "Top roofing CRM features to evaluate in 2026",
+        content: "If you're evaluating roofing CRMs, these are the features that matter most for a roofing-specific workflow. Generic CRMs (HubSpot, Salesforce) can be adapted for roofing, but purpose-built options save significant setup time and include industry-specific functionality.\n\nLead capture and pipeline management is the foundation. Your CRM should automatically capture leads from your website, Google Ads, and phone system, then place them into a visual pipeline you can customize to your sales stages. Look for drag-and-drop boards, automatic stage-based follow-up sequences, and the ability to assign leads to specific salespeople by territory.\n\nMobile-first design is non-negotiable. Your sales team lives in the field, not at a desk. The CRM needs a responsive mobile app that lets reps create contacts, schedule appointments, capture inspection photos, generate estimates, and send contracts from their phone or tablet while standing in the homeowner's driveway.\n\nEstimating and proposal tools should integrate directly into the CRM. The best roofing CRMs let you build estimates using roof measurements (from EagleView, Hover, or manual input), apply your pricing, and generate a professional proposal that the homeowner can sign electronically on the spot. This eliminates the back-and-forth of emailing PDFs and chasing signatures.\n\nProduction scheduling should show you which crews are available on which days, allow you to assign jobs, and track progress from material delivery through final inspection. Bonus points if the CRM integrates with material suppliers (ABC Supply, SRS, Beacon) for one-click ordering.\n\nInsurance claim tracking is critical if you do storm work. You should be able to track the claim number, adjuster name, adjuster contact information, claim status, and inspection dates alongside the job record.\n\nIntegrations determine how well your CRM plays with the rest of your tools. At minimum, look for integration with QuickBooks or accounting software, measurement report providers, and your email/calendar. API access is a plus for custom workflows.\n\nReporting must go beyond vanity metrics. You need to see your close rate by lead source, average job value by salesperson, revenue by month, and jobs in each pipeline stage. The best roofing CRMs provide dashboards that give you a real-time view of your business health."
+      },
+      {
+        heading: "Popular roofing CRMs compared: JobNimbus, AccuLynx, Leap, and RoofLink",
+        content: "Four platforms dominate the roofing CRM market in 2026. Each has strengths and trade-offs depending on your company size, job volume, and how much of your revenue comes from insurance work.\n\nJobNimbus is the most widely adopted roofing CRM, known for its simplicity and speed of setup. It offers a clean visual pipeline, solid mobile app, built-in estimating, and integrations with EagleView, ABC Supply, and QuickBooks. JobNimbus works well for companies that want a straightforward system without a steep learning curve. It is less specialized for insurance workflows compared to AccuLynx, but covers the core CRM functions reliably. Pricing starts around $200/month and scales with users.\n\nAccuLynx is the strongest option for insurance-focused roofing companies. It was built specifically for storm restoration contractors and includes insurance claim tracking, adjuster management, and aerial measurement integration as core features. AccuLynx also integrates with Xactimate for pulling in adjuster estimates, which is a significant advantage for insurance roofers. The platform is more complex than JobNimbus and has a steeper learning curve, but the insurance-specific features justify the investment if storm work is a significant portion of your revenue. Pricing is typically higher than JobNimbus and is quote-based.\n\nLeap (formerly Job Progress) focuses on the in-home sales experience. Its standout feature is the ability to build interactive presentations and proposals on a tablet during the sales appointment. Leap includes digital contracts, built-in financing options (through partners like GreenSky and Mosaic), and a production management module. It is strongest as a sales tool and may require supplementation with other software for production-heavy operations. Pricing is quote-based and typically mid-range.\n\nRoofLink is a newer entrant focused on connecting the roofing workflow from measurement to production. It integrates with aerial measurement providers and material suppliers, with a focus on streamlining the estimating-to-ordering pipeline. RoofLink is gaining traction with production-oriented companies that want tight integration between their estimate, material order, and crew schedule. It is less mature than JobNimbus or AccuLynx in terms of pipeline management and reporting. Pricing is competitive and scales with usage.\n\nAll four platforms do a solid job of managing leads, tracking jobs, and organizing your sales pipeline. The differences come down to which part of the business each platform optimizes for: AccuLynx for insurance, Leap for sales presentations, RoofLink for production workflow, and JobNimbus for overall simplicity."
+      },
+      {
+        heading: "The gap every roofing CRM ignores: supplement documentation",
+        content: "Here is the uncomfortable truth about every roofing CRM on the market: none of them help you document concealed damage during tear-off, generate supplement narratives, map findings to Xactimate line codes, or submit professional supplement reports to insurance adjusters.\n\nThis is not a minor feature gap. It is a revenue gap.\n\nOn a typical insurance roofing job, the adjuster's initial estimate covers visible damage identified during a surface inspection. When your crew tears off the existing roof, they almost always discover additional damage that was concealed beneath the shingles: rotted decking, corroded flashing, missing ice and water shield, cracked pipe boots, additional layers of roofing. This hidden damage is legitimate, it needs to be repaired, and your insurance policy covers it. But recovering that money requires a supplement: a documented request with photos, narratives, and Xactimate line items submitted to the insurance company.\n\nThe average supplement recovery is $1,500 to $3,200 per job. On a company doing 10 insurance roofs per month, that's $15,000 to $32,000 per month in revenue that exists on every job but only gets captured if someone documents the damage properly and submits the paperwork.\n\nYour CRM can tell you which stage the job is in. It can tell you when the crew is scheduled. It can store photos uploaded after the fact. But it cannot guide your crew through damage documentation during active tear-off. It cannot generate professional supplement narratives from field observations. It cannot map a tagged photo of rotted decking to the correct Xactimate line code (RFG SHTHN) with the appropriate quantity and regional pricing. It cannot produce an Xactimate-compatible CSV file the adjuster can import directly into their system.\n\nThis is not a criticism of CRMs. They were designed to manage customer relationships and sales pipelines, and they do that well. Supplement documentation is a fundamentally different workflow that happens at a different point in the job lifecycle (during tear-off, not during sales) and requires different capabilities (damage classification, narrative generation, Xactimate formatting)."
+      },
+      {
+        heading: "The math: what this gap costs your company every year",
+        content: "Let's put specific numbers to the CRM supplement gap. These figures are based on industry averages for insurance roofing contractors.\n\nStart with your monthly insurance job volume. A mid-size storm restoration company typically runs 8-12 insurance roofs per month. We'll use 10 as a round number.\n\nOf those 10 jobs, roughly 70-90% will have supplementable concealed damage discovered during tear-off. The most common findings are rotted decking (found on approximately 60% of tear-offs), deteriorated pipe boots (50%), corroded or missing flashing (40%), and missing ice and water shield in code-required areas (35%). Using the conservative end, 8 out of 10 jobs have supplementable damage.\n\nThe average supplement recovery ranges from $1,500 to $3,200 per job. The variation depends on roof age, complexity, regional pricing, and how thoroughly the damage is documented. We'll use $2,100 as a realistic midpoint.\n\nWith proper documentation tools and a systematic process, contractors typically submit supplements on 80-90% of eligible jobs and achieve a 70-85% approval rate. Without tools (relying on the crew to text blurry photos to the office and someone to write up the supplement days later), submission rates drop to 10-20% of eligible jobs, and approval rates fall below 50%.\n\nHere is the annual comparison:\n\n• With supplement tools: 10 jobs/month x 80% eligible x 85% submission x 80% approval x $2,100 = $11,424/month = $137,088/year\n• Without supplement tools: 10 jobs/month x 80% eligible x 15% submission x 45% approval x $2,100 = $1,134/month = $13,608/year\n• Annual revenue difference: $123,480\n\nThat is over $120,000 per year in revenue that exists on jobs you've already won, that your CRM tracked through the pipeline, that your crews completed. The work was done. The damage was real. The insurance policy covered it. The money was there. It just never got documented and submitted.\n\nAnd here's the part that should keep you up at night: your CRM dashboard shows the job as complete and the revenue as collected. There's no field for \"supplement revenue left on the table.\" The gap is invisible unless you're specifically tracking it."
+      },
+      {
+        heading: "Building the complete roofing tech stack for 2026",
+        content: "The most profitable roofing companies in 2026 are not relying on a single platform to run their entire business. They're building a tech stack where each tool does one thing exceptionally well, and the tools work together to cover the full job lifecycle.\n\nThe three layers of a complete roofing tech stack are:\n\nLayer 1: CRM for customer management and sales. This is your JobNimbus, AccuLynx, Leap, or RoofLink. It manages leads, tracks the pipeline, generates estimates, schedules production, and stores job records. This layer covers the journey from first contact through contract signing and job scheduling. Every serious roofing company needs this.\n\nLayer 2: Estimating and measurement tools. This includes aerial measurement reports (EagleView, Hover, IMGING) and Xactimate for insurance-priced estimates. Your estimating tools feed accurate measurements and pricing into your CRM proposals. Some CRMs integrate these directly; others require manual data transfer.\n\nLayer 3: Supplement documentation and recovery. This is the layer almost every roofing company is missing. A supplement tool captures damage findings during tear-off, generates professional documentation, and produces Xactimate-ready output for insurance submission. This layer covers the period after the crew starts work and discovers hidden damage, the exact phase where your CRM has no workflow.\n\nThe return on investment for each layer is different. Your CRM helps you win more jobs. Your estimating tools help you price jobs accurately. Your supplement tool helps you collect the full revenue on jobs you've already won. Of the three, the supplement tool has the shortest payback period because the revenue it recovers is money you're already owed. One approved supplement pays for months of the software.\n\nThe companies that are growing fastest in the insurance roofing space are the ones that have figured out this three-layer approach. They close jobs with their CRM, price them with their estimating tools, and recover full value with their supplement tools. Each layer amplifies the others."
+      },
+      {
+        heading: "Where Supplement Snap fits in your tech stack",
+        content: "Supplement Snap was built to be that missing third layer. It doesn't replace your CRM. It doesn't compete with your estimating tool. It fills the gap that neither of them was designed to address: documenting concealed damage during tear-off and turning those findings into approved insurance supplements.\n\nHere's how it works in practice. Your CRM tracks the job through the pipeline. Your crew shows up on the scheduled date and begins tear-off. When they discover hidden damage (and they will on 70-90% of insurance jobs), they open Supplement Snap on their phone. They tap to capture a photo, select the damage type from a menu (decking, flashing, pipe boot, ice and water shield, drip edge), choose the roof area, and record a voice note describing what they found. The entire process takes about 30 seconds per finding. Voice notes work in any language. Spanish-speaking crews record their descriptions naturally, and the system auto-translates to English.\n\nFrom that field data, Supplement Snap generates everything needed for a professional supplement submission:\n\n• AI-written supplement narratives tailored to each finding, using the language and format insurance adjusters expect\n• Xactimate line items automatically mapped from the damage type, with correct codes, quantities, and current regional pricing\n• An Xactimate-compatible CSV file the adjuster can import directly into their system\n• A branded PDF report with photos, narratives, findings summary, and line item breakdown\n\nThe supplement gets submitted the same day the damage is found. No more photos lost in camera rolls. No more supplements that sit in the office for weeks. No more vague documentation that gets denied.\n\nYour CRM is essential for winning jobs and managing your business. Supplement Snap is essential for getting paid fully on the jobs your CRM helped you win. Together, they ensure that every dollar of revenue you earn actually reaches your bank account."
+      },
+    ],
+  },
+  {
+    slug: "storm-damage-roof-repair",
+    title: "Storm Damage Roof Repair: What Contractors Need to Know in 2026",
+    metaTitle: "Storm Damage Roof Repair: Contractor Guide for Insurance Claims in 2026",
+    metaDescription: "Complete guide to storm damage roof repair for contractors. Learn how to identify wind, hail, and debris damage, navigate insurance claims, and maximize recovery on every storm job.",
+    publishedDate: "2026-03-23",
+    externalLinks: [
+      { text: "NOAA Storm Prediction Center", url: "https://www.spc.noaa.gov" },
+      { text: "NRCA: Storm Damage Resources", url: "https://www.nrca.net" },
+      { text: "Insurance Information Institute", url: "https://www.iii.org" },
+    ],
+    highlight: { label: "Storm Damage Market", value: "$15B+", subtext: "Annual U.S. insurance payouts for storm-related roof damage" },
+    visuals: {
+      0: { type: "damage-cards", data: [
+        { icon: "wind", title: "Wind Damage", desc: "Lifted, creased, or missing shingles caused by high winds. Often starts at edges and ridgelines where uplift pressure is greatest.", value: "58 mph+" },
+        { icon: "hail", title: "Hail Damage", desc: "Bruised or fractured shingles with exposed fiberglass mat. May appear as dark spots, dents, or granule displacement on impact zones.", value: "1\" dia+" },
+        { icon: "decking", title: "Debris Impact", desc: "Punctured or cracked roofing materials from fallen tree limbs, branches, and airborne objects during severe storms.", value: "Varies" },
+        { icon: "ice", title: "Water Intrusion", desc: "Moisture penetration through compromised flashings, damaged shingles, or failed ice and water shield. Often causes concealed decking rot.", value: "Hidden" },
+        { icon: "flashing", title: "Flashing Failure", desc: "Bent, displaced, or separated flashings around chimneys, walls, and penetrations caused by wind uplift and thermal cycling during storms.", value: "$8-12/LF" },
+        { icon: "drip", title: "Drip Edge Damage", desc: "Bent or detached drip edge along eaves and rakes, often caused by wind-driven debris or ice damming after winter storms.", value: "$4-6/LF" },
+      ]},
+      2: { type: "timeline", data: [
+        { time: "Day 1", title: "Storm event occurs", desc: "Document the storm date and severity. Save weather reports, hail maps, and any alerts for the area. This establishes the loss date for the claim.", color: "red" },
+        { time: "Day 2-3", title: "Initial property inspection", desc: "Inspect the roof for visible storm damage. Photograph all findings with wide shots for context and close-ups for detail. Note every damaged component." },
+        { time: "Day 5-7", title: "Insurance claim filed", desc: "Help the homeowner file the claim with their carrier. Include your inspection report and photos. The carrier assigns an adjuster and a claim number." },
+        { time: "Wk 2-3", title: "Adjuster inspection", desc: "The insurance adjuster inspects the property and writes the initial estimate. Be present if possible to point out damage they might miss." },
+        { time: "Wk 3-5", title: "Tear-off reveals hidden damage", desc: "During tear-off, your crew discovers concealed damage: rotted decking, failed underlayment, corroded flashing. Document everything immediately.", color: "red" },
+        { time: "Wk 3-5", title: "Supplement submitted", desc: "Submit a professional supplement with photos, narratives, and Xactimate line items for all hidden damage found during tear-off.", color: "green" },
+        { time: "Wk 5-8", title: "Supplement approved and paid", desc: "The adjuster reviews and approves the supplement. Payment is issued to cover the additional cost of hidden damage repairs.", color: "green" },
+      ]},
+      3: { type: "calculator", data: {
+        title: "Storm Damage Revenue Per Job (Example: 30 SQ Roof)",
+        rows: [
+          { label: "Initial insurance estimate (shingles, felt, labor)", value: "$12,500" },
+          { label: "Decking replacement (8 sheets discovered at tear-off)", value: "+$1,400" },
+          { label: "Ice and water shield (valleys + eaves, code required)", value: "+$680" },
+          { label: "Step flashing replacement (chimney + sidewall)", value: "+$520" },
+          { label: "Pipe boot replacement (3 deteriorated boots)", value: "+$255" },
+          { label: "Drip edge replacement (full perimeter)", value: "+$340" },
+        ],
+        total: { label: "Total Job Revenue With Supplement", value: "$15,695", color: "green" },
+      }},
+      5: { type: "tip", data: { type: "tip", title: "Pro Tip: Seasonal Storm Preparation", text: "Build your storm response system before storm season hits. Train crews on damage documentation, pre-load your supplement workflow, and establish relationships with adjusters in your area. Contractors who respond within 48 hours of a storm event close 3x more jobs than those who wait a week or more." } },
+    },
+    sections: [
+      {
+        heading: "Understanding storm damage roof repair",
+        content: "Storm damage roof repair is one of the highest-volume, highest-revenue segments in residential roofing. Every year, severe weather events across the United States generate more than $15 billion in insurance payouts for roof damage alone. For contractors who understand how to identify storm damage, document it properly, and navigate the insurance claims process, storm season represents a massive business opportunity.\n\nBut storm damage roofing is fundamentally different from retail roofing. The customer is not paying out of pocket. The insurance company is funding the repair based on their adjuster's estimate. That means your revenue depends not just on the quality of your work, but on the quality of your documentation. Miss a finding during inspection, fail to photograph hidden damage during tear-off, or submit a weak supplement, and you leave money on the table.\n\nThis guide covers the types of storm damage you will encounter, how insurance claims work for storm damage repairs, what hidden damage looks like during tear-off, and how to maximize your recovery on every storm job."
+      },
+      {
+        heading: "Types of storm damage to roofing systems",
+        content: "Storm damage to roofing systems falls into several categories, each with distinct visual indicators and documentation requirements. Understanding these categories is critical for thorough inspections and complete insurance claims.\n\nWind damage is the most common form of storm damage. High winds create uplift pressure that lifts shingle tabs, breaks the seal strip bond, and in severe cases tears shingles completely off the roof. Wind damage typically starts at the most vulnerable points: ridgelines, eaves, rakes, and corners where uplift forces are strongest. Look for creased shingles, lifted tabs, missing shingles, and exposed underlayment or decking.\n\nHail damage varies depending on hail size, wind speed, roof age, and shingle type. Hailstones 1 inch in diameter or larger typically cause functional damage to asphalt shingles. Signs include random dents or bruises in the shingle surface, displaced granules exposing the fiberglass mat, fractures in the shingle, and dents in soft metals like flashing, vents, and gutters. Hail damage is often subtle and requires a trained eye to distinguish from normal wear.\n\nDebris impact damage results from tree limbs, branches, and airborne objects striking the roof during storms. This can range from minor granule loss to punctured shingles and cracked decking. Debris impacts are usually obvious but the full extent of damage beneath the impact point may not be visible until tear-off.\n\nWater intrusion damage occurs when storm damage compromises the roof's water-shedding system. Damaged shingles, displaced flashing, and failed sealants allow water to penetrate the roofing system. Over time, this causes decking rot, mold growth, and insulation damage. Water intrusion damage is almost always concealed and is one of the most common supplement items discovered during tear-off."
+      },
+      {
+        heading: "How insurance claims work for storm damage",
+        content: "The insurance claims process for storm damage roof repair follows a predictable sequence, but each stage presents opportunities for contractors who are prepared.\n\nThe process begins when the homeowner files a claim with their insurance carrier after a storm event. The carrier assigns a claim number and schedules an adjuster to inspect the property. As the contractor, your role at this stage is to perform your own inspection, document all visible damage, and provide the homeowner with a professional inspection report they can share with their adjuster.\n\nWhen the adjuster arrives, they inspect the property and write an initial estimate using Xactimate. This estimate covers only the damage visible during their inspection. If you can be present during the adjuster's inspection, do it. Walk the roof with them, point out damage they might miss, and make sure they document every affected component.\n\nThe initial estimate rarely covers the full cost of the repair. Why? Because the adjuster inspects the roof from the surface. They cannot see what is under the shingles. Rotted decking, failed underlayment, corroded flashing, deteriorated pipe boots: these are all concealed by the existing roofing materials and only become visible during tear-off.\n\nThis is where supplements come in. When your crew tears off the existing roof and discovers hidden damage, you document it and submit a supplement to the insurance company requesting additional payment. The supplement includes photos, a written narrative describing the damage, and Xactimate line items with the correct codes and quantities.\n\nA well-documented supplement is almost always approved because the damage is real, verifiable, and was genuinely concealed before tear-off. The average supplement on a storm damage job recovers $1,500 to $3,200 in additional revenue."
+      },
+      {
+        heading: "Hidden damage found during tear-off after storms",
+        content: "Hidden damage is the single biggest revenue opportunity in storm damage roof repair. Studies consistently show that 70 to 90 percent of storm damage tear-offs reveal damage that was not included in the original insurance estimate. This is not fraud or exaggeration. It is the reality of roofing: you cannot see what is under the shingles until you remove them.\n\nThe most common types of hidden damage found during tear-off include:\n\n• Rotted or deteriorated decking: Plywood or OSB sheathing that has absorbed moisture through damaged shingles. The wood is soft, spongy, or crumbling. This requires full sheet replacement before new roofing materials can be installed.\n\n• Failed or missing underlayment: Roofing felt or synthetic underlayment that has deteriorated, torn, or was never installed properly. Building codes require underlayment, so replacement is mandatory.\n\n• Corroded or damaged step flashing: Step flashing along chimneys and sidewalls that has rusted through, bent, or separated from the wall. Water follows the flashing path, so failed flashing almost always means water damage to the wall sheathing behind it.\n\n• Deteriorated pipe boots: Rubber pipe boot seals that have cracked, split, or pulled away from the pipe. Failed pipe boots are one of the most common leak sources and are almost always concealed beneath the shingle layer.\n\n• Missing or inadequate ice and water shield: In cold climates, building codes require ice and water shield in valleys, at eaves, and around penetrations. Many older roofs were installed before these requirements existed, and replacement is required by current code.\n\n• Additional layers of roofing: Some roofs have a second or even third layer of shingles installed over the original. The additional layer must be removed, and the extra labor and disposal costs should be covered by the insurance claim.\n\nEach of these findings is a legitimate supplement item. The key is documenting them properly at the moment of discovery."
+      },
+      {
+        heading: "Documentation requirements for storm damage claims",
+        content: "Documentation is what separates contractors who recover $1,500 or more per job in supplements from those who recover nothing. The adjuster reviewing your supplement was not on your roof. They need to see clear, compelling evidence of concealed damage.\n\nFor every finding, your documentation should include:\n\n• Wide-angle context photos showing where on the roof the damage is located\n• Close-up detail photos showing the specific condition of the damaged material\n• Measurements: square footage of affected decking, linear feet of damaged flashing, number of failed pipe boots\n• A written narrative explaining what was found, where it was found, when it was discovered (during tear-off), and why it was not visible during the initial inspection\n• The corresponding Xactimate line codes with accurate quantities and current pricing\n\nThe narrative is especially important. A photo of rotted decking is good. A photo of rotted decking with a narrative stating 'During tear-off operations on March 15, 2026, three sheets of 1/2-inch CDX plywood along the eave edge of the front slope were found to be severely deteriorated from prolonged moisture exposure. The damage was concealed beneath the existing shingle layer and was not visible during the initial inspection.' That gets approved.\n\nTimeliness also matters. Submit your supplement the same day you discover the damage, or within 24 to 48 hours at most. Supplements submitted weeks after the job raise red flags with adjusters and are far more likely to be denied or questioned."
+      },
+      {
+        heading: "How to maximize recovery on storm damage jobs",
+        content: "Maximizing recovery on storm damage roof repair is not about inflating claims. It is about being thorough, accurate, and professional in your documentation so that every legitimate finding is captured, submitted, and paid.\n\nHere are the practices that separate top-performing storm damage contractors from the rest:\n\n• Train your crews to stop and document: When the crew finds hidden damage during tear-off, they need to pause and capture it before it gets covered by new materials. Five minutes of documentation can mean hundreds or thousands of dollars in supplement revenue.\n\n• Use a systematic approach: Don't rely on memory or random photos. Use a consistent process for every finding: tag the damage type, record the roof area, take context and detail photos, and add a description.\n\n• Know your Xactimate codes: Submit supplements in the language adjusters speak. Use the correct line codes, proper units (SF for decking, LF for flashing, EA for pipe boots), and current regional pricing.\n\n• Reference building codes: When a repair is required by current building code (ice and water shield in valleys, proper flashing at penetrations), cite the code. This makes it much harder for the adjuster to deny the line item.\n\n• Submit complete packages: Don't send a bare Xactimate estimate. Include a professional PDF report with photos, narratives, a findings summary, and the Xactimate line items. The easier you make the adjuster's job, the faster you get approved.\n\n• Track your supplements: Know which supplements are pending, which have been approved, and which need follow-up. A supplement that sits unanswered for 30 days is money you are not collecting."
+      },
+      {
+        heading: "Streamlining storm damage documentation with Supplement Snap",
+        content: "Storm damage roof repair is a volume business. During peak storm season, you may have dozens of jobs in progress simultaneously, each with its own hidden damage findings, supplement documentation, and insurance communication. Managing this manually with camera rolls, text messages, and spreadsheets is not scalable.\n\nSupplement Snap was designed for exactly this scenario. During tear-off, your crew opens the app and captures each finding in seconds: a photo tagged with the damage type (decking, flashing, pipe boot, ice and water shield) and the roof area (front slope, back slope, valley, chimney). They can add a voice note describing the damage in any language, and the system auto-translates Spanish voice notes to English.\n\nFrom those field captures, Supplement Snap generates a professional supplement package:\n\n• AI-written damage narratives in the language adjusters expect\n• Xactimate line items with correct codes, quantities, and current regional pricing\n• An Xactimate-compatible CSV the adjuster can import directly into their system\n• A branded PDF report with photos, narratives, and a findings summary, ready to email\n\nThe entire process from discovering hidden damage on the roof to sending a complete supplement to the adjuster takes minutes. Your crew documents as they work, and Supplement Snap handles the rest. On storm damage jobs where speed and volume matter most, that efficiency is the difference between recovering thousands in supplements and leaving money on every roof."
+      },
+    ],
+  },
+  {
+    slug: "roof-damage-repair-guide",
+    title: "Roof Damage Repair: Complete Guide for Contractors and Homeowners",
+    metaTitle: "Roof Damage Repair: Complete Guide for Contractors and Homeowners (2026)",
+    metaDescription: "Everything contractors and homeowners need to know about roof damage repair. Types of damage, repair vs. replace decisions, insurance claims, hidden damage, and cost breakdowns.",
+    publishedDate: "2026-03-23",
+    externalLinks: [
+      { text: "NRCA: Roof Repair Standards", url: "https://www.nrca.net" },
+      { text: "International Building Code (ICC)", url: "https://www.iccsafe.org" },
+    ],
+    highlight: { label: "Hidden Damage Found", value: "70-90%", subtext: "Of insurance tear-offs reveal damage not in the original estimate" },
+    visuals: {
+      0: { type: "damage-cards", data: [
+        { icon: "hail", title: "Storm Damage", desc: "Wind, hail, and debris damage from severe weather events. Usually covered by homeowner's insurance when properly documented.", value: "Insurance" },
+        { icon: "decking", title: "Age-Related Wear", desc: "Curling shingles, granule loss, cracked tiles, and brittle materials from years of UV exposure and thermal cycling.", value: "15-30 yrs" },
+        { icon: "ice", title: "Water Damage", desc: "Leaks, moisture intrusion, decking rot, and mold caused by failed flashings, ice dams, or compromised shingles.", value: "Hidden" },
+        { icon: "flashing", title: "Flashing Failure", desc: "Corroded, separated, or improperly installed flashings around chimneys, walls, valleys, and penetrations.", value: "$8-15/LF" },
+        { icon: "pipe", title: "Pipe Boot Failure", desc: "Cracked rubber seals around plumbing vents that allow water to enter around the pipe penetration.", value: "$85-150/EA" },
+        { icon: "layers", title: "Multiple Layers", desc: "Second or third layer of shingles installed over the original, adding weight and hiding underlying problems.", value: "$45/SQ" },
+      ]},
+      2: { type: "compare", data: {
+        before: { label: "When to Repair", items: ["Damage is localized to one area", "Roof is less than 10-12 years old", "Less than 30% of roof surface is affected", "Structural decking is still sound", "No active leaks or interior damage", "Budget is limited and damage is minor"] },
+        after: { label: "When to Replace", items: ["Damage is widespread across multiple slopes", "Roof is 15+ years old with general wear", "More than 30% of roof surface is compromised", "Decking damage is found in multiple areas", "Active leaks or interior water damage present", "Insurance is covering a full replacement"] },
+      }},
+      3: { type: "calculator", data: {
+        title: "Roof Damage Repair Cost Breakdown (Typical 30 SQ Residential Roof)",
+        rows: [
+          { label: "Shingle replacement (localized, 5 SQ area)", value: "$1,200-$2,000" },
+          { label: "Decking replacement (4-8 sheets of plywood)", value: "$700-$1,400" },
+          { label: "Flashing repair/replacement (chimney + sidewall)", value: "$400-$800" },
+          { label: "Pipe boot replacement (2-4 boots)", value: "$170-$600" },
+          { label: "Ice and water shield (valleys + eaves)", value: "$500-$900" },
+          { label: "Full tear-off and replacement (30 SQ)", value: "$10,000-$18,000" },
+        ],
+        total: { label: "Average Supplement Recovery (Hidden Damage)", value: "$1,500-$3,200", color: "green" },
+      }},
+      5: { type: "checklist", data: {
+        title: "Insurance Documentation Checklist",
+        items: [
+          { text: "Property address, claim number, and policy information", checked: true },
+          { text: "Date of loss (storm date) and date of inspection", checked: true },
+          { text: "Wide-angle photos of each damage area for context", checked: true },
+          { text: "Close-up detail photos of specific damage", checked: true },
+          { text: "Measurements: square footage, linear feet, quantities", checked: true },
+          { text: "Written damage narrative for each finding", checked: true },
+          { text: "Xactimate line codes with correct units and pricing", checked: false },
+          { text: "Building code references where applicable", checked: false },
+          { text: "Statement that damage was concealed before tear-off", checked: false },
+          { text: "Professional PDF report submitted to adjuster", checked: false },
+        ],
+      }},
+    },
+    sections: [
+      {
+        heading: "What is roof damage repair?",
+        content: "Roof damage repair encompasses any work needed to restore a roofing system that has been compromised by storms, age, water intrusion, structural movement, or other causes. For contractors, understanding the full scope of roof damage repair is essential because it directly affects how you estimate jobs, communicate with homeowners, and interact with insurance companies.\n\nRoof damage can be visible or hidden. Visible damage includes missing shingles, obvious leaks, and cracked tiles that anyone can see from the ground. Hidden damage is concealed beneath the roofing surface and is only discovered during a detailed inspection or during tear-off. This hidden damage is where most contractors leave money on the table, because it represents legitimate repair costs that were not included in the original estimate.\n\nWhether you are a contractor bidding a job, a homeowner evaluating repair options, or a roofing company managing insurance claims, this guide covers what you need to know about roof damage repair: the types of damage, how to assess them, when to repair versus replace, how insurance claims work, and how to document hidden damage for supplement recovery."
+      },
+      {
+        heading: "Types of roof damage",
+        content: "Roof damage falls into several categories, and most damaged roofs have problems from more than one category. Understanding each type helps you perform thorough inspections and write complete estimates.\n\nStorm damage is the most common trigger for insurance-funded roof repairs. Wind lifts, creases, and tears shingles. Hail bruises shingle surfaces and displaces granules. Falling debris punctures materials and cracks decking. Storm damage is typically sudden and traceable to a specific weather event, which is important for insurance claims.\n\nAge-related deterioration happens gradually over 15 to 30 years. Asphalt shingles curl at the edges, lose granules, become brittle, and eventually crack. Tile roofs develop hairline fractures. Metal roofs corrode at seams and fastener points. Age-related damage is generally not covered by insurance unless a storm event accelerates the deterioration.\n\nWater damage results from any breach in the roofing system that allows moisture intrusion. This could be a failed pipe boot, corroded flashing, cracked sealant, or ice damming. Water damage is insidious because it often goes undetected for months or years, causing rotted decking, mold growth, and damaged insulation before anyone notices a visible leak.\n\nStructural damage includes sagging roof decks, broken trusses, and shifted framing. This is less common but far more serious, often requiring engineering evaluation. Structural issues may result from overloading (heavy snow or multiple shingle layers), water damage that weakened framing members, or original construction defects.\n\nFlashing failures occur at the most vulnerable points of any roof: the intersections. Wherever the roof meets a wall, chimney, valley, pipe, or vent, flashing creates the water-tight transition. When flashing corrodes, separates, or was never installed correctly, water finds its way in. Flashing failure is one of the most common supplement findings during tear-off."
+      },
+      {
+        heading: "Repair vs. replace: making the right decision",
+        content: "One of the most important decisions in roof damage repair is whether to repair the existing roof or replace it entirely. This decision affects the homeowner's cost, the insurance payout, and the scope of your project.\n\nRepair makes sense when the damage is localized, the roof is relatively young (under 10 to 12 years), and the majority of the roofing system is still functional. A few missing shingles from a windstorm, a single area of hail damage, or a localized leak from a failed pipe boot can all be repaired without tearing off the entire roof.\n\nReplacement is the right call when damage is widespread, the roof has reached or exceeded its expected lifespan, or the cost of repairs approaches 30 to 40 percent of replacement cost. Insurance companies typically authorize a full replacement when the adjuster determines that the damage affects enough of the roof surface that a repair would not restore the system to its pre-loss condition.\n\nThe gray area between repair and replacement is where thorough documentation matters most. If you inspect a roof and find scattered hail damage across all slopes, missing shingles on multiple elevations, and compromised flashings at every penetration, your documentation needs to tell that story clearly. The adjuster will authorize a replacement only if the evidence supports it.\n\nFor insurance claims, keep in mind that the repair versus replace decision is ultimately made by the insurance company based on their adjuster's findings. Your job is to provide thorough, accurate documentation of every damaged component so the adjuster has complete information to make that determination."
+      },
+      {
+        heading: "How insurance claims work for roof damage repair",
+        content: "Insurance claims are a critical part of roof damage repair because most significant roof repairs are funded by homeowner's insurance policies. Understanding this process helps you serve your customers better and ensures you get paid for all the work you perform.\n\nThe process typically follows these steps:\n\n• The homeowner discovers or suspects roof damage and files a claim with their insurance carrier. The carrier assigns a claim number and schedules an adjuster.\n\n• The insurance adjuster inspects the property and writes an initial estimate in Xactimate. This estimate covers the damage visible during their inspection.\n\n• The contractor reviews the adjuster's estimate and, if hired, begins the repair or replacement work.\n\n• During tear-off, the crew discovers hidden damage that was not visible during the adjuster's surface inspection. This is extremely common. Industry data shows that 70 to 90 percent of tear-offs reveal damage not included in the original estimate.\n\n• The contractor documents the hidden damage and submits a supplement to the insurance company. The supplement includes photos, a written narrative, and Xactimate line items for the additional work.\n\n• The insurance company reviews the supplement and, if properly documented, approves additional payment to cover the hidden damage repairs.\n\nThe supplement step is where most contractors either thrive or leave significant money on the table. A contractor who documents every hidden finding and submits professional supplements recovers $1,500 to $3,200 more per job than one who skips supplementing or submits weak documentation."
+      },
+      {
+        heading: "Hidden damage discovered during repairs",
+        content: "Hidden damage is the most significant and most overlooked aspect of roof damage repair. When you tear off existing roofing materials, you expose everything that was concealed beneath the surface. And in the majority of cases, what you find changes the scope and cost of the repair.\n\nThe most common hidden damage findings include:\n\n• Rotted decking: Water that penetrated through damaged shingles or failed flashings has soaked into the plywood or OSB sheathing. The wood is soft, discolored, and structurally compromised. You cannot install new roofing over rotted decking. It must be cut out and replaced with new sheathing.\n\n• Deteriorated underlayment: The roofing felt or synthetic underlayment has torn, bunched, or disintegrated. In some cases, especially on older roofs, underlayment was never installed properly or is missing entirely in critical areas.\n\n• Failed flashing: Step flashing along chimneys and walls has corroded through. Valley flashing is bent or punctured. Counter flashing has separated from masonry. These failures are hidden beneath shingle courses and are not detectable from a surface inspection.\n\n• Damaged pipe boots: The rubber gaskets around plumbing vent pipes have cracked, split, or pulled away. These are technically visible from above, but the extent of damage (including water staining and rot around the penetration) is only apparent during tear-off.\n\n• Missing ice and water shield: Building codes require self-adhering ice and water membrane in valleys, at eaves (in cold climates), and around penetrations. Many roofs installed before current code requirements lack this protection. During a re-roof, installation is required by code.\n\nEvery one of these findings represents a legitimate cost that should be covered by the insurance claim. The key to recovering that cost is documentation: clear photos, detailed narratives, and accurate Xactimate line items submitted promptly after discovery."
+      },
+      {
+        heading: "Cost breakdown by damage type",
+        content: "Understanding the cost of common roof damage repairs helps contractors estimate accurately and helps homeowners set realistic expectations. These figures represent typical costs for a residential asphalt shingle roof and will vary by region, material, and roof complexity.\n\nShingle replacement for a localized area (5 to 10 squares) typically runs $1,200 to $2,000 including materials, labor, and disposal. A full tear-off and replacement on a 30-square roof ranges from $10,000 to $18,000 depending on material grade, roof pitch, and local labor rates.\n\nDecking replacement costs $2.00 to $3.50 per square foot for plywood or OSB sheathing, including labor. A typical storm damage job might require 4 to 8 sheets of decking replacement, adding $700 to $1,400 to the project.\n\nFlashing repair and replacement varies by type and location. Step flashing along a chimney or sidewall runs $8 to $15 per linear foot. Valley flashing replacement costs $10 to $18 per linear foot. Counter flashing at masonry walls is $12 to $20 per linear foot.\n\nPipe boot replacement costs $85 to $150 per boot depending on size and type. Most residential roofs have 2 to 4 pipe penetrations. Replacing all boots during a re-roof is standard practice and a common supplement item.\n\nIce and water shield installation costs $1.50 to $2.50 per square foot for the membrane plus labor. On a 30-square roof, valleys and eave areas might require 300 to 500 square feet of ice and water shield, adding $500 to $900 to the project.\n\nDrip edge replacement runs $4 to $6 per linear foot. A typical residential roof has 150 to 250 linear feet of eave and rake edge, totaling $600 to $1,500 for full perimeter replacement."
+      },
+      {
+        heading: "Documenting roof damage repair with Supplement Snap",
+        content: "The gap between what an insurance estimate covers and what the repair actually costs is real, and it exists on virtually every job. Closing that gap requires systematic documentation of hidden damage, professional supplement narratives, and accurate Xactimate coding. Doing this manually for every job is time-consuming and error-prone.\n\nSupplement Snap streamlines the entire documentation workflow for roof damage repair. During tear-off, your crew captures each finding directly in the app: a photo tagged with the damage type and roof area, plus an optional voice note in any language. Spanish-speaking crews describe findings in their native language and the system translates to English automatically.\n\nFrom those field captures, Supplement Snap generates:\n\n• Professional damage narratives written in the clear, specific language adjusters require\n• Xactimate line items with correct codes, proper units, and current regional pricing\n• An Xactimate-compatible CSV export the adjuster can import into their system\n• A branded PDF report with photos, narratives, and a complete findings summary\n\nThe result is a complete, professional supplement package ready to send to the adjuster within minutes of discovering hidden damage. No more lost photos, forgotten findings, or supplements that sit unfinished for weeks. Every hidden finding becomes a documented, submitted supplement, and you get paid for every repair you perform."
+      },
+    ],
+  },
+  {
+    slug: "roof-inspection-report",
+    title: "Roof Inspection Report: What to Include and How to Write One",
+    metaTitle: "Roof Inspection Report: What to Include and How to Write One (2026 Guide)",
+    metaDescription: "Learn how to write a professional roof inspection report that gets insurance claims approved. Includes what to document, report structure, common mistakes, and software tools.",
+    publishedDate: "2026-03-23",
+    externalLinks: [
+      { text: "NRCA: Roof Inspection Guidelines", url: "https://www.nrca.net" },
+      { text: "ASTM Roofing Standards", url: "https://www.astm.org" },
+    ],
+    highlight: { label: "Reports That Get Approved", value: "3x faster", subtext: "When they include tagged photos, narratives, and Xactimate codes" },
+    visuals: {
+      1: { type: "checklist", data: {
+        title: "Roof Inspection Report Essentials",
+        items: [
+          { text: "Property address, owner name, and date of inspection", checked: true },
+          { text: "Roof measurements: total area, slope lengths, pitch", checked: true },
+          { text: "Roofing material type, brand (if identifiable), and estimated age", checked: true },
+          { text: "Wide-angle overview photos of each roof slope", checked: true },
+          { text: "Close-up photos of every damage finding", checked: true },
+          { text: "Damage descriptions with type, location, and severity", checked: true },
+          { text: "Flashing condition at all penetrations and intersections", checked: true },
+          { text: "Gutter, soffit, and fascia condition", checked: false },
+          { text: "Interior inspection for leaks, stains, and daylight", checked: false },
+          { text: "Overall condition rating and repair recommendation", checked: false },
+          { text: "Xactimate line codes and pricing (for insurance reports)", checked: false },
+          { text: "Inspector name, company, license number, and signature", checked: false },
+        ],
+      }},
+      2: { type: "steps", data: [
+        { num: "1", title: "Gather property information", desc: "Record the property address, homeowner name, insurance company, claim number (if applicable), and date of inspection. Get roof measurements from satellite tools or field measurements." },
+        { num: "2", title: "Inspect and photograph systematically", desc: "Walk every slope, valley, ridge, eave, and penetration. Take wide-angle context shots of each area, then close-up detail shots of every finding. Use a consistent pattern so nothing gets missed." },
+        { num: "3", title: "Document each finding", desc: "For every damage finding, record the damage type, specific location on the roof, severity, and measurements. Tag photos with what they show so you can match them to descriptions later." },
+        { num: "4", title: "Write damage descriptions", desc: "For each finding, write a clear, specific description. State what the damage is, where it is located, the likely cause, and the recommended repair. Avoid vague language." },
+        { num: "5", title: "Add Xactimate codes (for insurance)", desc: "If the report supports an insurance claim, map each finding to the correct Xactimate line code with proper units and quantities. This makes the adjuster's job easier and speeds up approval." },
+        { num: "6", title: "Compile and deliver the report", desc: "Assemble everything into a clean, professional PDF. Include a cover page, findings summary, individual finding pages with photos and descriptions, and your recommendation. Email it to the client or adjuster." },
+      ]},
+      3: { type: "compare", data: {
+        before: { label: "Weak Inspection Report", items: ["Camera roll photos with no labels", "No written descriptions of damage", "Missing measurements and quantities", "No roof diagram or location references", "Submitted as loose photos via text message", "No Xactimate codes or pricing"] },
+        after: { label: "Strong Inspection Report", items: ["Tagged photos with damage type and roof area", "Detailed narrative for each finding", "Accurate measurements and quantities included", "Findings mapped to specific roof locations", "Professional branded PDF delivered same day", "Xactimate line codes with current pricing"] },
+      }},
+      5: { type: "tip", data: { type: "warning", title: "Common Mistake: Relying on Memory", text: "The number one mistake contractors make is inspecting the roof, taking a few photos, and then trying to write the report days later from memory. By the time you sit down to write, you have forgotten which photo goes with which finding, you cannot remember exact locations, and the report ends up vague and unconvincing. Document everything on the roof, in real time, while you are looking at it." } },
+    },
+    sections: [
+      {
+        heading: "What is a roof inspection report?",
+        content: "A roof inspection report is a formal document that records the current condition of a roofing system. It details the materials, measurements, condition, and any damage or deficiencies found during the inspection. A well-written roof inspection report serves as the foundation for repair estimates, insurance claims, real estate transactions, and maintenance planning.\n\nFor contractors, the roof inspection report is one of the most important documents you produce. It is the evidence that supports your repair recommendation, your insurance supplement, or your bid for the job. A strong report builds credibility with homeowners, earns trust from insurance adjusters, and differentiates you from competitors who show up with a clipboard and a verbal estimate.\n\nFor homeowners, the inspection report provides clarity about the condition of their roof, what needs attention, and what it will cost. For insurance adjusters, the report provides the documentation they need to process claims efficiently. For real estate buyers, it provides an objective assessment of one of the most expensive components of the property.\n\nRegardless of who the audience is, a roof inspection report must be thorough, specific, well-organized, and supported by photographic evidence. Vague reports with blurry photos and generic descriptions fail everyone involved."
+      },
+      {
+        heading: "What to include in a roof inspection report",
+        content: "A complete roof inspection report should include the following elements, organized in a logical structure that makes it easy for the reader to understand the condition of the roof and the recommended actions.\n\nProperty and inspection information: Start with the basics. Property address, homeowner name, date of inspection, inspector name and company, and any relevant claim or policy numbers. This establishes context and traceability.\n\nRoof system overview: Document the roofing material (asphalt shingles, tile, metal, flat membrane), estimated age, total roof area in squares, roof pitch, number of slopes, and general configuration. Note any features like skylights, solar panels, chimneys, sidewalls, or unusual penetrations.\n\nPhotographic documentation: This is the backbone of any inspection report. Include:\n\n• Wide-angle overview photos of each roof slope, showing the general condition\n• Close-up detail photos of every specific damage finding\n• Photos of all flashings, penetrations, valleys, ridges, and eaves\n• Photos of gutters, downspouts, soffits, and fascia\n• Interior photos if accessible (attic inspection for leaks, stains, daylight penetration)\n\nDamage findings: For each finding, provide the damage type (hail, wind, age, water), specific location on the roof (front slope near ridge, left valley, chimney south side), severity (minor, moderate, severe), measurements or quantities where applicable, and a written description of the condition.\n\nRepair recommendation: Based on your findings, state whether the roof needs localized repair, partial replacement, or full replacement. Explain your reasoning. If the roof is a candidate for an insurance claim, note the suspected cause of damage (storm, hail, wind) and recommend the homeowner file a claim.\n\nXactimate coding (for insurance reports): If the report supports an insurance claim or supplement, include the relevant Xactimate line codes, units, quantities, and pricing for each recommended repair item."
+      },
+      {
+        heading: "How to write a roof inspection report step by step",
+        content: "Writing a strong roof inspection report follows a systematic process. If you build good habits here, every report you produce will be professional, thorough, and persuasive.\n\nStart by gathering property information before you get on the roof. Record the address, homeowner contact information, insurance claim number if applicable, and get roof measurements. Satellite measurement tools can provide accurate dimensions, or you can measure in the field.\n\nOn the roof, inspect systematically. Walk every slope from ridge to eave. Inspect every valley, every penetration, every flashing intersection. Check the ridge cap, the starter strip at the eaves, and the condition of drip edge and gutters. Use a consistent pattern so you never skip an area.\n\nAs you inspect, photograph and document each finding in real time. Take a wide-angle shot showing the general area, then a close-up of the specific damage. Record the damage type, location, and severity while you are looking at it. Do not rely on memory. Do not plan to \"write it up later.\" The best reports are documented on the roof, in the moment.\n\nBack at the office (or better yet, directly from the field), compile your findings into a structured report. Group findings by roof area or by damage type. Write a clear description for each finding that explains what was found, where it was found, the probable cause, and the recommended repair.\n\nIf the report is for an insurance claim, add Xactimate line codes for each repair item. Map your findings to the correct codes, include accurate quantities, and use current pricing. This step is what transforms a basic inspection report into an insurance-ready document that adjusters can process quickly.\n\nFinish with a summary and recommendation. State the overall condition of the roof, summarize the key findings, and clearly recommend the appropriate course of action."
+      },
+      {
+        heading: "Report format and structure",
+        content: "The format and structure of your roof inspection report matters more than most contractors realize. A well-organized report communicates professionalism and makes it easy for the reader to find the information they need.\n\nCover page: Include your company name and logo, the property address, date of inspection, and the purpose of the report (storm damage assessment, annual inspection, pre-purchase evaluation, supplement documentation).\n\nExecutive summary: A one-paragraph overview of the roof's condition and your primary recommendation. This is for readers who want the bottom line before diving into details.\n\nRoof system details: A section covering material type, estimated age, total area, pitch, configuration, and notable features. This provides context for the findings that follow.\n\nFindings section: The core of the report. Each finding gets its own entry with photos, a written description, location, severity, and recommended repair. Number your findings for easy reference.\n\nFindings summary table: A table listing all findings at a glance with finding number, description, location, severity, and estimated cost or Xactimate code. This gives the reader a quick overview of all issues.\n\nRecommendation: Your professional assessment of whether the roof needs repair, partial replacement, or full replacement, with supporting reasoning.\n\nAppendix (optional): Additional photos, measurement diagrams, code references, or manufacturer specifications that support your findings.\n\nKeep the report clean and easy to read. Use consistent formatting, clear headings, and high-quality photos. Avoid walls of text. Break information into digestible sections. The goal is a document that a homeowner, adjuster, or real estate agent can pick up and immediately understand the condition of the roof."
+      },
+      {
+        heading: "Common mistakes in roof inspection reports",
+        content: "Even experienced contractors make mistakes in their inspection reports that weaken the document and reduce their chances of getting claims approved or winning jobs. Here are the most common problems and how to avoid them.\n\nVague descriptions: Writing \"shingles are damaged\" tells the reader nothing useful. Instead, write \"Three-tab asphalt shingles on the front (south-facing) slope show hail impact damage with displaced granules and exposed fiberglass mat. Damage is scattered across approximately 60% of the slope surface.\"\n\nInsufficient photos: Two or three photos of a 30-square roof is not enough. A thorough report includes at minimum one overview photo per slope, one close-up per finding, and photos of all flashings and penetrations. For a typical residential roof, that means 20 to 40 photos.\n\nMissing measurements: Findings without measurements cannot be priced accurately. If you report damaged decking, how many square feet? If flashing needs replacement, how many linear feet? Numbers matter.\n\nNo location references: Stating that damage was found \"on the roof\" is not helpful. Specify the slope (front, back, left, right), the area (near ridge, mid-slope, at eave), and the proximity to features (adjacent to chimney, in the main valley, along the rake edge).\n\nDelayed documentation: Writing the report three days after the inspection from memory guarantees that details will be wrong or missing. Document in real time on the roof.\n\nMissing code references: When a repair is required by building code, citing the specific code strengthens your case significantly. For example, referencing the requirement for ice and water shield in valleys and at eaves per the International Building Code makes it much harder for an adjuster to deny that line item.\n\nNo Xactimate coding: For insurance reports, submitting findings without Xactimate codes forces the adjuster to do the coding themselves. This slows down approval and increases the chance they will use lower pricing or miss items."
+      },
+      {
+        heading: "How software automates roof inspection reports",
+        content: "The traditional approach to roof inspection reports involves taking photos on a phone, scribbling notes on paper or a notepad app, and then spending hours at a desk assembling everything into a document. This manual process is slow, error-prone, and does not scale when you have multiple inspections per day.\n\nModern inspection software changes this by moving the documentation process to the roof. Instead of taking random photos and hoping you remember the details later, you capture findings in a structured format while you are looking at the damage.\n\nSupplement Snap takes this a step further for contractors focused on insurance work and supplement recovery. During the inspection or tear-off, your crew captures each finding in the app: a photo tagged with the damage type (decking, flashing, pipe boot, ice and water shield) and the roof area (front slope, valley, chimney). They can add a voice note describing the finding in any language.\n\nFrom those structured field captures, Supplement Snap generates:\n\n• Professional damage narratives written in the specific, detailed language that adjusters require for claim processing\n• Xactimate line items with correct codes, accurate quantities, and current regional pricing\n• An Xactimate-compatible CSV export the adjuster can import directly into their estimating system\n• A complete, branded PDF report with cover page, findings summary, individual finding pages, and all supporting photos\n\nThe result is a professional roof inspection report produced in minutes instead of hours. Everything is captured in real time on the roof, so nothing gets lost or forgotten. The report goes to the adjuster or homeowner the same day, while the inspection is fresh. For contractors who perform multiple inspections per week, this automation is the difference between thorough documentation on every job and cutting corners because there is not enough time to write proper reports."
       },
     ],
   },
