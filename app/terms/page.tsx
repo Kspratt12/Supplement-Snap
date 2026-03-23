@@ -40,7 +40,7 @@ export default function TermsPage() {
       </Section>
 
       <Section title="Subscription and Billing">
-        <p>Supplement Snap offers a Starter Plan that includes a one-time setup fee and a recurring monthly subscription. Payment is processed through Stripe. By subscribing, you authorize us to charge the payment method on file for the applicable fees.</p>
+        <p>Supplement Snap offers Starter and Pro plans with monthly or annual recurring subscriptions. All paid plans include a 14-day free trial. Payment is processed through Stripe. By subscribing, you authorize us to charge the payment method on file for the applicable fees.</p>
         <p className="mt-2">Your subscription will automatically renew each billing cycle unless canceled. You may manage your subscription and payment methods through your account dashboard or the Stripe billing portal.</p>
       </Section>
 

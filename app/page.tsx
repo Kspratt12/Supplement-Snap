@@ -22,14 +22,14 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center sm:pt-28 sm:pb-20">
         <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
-          Stop losing supplement money
+          Roofing Supplement Software
           <br className="hidden sm:block" />
-          <span className="text-indigo-600"> during tear-off</span>
+          <span className="text-indigo-600">That Pays for Itself</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl">
-          Supplement Snap helps roofing crews capture hidden damage, generate
-          supplement documentation, export clean PDF reports, and email adjusters
-          — all in minutes.
+          Stop leaving money on the table during tear-off. Supplement Snap helps roofing crews
+          capture hidden damage, generate supplement documentation, and email adjuster-ready
+          PDF reports — all in minutes.
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -785,10 +785,10 @@ export default function LandingPage() {
               <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Starter</p>
               <p className="mt-1 text-xs text-zinc-400">For solo crews</p>
               <div className="mt-4">
-                <span className="text-3xl font-extrabold text-zinc-900">$497</span>
-                <span className="ml-1 text-sm text-zinc-500">setup</span>
+                <span className="text-3xl font-extrabold text-zinc-900">$99</span>
+                <span className="ml-1 text-sm text-zinc-500">/month</span>
               </div>
-              <p className="mt-1 text-sm text-zinc-500">Then <span className="font-semibold text-zinc-900">$49</span>/mo</p>
+              <p className="mt-1 text-sm text-zinc-500">14-day free trial — no credit card</p>
               <div className="mt-5 space-y-2.5">
                 {["Unlimited projects", "AI supplement drafts", "PDF reports & email", "Photo annotations", "Voice notes", "1 user"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
@@ -798,7 +798,7 @@ export default function LandingPage() {
                 ))}
               </div>
               <Link href="/pricing" className="mt-6 block w-full rounded-lg bg-indigo-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-                Get Started
+                Start Free Trial
               </Link>
             </div>
 
@@ -808,10 +808,10 @@ export default function LandingPage() {
               <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Pro</p>
               <p className="mt-1 text-xs text-zinc-400">For teams up to 5</p>
               <div className="mt-4">
-                <span className="text-3xl font-extrabold text-zinc-900">$979</span>
-                <span className="ml-1 text-sm text-zinc-500">setup</span>
+                <span className="text-3xl font-extrabold text-zinc-900">$299</span>
+                <span className="ml-1 text-sm text-zinc-500">/month</span>
               </div>
-              <p className="mt-1 text-sm text-zinc-500">Then <span className="font-semibold text-zinc-900">$249</span>/mo</p>
+              <p className="mt-1 text-sm text-zinc-500">14-day free trial — no credit card</p>
               <div className="mt-5 space-y-2.5">
                 {["Everything in Starter", "Up to 5 team members", "Email open tracking", "Xactimate CSV export", "Priority support"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
@@ -821,7 +821,7 @@ export default function LandingPage() {
                 ))}
               </div>
               <Link href="/pricing" className="mt-6 block w-full rounded-lg bg-indigo-600 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-                Start with Pro
+                Start Free Trial
               </Link>
             </div>
           </div>
@@ -860,8 +860,8 @@ export default function LandingPage() {
                 a: "Voice notes are automatically translated to English. Your crew speaks in their language, and the system converts it for the supplement report."
               },
               {
-                q: "Is $497 worth it for one crew?",
-                a: "One approved supplement typically recovers $1,500–$3,200. The platform pays for itself on the first job."
+                q: "Is $99/month worth it for one crew?",
+                a: "One approved supplement typically recovers $1,500–$3,200. At $99/month with no setup fees, the platform pays for itself on the first job."
               },
             ].map((faq) => (
               <div key={faq.q} className="py-5">

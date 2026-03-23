@@ -34,7 +34,7 @@ const PRO_FEATURES = [
 const FAQ = [
   {
     q: "Can I try it before paying?",
-    a: "Yes! Create a free account and complete your first project at no cost — no credit card required. You'll be able to capture damage, generate an AI supplement draft, and see a sample PDF report. When you're ready to send reports and unlock unlimited projects, choose a plan.",
+    a: "Yes! Every paid plan starts with a 14-day free trial — no credit card required. You'll get full access to capture damage, generate AI supplement drafts, create PDF reports, and email adjusters. If it doesn't pay for itself on your first job, cancel anytime.",
   },
   {
     q: "What's the difference between Starter and Pro?",
@@ -58,9 +58,26 @@ const FAQ = [
   },
 ]
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.a,
+    },
+  })),
+}
+
 export default function PricingPage() {
   return (
     <div className="bg-white text-zinc-900">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       {/* Nav */}
       <nav className="border-b border-zinc-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
@@ -81,7 +98,7 @@ export default function PricingPage() {
           Simple pricing for roofing teams
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-zinc-500 sm:text-lg">
-          One approved supplement pays for the entire platform. Choose the plan that fits your team.
+          One approved supplement pays for the entire platform. Start with a 14-day free trial — no credit card required.
         </p>
       </section>
 
@@ -123,13 +140,13 @@ export default function PricingPage() {
           {/* Starter */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-8 shadow-sm">
             <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Starter</p>
-            <p className="mt-1 text-xs text-zinc-400">For solo crews — first project free</p>
+            <p className="mt-1 text-xs text-zinc-400">For solo crews</p>
             <div className="mt-5">
-              <span className="text-4xl font-extrabold text-zinc-900">$497</span>
-              <span className="ml-1 text-sm text-zinc-500">setup</span>
+              <span className="text-4xl font-extrabold text-zinc-900">$99</span>
+              <span className="ml-1 text-sm text-zinc-500">/month</span>
             </div>
             <p className="mt-1 text-sm text-zinc-500">
-              Then <span className="font-semibold text-zinc-900">$49</span>/month
+              or <span className="font-semibold text-zinc-900">$79</span>/mo billed yearly
             </p>
 
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
@@ -143,7 +160,7 @@ export default function PricingPage() {
               ))}
             </div>
 
-            <CheckoutButton plan="starter" label="Start with Starter" />
+            <CheckoutButton plan="starter" label="Start 14-Day Free Trial" />
           </div>
 
           {/* Pro */}
@@ -154,11 +171,11 @@ export default function PricingPage() {
             <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Pro</p>
             <p className="mt-1 text-xs text-zinc-400">For teams up to 5</p>
             <div className="mt-5">
-              <span className="text-4xl font-extrabold text-zinc-900">$979</span>
-              <span className="ml-1 text-sm text-zinc-500">setup</span>
+              <span className="text-4xl font-extrabold text-zinc-900">$299</span>
+              <span className="ml-1 text-sm text-zinc-500">/month</span>
             </div>
             <p className="mt-1 text-sm text-zinc-500">
-              Then <span className="font-semibold text-zinc-900">$249</span>/month
+              or <span className="font-semibold text-zinc-900">$249</span>/mo billed yearly
             </p>
 
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
@@ -172,7 +189,7 @@ export default function PricingPage() {
               ))}
             </div>
 
-            <CheckoutButton plan="pro" label="Start with Pro" />
+            <CheckoutButton plan="pro" label="Start 14-Day Free Trial" />
             <p className="mt-3 text-center text-xs text-zinc-400">
               Best value for companies with multiple crews.
             </p>
@@ -187,9 +204,9 @@ export default function PricingPage() {
       {/* ROI */}
       <section className="mx-auto max-w-2xl px-6 pb-16">
         <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-6 text-center sm:p-8">
-          <h2 className="text-lg font-bold text-zinc-900">One approved supplement pays for the entire platform.</h2>
+          <h2 className="text-lg font-bold text-zinc-900">One approved supplement pays for months of the platform.</h2>
           <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-zinc-500">
-            Crews discover $1,500–$3,200 in hidden damage on a typical job. Proper documentation means that money gets approved instead of left on the table.
+            Crews discover $1,500–$3,200 in hidden damage on a typical job. At $99/month with no setup fees, your first supplement covers the entire year.
           </p>
         </div>
       </section>

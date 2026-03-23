@@ -153,7 +153,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How to start recovering supplements today",
-        content: "You don't need to change your entire workflow. Start with your next tear-off:\n\n1. When your crew finds hidden damage, have them photograph it and tag what it is\n2. Add a quick voice note describing the damage\n3. Generate an AI supplement narrative from the field data\n4. Email a PDF report to the adjuster before you leave the job site\n\nSuplement Snap handles all four steps. The platform costs $49/month and pays for itself on the first job with a single approved supplement."
+        content: "You don't need to change your entire workflow. Start with your next tear-off:\n\n1. When your crew finds hidden damage, have them photograph it and tag what it is\n2. Add a quick voice note describing the damage\n3. Generate an AI supplement narrative from the field data\n4. Email a PDF report to the adjuster before you leave the job site\n\nSupplement Snap handles all four steps. The platform starts at $99/month with a 14-day free trial — and pays for itself on the first job with a single approved supplement."
       },
     ],
   },
@@ -209,8 +209,35 @@ export default function BlogArticle({ params }: { params: { slug: string } }) {
   const article = ARTICLES.find((a) => a.slug === params.slug)
   if (!article) return null
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.metaDescription,
+    datePublished: article.publishedDate,
+    dateModified: article.publishedDate,
+    author: {
+      "@type": "Organization",
+      name: "Supplement Snap",
+      url: "https://supplementsnap.io",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Supplement Snap",
+      url: "https://supplementsnap.io",
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://supplementsnap.io/blog/${article.slug}`,
+    },
+  }
+
   return (
     <div className="bg-white text-zinc-900">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <nav className="border-b border-zinc-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5">

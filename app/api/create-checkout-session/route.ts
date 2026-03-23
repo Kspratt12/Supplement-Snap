@@ -30,21 +30,18 @@ export async function POST(request: Request) {
       // No body or invalid JSON is fine
     }
 
-    // Determine price IDs based on plan
-    let priceSetup: string | undefined
+    // Determine price ID based on plan (monthly or yearly)
     let priceMonthly: string | undefined
 
     if (plan === "pro") {
-      priceSetup = process.env.STRIPE_PRICE_PRO_SETUP
       priceMonthly = process.env.STRIPE_PRICE_PRO_MONTHLY
     } else {
-      priceSetup = process.env.STRIPE_PRICE_SETUP
       priceMonthly = process.env.STRIPE_PRICE_MONTHLY
     }
 
-    if (!priceSetup || !priceMonthly) {
+    if (!priceMonthly) {
       return NextResponse.json(
-        { error: `Stripe price IDs not configured for ${plan} plan.` },
+        { error: `Stripe price ID not configured for ${plan} plan.` },
         { status: 500 }
       )
     }
@@ -55,13 +52,10 @@ export async function POST(request: Request) {
       ...(customerEmail ? { customer_email: customerEmail } : {}),
       metadata: { supabase_user_id: userId || "", plan },
       subscription_data: {
+        trial_period_days: 14,
         metadata: { supabase_user_id: userId || "", plan },
       },
       line_items: [
-        {
-          price: priceSetup,
-          quantity: 1,
-        },
         {
           price: priceMonthly,
           quantity: 1,

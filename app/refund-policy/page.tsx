@@ -19,9 +19,8 @@ export default function RefundPolicyPage() {
         <p>We want every customer to have a positive experience with Supplement Snap. This policy outlines our approach to refunds for our software subscription service.</p>
       </Section>
 
-      <Section title="Setup Fee">
-        <p>The one-time setup fee covers account configuration, onboarding support, and initial platform access. Setup fees are non-refundable once onboarding has begun.</p>
-        <p className="mt-2">If you have not yet started onboarding and wish to cancel before any setup work is performed, contact us within 48 hours of purchase for a full refund of the setup fee.</p>
+      <Section title="Free Trial">
+        <p>All paid plans include a 14-day free trial. During the trial period, you have full access to the plan features. If you cancel before the trial ends, you will not be charged.</p>
       </Section>
 
       <Section title="Monthly Subscription">

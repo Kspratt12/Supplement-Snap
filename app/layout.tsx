@@ -14,11 +14,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const viewport = {
+export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 }
 
 export const metadata: Metadata = {
@@ -66,7 +64,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
         <Script
           defer
-          data-domain="supplementsnap.com"
+          data-domain="supplementsnap.io"
           src="https://plausible.io/js/script.js"
           strategy="afterInteractive"
         />
@@ -86,10 +84,11 @@ export default function RootLayout({
                 "Capture hidden roofing damage during tear-off, generate supplement documentation, and send adjuster-ready reports in minutes.",
               url: "https://supplementsnap.io",
               offers: {
-                "@type": "Offer",
-                price: "49",
+                "@type": "AggregateOffer",
+                lowPrice: "99",
+                highPrice: "299",
                 priceCurrency: "USD",
-                priceValidUntil: "2027-12-31",
+                offerCount: "2",
                 availability: "https://schema.org/InStock",
               },
               provider: {
