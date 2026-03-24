@@ -1471,12 +1471,26 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
     },
   }
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://supplementsnap.io" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://supplementsnap.io/blog" },
+      { "@type": "ListItem", position: 3, name: article.title, item: `https://supplementsnap.io/blog/${article.slug}` },
+    ],
+  }
+
   return (
     <div className="bg-white text-zinc-900">
       <ScrollToTop />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <nav className="border-b border-zinc-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
@@ -1490,7 +1504,15 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
 
       <article className="mx-auto max-w-3xl px-6 py-16">
         <div className="mb-10">
-          <Link href="/blog" className="text-xs font-medium text-indigo-600 hover:text-indigo-500">&larr; All Articles</Link>
+          <nav aria-label="Breadcrumb" className="mb-4">
+            <ol className="flex items-center gap-1.5 text-xs text-zinc-400">
+              <li><Link href="/" className="hover:text-zinc-600">Home</Link></li>
+              <li>/</li>
+              <li><Link href="/blog" className="hover:text-zinc-600">Blog</Link></li>
+              <li>/</li>
+              <li className="text-zinc-600 truncate max-w-[200px]">{article.title}</li>
+            </ol>
+          </nav>
           <h1 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">{article.title}</h1>
           <div className="mt-4 flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold text-white">KS</div>

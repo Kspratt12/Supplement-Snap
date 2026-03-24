@@ -26,7 +26,7 @@ type ProjectWithCount = {
 }
 
 export default function DashboardPage() {
-  const { user, loading: authLoading, signOut, subscriptionStatus, subscriptionLoading } = useAuth()
+  const { user, loading: authLoading, signOut, subscriptionStatus, subscriptionPlan, subscriptionLoading } = useAuth()
   const router = useRouter()
   const [projects, setProjects] = useState<ProjectWithCount[]>([])
   const [loadingProjects, setLoadingProjects] = useState(true)
@@ -156,12 +156,13 @@ export default function DashboardPage() {
   const totalCaptures = projects.reduce((sum, p) => sum + p.capture_count, 0)
   const hasAnyData = projects.length > 0 || totalCaptures > 0 || reportCount > 0
 
+  const planLabel = subscriptionPlan === "pro" ? "Pro" : subscriptionPlan === "team" ? "Team" : subscriptionPlan === "starter" ? "Starter" : "Free"
   const statusBadge: Record<string, { text: string; color: string }> = {
-    active: { text: "Active", color: "bg-green-50 text-green-700 border-green-200" },
-    trialing: { text: "Trial", color: "bg-blue-50 text-blue-700 border-blue-200" },
-    past_due: { text: "Past Due", color: "bg-amber-50 text-amber-700 border-amber-200" },
+    active: { text: `${planLabel} — Active`, color: "bg-green-50 text-green-700 border-green-200" },
+    trialing: { text: `${planLabel} — Trial`, color: "bg-blue-50 text-blue-700 border-blue-200" },
+    past_due: { text: `${planLabel} — Past Due`, color: "bg-amber-50 text-amber-700 border-amber-200" },
     canceled: { text: "Canceled", color: "bg-red-50 text-red-600 border-red-200" },
-    inactive: { text: "Inactive", color: "bg-zinc-100 text-zinc-500 border-zinc-200" },
+    inactive: { text: "Free", color: "bg-zinc-100 text-zinc-500 border-zinc-200" },
   }
   const badge = statusBadge[subscriptionStatus] || statusBadge.inactive
 
@@ -478,7 +479,15 @@ export default function DashboardPage() {
                 <TeamManager userId={user.id} />
                 <AdjusterContacts userId={user.id} />
               </div>
-              <CompanySettings userId={user.id} />
+              {subscriptionPlan === "pro" ? (
+                <CompanySettings userId={user.id} />
+              ) : (
+                <div className="rounded-xl border border-zinc-200 bg-white p-5">
+                  <h3 className="text-sm font-semibold text-zinc-900">Custom Branding</h3>
+                  <p className="mt-1 text-xs text-zinc-500">Add your company logo and name to PDF reports.</p>
+                  <Link href="/pricing" className="mt-3 inline-block text-xs font-medium text-indigo-600 hover:text-indigo-500">Upgrade to Pro &rarr;</Link>
+                </div>
+              )}
             </div>
           </div>
         )}

@@ -38,6 +38,9 @@ export const metadata: Metadata = {
     description:
       "Capture hidden roofing damage during tear-off, generate supplement documentation, and send adjuster-ready PDF reports in minutes. Used by roofing crews across the U.S.",
   },
+  alternates: {
+    canonical: "https://supplementsnap.io",
+  },
   metadataBase: new URL("https://supplementsnap.io"),
   icons: {
     icon: [

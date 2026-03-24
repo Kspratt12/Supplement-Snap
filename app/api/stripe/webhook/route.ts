@@ -133,6 +133,7 @@ export async function POST(request: Request) {
       case "customer.subscription.updated": {
         const sub = event.data.object as Stripe.Subscription
         const customerId = sub.customer as string
+        const updatedPlan = sub.metadata?.plan
         const statusMap: Record<string, string> = {
           active: "active",
           trialing: "trialing",
@@ -144,9 +145,11 @@ export async function POST(request: Request) {
           paused: "inactive",
         }
         const mappedStatus = statusMap[sub.status] || "inactive"
+        const updateData: Record<string, string> = { status: mappedStatus, updated_at: new Date().toISOString() }
+        if (updatedPlan) updateData.plan = updatedPlan
         await supabaseAdmin
           .from("subscriptions")
-          .update({ status: mappedStatus, updated_at: new Date().toISOString() })
+          .update(updateData)
           .eq("stripe_customer_id", customerId)
         break
       }

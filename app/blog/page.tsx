@@ -4,8 +4,11 @@ import { SiteFooter } from "../../lib/site-footer"
 import { NavLinks } from "../../lib/nav-links"
 
 export const metadata: Metadata = {
-  title: "Roofing Supplement Blog | Supplement Snap",
+  title: "Roofing Supplement Blog | Guides for Contractors",
   description: "Guides, tips, and resources for roofing contractors on supplements, insurance claims, Xactimate codes, and damage documentation.",
+  alternates: {
+    canonical: "https://supplementsnap.io/blog",
+  },
 }
 
 const ARTICLES = [
@@ -20,10 +23,10 @@ const ARTICLES = [
   { slug: "roofing-software-comparison", title: "Roofing Software Comparison: CRM vs. Estimating vs. Supplement Tools", desc: "Compare the three categories of roofing software. What each does, when you need each one, and where the gaps are costing you money.", date: "2026-03-23" },
   { slug: "xactimate-roof-estimate-supplements", title: "How to Build an Xactimate Roof Estimate for Insurance Supplements", desc: "Key line codes, pricing benchmarks, and common mistakes, plus how to format supplements so adjusters approve them fast.", date: "2026-03-23" },
   { slug: "roof-replacement-estimate-vs-final-cost", title: "Roof Replacement Estimate vs. Final Cost: Why Supplements Close the Gap", desc: "Why the initial estimate is always lower, what gets missed, and how supplements bridge the gap between estimate and actual cost.", date: "2026-03-23" },
-  { slug: "storm-damage-roof-repair-near-me", title: "Storm Damage Roof Repair Near Me: How to Find and Hire the Right Contractor", desc: "What to look for in a storm damage contractor, red flags to avoid, how insurance claims work, and what good documentation looks like.", date: "2026-03-23" },
+  { slug: "storm-damage-roof-repair-near-me", title: "Storm Damage Roof Repair Near Me: How Contractors Win Local Storm Jobs", desc: "How roofing contractors can dominate local storm damage repair searches. Lead generation, insurance workflows, and supplement documentation.", date: "2026-03-23" },
   { slug: "best-roofing-crm", title: "Best Roofing CRM in 2026: What to Look For and What's Missing", desc: "Compare top roofing CRMs, learn what features matter, discover the revenue gap CRMs ignore, and build the complete tech stack.", date: "2026-03-23" },
   { slug: "storm-damage-roof-repair", title: "Storm Damage Roof Repair: What Contractors Need to Know in 2026", desc: "Types of storm damage, how insurance claims work, hidden damage found during tear-off, documentation requirements, and how to maximize recovery.", date: "2026-03-23" },
-  { slug: "roof-damage-repair-guide", title: "Roof Damage Repair: Complete Guide for Contractors and Homeowners", desc: "Types of roof damage, repair vs. replace decisions, insurance claim process, hidden damage during repairs, and cost breakdowns by damage type.", date: "2026-03-23" },
+  { slug: "roof-damage-repair-guide", title: "Roof Damage Repair: Contractor Guide to Identifying, Documenting, and Getting Paid", desc: "Contractor guide to roof damage repair: identify all damage types, document for insurance, navigate repair vs. replace, and recover full value through supplements.", date: "2026-03-23" },
   { slug: "roof-inspection-report", title: "Roof Inspection Report: What to Include and How to Write One", desc: "What a roof inspection report is, what to include, step-by-step writing guide, report structure, common mistakes, and how software automates it.", date: "2026-03-23" },
 ]
 

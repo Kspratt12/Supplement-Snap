@@ -4,9 +4,53 @@ import { SiteFooter } from "../lib/site-footer"
 import { InteractiveDemo } from "./components/interactive-demo"
 import { CheckoutButton } from "./pricing/checkout-button"
 
+const homepageFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    { "@type": "Question", name: "How long does it take to set up?", acceptedAnswer: { "@type": "Answer", text: "About 5 minutes. Create an account, start a project, and your crew can begin capturing damage immediately from any phone." } },
+    { "@type": "Question", name: "Does it work without cell service?", acceptedAnswer: { "@type": "Answer", text: "Photos and voice notes are saved on your phone. Once you have signal, everything syncs automatically. You just need a connection to generate the AI supplement draft." } },
+    { "@type": "Question", name: "Do I need special equipment?", acceptedAnswer: { "@type": "Answer", text: "No. Any smartphone with a camera works. Your crew is already carrying everything they need." } },
+    { "@type": "Question", name: "Can my office staff see what the crew captures?", acceptedAnswer: { "@type": "Answer", text: "Yes. Everything is saved to the cloud by project. Office staff can log in from any device and see all captures, notes, and reports." } },
+    { "@type": "Question", name: "What if my crew speaks Spanish?", acceptedAnswer: { "@type": "Answer", text: "Voice notes are automatically translated to English. Your crew speaks in their language, and the system converts it for the supplement report." } },
+    { "@type": "Question", name: "Is $99/month worth it for one crew?", acceptedAnswer: { "@type": "Answer", text: "One approved supplement typically recovers $1,500–$3,200. At $99/month with no setup fees, the platform pays for itself on the first job." } },
+  ],
+}
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Supplement Snap",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web, iOS, Android",
+  description: "Roofing supplement software that helps contractors capture hidden damage during tear-off, generate AI supplement drafts, and send adjuster-ready PDF reports in minutes.",
+  url: "https://supplementsnap.io",
+  offers: [
+    { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free", description: "1 demo project" },
+    { "@type": "Offer", price: "99", priceCurrency: "USD", name: "Starter", description: "Unlimited projects, 1 user", priceSpecification: { "@type": "UnitPriceSpecification", price: "99", priceCurrency: "USD", unitText: "MONTH" } },
+    { "@type": "Offer", price: "199", priceCurrency: "USD", name: "Team", description: "Up to 3 users, Xactimate export", priceSpecification: { "@type": "UnitPriceSpecification", price: "199", priceCurrency: "USD", unitText: "MONTH" } },
+    { "@type": "Offer", price: "299", priceCurrency: "USD", name: "Pro", description: "Up to 5 users, priority support", priceSpecification: { "@type": "UnitPriceSpecification", price: "299", priceCurrency: "USD", unitText: "MONTH" } },
+  ],
+  author: { "@type": "Organization", name: "Supplement Snap", url: "https://supplementsnap.io" },
+}
+
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Supplement Snap",
+  url: "https://supplementsnap.io",
+  logo: "https://supplementsnap.io/favicon.png",
+  description: "Roofing supplement software for contractors. Capture hidden damage, generate reports, recover more revenue.",
+  founder: { "@type": "Person", name: "Kelvin Spratt" },
+  sameAs: [],
+}
+
 export default function LandingPage() {
   return (
     <div className="bg-white text-zinc-900">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageFaqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
       {/* Nav */}
       <nav className="border-b border-zinc-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">

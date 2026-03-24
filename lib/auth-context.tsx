@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .single()
 
     setSubscriptionStatus((data?.status as SubscriptionStatus) || "inactive")
-    setSubscriptionPlan((data?.plan as SubscriptionPlan) || "starter")
+    setSubscriptionPlan((data?.plan as SubscriptionPlan) || "none")
     setSubscriptionLoading(false)
   }
 
