@@ -30,11 +30,13 @@ export async function POST(request: Request) {
       // No body or invalid JSON is fine
     }
 
-    // Determine price ID based on plan (monthly or yearly)
+    // Determine price ID based on plan
     let priceMonthly: string | undefined
 
     if (plan === "pro") {
       priceMonthly = process.env.STRIPE_PRICE_PRO_MONTHLY
+    } else if (plan === "team") {
+      priceMonthly = process.env.STRIPE_PRICE_TEAM_MONTHLY
     } else {
       priceMonthly = process.env.STRIPE_PRICE_MONTHLY
     }
