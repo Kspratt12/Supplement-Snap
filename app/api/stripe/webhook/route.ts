@@ -36,6 +36,7 @@ export async function POST(request: Request) {
         const customerId = session.customer as string
         const subscriptionId = session.subscription as string
         const customerEmail = session.customer_details?.email
+        const plan = session.metadata?.plan || "starter"
         // Prefer user ID from metadata, fall back to email lookup
         const metadataUserId = session.metadata?.supabase_user_id
 
@@ -57,6 +58,7 @@ export async function POST(request: Request) {
               stripe_subscription_id: subscriptionId,
               stripe_customer_email: customerEmail || "",
               status: "active",
+              plan,
               updated_at: new Date().toISOString(),
             },
             { onConflict: "user_id" }
@@ -67,6 +69,7 @@ export async function POST(request: Request) {
             stripe_subscription_id: subscriptionId,
             stripe_customer_email: customerEmail,
             status: "active",
+            plan,
           })
         }
 

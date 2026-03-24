@@ -5,7 +5,7 @@ import type { User } from "@supabase/supabase-js"
 import { supabase } from "./supabase"
 
 type SubscriptionStatus = "active" | "trialing" | "past_due" | "canceled" | "inactive"
-type SubscriptionPlan = "starter" | "pro" | "none"
+type SubscriptionPlan = "starter" | "team" | "pro" | "none"
 
 type AuthContextType = {
   user: User | null

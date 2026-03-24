@@ -30,6 +30,27 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Owner ID and email required" }, { status: 400 })
     }
 
+    // Check plan limits
+    const { data: sub } = await supabase()
+      .from("subscriptions")
+      .select("plan")
+      .eq("user_id", ownerId)
+      .single()
+
+    const plan = sub?.plan || "starter"
+    const maxMembers: Record<string, number> = { starter: 0, team: 2, pro: 4 }
+    const limit = maxMembers[plan] ?? 0
+
+    const { count } = await supabase()
+      .from("team_members")
+      .select("id", { count: "exact", head: true })
+      .eq("owner_id", ownerId)
+
+    if ((count ?? 0) >= limit) {
+      const planName = plan === "starter" ? "Starter (1 user only)" : plan === "team" ? "Team (up to 3 users)" : "Pro (up to 5 users)"
+      return NextResponse.json({ error: `Team member limit reached for your ${planName} plan. Upgrade to add more members.` }, { status: 403 })
+    }
+
     // Check if already invited
     const { data: existing } = await supabase()
       .from("team_members")
