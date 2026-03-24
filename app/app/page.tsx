@@ -121,7 +121,7 @@ function Home() {
   }, [user, authLoading, subscriptionLoading, router])
 
   const isFreeUser = !hasActiveSubscription(subscriptionStatus)
-  const isProUser = hasActiveSubscription(subscriptionStatus) && subscriptionPlan === "pro"
+  const isProUser = hasActiveSubscription(subscriptionStatus) && (subscriptionPlan === "pro" || subscriptionPlan === "team")
   const FREE_PROJECT_LIMIT = 1
   const FREE_CAPTURE_LIMIT = 3
 
