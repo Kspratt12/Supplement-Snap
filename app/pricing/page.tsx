@@ -6,7 +6,7 @@ import { SiteFooter } from "../../lib/site-footer"
 
 export const metadata: Metadata = {
   title: "Pricing – Supplement Snap",
-  description: "Simple pricing for roofing teams. Starter for solo crews, Pro for growing companies.",
+  description: "Simple pricing for roofing teams. Starter for solo crews, Team for small crews, Pro for growing companies.",
 }
 
 const STARTER_FEATURES = [
@@ -21,14 +21,22 @@ const STARTER_FEATURES = [
   "1 user",
 ]
 
-const PRO_FEATURES = [
+const TEAM_FEATURES = [
   "Everything in Starter, plus:",
-  "Up to 5 team members",
-  "Team access for crew, foreman, and office",
+  "Up to 3 team members",
+  "Team access for crew and office",
   "Adjuster email open tracking",
   "Xactimate-ready CSV export",
-  "Project search & templates",
+  "PDF reports & email",
+]
+
+const PRO_FEATURES = [
+  "Everything in Team, plus:",
+  "Up to 5 team members",
   "Priority support",
+  "Dedicated onboarding",
+  "Custom branding",
+  "Project search & templates",
 ]
 
 const FAQ = [
@@ -37,8 +45,8 @@ const FAQ = [
     a: "Yes! Every paid plan starts with a 14-day free trial, no credit card required. You'll get full access to capture damage, generate AI supplement drafts, create PDF reports, and email adjusters. If it doesn't pay for itself on your first job, cancel anytime.",
   },
   {
-    q: "What's the difference between Starter and Pro?",
-    a: "Starter is for solo contractors or single-crew operations. Pro adds team access so your foreman, office staff, and crew can all see projects in real-time, plus email tracking, photo annotations, and Xactimate export.",
+    q: "What's the difference between the plans?",
+    a: "Starter is for solo contractors (1 user). Team is for small crews of 2-3 people who need shared access, email tracking, and Xactimate export. Pro is for larger operations with up to 5 users, priority support, dedicated onboarding, and custom branding.",
   },
   {
     q: "Can I upgrade from Starter to Pro later?",
@@ -107,8 +115,8 @@ export default function PricingPage() {
       </Suspense>
 
       {/* Pricing Cards */}
-      <section className="mx-auto max-w-5xl px-6 py-16">
-        <div className="grid gap-6 sm:grid-cols-3">
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {/* Free */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-8 shadow-sm">
             <p className="text-sm font-semibold uppercase tracking-wider text-green-600">Free</p>
@@ -145,9 +153,7 @@ export default function PricingPage() {
               <span className="text-4xl font-extrabold text-zinc-900">$99</span>
               <span className="ml-1 text-sm text-zinc-500">/month</span>
             </div>
-            <p className="mt-1 text-sm text-zinc-500">
-              or <span className="font-semibold text-zinc-900">$79</span>/mo billed yearly
-            </p>
+            <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
 
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
               {STARTER_FEATURES.map((f) => (
@@ -163,20 +169,45 @@ export default function PricingPage() {
             <CheckoutButton plan="starter" label="Start 14-Day Free Trial" />
           </div>
 
-          {/* Pro */}
+          {/* Team */}
           <div className="rounded-2xl border-2 border-indigo-600 bg-white p-7 sm:p-8 shadow-xl relative">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo-600 px-4 py-1 text-xs font-semibold text-white">
               Most Popular
             </div>
-            <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Pro</p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Team</p>
+            <p className="mt-1 text-xs text-zinc-400">For small crews (2-3)</p>
+            <div className="mt-5">
+              <span className="text-4xl font-extrabold text-zinc-900">$199</span>
+              <span className="ml-1 text-sm text-zinc-500">/month</span>
+            </div>
+            <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
+
+            <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
+              {TEAM_FEATURES.map((f) => (
+                <div key={f} className="flex items-start gap-2.5">
+                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-sm text-zinc-700">{f}</span>
+                </div>
+              ))}
+            </div>
+
+            <CheckoutButton plan="team" label="Start 14-Day Free Trial" />
+            <p className="mt-3 text-center text-xs text-zinc-400">
+              Best value for small crews.
+            </p>
+          </div>
+
+          {/* Pro */}
+          <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-8 shadow-sm">
+            <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Pro</p>
             <p className="mt-1 text-xs text-zinc-400">For teams up to 5</p>
             <div className="mt-5">
               <span className="text-4xl font-extrabold text-zinc-900">$299</span>
               <span className="ml-1 text-sm text-zinc-500">/month</span>
             </div>
-            <p className="mt-1 text-sm text-zinc-500">
-              or <span className="font-semibold text-zinc-900">$249</span>/mo billed yearly
-            </p>
+            <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
 
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
               {PRO_FEATURES.map((f) => (
@@ -190,9 +221,6 @@ export default function PricingPage() {
             </div>
 
             <CheckoutButton plan="pro" label="Start 14-Day Free Trial" />
-            <p className="mt-3 text-center text-xs text-zinc-400">
-              Best value for companies with multiple crews.
-            </p>
           </div>
         </div>
 
@@ -222,54 +250,41 @@ export default function PricingPage() {
                   <th className="py-3 text-left font-medium text-zinc-500">Feature</th>
                   <th className="py-3 text-center font-medium text-green-600">Free</th>
                   <th className="py-3 text-center font-medium text-zinc-500">Starter</th>
-                  <th className="py-3 text-center font-medium text-indigo-600">Pro</th>
+                  <th className="py-3 text-center font-medium text-indigo-600">Team</th>
+                  <th className="py-3 text-center font-medium text-zinc-500">Pro</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100">
-                {[
-                  ["Projects", "1", "Unlimited", "Unlimited"],
-                  ["Captures per project", "3", "Unlimited", "Unlimited"],
-                  ["Damage photo capture", true, true, true],
-                  ["Voice notes (any language)", true, true, true],
-                  ["AI supplement drafts", true, true, true],
-                  ["PDF reports", false, true, true],
-                  ["Email to adjusters", false, true, true],
-                  ["Xactimate CSV export", false, false, true],
-                  ["Users", "1", "1", "Up to 5"],
-                  ["Team access", false, false, true],
-                  ["Email open tracking", false, false, true],
-                  ["Photo annotations", false, true, true],
-                  ["Priority support", false, false, true],
-                ].map(([feature, free, starter, pro]) => (
-                  <tr key={feature as string}>
-                    <td className="py-3 text-zinc-700">{feature as string}</td>
-                    <td className="py-3 text-center">
-                      {free === true ? (
-                        <svg className="mx-auto h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                      ) : free === false ? (
-                        <span className="text-zinc-300">—</span>
-                      ) : (
-                        <span className="text-zinc-700">{free as string}</span>
-                      )}
-                    </td>
-                    <td className="py-3 text-center">
-                      {starter === true ? (
-                        <svg className="mx-auto h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                      ) : starter === false ? (
-                        <span className="text-zinc-300">—</span>
-                      ) : (
-                        <span className="text-zinc-700">{starter as string}</span>
-                      )}
-                    </td>
-                    <td className="py-3 text-center">
-                      {pro === true ? (
-                        <svg className="mx-auto h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                      ) : pro === false ? (
-                        <span className="text-zinc-300">—</span>
-                      ) : (
-                        <span className="font-medium text-indigo-600">{pro as string}</span>
-                      )}
-                    </td>
+                {([
+                  ["Projects", "1", "Unlimited", "Unlimited", "Unlimited"],
+                  ["Captures per project", "3", "Unlimited", "Unlimited", "Unlimited"],
+                  ["Damage photo capture", true, true, true, true],
+                  ["Voice notes (any language)", true, true, true, true],
+                  ["AI supplement drafts", true, true, true, true],
+                  ["PDF reports", false, true, true, true],
+                  ["Email to adjusters", false, true, true, true],
+                  ["Xactimate CSV export", false, false, true, true],
+                  ["Users", "1", "1", "Up to 3", "Up to 5"],
+                  ["Team access", false, false, true, true],
+                  ["Email open tracking", false, false, true, true],
+                  ["Photo annotations", false, true, true, true],
+                  ["Priority support", false, false, false, true],
+                  ["Dedicated onboarding", false, false, false, true],
+                  ["Custom branding", false, false, false, true],
+                ] as Array<[string, string | boolean, string | boolean, string | boolean, string | boolean]>).map(([feature, free, starter, team, pro]) => (
+                  <tr key={feature}>
+                    <td className="py-3 text-zinc-700">{feature}</td>
+                    {[free, starter, team, pro].map((val, idx) => (
+                      <td key={idx} className="py-3 text-center">
+                        {val === true ? (
+                          <svg className="mx-auto h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                        ) : val === false ? (
+                          <span className="text-zinc-300">—</span>
+                        ) : (
+                          <span className={idx === 2 ? "font-medium text-indigo-600" : "text-zinc-700"}>{val}</span>
+                        )}
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>

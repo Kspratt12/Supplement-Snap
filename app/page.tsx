@@ -23,11 +23,12 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center sm:pt-28 sm:pb-20">
         <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
-          Roofing Supplement Software
+          Capture Damage, Generate Reports,
           <br className="hidden sm:block" />
-          <span className="text-indigo-600">That Pays for Itself</span>
+          <span className="text-indigo-600">Recover More on Every Roof</span>
         </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl">
+        <p className="mx-auto mt-4 text-sm font-medium text-zinc-400">Join roofing teams recovering $2,400+ per supplement</p>
+        <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl">
           Stop leaving money on the table during tear-off. Supplement Snap helps roofing crews
           capture hidden damage, generate supplement documentation, and email adjuster-ready
           PDF reports, all in minutes.
@@ -759,7 +760,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="mx-auto mt-12 grid gap-6 sm:grid-cols-3 max-w-5xl">
+          <div className="mx-auto mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl">
             {/* Free */}
             <div className="flex flex-col rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
               <p className="text-sm font-semibold uppercase tracking-wider text-green-600">Free</p>
@@ -801,10 +802,30 @@ export default function LandingPage() {
               <CheckoutButton plan="starter" label="Buy Now" />
             </div>
 
-            {/* Pro */}
+            {/* Team */}
             <div className="flex flex-col rounded-2xl border-2 border-indigo-600 bg-white p-7 shadow-lg relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo-600 px-3 py-0.5 text-xs font-semibold text-white">Most Popular</div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Pro</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Team</p>
+              <p className="mt-1 text-xs text-zinc-400">For small crews (2-3)</p>
+              <div className="mt-4">
+                <span className="text-3xl font-extrabold text-zinc-900">$199</span>
+                <span className="ml-1 text-sm text-zinc-500">/month</span>
+              </div>
+              <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
+              <div className="mt-5 flex-1 space-y-2.5">
+                {["Everything in Starter", "Up to 3 team members", "PDF reports & email", "Xactimate CSV export", "Email open tracking"].map((f) => (
+                  <div key={f} className="flex items-center gap-2.5">
+                    <svg className="h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-sm text-zinc-700">{f}</span>
+                  </div>
+                ))}
+              </div>
+              <CheckoutButton plan="team" label="Buy Now" />
+            </div>
+
+            {/* Pro */}
+            <div className="flex flex-col rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
+              <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Pro</p>
               <p className="mt-1 text-xs text-zinc-400">For teams up to 5</p>
               <div className="mt-4">
                 <span className="text-3xl font-extrabold text-zinc-900">$299</span>
@@ -812,7 +833,7 @@ export default function LandingPage() {
               </div>
               <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
               <div className="mt-5 flex-1 space-y-2.5">
-                {["Everything in Starter", "Up to 5 team members", "Email open tracking", "Xactimate CSV export", "Priority support"].map((f) => (
+                {["Everything in Team", "Up to 5 team members", "Priority support", "Dedicated onboarding", "Custom branding"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
                     <svg className="h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                     <span className="text-sm text-zinc-700">{f}</span>

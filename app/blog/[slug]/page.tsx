@@ -834,9 +834,9 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "storm-damage-roof-repair-near-me",
-    title: "Storm Damage Roof Repair Near Me: How to Find and Hire the Right Contractor",
-    metaTitle: "Storm Damage Roof Repair Near Me: Find the Right Contractor | 2026 Guide",
-    metaDescription: "Looking for storm damage roof repair near you? Learn how to find a qualified contractor, avoid storm chasers, understand the insurance claim process, and know what to expect with costs.",
+    title: "Storm Damage Roof Repair Near Me: How Contractors Win Local Storm Jobs",
+    metaTitle: "Storm Damage Roof Repair Near Me: How Contractors Capture Local Storm Jobs (2026)",
+    metaDescription: "Learn how roofing contractors can dominate local storm damage repair searches. Lead generation strategies, insurance claim workflows, supplement documentation, and how to stand out from storm chasers.",
     publishedDate: "2026-03-23",
     externalLinks: [
       { text: "Better Business Bureau: Contractor Lookup", url: "https://www.bbb.org" },
@@ -1089,9 +1089,9 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-damage-repair-guide",
-    title: "Roof Damage Repair: Complete Guide for Contractors and Homeowners",
-    metaTitle: "Roof Damage Repair: Complete Guide for Contractors and Homeowners (2026)",
-    metaDescription: "Everything contractors and homeowners need to know about roof damage repair. Types of damage, repair vs. replace decisions, insurance claims, hidden damage, and cost breakdowns.",
+    title: "Roof Damage Repair: Contractor Guide to Identifying, Documenting, and Getting Paid",
+    metaTitle: "Roof Damage Repair: Contractor Guide to Documentation and Insurance Recovery (2026)",
+    metaDescription: "Contractor guide to roof damage repair: how to identify all damage types, document findings for insurance, navigate repair vs. replace decisions, and recover full value through supplements.",
     publishedDate: "2026-03-23",
     externalLinks: [
       { text: "NRCA: Roof Repair Standards", url: "https://www.nrca.net" },
