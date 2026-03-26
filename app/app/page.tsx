@@ -7,6 +7,16 @@ import { jsPDF } from "jspdf"
 import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { PhotoAnnotator } from "../dashboard/photo-annotator"
+import { extractAllExifData, type PhotoMetadata } from "../../lib/exif-utils"
+import { uploadPhotosWithRetry, cleanupOrphanedUploads } from "../../lib/upload-utils"
+import {
+  queueCapture,
+  syncPendingCaptures,
+  getPendingCount,
+  fileToArrayBuffer,
+  arrayBufferToFile,
+  type PendingCapture,
+} from "../../lib/offline-queue"
 
 // Web Speech API type declarations
 interface SpeechRecognitionEvent extends Event {
@@ -99,6 +109,7 @@ type Capture = {
   field_note: string
   status?: CaptureStatus
   created_at: string
+  photo_metadata?: PhotoMetadata[]
 }
 
 export default function AppPage() {
@@ -208,6 +219,11 @@ function Home() {
   const [annotateUrl, setAnnotateUrl] = useState("")
   const [annotateOpen, setAnnotateOpen] = useState(false)
 
+  // Offline queue state
+  const [pendingQueueCount, setPendingQueueCount] = useState(0)
+  const [syncing, setSyncing] = useState(false)
+  const [isOnline, setIsOnline] = useState(typeof navigator !== "undefined" ? navigator.onLine : true)
+
   // Email modal state
   const [showEmailModal, setShowEmailModal] = useState(false)
   const [emailTo, setEmailTo] = useState("")
@@ -243,6 +259,69 @@ function Home() {
         ("SpeechRecognition" in window || "webkitSpeechRecognition" in window)
     )
   }, [])
+
+  // Offline queue: network listener + auto-sync on reconnect
+  useEffect(() => {
+    // Load initial pending count
+    getPendingCount().then(setPendingQueueCount).catch(() => {})
+
+    async function handleOnline() {
+      setIsOnline(true)
+      // Auto-sync pending captures when connection returns
+      setSyncing(true)
+      try {
+        const synced = await syncPendingCaptures(async (capture: PendingCapture) => {
+          try {
+            // Convert ArrayBuffers back to Files
+            const files = capture.photos.map((buf, i) =>
+              arrayBufferToFile(buf, capture.photoNames[i] || `photo-${i}.jpg`)
+            )
+            // Compress
+            const compressed = await Promise.all(files.map((f) => compressImage(f)))
+            // Upload with retry
+            const { urls } = await uploadPhotosWithRetry(compressed)
+            if (urls.length === 0) return false
+
+            // Insert capture record
+            const { error } = await supabase
+              .from("captures")
+              .insert({
+                project_id: capture.projectId,
+                image_url: urls[0],
+                image_urls: urls,
+                damage_type: capture.damageType,
+                roof_area: capture.roofArea,
+                field_note: capture.fieldNote,
+                status: "Captured",
+                quantity: capture.quantity,
+                unit: capture.unit || null,
+                photo_metadata: capture.photoMetadata,
+              })
+            return !error
+          } catch {
+            return false
+          }
+        })
+        if (synced > 0 && selectedProjectId) {
+          await loadCaptures(selectedProjectId)
+        }
+      } finally {
+        setSyncing(false)
+        getPendingCount().then(setPendingQueueCount).catch(() => {})
+      }
+    }
+
+    function handleOffline() {
+      setIsOnline(false)
+    }
+
+    window.addEventListener("online", handleOnline)
+    window.addEventListener("offline", handleOffline)
+    return () => {
+      window.removeEventListener("online", handleOnline)
+      window.removeEventListener("offline", handleOffline)
+    }
+  }, [selectedProjectId])
 
   async function translateNote(text: string) {
     setTranslating(true)
@@ -782,7 +861,40 @@ function Home() {
     return text.trim()
   }
 
-  // Helper: fetch image as data URL (handles CORS, any format)
+  // Helper: fetch image and compress for PDF embedding (reduces memory usage)
+  async function fetchImageForPdf(url: string, maxWidth = 800): Promise<string | null> {
+    try {
+      if (!url || url === "") return null
+
+      // Fetch as blob
+      const res = await fetch(url)
+      if (!res.ok) return null
+      const blob = await res.blob()
+
+      // Compress via canvas for PDF (smaller than original upload)
+      return await new Promise<string | null>((resolve) => {
+        const img = new Image()
+        img.onload = () => {
+          const scale = img.width > maxWidth ? maxWidth / img.width : 1
+          const canvas = document.createElement("canvas")
+          canvas.width = Math.round(img.width * scale)
+          canvas.height = Math.round(img.height * scale)
+          const ctx = canvas.getContext("2d")
+          if (!ctx) { resolve(null); return }
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+          const dataUrl = canvas.toDataURL("image/jpeg", 0.6)
+          URL.revokeObjectURL(img.src) // Free memory immediately
+          resolve(dataUrl)
+        }
+        img.onerror = () => resolve(null)
+        img.src = URL.createObjectURL(blob)
+      })
+    } catch {
+      return null
+    }
+  }
+
+  // Legacy helper for logo and diagram (needs full quality)
   async function fetchImageDataUrl(url: string): Promise<string | null> {
     try {
       if (!url || url === "") return null
@@ -1028,7 +1140,7 @@ function Home() {
         y += boxHeight + 3
       }
 
-      // Photos
+      // Photos (compressed for PDF to prevent memory crashes on large reports)
       if (includePhotos && urls.length > 0 && urls[0] !== "") {
         let photosLoaded = 0
         checkPage(10)
@@ -1038,9 +1150,11 @@ function Home() {
         doc.text(`SUPPORTING PHOTOS (${urls.length})`, margin, y)
         y += 4
 
-        for (const url of urls) {
+        for (let pi = 0; pi < urls.length; pi++) {
+          const url = urls[pi]
           try {
-            const dataUrl = await fetchImageDataUrl(url)
+            // Use compressed fetcher to keep PDF memory under control
+            const dataUrl = await fetchImageForPdf(url, 800)
             if (!dataUrl) continue
             const fmt = getImageFormat(dataUrl)
             const imgProps = doc.getImageProperties(dataUrl)
@@ -1048,13 +1162,36 @@ function Home() {
             const imgW = Math.min(contentWidth, 140)
             const imgH = imgW * ratio
             const cappedH = Math.min(imgH, 100)
-            checkPage(cappedH + 5)
+            checkPage(cappedH + 12)
             // Photo border
             doc.setDrawColor(220, 220, 230)
             doc.setLineWidth(0.3)
             doc.rect(margin, y, imgW, cappedH)
             doc.addImage(dataUrl, fmt, margin, y, imgW, cappedH)
-            y += cappedH + 4
+            y += cappedH + 2
+
+            // EXIF metadata under each photo (GPS + timestamp for adjuster verification)
+            const meta = c.photo_metadata?.[pi]
+            if (meta) {
+              doc.setFontSize(6.5)
+              doc.setFont("helvetica", "normal")
+              doc.setTextColor(120, 120, 130)
+              const metaParts: string[] = []
+              if (meta.latitude && meta.longitude) {
+                metaParts.push(`GPS: ${meta.latitude.toFixed(6)}, ${meta.longitude.toFixed(6)}`)
+              }
+              if (meta.timestamp) {
+                metaParts.push(`Captured: ${new Date(meta.timestamp).toLocaleString("en-US")}`)
+              }
+              if (meta.make || meta.model) {
+                metaParts.push(`Device: ${[meta.make, meta.model].filter(Boolean).join(" ")}`)
+              }
+              if (metaParts.length > 0) {
+                doc.text(metaParts.join("  |  "), margin, y + 1)
+                y += 4
+              }
+            }
+            y += 2
             photosLoaded++
           } catch {
             // Skip failed photo
@@ -1464,38 +1601,86 @@ function Home() {
     }
 
     setSaving(true)
-    setStatus(`Compressing ${files.length} photo${files.length !== 1 ? "s" : ""}...`)
 
-    // Compress all images before upload
+    // Step 1: Extract EXIF metadata BEFORE compression (compression strips it)
+    setStatus("Reading photo metadata...")
+    const photoMetadata = await extractAllExifData(files)
+
+    // Step 2: Compress images
+    setStatus(`Compressing ${files.length} photo${files.length !== 1 ? "s" : ""}...`)
     const compressed = await Promise.all(files.map((f) => compressImage(f)))
 
-    setStatus(`Uploading ${compressed.length} photo${compressed.length !== 1 ? "s" : ""}...`)
+    // Step 3: Check if we're online. If offline, queue for later.
+    if (!navigator.onLine) {
+      setStatus("Offline — saving to device for later sync...")
+      try {
+        const photoBuffers = await Promise.all(files.map((f) => fileToArrayBuffer(f)))
+        await queueCapture({
+          id: `offline-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          projectId: selectedProjectId,
+          damageType,
+          roofArea,
+          fieldNote,
+          quantity: parseInt(quantity) || 1,
+          unit: unit || "",
+          photos: photoBuffers,
+          photoNames: files.map((f) => f.name),
+          photoMetadata,
+          createdAt: new Date().toISOString(),
+        })
+        getPendingCount().then(setPendingQueueCount).catch(() => {})
+        setStatus("Saved offline! Will auto-sync when connection returns.")
 
-    const uploadedUrls: string[] = []
-
-    for (const f of compressed) {
-      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}-${f.name}`
-
-      const { error: uploadError } = await supabase.storage
-        .from("test-uploads")
-        .upload(fileName, f)
-
-      if (uploadError) {
-        setStatus(`Upload failed: ${uploadError.message}`)
-        setSaving(false)
-        return
+        // Optimistic UI: add a temporary capture to the list so user sees it immediately
+        const tempCapture: Capture = {
+          id: `temp-${Date.now()}`,
+          project_id: selectedProjectId,
+          image_url: previews[0] || "",
+          image_urls: previews,
+          damage_type: damageType,
+          roof_area: roofArea,
+          field_note: fieldNote,
+          status: "Captured",
+          created_at: new Date().toISOString(),
+          photo_metadata: photoMetadata,
+        }
+        setCaptures((prev) => [tempCapture, ...prev])
+      } catch {
+        setStatus("Failed to save offline. Please try again.")
       }
 
-      const { data: urlData } = supabase.storage
-        .from("test-uploads")
-        .getPublicUrl(fileName)
-
-      uploadedUrls.push(urlData.publicUrl)
+      setFiles([])
+      setPreviews([])
+      setDamageType("")
+      setRoofArea("")
+      setFieldNote("")
+      setQuantity("1")
+      setUnit("")
+      setSaving(false)
+      return
     }
 
-    setStatus("Saving capture...")
+    // Step 4: Upload with retry logic (online path)
+    setStatus(`Uploading ${compressed.length} photo${compressed.length !== 1 ? "s" : ""}...`)
+    const { urls: uploadedUrls, failedIndexes } = await uploadPhotosWithRetry(
+      compressed,
+      3,
+      (uploaded, total) => setStatus(`Uploaded ${uploaded}/${total} photos...`)
+    )
 
-    // Insert capture with all columns, fall back to core columns if schema cache is stale
+    if (uploadedUrls.length === 0) {
+      setStatus("All uploads failed. Check your connection and try again.")
+      setSaving(false)
+      return
+    }
+
+    if (failedIndexes.length > 0) {
+      setStatus(`${uploadedUrls.length} photos uploaded, ${failedIndexes.length} failed — saving what we have...`)
+    } else {
+      setStatus("Saving capture...")
+    }
+
+    // Step 5: Insert capture record with EXIF metadata
     const fullRow = {
       project_id: selectedProjectId,
       image_url: uploadedUrls[0],
@@ -1506,16 +1691,18 @@ function Home() {
       status: "Captured",
       quantity: parseInt(quantity) || 1,
       unit: unit || null,
+      photo_metadata: photoMetadata,
     }
     const coreRow = {
       project_id: selectedProjectId,
       image_url: uploadedUrls[0],
+      image_urls: uploadedUrls,
       damage_type: damageType,
       roof_area: roofArea,
       field_note: fieldNote,
     }
 
-    let { error: insertError, data: insertedRow } = await supabase
+    let { error: insertError } = await supabase
       .from("captures")
       .insert(fullRow)
       .select()
@@ -1528,23 +1715,25 @@ function Home() {
         .select()
         .single()
       insertError = fallback.error
-      insertedRow = fallback.data
     }
 
     if (insertError) {
+      // Clean up orphaned uploads since DB insert failed
+      await cleanupOrphanedUploads(uploadedUrls)
       setStatus(`Save failed: ${insertError.message}`)
       setSaving(false)
       return
     }
 
-    setStatus("Capture saved!")
+    setStatus(failedIndexes.length > 0
+      ? `Saved with ${uploadedUrls.length} photos! ${failedIndexes.length} photo(s) failed — you can re-add them later.`
+      : "Capture saved!")
 
-    // Log activity
+    // Log activity (fire-and-forget)
     fetch("/api/activity-log", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userId: user!.id,
         projectId: selectedProjectId,
         action: "Capture added",
         details: `${damageType} — ${roofArea}${fieldNote ? ": " + fieldNote.substring(0, 50) : ""}`,
@@ -1598,6 +1787,33 @@ function Home() {
           </button>
         </div>
       </header>
+
+      {/* Offline / sync status banner */}
+      {!isOnline && (
+        <div className="mb-4 flex items-center gap-2 rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800">
+          <svg className="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636a9 9 0 010 12.728M5.636 5.636a9 9 0 000 12.728" />
+          </svg>
+          <span className="font-medium">You&apos;re offline.</span> Captures will be saved to your device and auto-sync when connection returns.
+        </div>
+      )}
+      {syncing && (
+        <div className="mb-4 flex items-center gap-2 rounded-lg bg-indigo-50 border border-indigo-200 px-4 py-3 text-sm text-indigo-700">
+          <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
+          Syncing offline captures...
+        </div>
+      )}
+      {pendingQueueCount > 0 && isOnline && !syncing && (
+        <div className="mb-4 flex items-center justify-between rounded-lg bg-blue-50 border border-blue-200 px-4 py-3 text-sm text-blue-700">
+          <span>{pendingQueueCount} capture{pendingQueueCount !== 1 ? "s" : ""} waiting to sync</span>
+          <button
+            onClick={() => window.dispatchEvent(new Event("online"))}
+            className="text-xs font-semibold text-blue-700 underline hover:text-blue-900"
+          >
+            Sync Now
+          </button>
+        </div>
+      )}
 
       {/* Project selector */}
       <section className="mb-8 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">

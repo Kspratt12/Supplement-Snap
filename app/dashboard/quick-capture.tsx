@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react"
 import { supabase } from "../../lib/supabase"
+import { extractAllExifData } from "../../lib/exif-utils"
+import { uploadPhotosWithRetry } from "../../lib/upload-utils"
 
 const DAMAGE_TYPES = ["Decking", "Flashing", "Vent / Pipe Boot", "Drip Edge", "Ice & Water", "Multiple Layers", "Other"]
 const ROOF_AREAS = ["Front", "Back", "Left", "Right", "Valley", "Chimney", "Ridge", "Eave"]
@@ -528,18 +530,19 @@ export function QuickPhotoCapture({
         projectId = newId
       }
 
-      // Upload photos
-      const uploadedUrls: string[] = []
-      for (const file of photos) {
-        const compressed = await compressImage(file)
-        const rand = Math.random().toString(36).slice(2, 8)
-        const filename = `${Date.now()}-${rand}-${file.name}`
-        const { error: uploadErr } = await supabase.storage
-          .from("test-uploads")
-          .upload(filename, compressed, { contentType: "image/jpeg" })
-        if (uploadErr) throw uploadErr
-        const { data: urlData } = supabase.storage.from("test-uploads").getPublicUrl(filename)
-        uploadedUrls.push(urlData.publicUrl)
+      // Extract EXIF metadata BEFORE compression (compression strips it)
+      const photoMetadata = await extractAllExifData(photos)
+
+      // Compress all photos
+      const compressed = await Promise.all(photos.map((f) => compressImage(f)))
+
+      // Upload with retry logic
+      const { urls: uploadedUrls, failedIndexes } = await uploadPhotosWithRetry(compressed)
+
+      if (uploadedUrls.length === 0) {
+        setError("All uploads failed. Check your connection and try again.")
+        setSaving(false)
+        return
       }
 
       const row = {
@@ -550,6 +553,7 @@ export function QuickPhotoCapture({
         roof_area: roofArea,
         field_note: fieldNote,
         status: "Captured",
+        photo_metadata: photoMetadata,
       }
 
       const { error: insertErr } = await supabase.from("captures").insert(row)
@@ -557,10 +561,15 @@ export function QuickPhotoCapture({
         await supabase.from("captures").insert({
           project_id: projectId,
           image_url: uploadedUrls[0],
+          image_urls: uploadedUrls,
           damage_type: damageType,
           roof_area: roofArea,
           field_note: fieldNote,
         })
+      }
+
+      if (failedIndexes.length > 0) {
+        setError(`Saved! ${failedIndexes.length} photo(s) failed to upload — you can re-add them later.`)
       }
 
       setSaved(true)

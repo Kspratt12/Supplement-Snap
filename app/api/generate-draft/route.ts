@@ -16,9 +16,16 @@ export async function POST(request: Request) {
       )
     }
 
+    // Hallucination guard: if field note is extremely brief (under 10 chars),
+    // instruct the model to stay minimal and not invent details
+    const isMinimalNote = !field_note || field_note.trim().length < 10
     const noteSection = field_note
       ? `The contractor's field note states: "${field_note}"`
       : "No additional field notes were provided by the contractor."
+
+    const hallucGuard = isMinimalNote
+      ? `\n- IMPORTANT: The field note is very brief or absent. Write ONLY 1-2 sentences. Do NOT invent specific damage details, measurements, quantities, or conditions not stated in the note. Only state the damage type, location, and that it was concealed until tear-off.`
+      : ""
 
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
@@ -41,7 +48,7 @@ Rules:
 - Do NOT reference Xactimate codes.
 - Do NOT use generic AI filler language.
 - Sound like a real supplement writer at a roofing restoration company.
-- The tone should be factual and non-adversarial.`,
+- The tone should be factual and non-adversarial.${hallucGuard}`,
         },
       ],
     })

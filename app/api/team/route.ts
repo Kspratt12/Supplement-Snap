@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { getUserId } from "../../../lib/auth-utils"
 
 const supabase = () => createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -9,7 +10,9 @@ const supabase = () => createClient(
 // GET — list team members for an owner
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
-  const ownerId = searchParams.get("ownerId")
+  const paramOwnerId = searchParams.get("ownerId")
+
+  const ownerId = await getUserId(request, paramOwnerId)
   if (!ownerId) return NextResponse.json({ error: "Missing ownerId" }, { status: 400 })
 
   const { data, error } = await supabase()
@@ -25,7 +28,10 @@ export async function GET(request: Request) {
 // POST — invite a team member
 export async function POST(request: Request) {
   try {
-    const { ownerId, email, name, role } = await request.json()
+    const body = await request.json()
+    const { email, name, role } = body
+
+    const ownerId = await getUserId(request, body.ownerId)
     if (!ownerId || !email) {
       return NextResponse.json({ error: "Owner ID and email required" }, { status: 400 })
     }

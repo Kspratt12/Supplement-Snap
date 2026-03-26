@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { getUserId } from "../../../lib/auth-utils"
 
 const supabase = () => createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -8,7 +9,9 @@ const supabase = () => createClient(
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
-  const userId = searchParams.get("userId")
+  const paramUserId = searchParams.get("userId")
+
+  const userId = await getUserId(request, paramUserId)
   if (!userId) return NextResponse.json({ contacts: [] })
 
   const { data } = await supabase()
@@ -22,7 +25,10 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const { userId, name, email, company } = await request.json()
+    const body = await request.json()
+    const { name, email, company } = body
+
+    const userId = await getUserId(request, body.userId)
     if (!userId || !email) return NextResponse.json({ error: "Missing fields" }, { status: 400 })
 
     // Upsert — update last_used if exists, create if not

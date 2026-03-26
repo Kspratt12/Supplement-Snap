@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { getUserId } from "../../../lib/auth-utils"
 
 const supabase = () => createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -9,15 +10,17 @@ const supabase = () => createClient(
 // GET — list activity for a user or project
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
-  const userId = searchParams.get("userId")
+  const paramUserId = searchParams.get("userId")
   const projectId = searchParams.get("projectId")
   const limit = parseInt(searchParams.get("limit") || "20")
 
+  const userId = await getUserId(request, paramUserId)
+  if (!userId) return NextResponse.json({ activities: [] })
+
   let query = supabase().from("activity_log").select("*").order("created_at", { ascending: false }).limit(limit)
 
-  if (projectId) query = query.eq("project_id", projectId)
-  else if (userId) query = query.eq("user_id", userId)
-  else return NextResponse.json({ activities: [] })
+  if (projectId) query = query.eq("project_id", projectId).eq("user_id", userId)
+  else query = query.eq("user_id", userId)
 
   const { data } = await query
   return NextResponse.json({ activities: data || [] })
@@ -26,7 +29,10 @@ export async function GET(request: Request) {
 // POST — log an activity
 export async function POST(request: Request) {
   try {
-    const { userId, projectId, action, details } = await request.json()
+    const body = await request.json()
+    const { projectId, action, details } = body
+
+    const userId = await getUserId(request, body.userId)
     if (!userId || !action) return NextResponse.json({ error: "Missing fields" }, { status: 400 })
 
     const { error } = await supabase()
