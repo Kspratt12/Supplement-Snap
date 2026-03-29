@@ -68,7 +68,7 @@ export default function LandingPage() {
       <section className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center sm:pt-28 sm:pb-20">
         <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Roofing Supplement Software</p>
         <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
-          Roofing Supplement Software
+          Roofing Supplement Software{" "}
           <br className="hidden sm:block" />
           <span className="text-indigo-600">That Recovers More on Every Roof</span>
         </h1>
