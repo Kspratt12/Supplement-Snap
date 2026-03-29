@@ -68,9 +68,8 @@ export default function LandingPage() {
       <section className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center sm:pt-28 sm:pb-20">
         <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Roofing Supplement Software</p>
         <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
-          Roofing Supplement Software{" "}
-          <br className="hidden sm:block" />
-          <span className="text-indigo-600">That Recovers More on Every Roof</span>
+          <span className="block sm:inline">Roofing Supplement Software</span>
+          <span className="block sm:inline text-indigo-600"> That Recovers More on Every Roof</span>
         </h1>
         <p className="mx-auto mt-4 text-sm font-medium text-zinc-400">Join roofing teams recovering $2,400+ per supplement</p>
         <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl">
