@@ -66,10 +66,11 @@ export default function LandingPage() {
 
       {/* Hero */}
       <section className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center sm:pt-28 sm:pb-20">
-        <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
-          Capture Damage, Generate Reports,
+        <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Roofing Supplement Software</p>
+        <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
+          Roofing Supplement Software That
           <br className="hidden sm:block" />
-          <span className="text-indigo-600">Recover More on Every Roof</span>
+          <span className="text-indigo-600">Recovers More on Every Roof</span>
         </h1>
         <p className="mx-auto mt-4 text-sm font-medium text-zinc-400">Join roofing teams recovering $2,400+ per supplement</p>
         <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl">
