@@ -1,3 +1,4 @@
+import React from "react"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { SiteFooter } from "../../../lib/site-footer"
@@ -288,7 +289,7 @@ const ARTICLES: Article[] = [
     title: "How to Write a Roofing Supplement That Gets Approved",
     metaTitle: "How to Write a Roofing Supplement for Insurance | Step-by-Step Guide",
     metaDescription: "Learn how to write a roofing supplement that insurance adjusters approve. Step-by-step guide with documentation tips, Xactimate codes, and common mistakes to avoid.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-01-06",
     externalLinks: [
       { text: "NRCA Roofing Manual: Best Practices", url: "https://www.nrca.net" },
       { text: "Verisk Xactimate Official Site", url: "https://www.verisk.com/insurance/products/xactimate/" },
@@ -336,7 +337,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How Supplement Snap automates this process",
-        content: "Supplement Snap was built to solve this exact workflow. Your crew captures damage photos during tear-off, tags the damage type and roof area, and adds a voice note describing what they found (works in any language; Spanish voice notes are auto-translated to English).\n\nThe system uses AI to generate a professional supplement narrative from the field data. You can export an Xactimate-ready CSV with the correct line codes and pricing, and email a complete PDF report to the adjuster, all from the field, the same day.\n\nOne tap from the roof to a professional supplement submission. No more lost photos, forgotten details, or supplements that sit in the office for weeks."
+        content: "Supplement Snap was built to solve this exact workflow. Your crew captures damage photos during tear-off, tags the damage type and roof area, and adds a voice note describing what they found (works in any language; Spanish voice notes are auto-translated to English).\n\nThe system uses AI to generate a professional supplement narrative from the field data. You can export an Xactimate-ready CSV with the correct line codes and pricing, and email a complete PDF report to the adjuster, all from the field, the same day.\n\nOne tap from the roof to a professional supplement submission. No more lost photos, forgotten details, or supplements that sit in the office for weeks.\n\nFor a complete list of Xactimate codes to use in your supplements, see our <a href='/blog/xactimate-codes-for-roofing-supplements'>Xactimate codes reference guide</a>."
       },
     ],
   },
@@ -345,7 +346,7 @@ const ARTICLES: Article[] = [
     title: "Roofing Supplement Denied? Here's What to Do Next",
     metaTitle: "Roofing Supplement Denied? What to Do Next | Contractor Guide",
     metaDescription: "Your roofing supplement was denied by the insurance company. Here's what to do next, from re-documenting damage to filing appeals and preventing future denials.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-01-13",
     externalLinks: [
       { text: "National Association of Insurance Commissioners (NAIC)", url: "https://www.naic.org" },
       { text: "NRCA: Contractor Resources", url: "https://www.nrca.net" },
@@ -386,7 +387,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How to prevent supplement denials in the future",
-        content: "The best defense against supplement denials is proper documentation captured in real time during tear-off. This means:\n\n• Photograph every finding immediately with multiple angles, context and detail shots\n• Document the location, damage type, and extent before covering it with new materials\n• Write or record a description of what was found (voice notes work great for this)\n• Submit the supplement the same day. Don't wait.\n• Use Xactimate-standard line codes and accurate quantities\n• Reference building codes when the repair is code-required\n\nSupplement Snap automates all of this. Your crew captures damage from the roof, the system generates the documentation, and you email it to the adjuster before the crew leaves the job site."
+        content: "The best defense against supplement denials is proper documentation captured in real time during tear-off. This means:\n\n• Photograph every finding immediately with multiple angles, context and detail shots\n• Document the location, damage type, and extent before covering it with new materials\n• Write or record a description of what was found (voice notes work great for this)\n• Submit the supplement the same day. Don't wait.\n• Use Xactimate-standard line codes and accurate quantities\n• Reference building codes when the repair is code-required\n\nSupplement Snap automates all of this. Your crew captures damage from the roof, the system generates the documentation, and you email it to the adjuster before the crew leaves the job site.\n\nTo avoid denials in the first place, follow our guide on <a href='/blog/how-to-write-a-roofing-supplement'>how to write a supplement that gets approved</a>."
       },
     ],
   },
@@ -395,11 +396,11 @@ const ARTICLES: Article[] = [
     title: "Xactimate Codes for Roofing Supplements: Complete Reference",
     metaTitle: "Xactimate Codes for Roofing Supplements | Complete Code List",
     metaDescription: "Complete list of Xactimate line codes for roofing supplements: decking, flashing, ice & water shield, pipe boots, drip edge, tear-off, and more.",
+    publishedDate: "2026-01-20",
     externalLinks: [
       { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
       { text: "NRCA Roofing Standards", url: "https://www.nrca.net" },
     ],
-    publishedDate: "2026-03-23",
     highlight: { label: "Most Used Code", value: "RFG SHTHN", subtext: "Sheathing replacement. The #1 supplement line item on insurance tear-offs." },
     visuals: {
       0: { type: "codes", data: [
@@ -444,7 +445,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How Supplement Snap handles Xactimate codes",
-        content: "Supplement Snap automatically maps each damage type to the correct Xactimate line codes with sub-items and unit pricing. When you export the Xactimate CSV, each capture generates the appropriate line items with quantities and national average pricing.\n\nFor example, a 'Decking' capture automatically generates both the sheathing replacement line (RFG SHTHN) and the felt underlayment line (RFG RFLT30). A 'Multiple Layers' capture generates both the tear-off line (RFG TEAR) and the haul debris line (RFG HAUL).\n\nThis saves your office staff from manually looking up codes and pricing, and ensures nothing gets missed in the export."
+        content: "Supplement Snap automatically maps each damage type to the correct Xactimate line codes with sub-items and unit pricing. When you export the Xactimate CSV, each capture generates the appropriate line items with quantities and national average pricing.\n\nFor example, a 'Decking' capture automatically generates both the sheathing replacement line (RFG SHTHN) and the felt underlayment line (RFG RFLT30). A 'Multiple Layers' capture generates both the tear-off line (RFG TEAR) and the haul debris line (RFG HAUL).\n\nThis saves your office staff from manually looking up codes and pricing, and ensures nothing gets missed in the export.\n\nFor a complete walkthrough of building an Xactimate estimate, see our <a href='/blog/xactimate-roof-estimate-supplements'>Xactimate roof estimate guide</a>."
       },
     ],
   },
@@ -453,7 +454,7 @@ const ARTICLES: Article[] = [
     title: "How Much Do Roofing Supplements Pay? Real Numbers for Contractors",
     metaTitle: "How Much Do Roofing Supplements Pay? | Real Revenue Numbers",
     metaDescription: "How much do roofing supplements actually pay? Real revenue data from contractors on average supplement values, what gets approved, and how to maximize recovery.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-01-27",
     externalLinks: [
       { text: "Insurance Information Institute: Homeowners Claims", url: "https://www.iii.org" },
       { text: "NRCA: Roofing Industry Data", url: "https://www.nrca.net" },
@@ -497,7 +498,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How to start recovering supplements today",
-        content: "You don't need to change your entire workflow. Start with your next tear-off:\n\n1. When your crew finds hidden damage, have them photograph it and tag what it is\n2. Add a quick voice note describing the damage\n3. Generate an AI supplement narrative from the field data\n4. Email a PDF report to the adjuster before you leave the job site\n\nSupplement Snap handles all four steps. The platform starts at $99/month with a 14-day free trial and pays for itself on the first job with a single approved supplement."
+        content: "You don't need to change your entire workflow. Start with your next tear-off:\n\n1. When your crew finds hidden damage, have them photograph it and tag what it is\n2. Add a quick voice note describing the damage\n3. Generate an AI supplement narrative from the field data\n4. Email a PDF report to the adjuster before you leave the job site\n\nSupplement Snap handles all four steps. The platform starts at $99/month with a 14-day free trial and pays for itself on the first job with a single approved supplement.\n\nTo understand the full workflow from tear-off to approval, read our <a href='/blog/roofing-supplement-process-explained'>roofing supplement process guide</a>."
       },
     ],
   },
@@ -506,7 +507,7 @@ const ARTICLES: Article[] = [
     title: "The Roofing Supplement Process Explained: From Tear-Off to Approval",
     metaTitle: "Roofing Supplement Process Explained | From Tear-Off to Approval",
     metaDescription: "Complete guide to the roofing supplement process, from discovering hidden damage during tear-off to getting insurance approval. Written for contractors.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-02-03",
     externalLinks: [
       { text: "International Building Code (ICC)", url: "https://www.iccsafe.org" },
       { text: "NRCA: Roofing Manual", url: "https://www.nrca.net" },
@@ -549,7 +550,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How Supplement Snap streamlines the entire process",
-        content: "Supplement Snap was designed around this exact workflow:\n\n• Phase 1 (Discovery): Your crew captures photos, tags damage type and roof area, adds voice notes, all from the roof during tear-off\n• Phase 2 (Writing): AI generates professional supplement narratives from the field data. Xactimate CSV export with correct line codes and pricing.\n• Phase 3 (Submission): One-click PDF report generation and email to the adjuster, same day, from the field\n• Phase 4 (Tracking): Claim pipeline tracks each project from In Progress through Submitted to Approved\n\nThe entire process that used to take days of office work now happens in minutes, right from the job site."
+        content: "Supplement Snap was designed around this exact workflow:\n\n• Phase 1 (Discovery): Your crew captures photos, tags damage type and roof area, adds voice notes, all from the roof during tear-off\n• Phase 2 (Writing): AI generates professional supplement narratives from the field data. Xactimate CSV export with correct line codes and pricing.\n• Phase 3 (Submission): One-click PDF report generation and email to the adjuster, same day, from the field\n• Phase 4 (Tracking): Claim pipeline tracks each project from In Progress through Submitted to Approved\n\nThe entire process that used to take days of office work now happens in minutes, right from the job site.\n\nFor detailed tips on writing the actual supplement document, see <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a>."
       },
     ],
   },
@@ -558,7 +559,7 @@ const ARTICLES: Article[] = [
     title: "Roof Tear-Off Cost in 2026: What Contractors and Homeowners Should Know",
     metaTitle: "Roof Tear-Off Cost in 2026 | Pricing by Size, Material & Pitch",
     metaDescription: "What does a roof tear-off cost in 2026? Breakdown by roof size, material, pitch, and layers, plus hidden costs discovered during tear-off and how supplements recover them.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-02-10",
     externalLinks: [
       { text: "RSMeans Construction Cost Data", url: "https://www.rsmeans.com" },
       { text: "NRCA: Roofing Tear-Off Guidelines", url: "https://www.nrca.net" },
@@ -596,7 +597,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Recovering hidden tear-off costs with supplements",
-        content: "The single biggest financial opportunity during a roof tear-off is capturing and recovering the cost of concealed damage through supplements. On an average insurance reroof, contractors who document hidden damage properly recover an additional $1,500–$3,200 per job.\n\nThe challenge has always been the documentation workflow. Your crew is on the roof, moving fast, focused on getting the tear-off done and new materials installed. Stopping to take detailed photos, write notes, and measure damaged areas slows down production. And if documentation happens after the fact, back at the office from memory, it is usually incomplete.\n\nThis is exactly the problem Supplement Snap was built to solve. During tear-off, your crew captures damage photos directly in the app, tags the damage type and roof location, and adds a quick voice note describing what they found. The system generates a professional supplement narrative using AI, maps each finding to the correct Xactimate line codes, and produces a PDF report you can email to the adjuster the same day.\n\nThe result: hidden tear-off costs that used to eat into your margin become documented, submitted, and recovered. Instead of absorbing $2,000 in rotted decking and missing flashing, you turn it into a supplement that gets approved and paid. For contractors doing 10 or more insurance jobs per month, proper tear-off documentation can mean the difference between a tight year and a highly profitable one."
+        content: "The single biggest financial opportunity during a roof tear-off is capturing and recovering the cost of concealed damage through supplements. On an average insurance reroof, contractors who document hidden damage properly recover an additional $1,500–$3,200 per job.\n\nThe challenge has always been the documentation workflow. Your crew is on the roof, moving fast, focused on getting the tear-off done and new materials installed. Stopping to take detailed photos, write notes, and measure damaged areas slows down production. And if documentation happens after the fact, back at the office from memory, it is usually incomplete.\n\nThis is exactly the problem Supplement Snap was built to solve. During tear-off, your crew captures damage photos directly in the app, tags the damage type and roof location, and adds a quick voice note describing what they found. The system generates a professional supplement narrative using AI, maps each finding to the correct Xactimate line codes, and produces a PDF report you can email to the adjuster the same day.\n\nThe result: hidden tear-off costs that used to eat into your margin become documented, submitted, and recovered. Instead of absorbing $2,000 in rotted decking and missing flashing, you turn it into a supplement that gets approved and paid. For contractors doing 10 or more insurance jobs per month, proper tear-off documentation can mean the difference between a tight year and a highly profitable one.\n\nFor more on why the initial estimate rarely matches the final cost, read <a href='/blog/roof-replacement-estimate-vs-final-cost'>roof replacement estimate vs final cost</a>."
       },
     ],
   },
@@ -605,7 +606,7 @@ const ARTICLES: Article[] = [
     title: "Best Roof Estimating Software for Contractors in 2026",
     metaTitle: "Best Roof Estimating Software for Contractors in 2026 | Comparison Guide",
     metaDescription: "Compare the best roof estimating software for contractors in 2026. Satellite measurement, field documentation, CRM, and supplement tools. What to look for and how they work together.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-02-17",
     externalLinks: [
       { text: "Verisk Xactimate", url: "https://www.verisk.com/insurance/products/xactimate/" },
       { text: "EagleView Roof Measurement", url: "https://www.eagleview.com" },
@@ -643,7 +644,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Why supplement documentation is the missing piece",
-        content: "Of all the categories in roofing software, supplement documentation is the one most contractors are either missing entirely or handling manually. Satellite measurement tools have been mainstream for years. Xactimate has been the industry standard for decades. CRMs have penetrated the market deeply. But the step between tear-off and supplement submission (the actual field documentation) remains the biggest gap in most contractors' technology stack.\n\nThis gap costs money on every single insurance job. When documentation is weak, supplements get denied. When supplements are skipped because the process is too cumbersome, revenue stays on the table. When office staff spend hours writing narratives and building Xactimate line items from blurry text-message photos, overhead increases.\n\nSupplement Snap was built specifically to close this gap. It sits between the field and the adjuster's inbox. Your crew captures damage during tear-off (photos, tags, voice notes) and the platform generates professional supplement documentation with AI-written narratives, Xactimate-ready CSV exports, and branded PDF reports. The entire process happens on-site, same-day, from a mobile device.\n\nFor contractors evaluating their software stack in 2026, adding a dedicated supplement documentation tool is often the single highest-impact change they can make. Not because the other tools are not important (they are), but because supplement revenue is real money on jobs you are already performing, and the only thing standing between you and that revenue is proper documentation."
+        content: "Of all the categories in roofing software, supplement documentation is the one most contractors are either missing entirely or handling manually. Satellite measurement tools have been mainstream for years. Xactimate has been the industry standard for decades. CRMs have penetrated the market deeply. But the step between tear-off and supplement submission (the actual field documentation) remains the biggest gap in most contractors' technology stack.\n\nThis gap costs money on every single insurance job. When documentation is weak, supplements get denied. When supplements are skipped because the process is too cumbersome, revenue stays on the table. When office staff spend hours writing narratives and building Xactimate line items from blurry text-message photos, overhead increases.\n\nSupplement Snap was built specifically to close this gap. It sits between the field and the adjuster's inbox. Your crew captures damage during tear-off (photos, tags, voice notes) and the platform generates professional supplement documentation with AI-written narratives, Xactimate-ready CSV exports, and branded PDF reports. The entire process happens on-site, same-day, from a mobile device.\n\nFor contractors evaluating their software stack in 2026, adding a dedicated supplement documentation tool is often the single highest-impact change they can make. Not because the other tools are not important (they are), but because supplement revenue is real money on jobs you are already performing, and the only thing standing between you and that revenue is proper documentation.\n\nFor a broader look at how these tools fit together, see our <a href='/blog/roofing-software-comparison'>roofing software comparison</a>."
       },
     ],
   },
@@ -652,7 +653,7 @@ const ARTICLES: Article[] = [
     title: "Hail Damage Roof Inspection: What Gets Missed and How to Document It",
     metaTitle: "Hail Damage Roof Inspection | What Gets Missed & How to Document It",
     metaDescription: "How to inspect a roof for hail damage, what adjusters commonly miss, hidden damage found during tear-off, and how to document everything for successful supplements.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-02-24",
     externalLinks: [
       { text: "NOAA Storm Prediction Center", url: "https://www.spc.noaa.gov" },
       { text: "IBHS: Hail Damage Research", url: "https://ibhs.org" },
@@ -690,7 +691,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Turning hail damage documentation into recovered revenue",
-        content: "Every hail damage re-roof has hidden findings. Rotted decking under a failed pipe boot. Flashing that cracked when the hailstone hit it. Underlayment that was punctured by the impact force. Ice and water shield that was never installed in the first place. The damage is there on almost every job. The question is whether it gets documented and submitted.\n\nThe average hail damage supplement recovers $1,500–$3,200 per job. On a busy storm season with 20 insurance re-roofs in a single month, that represents $30,000–$64,000 in additional revenue. Over a full season, proper supplement documentation can add six figures to a restoration contractor's top line.\n\nSupplement Snap was purpose-built for this workflow. Your crew captures hail damage findings during tear-off: photos tagged by damage type and roof location, voice notes in English or Spanish describing what they found. The platform's AI generates professional supplement narratives from the field data. Xactimate-ready CSV exports map each finding to the correct line codes with quantities and pricing. A branded PDF report is generated and emailed to the adjuster the same day.\n\nThe result is a supplement process that scales with storm volume. Whether you are running 5 hail damage jobs or 50, every finding gets documented, every supplement gets submitted, and every dollar of hidden damage gets recovered. That is the difference between a storm season that stretches your operation thin and one that drives your most profitable quarter of the year."
+        content: "Every hail damage re-roof has hidden findings. Rotted decking under a failed pipe boot. Flashing that cracked when the hailstone hit it. Underlayment that was punctured by the impact force. Ice and water shield that was never installed in the first place. The damage is there on almost every job. The question is whether it gets documented and submitted.\n\nThe average hail damage supplement recovers $1,500–$3,200 per job. On a busy storm season with 20 insurance re-roofs in a single month, that represents $30,000–$64,000 in additional revenue. Over a full season, proper supplement documentation can add six figures to a restoration contractor's top line.\n\nSupplement Snap was purpose-built for this workflow. Your crew captures hail damage findings during tear-off: photos tagged by damage type and roof location, voice notes in English or Spanish describing what they found. The platform's AI generates professional supplement narratives from the field data. Xactimate-ready CSV exports map each finding to the correct line codes with quantities and pricing. A branded PDF report is generated and emailed to the adjuster the same day.\n\nThe result is a supplement process that scales with storm volume. Whether you are running 5 hail damage jobs or 50, every finding gets documented, every supplement gets submitted, and every dollar of hidden damage gets recovered. That is the difference between a storm season that stretches your operation thin and one that drives your most profitable quarter of the year.\n\nFor a broader guide on all types of storm damage, see <a href='/blog/storm-damage-roof-repair'>storm damage roof repair guide</a>."
       },
     ],
   },
@@ -699,7 +700,7 @@ const ARTICLES: Article[] = [
     title: "Roofing Software Comparison: CRM vs. Estimating vs. Supplement Tools",
     metaTitle: "Roofing Software Comparison: CRM vs. Estimating vs. Supplement Tools",
     metaDescription: "Compare the three categories of roofing software: CRM, estimating, and supplement tools. Learn what each does, when you need each one, and where the gaps are costing you money.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-03-03",
     externalLinks: [
       { text: "NRCA: Technology in Roofing", url: "https://www.nrca.net" },
       { text: "Verisk Xactimate", url: "https://www.verisk.com/insurance/products/xactimate/" },
@@ -736,7 +737,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Why supplement documentation should be your next investment",
-        content: "If you already have a CRM and an estimating tool, the highest-ROI addition to your tech stack is a supplement documentation platform. The math is straightforward:\n\n• Average supplement recovery: $1,500–$3,200 per job\n• Percentage of insurance tear-offs with supplementable damage: 70–90%\n• Cost of a supplement tool: $99–$299/month\n• Breakeven: one approved supplement pays for months of the software\n\nThe key is choosing a tool that actually solves the documentation problem, not just a status tracker. You need something your crew can use on the roof during tear-off to capture photos, tag damage types, record voice notes, and generate professional reports before they leave the job site.\n\nSupplement Snap was built specifically for this workflow. Your crew captures damage findings from the roof with tagged photos and voice notes. The AI generates professional supplement narratives. You export Xactimate-ready CSV files and email a PDF report to the adjuster the same day. It fills the gap that your CRM and estimating tool were never designed to address, and it pays for itself on the very first job.\n\nStop investing only in software that helps you win jobs. Start investing in software that helps you get paid fully for the jobs you've already won."
+        content: "If you already have a CRM and an estimating tool, the highest-ROI addition to your tech stack is a supplement documentation platform. The math is straightforward:\n\n• Average supplement recovery: $1,500–$3,200 per job\n• Percentage of insurance tear-offs with supplementable damage: 70–90%\n• Cost of a supplement tool: $99–$299/month\n• Breakeven: one approved supplement pays for months of the software\n\nThe key is choosing a tool that actually solves the documentation problem, not just a status tracker. You need something your crew can use on the roof during tear-off to capture photos, tag damage types, record voice notes, and generate professional reports before they leave the job site.\n\nSupplement Snap was built specifically for this workflow. Your crew captures damage findings from the roof with tagged photos and voice notes. The AI generates professional supplement narratives. You export Xactimate-ready CSV files and email a PDF report to the adjuster the same day. It fills the gap that your CRM and estimating tool were never designed to address, and it pays for itself on the very first job.\n\nStop investing only in software that helps you win jobs. Start investing in software that helps you get paid fully for the jobs you've already won.\n\nFor a deep dive into CRM options specifically, check out <a href='/blog/best-roofing-crm'>best roofing CRM</a>."
       },
     ],
   },
@@ -745,7 +746,7 @@ const ARTICLES: Article[] = [
     title: "How to Build an Xactimate Roof Estimate for Insurance Supplements",
     metaTitle: "How to Build an Xactimate Roof Estimate for Supplements | Contractor Guide",
     metaDescription: "Learn how to build an Xactimate roof estimate for insurance supplements. Covers key line codes like RFG SHTHN, RFG FLSH, RFG I&WS, pricing benchmarks, and common mistakes that get supplements denied.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-03-07",
     externalLinks: [
       { text: "Verisk Xactimate Official Documentation", url: "https://www.verisk.com/insurance/products/xactimate/" },
       { text: "International Building Code (ICC)", url: "https://www.iccsafe.org" },
@@ -782,7 +783,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How Supplement Snap generates Xactimate-ready exports",
-        content: "Building an Xactimate-formatted supplement manually for every job takes time: looking up line codes, checking pricing, formatting the estimate, writing the narrative, organizing photos. It's the kind of work that either falls on your office staff or doesn't get done at all.\n\nSupplement Snap automates this process. Your crew captures damage findings during tear-off: photos tagged by damage type, roof area selected, and a voice note describing what they found. Voice notes work in any language, so Spanish-speaking crews describe findings naturally and the system auto-translates to English.\n\nFrom that field data, Supplement Snap automatically maps each finding to the correct Xactimate line codes with sub-items. A 'Decking' finding generates RFG SHTHN with the measured square footage. A 'Flashing' finding generates RFG FLSH with the linear footage. Each line item includes current unit pricing.\n\nYou can export the complete supplement as an Xactimate-compatible CSV that the adjuster can import directly into their system. You also get a professional PDF report with photos, AI-generated narratives, a findings summary, and the complete line item breakdown, ready to email to the adjuster the same day.\n\nThe result is a supplement that speaks the adjuster's language, includes the evidence they need, and arrives the same day the damage was found. That combination (correct format, strong documentation, fast submission) is what gets supplements approved."
+        content: "Building an Xactimate-formatted supplement manually for every job takes time: looking up line codes, checking pricing, formatting the estimate, writing the narrative, organizing photos. It's the kind of work that either falls on your office staff or doesn't get done at all.\n\nSupplement Snap automates this process. Your crew captures damage findings during tear-off: photos tagged by damage type, roof area selected, and a voice note describing what they found. Voice notes work in any language, so Spanish-speaking crews describe findings naturally and the system auto-translates to English.\n\nFrom that field data, Supplement Snap automatically maps each finding to the correct Xactimate line codes with sub-items. A 'Decking' finding generates RFG SHTHN with the measured square footage. A 'Flashing' finding generates RFG FLSH with the linear footage. Each line item includes current unit pricing.\n\nYou can export the complete supplement as an Xactimate-compatible CSV that the adjuster can import directly into their system. You also get a professional PDF report with photos, AI-generated narratives, a findings summary, and the complete line item breakdown, ready to email to the adjuster the same day.\n\nThe result is a supplement that speaks the adjuster's language, includes the evidence they need, and arrives the same day the damage was found. That combination (correct format, strong documentation, fast submission) is what gets supplements approved.\n\nNeed the full code list? See our <a href='/blog/xactimate-codes-for-roofing-supplements'>complete Xactimate codes reference</a>."
       },
     ],
   },
@@ -791,7 +792,7 @@ const ARTICLES: Article[] = [
     title: "Roof Replacement Estimate vs. Final Cost: Why Supplements Close the Gap",
     metaTitle: "Roof Replacement Estimate vs. Final Cost: Why Supplements Close the Gap",
     metaDescription: "Why the initial roof replacement estimate is always lower than the final cost, what gets missed in adjuster inspections, and how supplements bridge the gap between estimate and actual cost.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-03-10",
     externalLinks: [
       { text: "Insurance Information Institute", url: "https://www.iii.org" },
       { text: "NRCA: Roof Replacement Standards", url: "https://www.nrca.net" },
@@ -828,7 +829,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Close the gap with Supplement Snap",
-        content: "Supplement Snap was built to make this systematic approach effortless. During tear-off, the crew opens the app and captures each finding: a photo tagged with the damage type and roof area, plus an optional voice note. Voice notes work in any language. Spanish-speaking crews describe findings in Spanish and the system auto-translates to English.\n\nFrom that field data, Supplement Snap generates everything you need:\n\n• A professional supplement narrative for each finding, written in the language adjusters expect\n• Xactimate line items with correct codes, quantities, and current regional pricing\n• An Xactimate-compatible CSV export the adjuster can import directly\n• A branded PDF report with photos, narratives, findings summary, and line items, ready to email\n\nThe entire process from capturing damage on the roof to emailing a complete supplement report takes minutes, not days. Your crew does what they're already doing (finding damage during tear-off) and Supplement Snap turns those findings into revenue.\n\nThe gap between the initial estimate and the final cost will always exist. The question is whether you have a system to capture it. With Supplement Snap, every hidden finding becomes a documented, submitted, trackable supplement, and you get paid for the work you're actually doing."
+        content: "Supplement Snap was built to make this systematic approach effortless. During tear-off, the crew opens the app and captures each finding: a photo tagged with the damage type and roof area, plus an optional voice note. Voice notes work in any language. Spanish-speaking crews describe findings in Spanish and the system auto-translates to English.\n\nFrom that field data, Supplement Snap generates everything you need:\n\n• A professional supplement narrative for each finding, written in the language adjusters expect\n• Xactimate line items with correct codes, quantities, and current regional pricing\n• An Xactimate-compatible CSV export the adjuster can import directly\n• A branded PDF report with photos, narratives, findings summary, and line items, ready to email\n\nThe entire process from capturing damage on the roof to emailing a complete supplement report takes minutes, not days. Your crew does what they're already doing (finding damage during tear-off) and Supplement Snap turns those findings into revenue.\n\nThe gap between the initial estimate and the final cost will always exist. The question is whether you have a system to capture it. With Supplement Snap, every hidden finding becomes a documented, submitted, trackable supplement, and you get paid for the work you're actually doing.\n\nCurious about actual supplement values? See <a href='/blog/how-much-do-roofing-supplements-pay'>how much roofing supplements pay</a>."
       },
     ],
   },
@@ -837,7 +838,7 @@ const ARTICLES: Article[] = [
     title: "Storm Damage Roof Repair Near Me: How Contractors Win Local Storm Jobs",
     metaTitle: "Storm Damage Roof Repair Near Me: How Contractors Capture Local Storm Jobs (2026)",
     metaDescription: "Learn how roofing contractors can dominate local storm damage repair searches. Lead generation strategies, insurance claim workflows, supplement documentation, and how to stand out from storm chasers.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-03-14",
     externalLinks: [
       { text: "Better Business Bureau: Contractor Lookup", url: "https://www.bbb.org" },
       { text: "NRCA: Find a Contractor", url: "https://www.nrca.net" },
@@ -919,7 +920,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How good contractors document damage for insurance (and how Supplement Snap helps)",
-        content: "The quality of damage documentation separates contractors who recover full insurance value from those who leave thousands of dollars on the table. For homeowners, this matters because thorough documentation means your insurance company pays for all necessary repairs. For contractors, this is the single biggest lever for revenue recovery on insurance jobs.\n\nGood documentation during tear-off includes:\n\n• Wide-angle photos showing the damage in context (where on the roof it is located)\n• Close-up photos showing the damage in detail (the condition of the affected material)\n• A description of each finding: what was found, where, what condition it was in, and why it was concealed\n• Accurate measurements: square footage of damaged decking, linear footage of failed flashing, count of deteriorated pipe boots\n• Xactimate line codes mapped to each finding with correct quantities and current regional pricing\n\nThe challenge is that this documentation needs to happen on the roof, during active tear-off, with a crew that's focused on getting the job done. Most contractors lose critical documentation because the crew takes a few blurry photos on a personal phone, texts them to the office days later, and by the time someone writes up the supplement, the details are incomplete.\n\nSupplement Snap solves this by putting the documentation tool directly in the crew's hands during tear-off. The crew member taps to capture a photo, selects the damage type (decking, flashing, pipe boot, ice and water shield), chooses the roof area, and records a quick voice note describing what they found. Voice notes work in any language, so Spanish-speaking crews describe findings naturally and the system auto-translates to English.\n\nFrom that field data captured in real time, Supplement Snap generates the complete supplement package: AI-written professional narratives, Xactimate line items with correct codes and pricing, an exportable CSV, and a branded PDF report ready to email to the adjuster. The supplement gets submitted the same day the damage is found, while the evidence is fresh and the adjuster can verify it.\n\nFor homeowners, this means your contractor captures every legitimate finding and submits proper documentation so your insurance covers the full repair. For contractors, this means systematic supplement recovery on every insurance job, turning what used to be an afterthought into a reliable revenue stream."
+        content: "The quality of damage documentation separates contractors who recover full insurance value from those who leave thousands of dollars on the table. For homeowners, this matters because thorough documentation means your insurance company pays for all necessary repairs. For contractors, this is the single biggest lever for revenue recovery on insurance jobs.\n\nGood documentation during tear-off includes:\n\n• Wide-angle photos showing the damage in context (where on the roof it is located)\n• Close-up photos showing the damage in detail (the condition of the affected material)\n• A description of each finding: what was found, where, what condition it was in, and why it was concealed\n• Accurate measurements: square footage of damaged decking, linear footage of failed flashing, count of deteriorated pipe boots\n• Xactimate line codes mapped to each finding with correct quantities and current regional pricing\n\nThe challenge is that this documentation needs to happen on the roof, during active tear-off, with a crew that's focused on getting the job done. Most contractors lose critical documentation because the crew takes a few blurry photos on a personal phone, texts them to the office days later, and by the time someone writes up the supplement, the details are incomplete.\n\nSupplement Snap solves this by putting the documentation tool directly in the crew's hands during tear-off. The crew member taps to capture a photo, selects the damage type (decking, flashing, pipe boot, ice and water shield), chooses the roof area, and records a quick voice note describing what they found. Voice notes work in any language, so Spanish-speaking crews describe findings naturally and the system auto-translates to English.\n\nFrom that field data captured in real time, Supplement Snap generates the complete supplement package: AI-written professional narratives, Xactimate line items with correct codes and pricing, an exportable CSV, and a branded PDF report ready to email to the adjuster. The supplement gets submitted the same day the damage is found, while the evidence is fresh and the adjuster can verify it.\n\nFor homeowners, this means your contractor captures every legitimate finding and submits proper documentation so your insurance covers the full repair. For contractors, this means systematic supplement recovery on every insurance job, turning what used to be an afterthought into a reliable revenue stream.\n\nFor hail specifically, see our <a href='/blog/hail-damage-roof-inspection'>hail damage inspection guide</a>."
       },
     ],
   },
@@ -928,7 +929,7 @@ const ARTICLES: Article[] = [
     title: "Best Roofing CRM in 2026: What to Look For and What's Missing",
     metaTitle: "Best Roofing CRM in 2026: Features, Options, and the Revenue Gap | Guide",
     metaDescription: "Compare the best roofing CRMs in 2026: JobNimbus, AccuLynx, Leap, and RoofLink. Learn what features matter, what CRMs don't do, and how to build a complete tech stack that captures supplement revenue.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-03-17",
     externalLinks: [
       { text: "NRCA: Technology Resources", url: "https://www.nrca.net" },
       { text: "Verisk Xactimate", url: "https://www.verisk.com/insurance/products/xactimate/" },
@@ -1005,7 +1006,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Where Supplement Snap fits in your tech stack",
-        content: "Supplement Snap was built to be that missing third layer. It doesn't replace your CRM. It doesn't compete with your estimating tool. It fills the gap that neither of them was designed to address: documenting concealed damage during tear-off and turning those findings into approved insurance supplements.\n\nHere's how it works in practice. Your CRM tracks the job through the pipeline. Your crew shows up on the scheduled date and begins tear-off. When they discover hidden damage (and they will on 70-90% of insurance jobs), they open Supplement Snap on their phone. They tap to capture a photo, select the damage type from a menu (decking, flashing, pipe boot, ice and water shield, drip edge), choose the roof area, and record a voice note describing what they found. The entire process takes about 30 seconds per finding. Voice notes work in any language. Spanish-speaking crews record their descriptions naturally, and the system auto-translates to English.\n\nFrom that field data, Supplement Snap generates everything needed for a professional supplement submission:\n\n• AI-written supplement narratives tailored to each finding, using the language and format insurance adjusters expect\n• Xactimate line items automatically mapped from the damage type, with correct codes, quantities, and current regional pricing\n• An Xactimate-compatible CSV file the adjuster can import directly into their system\n• A branded PDF report with photos, narratives, findings summary, and line item breakdown\n\nThe supplement gets submitted the same day the damage is found. No more photos lost in camera rolls. No more supplements that sit in the office for weeks. No more vague documentation that gets denied.\n\nYour CRM is essential for winning jobs and managing your business. Supplement Snap is essential for getting paid fully on the jobs your CRM helped you win. Together, they ensure that every dollar of revenue you earn actually reaches your bank account."
+        content: "Supplement Snap was built to be that missing third layer. It doesn't replace your CRM. It doesn't compete with your estimating tool. It fills the gap that neither of them was designed to address: documenting concealed damage during tear-off and turning those findings into approved insurance supplements.\n\nHere's how it works in practice. Your CRM tracks the job through the pipeline. Your crew shows up on the scheduled date and begins tear-off. When they discover hidden damage (and they will on 70-90% of insurance jobs), they open Supplement Snap on their phone. They tap to capture a photo, select the damage type from a menu (decking, flashing, pipe boot, ice and water shield, drip edge), choose the roof area, and record a voice note describing what they found. The entire process takes about 30 seconds per finding. Voice notes work in any language. Spanish-speaking crews record their descriptions naturally, and the system auto-translates to English.\n\nFrom that field data, Supplement Snap generates everything needed for a professional supplement submission:\n\n• AI-written supplement narratives tailored to each finding, using the language and format insurance adjusters expect\n• Xactimate line items automatically mapped from the damage type, with correct codes, quantities, and current regional pricing\n• An Xactimate-compatible CSV file the adjuster can import directly into their system\n• A branded PDF report with photos, narratives, findings summary, and line item breakdown\n\nThe supplement gets submitted the same day the damage is found. No more photos lost in camera rolls. No more supplements that sit in the office for weeks. No more vague documentation that gets denied.\n\nYour CRM is essential for winning jobs and managing your business. Supplement Snap is essential for getting paid fully on the jobs your CRM helped you win. Together, they ensure that every dollar of revenue you earn actually reaches your bank account.\n\nLooking at estimating tools too? See <a href='/blog/best-roof-estimating-software'>best roof estimating software</a>."
       },
     ],
   },
@@ -1014,7 +1015,7 @@ const ARTICLES: Article[] = [
     title: "Storm Damage Roof Repair: What Contractors Need to Know in 2026",
     metaTitle: "Storm Damage Roof Repair: Contractor Guide for Insurance Claims in 2026",
     metaDescription: "Complete guide to storm damage roof repair for contractors. Learn how to identify wind, hail, and debris damage, navigate insurance claims, and maximize recovery on every storm job.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-03-20",
     externalLinks: [
       { text: "NOAA Storm Prediction Center", url: "https://www.spc.noaa.gov" },
       { text: "NRCA: Storm Damage Resources", url: "https://www.nrca.net" },
@@ -1067,7 +1068,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How insurance claims work for storm damage",
-        content: "The insurance claims process for storm damage roof repair follows a predictable sequence, but each stage presents opportunities for contractors who are prepared.\n\nThe process begins when the homeowner files a claim with their insurance carrier after a storm event. The carrier assigns a claim number and schedules an adjuster to inspect the property. As the contractor, your role at this stage is to perform your own inspection, document all visible damage, and provide the homeowner with a professional inspection report they can share with their adjuster.\n\nWhen the adjuster arrives, they inspect the property and write an initial estimate using Xactimate. This estimate covers only the damage visible during their inspection. If you can be present during the adjuster's inspection, do it. Walk the roof with them, point out damage they might miss, and make sure they document every affected component.\n\nThe initial estimate rarely covers the full cost of the repair. Why? Because the adjuster inspects the roof from the surface. They cannot see what is under the shingles. Rotted decking, failed underlayment, corroded flashing, deteriorated pipe boots: these are all concealed by the existing roofing materials and only become visible during tear-off.\n\nThis is where supplements come in. When your crew tears off the existing roof and discovers hidden damage, you document it and submit a supplement to the insurance company requesting additional payment. The supplement includes photos, a written narrative describing the damage, and Xactimate line items with the correct codes and quantities.\n\nA well-documented supplement is almost always approved because the damage is real, verifiable, and was genuinely concealed before tear-off. The average supplement on a storm damage job recovers $1,500 to $3,200 in additional revenue."
+        content: "The insurance claims process for storm damage roof repair follows a predictable sequence, but each stage presents opportunities for contractors who are prepared.\n\nThe process begins when the homeowner files a claim with their insurance carrier after a storm event. The carrier assigns a claim number and schedules an adjuster to inspect the property. As the contractor, your role at this stage is to perform your own inspection, document all visible damage, and provide the homeowner with a professional inspection report they can share with their adjuster.\n\nWhen the adjuster arrives, they inspect the property and write an initial estimate using Xactimate. This estimate covers only the damage visible during their inspection. If you can be present during the adjuster's inspection, do it. Walk the roof with them, point out damage they might miss, and make sure they document every affected component.\n\nThe initial estimate rarely covers the full cost of the repair. Why? Because the adjuster inspects the roof from the surface. They cannot see what is under the shingles. Rotted decking, failed underlayment, corroded flashing, deteriorated pipe boots: these are all concealed by the existing roofing materials and only become visible during tear-off.\n\nThis is where supplements come in. When your crew tears off the existing roof and discovers hidden damage, you document it and submit a supplement to the insurance company requesting additional payment. The supplement includes photos, a written narrative describing the damage, and Xactimate line items with the correct codes and quantities.\n\nA well-documented supplement is almost always approved because the damage is real, verifiable, and was concealed before tear-off. The average supplement on a storm damage job recovers $1,500 to $3,200 in additional revenue."
       },
       {
         heading: "Hidden damage found during tear-off after storms",
@@ -1083,7 +1084,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Streamlining storm damage documentation with Supplement Snap",
-        content: "Storm damage roof repair is a volume business. During peak storm season, you may have dozens of jobs in progress simultaneously, each with its own hidden damage findings, supplement documentation, and insurance communication. Managing this manually with camera rolls, text messages, and spreadsheets is not scalable.\n\nSupplement Snap was designed for exactly this scenario. During tear-off, your crew opens the app and captures each finding in seconds: a photo tagged with the damage type (decking, flashing, pipe boot, ice and water shield) and the roof area (front slope, back slope, valley, chimney). They can add a voice note describing the damage in any language, and the system auto-translates Spanish voice notes to English.\n\nFrom those field captures, Supplement Snap generates a professional supplement package:\n\n• AI-written damage narratives in the language adjusters expect\n• Xactimate line items with correct codes, quantities, and current regional pricing\n• An Xactimate-compatible CSV the adjuster can import directly into their system\n• A branded PDF report with photos, narratives, and a findings summary, ready to email\n\nThe entire process from discovering hidden damage on the roof to sending a complete supplement to the adjuster takes minutes. Your crew documents as they work, and Supplement Snap handles the rest. On storm damage jobs where speed and volume matter most, that efficiency is the difference between recovering thousands in supplements and leaving money on every roof."
+        content: "Storm damage roof repair is a volume business. During peak storm season, you may have dozens of jobs in progress simultaneously, each with its own hidden damage findings, supplement documentation, and insurance communication. Managing this manually with camera rolls, text messages, and spreadsheets is not scalable.\n\nSupplement Snap was designed for exactly this scenario. During tear-off, your crew opens the app and captures each finding in seconds: a photo tagged with the damage type (decking, flashing, pipe boot, ice and water shield) and the roof area (front slope, back slope, valley, chimney). They can add a voice note describing the damage in any language, and the system auto-translates Spanish voice notes to English.\n\nFrom those field captures, Supplement Snap generates a professional supplement package:\n\n• AI-written damage narratives in the language adjusters expect\n• Xactimate line items with correct codes, quantities, and current regional pricing\n• An Xactimate-compatible CSV the adjuster can import directly into their system\n• A branded PDF report with photos, narratives, and a findings summary, ready to email\n\nThe entire process from discovering hidden damage on the roof to sending a complete supplement to the adjuster takes minutes. Your crew documents as they work, and Supplement Snap handles the rest. On storm damage jobs where speed and volume matter most, that efficiency is the difference between recovering thousands in supplements and leaving money on every roof.\n\nFor a complete contractor guide to all damage types, see <a href='/blog/roof-damage-repair-guide'>roof damage repair guide</a>."
       },
     ],
   },
@@ -1092,7 +1093,7 @@ const ARTICLES: Article[] = [
     title: "Roof Damage Repair: Contractor Guide to Identifying, Documenting, and Getting Paid",
     metaTitle: "Roof Damage Repair: Contractor Guide to Documentation and Insurance Recovery (2026)",
     metaDescription: "Contractor guide to roof damage repair: how to identify all damage types, document findings for insurance, navigate repair vs. replace decisions, and recover full value through supplements.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-03-24",
     externalLinks: [
       { text: "NRCA: Roof Repair Standards", url: "https://www.nrca.net" },
       { text: "International Building Code (ICC)", url: "https://www.iccsafe.org" },
@@ -1169,7 +1170,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Documenting roof damage repair with Supplement Snap",
-        content: "The gap between what an insurance estimate covers and what the repair actually costs is real, and it exists on virtually every job. Closing that gap requires systematic documentation of hidden damage, professional supplement narratives, and accurate Xactimate coding. Doing this manually for every job is time-consuming and error-prone.\n\nSupplement Snap streamlines the entire documentation workflow for roof damage repair. During tear-off, your crew captures each finding directly in the app: a photo tagged with the damage type and roof area, plus an optional voice note in any language. Spanish-speaking crews describe findings in their native language and the system translates to English automatically.\n\nFrom those field captures, Supplement Snap generates:\n\n• Professional damage narratives written in the clear, specific language adjusters require\n• Xactimate line items with correct codes, proper units, and current regional pricing\n• An Xactimate-compatible CSV export the adjuster can import into their system\n• A branded PDF report with photos, narratives, and a complete findings summary\n\nThe result is a complete, professional supplement package ready to send to the adjuster within minutes of discovering hidden damage. No more lost photos, forgotten findings, or supplements that sit unfinished for weeks. Every hidden finding becomes a documented, submitted supplement, and you get paid for every repair you perform."
+        content: "The gap between what an insurance estimate covers and what the repair actually costs is real, and it exists on virtually every job. Closing that gap requires systematic documentation of hidden damage, professional supplement narratives, and accurate Xactimate coding. Doing this manually for every job is time-consuming and error-prone.\n\nSupplement Snap streamlines the entire documentation workflow for roof damage repair. During tear-off, your crew captures each finding directly in the app: a photo tagged with the damage type and roof area, plus an optional voice note in any language. Spanish-speaking crews describe findings in their native language and the system translates to English automatically.\n\nFrom those field captures, Supplement Snap generates:\n\n• Professional damage narratives written in the clear, specific language adjusters require\n• Xactimate line items with correct codes, proper units, and current regional pricing\n• An Xactimate-compatible CSV export the adjuster can import into their system\n• A branded PDF report with photos, narratives, and a complete findings summary\n\nThe result is a complete, professional supplement package ready to send to the adjuster within minutes of discovering hidden damage. No more lost photos, forgotten findings, or supplements that sit unfinished for weeks. Every hidden finding becomes a documented, submitted supplement, and you get paid for every repair you perform.\n\nNeed to write an inspection report? See our <a href='/blog/roof-inspection-report'>roof inspection report guide</a>."
       },
     ],
   },
@@ -1178,7 +1179,7 @@ const ARTICLES: Article[] = [
     title: "Roof Inspection Report: What to Include and How to Write One",
     metaTitle: "Roof Inspection Report: What to Include and How to Write One (2026 Guide)",
     metaDescription: "Learn how to write a professional roof inspection report that gets insurance claims approved. Includes what to document, report structure, common mistakes, and software tools.",
-    publishedDate: "2026-03-23",
+    publishedDate: "2026-03-27",
     externalLinks: [
       { text: "NRCA: Roof Inspection Guidelines", url: "https://www.nrca.net" },
       { text: "ASTM Roofing Standards", url: "https://www.astm.org" },
@@ -1242,11 +1243,22 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How software automates roof inspection reports",
-        content: "The traditional approach to roof inspection reports involves taking photos on a phone, scribbling notes on paper or a notepad app, and then spending hours at a desk assembling everything into a document. This manual process is slow, error-prone, and does not scale when you have multiple inspections per day.\n\nModern inspection software changes this by moving the documentation process to the roof. Instead of taking random photos and hoping you remember the details later, you capture findings in a structured format while you are looking at the damage.\n\nSupplement Snap takes this a step further for contractors focused on insurance work and supplement recovery. During the inspection or tear-off, your crew captures each finding in the app: a photo tagged with the damage type (decking, flashing, pipe boot, ice and water shield) and the roof area (front slope, valley, chimney). They can add a voice note describing the finding in any language.\n\nFrom those structured field captures, Supplement Snap generates:\n\n• Professional damage narratives written in the specific, detailed language that adjusters require for claim processing\n• Xactimate line items with correct codes, accurate quantities, and current regional pricing\n• An Xactimate-compatible CSV export the adjuster can import directly into their estimating system\n• A complete, branded PDF report with cover page, findings summary, individual finding pages, and all supporting photos\n\nThe result is a professional roof inspection report produced in minutes instead of hours. Everything is captured in real time on the roof, so nothing gets lost or forgotten. The report goes to the adjuster or homeowner the same day, while the inspection is fresh. For contractors who perform multiple inspections per week, this automation is the difference between thorough documentation on every job and cutting corners because there is not enough time to write proper reports."
+        content: "The traditional approach to roof inspection reports involves taking photos on a phone, scribbling notes on paper or a notepad app, and then spending hours at a desk assembling everything into a document. This manual process is slow, error-prone, and does not scale when you have multiple inspections per day.\n\nModern inspection software changes this by moving the documentation process to the roof. Instead of taking random photos and hoping you remember the details later, you capture findings in a structured format while you are looking at the damage.\n\nSupplement Snap takes this a step further for contractors focused on insurance work and supplement recovery. During the inspection or tear-off, your crew captures each finding in the app: a photo tagged with the damage type (decking, flashing, pipe boot, ice and water shield) and the roof area (front slope, valley, chimney). They can add a voice note describing the finding in any language.\n\nFrom those structured field captures, Supplement Snap generates:\n\n• Professional damage narratives written in the specific, detailed language that adjusters require for claim processing\n• Xactimate line items with correct codes, accurate quantities, and current regional pricing\n• An Xactimate-compatible CSV export the adjuster can import directly into their estimating system\n• A complete, branded PDF report with cover page, findings summary, individual finding pages, and all supporting photos\n\nThe result is a professional roof inspection report produced in minutes instead of hours. Everything is captured in real time on the roof, so nothing gets lost or forgotten. The report goes to the adjuster or homeowner the same day, while the inspection is fresh. For contractors who perform multiple inspections per week, this automation is the difference between thorough documentation on every job and cutting corners because there is not enough time to write proper reports.\n\nOnce damage is documented, the next step is writing the supplement. See <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a>."
       },
     ],
   },
 ]
+
+/* ── Inline link parser ── */
+function parseInlineLinks(str: string): React.ReactNode {
+  const parts = str.split(/(<a\s+href='[^']*'>[^<]*<\/a>)/g)
+  if (parts.length === 1) return str
+  return parts.map((part, i) => {
+    const m = part.match(/<a\s+href='([^']*)'>(.*?)<\/a>/)
+    if (m) return <Link key={i} href={m[1]} className="text-indigo-600 underline hover:text-indigo-800">{m[2]}</Link>
+    return part
+  })
+}
 
 /* ── Rich content renderer ── */
 function RichContent({ text }: { text: string }) {
@@ -1386,8 +1398,8 @@ function RichContent({ text }: { text: string }) {
         return (
           <p key={pi} className="text-base leading-relaxed text-zinc-600">
             {hasLabelColon ? (
-              <><span className="font-semibold text-zinc-900">{trimmed.slice(0, colonIdx)}</span>{trimmed.slice(colonIdx)}</>
-            ) : trimmed}
+              <><span className="font-semibold text-zinc-900">{trimmed.slice(0, colonIdx)}</span>{parseInlineLinks(trimmed.slice(colonIdx))}</>
+            ) : parseInlineLinks(trimmed)}
           </p>
         )
       })}
@@ -1533,6 +1545,17 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
           </div>
         )}
 
+        {/* Key Takeaways */}
+        <div className="mb-12 rounded-xl border border-indigo-200 bg-gradient-to-br from-indigo-50 to-white p-6">
+          <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-indigo-700">
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            Key Takeaways
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-zinc-700">
+            {article.metaDescription}
+          </p>
+        </div>
+
         <div className="space-y-10">
           {article.sections.map((section, i) => (
             <section key={i}>
@@ -1581,6 +1604,24 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
             <Link href="/pricing" className="rounded-lg border border-zinc-300 bg-white px-6 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
               See Pricing
             </Link>
+          </div>
+        </div>
+
+        {/* Author Bio */}
+        <div className="mt-16 flex flex-col items-center gap-4 rounded-xl border border-zinc-200 bg-zinc-50 p-6 text-center sm:flex-row sm:items-start sm:gap-5 sm:text-left">
+          <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-2xl font-bold text-indigo-700" style={{fontFamily: "serif"}}>
+            KS
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600">Written by</p>
+            <p className="mt-1 text-lg font-bold text-zinc-900">Kelvin Spratt</p>
+            <p className="mt-0.5 text-sm text-zinc-500">Founder, Supplement Snap</p>
+            <p className="mt-2 text-sm leading-relaxed text-zinc-600">
+              Kelvin builds software for roofing contractors who are tired of
+              leaving supplement money on the table. His background in software
+              development and insurance restoration workflows drives everything
+              Supplement Snap does.
+            </p>
           </div>
         </div>
 
