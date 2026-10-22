@@ -28,6 +28,7 @@ const ARTICLES = [
   { slug: "storm-damage-roof-repair", title: "Storm Damage Roof Repair: What Contractors Need to Know in 2026", desc: "Types of storm damage, how insurance claims work, hidden damage found during tear-off, documentation requirements, and how to maximize recovery.", date: "2026-03-20" },
   { slug: "roof-damage-repair-guide", title: "Roof Damage Repair: Contractor Guide to Identifying, Documenting, and Getting Paid", desc: "Contractor guide to roof damage repair: identify all damage types, document for insurance, navigate repair vs. replace, and recover full value through supplements.", date: "2026-03-24" },
   { slug: "roof-inspection-report", title: "Roof Inspection Report: What to Include and How to Write One", desc: "What a roof inspection report is, what to include, step-by-step writing guide, report structure, common mistakes, and how software automates it.", date: "2026-03-27" },
+  { slug: "xactimate-roofing-estimate-approved", title: "How to Write an Xactimate Roofing Estimate That Actually Gets Approved", desc: "Measurements, line items, waste and pitch charges, O&P and photo proof: how to write a roof estimate adjusters approve.", date: "2026-10-22" },
 ]
 
 export default function BlogIndex() {

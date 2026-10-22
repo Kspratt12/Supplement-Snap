@@ -4,6 +4,7 @@ import { NavLinks } from "../../lib/nav-links"
 import { SiteFooter } from "../../lib/site-footer"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "https://supplementsnap.io/roofing-supplement-report-example" },
   title: "Roofing Supplement Report Example | Supplement Snap",
   description:
     "See what a professional roofing supplement report looks like. Includes damage descriptions, supporting photos, and adjuster-ready documentation.",

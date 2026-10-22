@@ -90,14 +90,19 @@ export default function DashboardPage() {
       return
     }
 
-    const projectsWithCounts: ProjectWithCount[] = []
-    for (const p of projectsData) {
-      const { count } = await supabase
-        .from("captures")
-        .select("*", { count: "exact", head: true })
-        .eq("project_id", p.id)
-      projectsWithCounts.push({ ...p, capture_count: count || 0 })
+    // One query for all capture counts instead of one request per project
+    const { data: captureRows } = await supabase
+      .from("captures")
+      .select("project_id")
+      .in("project_id", projectsData.map((p: { id: string }) => p.id))
+    const countByProject = new Map<string, number>()
+    for (const row of captureRows || []) {
+      countByProject.set(row.project_id, (countByProject.get(row.project_id) || 0) + 1)
     }
+    const projectsWithCounts: ProjectWithCount[] = projectsData.map((p: { id: string }) => ({
+      ...p,
+      capture_count: countByProject.get(p.id) || 0,
+    })) as ProjectWithCount[]
 
     setProjects(projectsWithCounts)
 

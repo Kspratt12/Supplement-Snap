@@ -4,6 +4,7 @@ import { NavLinks } from "../../lib/nav-links"
 import { SiteFooter } from "../../lib/site-footer"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "https://supplementsnap.io/hidden-roof-damage-tear-off" },
   title: "Hidden Roof Damage Found During Tear-Off | Supplement Snap",
   description:
     "Common hidden roof damage discovered during tear-off including rotten decking, flashing failure, and missing ice and water shield. Learn why documentation matters.",

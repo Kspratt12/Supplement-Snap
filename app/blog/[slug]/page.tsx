@@ -1247,6 +1247,108 @@ const ARTICLES: Article[] = [
       },
     ],
   },
+  {
+    slug: "xactimate-roofing-estimate-approved",
+    title: "How to Write an Xactimate Roofing Estimate That Actually Gets Approved",
+    metaTitle: "Xactimate Roofing Estimate: How to Get It Approved",
+    metaDescription: "How to write an Xactimate roofing estimate adjusters approve: accurate measurements, complete line items, waste and pitch charges, O&P, and the photos that back it up.",
+    publishedDate: "2026-10-22",
+    externalLinks: [
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+      { text: "NRCA Roofing Manual and Standards", url: "https://www.nrca.net" },
+    ],
+    highlight: { label: "Before You Submit", value: "12 Checks", subtext: "The review checklist at the end of this guide catches the most common reasons roof estimates get cut" },
+    visuals: {
+      1: { type: "compare", data: {
+        before: { label: "Estimates That Get Reduced", items: ["Roof area guessed from the ground", "Pitch and height not recorded", "Missing starter, drip edge, ridge cap", "Round-number quantities with no source", "No photos tied to line items"] },
+        after: { label: "Estimates That Get Approved", items: ["Measurement report or taped dimensions attached", "Pitch, stories and access noted per slope", "Every roof component itemized", "Quantities traceable to measurements", "Each line item backed by a labeled photo"] },
+      }},
+      2: { type: "steps", data: [
+        { num: "1", title: "Set up the claim", desc: "Enter the loss date, price list and property details so unit prices match the right region and quarter." },
+        { num: "2", title: "Add the roof sketch", desc: "Draw each slope or import a measurement report so area, ridge, hip, valley, rake and eave lengths come from real numbers." },
+        { num: "3", title: "Choose the shingle line items", desc: "Pick the tear-off and install items for the shingle type actually on the roof, then add waste." },
+        { num: "4", title: "Add the accessories", desc: "Starter, drip edge, ridge cap, underlayment, ice and water barrier, vents, pipe jacks and flashing." },
+        { num: "5", title: "Apply charges and O&P", desc: "Add pitch and height charges where they apply, plus overhead and profit when the job qualifies." },
+        { num: "6", title: "Attach photos and notes", desc: "Tie each item to a labeled photo so the adjuster can verify it without calling you." },
+      ]},
+      4: { type: "tip", data: {
+        type: "warning",
+        title: "Do not round up quantities without a reason",
+        text: "Adjusters compare your quantities to the measurements. If you claim 28 squares and the report shows 24.6 plus waste, expect a call or a cut. Show the math and the waste percentage you used.",
+      }},
+      6: { type: "checklist", data: {
+        title: "Photo Checklist for an Xactimate Roof Estimate",
+        items: [
+          { text: "Each slope from a distance with the slope labeled (front, rear, left, right)", checked: true },
+          { text: "Pitch confirmed with a gauge or level in frame", checked: true },
+          { text: "Close-ups of each damage type with a chalk circle or marker", checked: true },
+          { text: "Existing drip edge, starter, ridge cap and flashing condition", checked: true },
+          { text: "Pipe jacks, vents and chimney details", checked: true },
+          { text: "Number of stories and any access limits (steep, tall, no driveway)", checked: true },
+          { text: "Hidden damage found at tear-off, photographed before it is covered", checked: true },
+        ],
+      }},
+      7: { type: "checklist", data: {
+        title: "12-Point Review Before You Submit",
+        items: [
+          { text: "Roof measurements match the attached report or your taped dimensions", checked: true },
+          { text: "Waste percentage is stated and appropriate for the roof shape", checked: true },
+          { text: "Tear-off and install both included for every layer", checked: true },
+          { text: "Starter strip, drip edge and ridge cap are itemized", checked: true },
+          { text: "Underlayment and ice and water barrier match local code", checked: true },
+          { text: "Pipe jacks, vents and flashing are counted individually", checked: true },
+          { text: "Pitch and height charges applied where they truly apply", checked: true },
+          { text: "Debris haul-off and any permit costs included", checked: true },
+          { text: "Overhead and profit requested when multiple trades are involved", checked: true },
+          { text: "Every line item has at least one labeled photo", checked: true },
+          { text: "Code citations attached for any upgrade items", checked: true },
+          { text: "Claim number, loss date and price list are correct on every page", checked: true },
+        ],
+      }},
+    },
+    sections: [
+      {
+        heading: "What does an approved Xactimate roofing estimate actually look like?",
+        content: "An approved estimate is one the adjuster can verify quickly and has no reason to cut. It does not mean the highest number. It means every line item ties back to a measurement, a photo or a building code, so the adjuster can say yes without a long back-and-forth.\n\nMost reductions are not about the carrier being unfair. They happen because something on the estimate could not be verified in a few minutes: a quantity with no source, a charge with no explanation, or a component that was never mentioned. Your job is to remove those gaps before you submit.\n\nThis guide covers the estimate you write for the claim itself. If you are adding items after tear-off, read <a href='/blog/xactimate-roof-estimate-supplements'>how to build an Xactimate roof estimate for insurance supplements</a> and keep the <a href='/blog/xactimate-codes-for-roofing-supplements'>Xactimate codes reference</a> open while you work.",
+      },
+      {
+        heading: "Start with measurements the adjuster can trust",
+        content: "Every number on a roof estimate starts with measurements. If those are weak, everything built on them is easy to challenge.\n\nUse a satellite or drone measurement report when you can, and confirm it with a few taped dimensions on the roof. Record these for each slope:\n\n• Area in squares\n• Pitch (rise over 12 inches of run)\n• Eave, rake, ridge, hip and valley lengths\n• Number of stories and any access problems\n\nAttach the report or your field notes to the estimate. When the adjuster can see where each quantity came from, there is much less to argue about.",
+      },
+      {
+        heading: "Build the estimate in the order adjusters read it",
+        content: "Adjusters review estimates top to bottom, usually slope by slope or trade by trade. A clean structure makes your estimate easier to approve because it matches how they check their own work.\n\nA reliable order is: claim setup, roof sketch, main shingle items, accessories, charges, then overhead and profit. Document each step as you go so nothing depends on memory later.",
+      },
+      {
+        heading: "Line items that get left off roof estimates",
+        content: "Missing items are the most common source of lost revenue. A shingle line alone does not describe a roof replacement. Check that these are on your estimate when they apply to the job:\n\n• Starter strip: Installed along eaves and rakes on most shingle systems\n• Drip edge: Often required by code, and frequently missing from first estimates\n• Ridge and hip cap: Priced separately from field shingles\n• Underlayment: Felt or synthetic, matched to the manufacturer and local code\n• Ice and water barrier: Required in many climates at eaves and valleys\n• Pipe jacks and vents: Count every one and itemize them\n• Step flashing and counter flashing: Measured in linear feet at walls and chimneys\n• Debris haul-off: Including extra layers when there are two roofs on the house\n\nThe Xactimate item names and codes for these are in our <a href='/blog/xactimate-codes-for-roofing-supplements'>codes reference</a>. Always confirm the exact item and unit price against your own price list, since codes and pricing change by region and by quarter.",
+      },
+      {
+        heading: "Waste, pitch and height: where estimates get challenged",
+        content: "Three adjustments cause more disagreement than any others.\n\nWaste: Shingle waste depends on roof shape. A simple gable roof wastes less than a cut-up hip roof with many valleys. State the percentage you used and be ready to explain it. A single blanket number applied to every roof looks careless.\n\nPitch: Steeper roofs take more labor and carry extra charges in Xactimate. Record the pitch for every slope with a gauge in the photo, not just an estimate from the ground.\n\nHeight: Roofs on taller homes can qualify for an additional charge for the added difficulty. Note the number of stories and photograph the home from the street so the adjuster can see it.",
+      },
+      {
+        heading: "Overhead and profit: ask for it when it applies",
+        content: "Overhead and profit, usually shortened to O&P, covers the general contractor's cost of coordinating a job. It is commonly requested when a repair involves several trades, such as roofing plus gutters, siding, drywall or paint.\n\nCarriers often resist O&P, so do not tack it on without support. List the trades involved, show that a general contractor is needed to coordinate them, and cite your policy language and state rules where they apply. Rules vary, so check what your state and the policy allow.",
+      },
+      {
+        heading: "Photos and notes that prove every line item",
+        content: "The estimate says what you want paid. The photos prove why. Every significant line item should have at least one labeled photo, and the labels should match the line item names so the adjuster can connect them instantly.\n\nTake photos before anything is removed or covered, and keep the originals. Metadata such as time and location helps establish when and where the photo was taken. Our guide to <a href='/blog/hail-damage-roof-inspection'>hail damage roof inspections</a> explains what to capture on the roof, and the <a href='/blog/roof-inspection-report'>roof inspection report guide</a> covers how to organize it.",
+      },
+      {
+        heading: "Review your estimate before you submit it",
+        content: "A five-minute review catches mistakes that cost you days later. Read the estimate as if you were the adjuster looking for a reason to question it, then work through the checklist below.\n\nIf you find a gap, fix it now. Once the estimate is submitted, every correction becomes a supplement and a new round of review.",
+      },
+      {
+        heading: "What to do when your estimate is cut anyway",
+        content: "Even a strong estimate can come back reduced. Do not accept the first number without reading the reasons. Compare the carrier's version to yours line by line and identify exactly what changed: quantities, items removed, or charges disallowed.\n\nRespond in writing, item by item, and attach the photo or measurement that answers each cut. Our guide on <a href='/blog/roofing-supplement-denied-what-to-do'>what to do when a roofing supplement is denied</a> walks through the appeal process, and <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a> shows how to document additional damage found during tear-off.",
+      },
+      {
+        heading: "How Supplement Snap helps you build estimates adjusters approve",
+        content: "Most estimate disputes come down to documentation. Photos are scattered across phones, notes get lost and nobody remembers which picture shows which damage.\n\nSupplement Snap lets your crew capture photos from the roof, attach notes to each finding, and organize everything by project. It generates a supplement narrative and a PDF report you can send to the adjuster, so the evidence that supports your estimate is ready when the adjuster asks for it.",
+      },
+    ],
+  },
 ]
 
 /* ── Inline link parser ── */
@@ -1416,7 +1518,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const article = ARTICLES.find((a) => a.slug === slug)
   if (!article) return {}
   const firstImage = article.images ? Object.values(article.images)[0] : null
-  const ogImage = firstImage ? `https://supplementsnap.io${firstImage.src}` : "https://supplementsnap.io/og-default.png"
+  const ogImage = firstImage ? `https://supplementsnap.io${firstImage.src}` : "https://supplementsnap.io/opengraph-image"
   return {
     title: article.metaTitle,
     description: article.metaDescription,
