@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "../../lib/auth-context"
+import { supabase } from "../../lib/supabase"
 
 const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || "admin@supplementsnap.com"
 
@@ -57,10 +58,13 @@ export default function AdminPage() {
     setLoading(true)
     setError("")
     try {
+      const { data: { session } } = await supabase.auth.getSession()
       const res = await fetch("/api/admin/stats", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userEmail: user?.email }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.access_token ?? ""}`,
+        },
       })
       if (!res.ok) {
         const data = await res.json().catch(() => null)

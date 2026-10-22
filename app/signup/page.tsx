@@ -32,7 +32,7 @@ export default function SignupPage() {
 
     setLoading(true)
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -43,16 +43,37 @@ export default function SignupPage() {
     if (error) {
       setError(error.message)
       setLoading(false)
-    } else {
-      trackEvent("signup_completed")
-      // Send welcome email (fire-and-forget)
-      fetch("/api/send-onboarding-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ to: email, name, type: "welcome" }),
-      }).catch(() => {})
-      router.push("/dashboard")
+      return
     }
+
+    // signUp only returns a session when email confirmation is off in Supabase.
+    // If it did not, sign in with the same credentials right away.
+    let session = data.session
+    if (!session) {
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      if (signInError || !signInData.session) {
+        setError(
+          signInError?.message === "Email not confirmed"
+            ? "Account created. Please confirm your email, then log in."
+            : "Account created, but automatic login failed. Please log in."
+        )
+        setLoading(false)
+        return
+      }
+      session = signInData.session
+    }
+
+    trackEvent("signup_completed")
+    // Welcome email is optional: never block or fail the signup on it
+    fetch("/api/send-onboarding-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ to: email, name, type: "welcome" }),
+    }).catch(() => {})
+    router.push("/dashboard")
   }
 
   if (authLoading) return null

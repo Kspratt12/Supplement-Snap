@@ -125,10 +125,9 @@ function buildSubscriptionActiveEmail(name: string): { subject: string; html: st
 export async function POST(request: Request) {
   try {
     if (!process.env.RESEND_API_KEY) {
-      return NextResponse.json(
-        { error: "Email service not configured" },
-        { status: 500 }
-      )
+      // Email is optional: report it but never fail the caller
+      console.error("Onboarding email skipped: RESEND_API_KEY not set")
+      return NextResponse.json({ success: false, emailSent: false })
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY)
@@ -163,17 +162,12 @@ export async function POST(request: Request) {
 
     if (error) {
       console.error("Onboarding email error:", error)
-      return NextResponse.json(
-        { error: error.message || "Failed to send email" },
-        { status: 500 }
-      )
+      return NextResponse.json({ success: false, emailSent: false })
     }
 
     return NextResponse.json({ success: true })
   } catch (err) {
     console.error("Send onboarding email error:", err)
-    const message =
-      err instanceof Error ? err.message : "Unknown error occurred"
-    return NextResponse.json({ error: message }, { status: 500 })
+    return NextResponse.json({ success: false, emailSent: false })
   }
 }
