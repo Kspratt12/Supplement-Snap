@@ -9,6 +9,7 @@ type AnalyticsEvent =
   | "login_completed"
   | "checkout_started"
   | "subscription_active"
+  | "waitlist_joined"
 
 declare global {
   interface Window {

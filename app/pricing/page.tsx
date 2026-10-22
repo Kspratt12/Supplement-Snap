@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Suspense } from "react"
-import { CheckoutButton, CancelBanner } from "./checkout-button"
+import { CheckoutButton } from "./checkout-button"
 import { SiteFooter } from "../../lib/site-footer"
 
 export const metadata: Metadata = {
@@ -106,13 +105,9 @@ export default function PricingPage() {
           Simple pricing for roofing teams
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-zinc-500 sm:text-lg">
-          One approved supplement pays for the entire platform. Start with a 14-day free trial, no credit card required.
+          One approved supplement pays for the entire platform. Join the waitlist for early access.
         </p>
       </section>
-
-      <Suspense fallback={null}>
-        <CancelBanner />
-      </Suspense>
 
       {/* Pricing Cards */}
       <section className="mx-auto max-w-6xl px-6 py-16">
@@ -138,10 +133,10 @@ export default function PricingPage() {
             </div>
 
             <Link
-              href="/signup"
+              href="/waitlist"
               className="mt-8 block w-full rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
             >
-              Start Free Project
+              Join the Waitlist
             </Link>
           </div>
 
@@ -166,7 +161,7 @@ export default function PricingPage() {
               ))}
             </div>
 
-            <CheckoutButton plan="starter" label="Start 14-Day Free Trial" />
+            <CheckoutButton plan="starter" label="Join the Waitlist" />
           </div>
 
           {/* Team */}
@@ -193,7 +188,7 @@ export default function PricingPage() {
               ))}
             </div>
 
-            <CheckoutButton plan="team" label="Start 14-Day Free Trial" />
+            <CheckoutButton plan="team" label="Join the Waitlist" />
             <p className="mt-3 text-center text-xs text-zinc-400">
               Best value for small crews.
             </p>
@@ -220,7 +215,7 @@ export default function PricingPage() {
               ))}
             </div>
 
-            <CheckoutButton plan="pro" label="Start 14-Day Free Trial" />
+            <CheckoutButton plan="pro" label="Join the Waitlist" />
           </div>
         </div>
 
@@ -318,8 +313,8 @@ export default function PricingPage() {
             <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
               Book a Demo
             </Link>
-            <Link href="/signup" className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
-              Get Started
+            <Link href="/waitlist" className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
+              Join the Waitlist
             </Link>
           </div>
         </div>
