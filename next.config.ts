@@ -1,13 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  async redirects() {
-    return ["/login", "/signup", "/forgot-password", "/reset-password", "/app", "/dashboard", "/admin", "/success"].map((source) => ({
-      source,
-      destination: "/waitlist",
-      permanent: false,
-    }));
-  },
   async headers() {
     return [
       {
