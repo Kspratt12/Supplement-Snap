@@ -821,8 +821,8 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-              <Link href="/waitlist" className="mt-6 block w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
-                Join the Waitlist
+              <Link href="/signup" className="mt-6 block w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
+                Start Free Project
               </Link>
             </div>
 
@@ -946,10 +946,10 @@ export default function LandingPage() {
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
-              href="/waitlist"
+              href="/signup?trial=1"
               className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
             >
-              Join the Waitlist
+              Start Free Project
             </Link>
             <Link
               href="/demo"
