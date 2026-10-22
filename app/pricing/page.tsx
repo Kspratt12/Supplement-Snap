@@ -5,6 +5,7 @@ import { CheckoutButton, CancelBanner } from "./checkout-button"
 import { SiteFooter } from "../../lib/site-footer"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "https://supplementsnap.io/pricing" },
   title: "Pricing – Supplement Snap",
   description: "Simple pricing for roofing teams. Starter for solo crews, Team for small crews, Pro for growing companies.",
 }

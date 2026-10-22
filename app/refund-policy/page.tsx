@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { LegalLayout } from "../../lib/legal-layout"
 
-export const metadata: Metadata = { title: "Refund Policy – Supplement Snap" }
+export const metadata: Metadata = { title: "Refund Policy – Supplement Snap", alternates: { canonical: "https://supplementsnap.io/refund-policy" } }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (

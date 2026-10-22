@@ -4,6 +4,7 @@ import { NavLinks } from "../../lib/nav-links"
 import { SiteFooter } from "../../lib/site-footer"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "https://supplementsnap.io/roofing-supplement-documentation" },
   title: "Roofing Supplement Documentation | Supplement Snap",
   description:
     "What documentation do insurance adjusters need for roofing supplements? Photos, damage descriptions, locations, and supporting notes, captured during tear-off.",
