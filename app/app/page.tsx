@@ -3469,6 +3469,12 @@ function Home() {
           </div>
         </section>
       )}
+      <div className="mb-8 mt-10 text-center">
+        <Link href="/dashboard" className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+          &larr; Back to Dashboard
+        </Link>
+      </div>
+
       {undoCapture && (
         <div role="status" className="fixed bottom-4 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 items-center justify-between gap-3 rounded-xl bg-zinc-900 px-4 py-3 text-sm text-white shadow-lg">
           <span>Capture deleted</span>
@@ -3704,7 +3710,7 @@ function Home() {
               You&apos;ve seen what Supplement Snap can do. Upgrade to get unlimited projects, PDF downloads, email reports to adjusters, and Xactimate CSV export.
             </p>
             <div className="mt-2 rounded-lg bg-green-50 border border-green-200 px-3 py-2 text-center">
-              <p className="text-xs font-medium text-green-700">One approved supplement pays for the entire year.</p>
+              <p className="text-xs font-medium text-green-700">Cancel anytime from your account page.</p>
             </div>
             <div className="mt-5 flex gap-3">
               <Link
