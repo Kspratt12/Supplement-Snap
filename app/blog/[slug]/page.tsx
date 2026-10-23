@@ -869,7 +869,7 @@ const ARTICLES: Article[] = [
       1: { src: "/blog/hail-damage-roof-inspection/hail-damaged-shingles.jpg", width: 1200, height: 630, alt: "Close-up of hail-damaged roof shingles showing circular impact marks and granule loss" },
       3: { src: "/blog/hail-damage-roof-inspection/hidden-hail-damage.jpg", width: 1280, height: 720, alt: "Cracked pipe boot found during hail damage roof tear-off inspection" },
     },
-    related: ["storm-damage-roof-repair-near-me","storm-damage-roof-repair","roofing-photo-documentation-checklist","roof-inspection-report"],
+    related: ["how-insurance-adjusters-determine-roof-damage","storm-damage-roof-repair","roofing-photo-documentation-checklist","roof-inspection-report"],
     sections: [
       {
         heading: "Understanding hail damage on a roof",
@@ -1432,7 +1432,7 @@ const ARTICLES: Article[] = [
       }},
       5: { type: "tip", data: { type: "warning", title: "Common Mistake: Relying on Memory", text: "The number one mistake contractors make is inspecting the roof, taking a few photos, and then trying to write the report days later from memory. By the time you sit down to write, you have forgotten which photo goes with which finding, you cannot remember exact locations, and the report ends up vague and unconvincing. Document everything on the roof, in real time, while you are looking at it." } },
     },
-    related: ["roof-inspection-report-software","roofing-photo-documentation-checklist","hail-damage-roof-inspection","roofing-supplement-template"],
+    related: ["roof-damage-report-template","roof-inspection-report-software","roofing-photo-documentation-checklist","hail-damage-roof-inspection"],
     sections: [
       {
         heading: "What is a roof inspection report?",
@@ -1964,7 +1964,7 @@ const ARTICLES: Article[] = [
     "metaDescription": "How code upgrades work in roofing claims: what Ordinance and Law coverage is, which roof items it can cover, and how to document them for adjusters.",
     "publishedDate": "2026-10-22",
     "related": [
-      "how-to-write-a-roofing-supplement",
+      "what-is-the-25-percent-rule-for-roofing",
       "xactimate-codes-for-roofing-supplements",
       "roofing-photo-documentation-checklist",
       "roof-replacement-estimate-vs-final-cost"
@@ -2687,6 +2687,272 @@ const ARTICLES: Article[] = [
       },
     ],
     related: ["roofing-supplement-denied-what-to-do", "roofing-supplement-template", "supplemental-roofing-estimate-explained", "roofing-photo-documentation-checklist"],
+  },
+  {
+    slug: "how-insurance-adjusters-determine-roof-damage",
+    title: "How Insurance Adjusters Determine Roof Damage (and What Documentation Helps)",
+    metaTitle: "How Adjusters Determine Roof Damage | Supplement Snap",
+    metaDescription: "How insurance adjusters evaluate roof damage: the inspection, what they look for, how estimates are built and what documentation makes a claim easier to review.",
+    publishedDate: "2026-10-23",
+    updatedDate: "2026-10-23",
+    externalLinks: [
+      { text: "NRCA: National Roofing Contractors Association", url: "https://www.nrca.net" },
+      { text: "IBHS: Insurance Institute for Business & Home Safety", url: "https://ibhs.org" },
+      { text: "NAIC: Consumer insurance resources", url: "https://content.naic.org" },
+    ],
+    visuals: {
+      1: { type: "steps", data: [
+        { num: "1", title: "Review the claim and policy", desc: "The adjuster checks the date of loss, the reported cause and what the policy covers." },
+        { num: "2", title: "Inspect the roof and property", desc: "On the roof when safe, or with drone or aerial imagery. Photos and measurements are taken." },
+        { num: "3", title: "Identify and measure damage", desc: "Damage is tied to the covered cause of loss and recorded by slope and component." },
+        { num: "4", title: "Build the estimate", desc: "Line items, quantities and regional pricing are written up, often in estimating software." },
+        { num: "5", title: "Apply policy terms and issue a decision", desc: "Deductible, depreciation and coverage limits are applied and the carrier communicates the result." },
+      ]},
+      2: { type: "checklist", data: { title: "What adjusters commonly look at on a roof", items: [
+        { text: "Roof covering: missing, cracked, creased or lifted shingles", checked: true },
+        { text: "Hail impacts and granule loss, compared across slopes", checked: true },
+        { text: "Flashing, vents, pipe boots and other penetrations", checked: true },
+        { text: "Soft metals such as vents, gutters and drip edge for dents", checked: true },
+        { text: "Roof age, wear and general condition", checked: true },
+        { text: "Interior evidence of leaks, where relevant to the claim", checked: true },
+      ]}},
+      3: { type: "tip", data: { type: "info", title: "Rules vary by carrier and policy", text: "Inspection methods, hail thresholds and how depreciation is applied differ between insurers and policies. Use this guide for the general picture and confirm specifics with the claim documents." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Insurance adjusters determine roof damage by inspecting the roof, identifying damage that matches the reported cause of loss, measuring it, and then pricing the repair using line items and regional prices. The result is then adjusted for the policy: the deductible, depreciation and any coverage limits.\n\nIn practice, the adjuster is answering three questions. Is there damage? Was it caused by a covered event? What does it cost to repair or replace? Everything you document should help answer one of those questions clearly.\n\nThis guide explains how the process generally works and what contractors can do to make a claim easier to review. It is general information, not legal or insurance advice, and details differ by carrier, policy and state.",
+      },
+      {
+        heading: "How the adjuster's evaluation usually runs",
+        content: "The sequence below is typical, though carriers differ and some steps may be done remotely. The adjuster does not decide in the driveway. They gather evidence, build an estimate and then apply the policy.\n\nA contractor's role is to supply accurate, well-organized information alongside that process, not to replace the adjuster's judgment. The more clearly your findings are presented, the faster the review tends to go.",
+      },
+      {
+        heading: "What adjusters look for on the roof",
+        content: "The specific signs depend on the cause of loss. For wind, adjusters look for missing, creased or lifted shingles. For hail, they look for impact marks and granule loss and compare slopes. Across all claims they check penetrations and flashing, and they note the age and general condition of the roofing system.\n\nTwo concepts come up often:\n\n• Test squares: In hail claims, some carriers evaluate a representative section of each slope and count impacts within it. The threshold for what counts as functional damage varies by carrier and guideline.\n• Collateral damage: Dents in soft metals, such as vents, gutters and flashing, can help show that a hail event reached the property.\n\nThe adjuster also separates storm damage from wear and age. That distinction is one of the most common sources of disagreement, which is why clear photos and honest descriptions matter.",
+      },
+      {
+        heading: "How the estimate is built",
+        content: "After the inspection, the adjuster turns findings into an estimate made of line items. Each line has a description, a quantity, a unit and a price from a regional price list, usually built in estimating software such as Xactimate.\n\nThe estimate then goes through the policy:\n\n• Deductible: The amount the policyholder pays first.\n• Depreciation: Some policies pay actual cash value first, which accounts for the age and condition of materials, and release more after the work is done. Others pay replacement cost. It depends on the policy.\n• Limits and exclusions: Coverage may be limited for certain causes or components.\n\nIf you want to see what these line items look like, read the <a href='/blog/xactimate-roofing-estimate-example'>Xactimate roofing estimate example</a> and the <a href='/blog/xactimate-codes-for-roofing-supplements'>Xactimate roofing supplement list</a>.",
+      },
+      {
+        heading: "Why the first estimate is often incomplete",
+        content: "The first estimate is based on what can be seen from the surface and in imagery. Decking, underlayment and flashing conditions beneath the shingles are not visible until tear-off. That is why supplements exist: they request additional costs for conditions found once the work begins.\n\nThis is normal and not a sign that anyone acted improperly. It does mean the contractor needs proof, because the adjuster was not on the roof when the old materials came off. For the basics, read <a href='/blog/supplemental-roofing-estimate-explained'>what a supplemental roofing estimate is</a>.",
+      },
+      {
+        heading: "What documentation makes review easier",
+        content: "Adjusters work through many claims. A package that is easy to verify gets reviewed faster and generates fewer follow-up questions. These habits help:\n\n• Wide and close-up photos: Show where the damage is on the roof, then the condition itself.\n• Labels: Roof area and what the photo shows, so nothing is ambiguous.\n• Measurements: A scale in frame and quantities that match your notes.\n• Factual notes: What was observed, where and how much, without guessing at coverage.\n• Timing: Photos taken before concealed conditions are covered again.\n• Organization: Findings grouped by roof area, with photos beside each one.\n\nThe <a href='/free-roofing-supplement-checklist'>free roofing supplement checklist</a> covers all of this in a printable form, and the <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a> goes deeper on what to photograph.",
+      },
+      {
+        heading: "What to avoid when working with an adjuster",
+        content: "These approaches tend to slow claims or erode trust:\n\n• Overstating damage: Describing normal wear as storm damage invites a hard look at everything else you submit.\n• Guessing at cause or coverage: Stick to what you can see and measure. Coverage decisions belong to the carrier.\n• Missing proof: A line item with no photo or measurement gives the adjuster nothing to verify.\n• Slow responses: When a carrier asks for more information, answer promptly and keep a record.\n\nTracking each request helps. See the <a href='/blog/roofing-supplement-follow-up-log'>roofing supplement follow-up log</a> for a simple way to do it.",
+      },
+      {
+        heading: "How Supplement Snap helps contractors present findings",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps crews capture photos, roof areas, notes and measurements while they are on the roof, and organizes them into a report for the adjuster. It does not decide coverage or guarantee approval. It gives the adjuster a clearer package to review. You can preview the output in the <a href='/roofing-supplement-report-example'>sample report</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "How do insurance adjusters determine roof damage?",
+        a: "They inspect the roof, identify damage consistent with the reported cause of loss, measure it and price the repair with line items. The policy terms, such as deductible and depreciation, are then applied.",
+      },
+      {
+        q: "What is a test square in a roof inspection?",
+        a: "A test square is a representative section of a roof slope used in some hail evaluations. Impacts within it are counted, and each carrier uses its own thresholds.",
+      },
+      {
+        q: "Can an adjuster inspect a roof without going on it?",
+        a: "Sometimes. Some carriers use drone or aerial imagery, depending on the roof, the claim and company guidelines.",
+      },
+      {
+        q: "Why does the adjuster's estimate sometimes miss damage?",
+        a: "Conditions under the shingles, such as damaged decking or flashing, cannot be seen until tear-off. Contractors request those items through a supplement with supporting documentation.",
+      },
+      {
+        q: "Does good documentation guarantee a claim is approved?",
+        a: "No. Coverage and approval depend on the claim, the policy and the carrier. Good documentation helps the adjuster verify what was found.",
+      },
+    ],
+    related: ["supplemental-roofing-estimate-explained", "hail-damage-roof-inspection", "roofing-photo-documentation-checklist", "roofing-supplement-follow-up-log"],
+  },
+  {
+    slug: "what-is-the-25-percent-rule-for-roofing",
+    title: "What Is the 25% Rule for Roofing? It Depends on Where You Are",
+    metaTitle: "What Is the 25% Rule for Roofing? | Supplement Snap",
+    metaDescription: "The 25% rule for roofing: what it generally means, why it varies by jurisdiction and code edition, and how contractors should handle it on insurance claims.",
+    publishedDate: "2026-10-23",
+    updatedDate: "2026-10-23",
+    externalLinks: [
+      { text: "International Code Council (ICC)", url: "https://www.iccsafe.org" },
+      { text: "NRCA: National Roofing Contractors Association", url: "https://www.nrca.net" },
+      { text: "NAIC: Consumer insurance resources", url: "https://content.naic.org" },
+    ],
+    visuals: {
+      1: { type: "compare", data: {
+        before: { label: "Building code rule (if adopted)", items: ["Set by the jurisdiction's building code", "Enforced by the local building department", "Concerns what work is required when repairing a roof", "Can differ by city, county, state and code edition"] },
+        after: { label: "Insurance coverage", items: ["Set by the policy and the carrier", "Decided during the claim", "Concerns what the insurer pays for", "May involve Ordinance or Law coverage for code-required work"] },
+      }},
+      3: { type: "steps", data: [
+        { num: "1", title: "Find out which code applies", desc: "Ask the local building department which code edition and amendments are in force." },
+        { num: "2", title: "Ask how repairs are treated", desc: "Confirm whether a repair threshold applies and how the roof area is measured." },
+        { num: "3", title: "Document the scope", desc: "Record the repair area on each slope and the date of the work." },
+        { num: "4", title: "Raise it with the adjuster early", desc: "If code-required work is involved, share the source so it can be reviewed." },
+      ]},
+      4: { type: "tip", data: { type: "warning", title: "Never assume it applies", text: "Many places have no 25% rule at all. Quoting a rule that does not exist in your jurisdiction can cost you credibility with an adjuster or a homeowner. Always confirm locally." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "The 25% rule for roofing is a rule of thumb that comes from some local building codes. In general terms, it says that if more than about 25% of a roof is repaired or replaced within a set period, often 12 months, the whole roof may need to be brought up to current code.\n\nThe most important thing to know is that it is not a universal rule. It is not a national law, and many jurisdictions do not have it. Where it exists, its exact wording, its time window and its exceptions depend on the code edition and any local amendments. Some places have changed or removed it over time.\n\nThis article is general information, not legal advice. Always confirm with your local building department before you rely on it.",
+      },
+      {
+        heading: "A building code rule, not an insurance rule",
+        content: "People often mix up two separate things. A 25% rule, where it applies, is a building code matter. The local building department enforces it. Insurance coverage is a different question, decided by the policy and the carrier.\n\nThat difference explains a common source of confusion. A code may require more work than an insurance estimate originally included. Whether the insurer pays for that extra work depends on the policy, for example whether it includes coverage often called Ordinance or Law, which can address the added cost of meeting code. Policies differ, so read the actual policy.\n\nThe comparison below separates the two.",
+      },
+      {
+        heading: "Why it varies so much",
+        content: "Several things make the rule different from place to place:\n\n• Code edition: Jurisdictions adopt model codes on different schedules, and later editions may change the language.\n• Local amendments: Cities, counties and states can modify the model code.\n• Roof age and type: Some versions treat newer roofs differently from older ones.\n• Definition of repair: What counts as part of the 25% and how it is measured can differ.\n• Enforcement: How strictly a building department applies it can vary.\n\nBecause of that, two roofers in two nearby towns can honestly give different answers. The right source is always the local building department for the address in question.",
+      },
+      {
+        heading: "How contractors should handle it",
+        content: "If a job might involve a repair threshold, the safest approach is a short, repeatable routine rather than relying on memory or a forum post.\n\nWhen you bring it to an adjuster, cite the actual source: the code section and the building department's confirmation, if you have it. A specific reference is far more useful than saying a rule exists. This is the same discipline that applies to any code-based item on a supplement. For related items, see <a href='/blog/roofing-code-upgrades-ordinance-and-law'>code upgrades and Ordinance and Law coverage</a>.",
+      },
+      {
+        heading: "Common misunderstandings",
+        content: "These come up often and are worth avoiding:\n\n• It applies everywhere: It does not. Many jurisdictions have no such rule.\n• It means insurance must replace the whole roof: Not by itself. Payment depends on the policy and the claim.\n• The percentage is always 25%: Thresholds and wording differ by code.\n• It works the same for every roof: Roof age, type and the time window can all matter.\n• A contractor can decide: Only the local building authority can say how it applies at a given address.\n\nIf you are unsure, say so, and send the question to the building department.",
+      },
+      {
+        heading: "How to document it on a claim",
+        content: "If code-required work is involved, treat it like any other supplement item: show the condition, the requirement and the proof.\n\n• Photograph the existing roof and the areas being repaired.\n• Measure the repair area and record it by slope.\n• Note the date work began and the area completed.\n• Attach or reference the code section and any written confirmation from the building department.\n• Keep the description factual and short.\n\nThe <a href='/free-roofing-supplement-checklist'>free supplement checklist</a> and the <a href='/blog/roofing-supplement-template'>supplement template</a> help keep that package organized. No documentation can guarantee a result, because coverage depends on the claim, the policy and the carrier.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps crews capture photos, areas and notes on the roof and turn them into an organized report. If a local code requirement affects the job, the report is where you attach the measurements and the proof. The tool does not decide whether a rule applies. That still comes from your local authority and the carrier.",
+      },
+      {
+        heading: "Illustrative scenarios",
+        content: "These examples are fictional and simplified. They show why the same repair can lead to different outcomes depending on the local rules. Do not treat them as advice for any real property.\n\nScenario one: A jurisdiction has adopted a repair threshold. A storm damages part of one slope, and the repair covers a small portion of the roof. The work stays under the threshold, so the rest of the roof is not affected by that rule.\n\nScenario two: The same jurisdiction, but damage spans several slopes. The repair area adds up to more than the threshold within the stated period. The building department may require the roof covering to meet current code for the whole roof.\n\nScenario three: A different jurisdiction has no repair threshold at all. The same repairs are permitted without the code requirement in scenario two.\n\nThe lesson is not to memorize a number. It is to ask which rule applies at the address, and to document the repair area carefully so the answer can be applied accurately.",
+      },
+      {
+        heading: "Questions to ask the building department",
+        content: "A short call or email to the local building department can settle most uncertainty. Useful questions:\n\n• Which code edition and local amendments apply to this address today?\n• Is there a threshold for repairs that triggers work on the rest of the roof?\n• How is the repair area measured, and over what period?\n• Does the answer depend on roof age or roof type?\n• Is a permit required for this scope of work?\n• Can you confirm that in writing or point me to the code section?\n\nRecord the name, date and answer. If code-required work becomes part of a supplement, that record is exactly what an adjuster needs to evaluate it.",
+      },
+    ],
+    faq: [
+      {
+        q: "What is the 25% rule for roofing?",
+        a: "It is a rule found in some local building codes: if more than about 25% of a roof is repaired or replaced within a set period, the entire roof may need to meet current code. Not every jurisdiction has it.",
+      },
+      {
+        q: "Is the 25% rule a national law?",
+        a: "No. Building codes are adopted locally, and wording and thresholds differ. Some places have no such rule, and others have changed it.",
+      },
+      {
+        q: "Does the 25% rule mean insurance has to replace my whole roof?",
+        a: "Not by itself. The rule is a building code matter. Whether insurance pays depends on the policy, including any coverage for code-required work, and on the carrier's decision.",
+      },
+      {
+        q: "Who decides whether the 25% rule applies?",
+        a: "The local building department for the property. Ask them which code edition and amendments are in force.",
+      },
+      {
+        q: "How should a contractor raise it with an adjuster?",
+        a: "Cite the specific code section and, if possible, written confirmation from the building department, along with photos and measurements of the repair area.",
+      },
+    ],
+    related: ["roofing-code-upgrades-ordinance-and-law", "how-insurance-adjusters-determine-roof-damage", "roofing-supplement-template", "roof-replacement-estimate-vs-final-cost"],
+  },
+  {
+    slug: "roof-damage-report-template",
+    title: "Roof Damage Report Template: Sections, Example and Checklist",
+    metaTitle: "Roof Damage Report Template (Free, Copyable) | Supplement Snap",
+    metaDescription: "A copyable roof damage report template with the sections to include, a sample finding, a photo checklist and the mistakes that make reports hard to use.",
+    publishedDate: "2026-10-23",
+    updatedDate: "2026-10-23",
+    externalLinks: [
+      { text: "NRCA: National Roofing Contractors Association", url: "https://www.nrca.net" },
+      { text: "IBHS: Insurance Institute for Business & Home Safety", url: "https://ibhs.org" },
+    ],
+    visuals: {
+      1: { type: "steps", data: [
+        { num: "1", title: "Job and claim details", desc: "Address, date, inspector, carrier, claim number and date of loss if there is one." },
+        { num: "2", title: "Roof summary", desc: "Roof type, approximate age, number of layers, slopes and general condition." },
+        { num: "3", title: "Findings by roof area", desc: "Each finding with its location, description, measurement and photos." },
+        { num: "4", title: "Recommendations and scope", desc: "What work is proposed, stated plainly and tied to the findings." },
+        { num: "5", title: "Photo index and attachments", desc: "A numbered list of photos plus any measurement reports or documents." },
+      ]},
+      3: { type: "checklist", data: { title: "Photo checklist for a damage report", items: [
+        { text: "Front, rear and side overview of the property", checked: true },
+        { text: "Each roof slope, labeled by direction or name", checked: true },
+        { text: "Close-ups of each finding with a scale in frame", checked: true },
+        { text: "Flashing, vents, pipe boots and valleys", checked: true },
+        { text: "Collateral items such as gutters or soft metals, where relevant", checked: true },
+        { text: "Any condition found under the shingles at tear-off", checked: true },
+      ]}},
+      4: { type: "tip", data: { type: "tip", title: "Write what you saw, not what you assume", text: "A finding like 'three cracked shingles on the rear slope near the valley' is verifiable. A finding like 'storm damage throughout' is not. Specific beats sweeping every time." } },
+    },
+    sections: [
+      {
+        heading: "What a roof damage report is",
+        content: "A roof damage report is a written record of the conditions found on a roof, supported by photos and measurements. It is used by homeowners to understand a problem, by insurance adjusters to review a claim and by contractors to scope and price the work.\n\nThe best reports are short, specific and easy to verify. Someone who was not on the roof should be able to understand what you found, where it is and why it matters without calling you.\n\nBelow is a template you can copy, a sample finding and a checklist for the photos. It is general guidance. Add whatever your carrier, client or jurisdiction requires.",
+      },
+      {
+        heading: "The sections to include",
+        content: "A complete report follows a predictable order. Each section has a clear job, and together they let the reader move from the big picture to the details.\n\nKeep the headings the same on every report. Consistency makes your reports faster to write and easier for others to read, and it helps you notice when something is missing.",
+      },
+      {
+        heading: "Copyable template",
+        content: "Copy the structure below into a document or spreadsheet and fill it in for each job.\n\nJob details: Property address. Date of inspection. Inspector name. Client name. Carrier, claim number and date of loss, if applicable.\n\nRoof summary: Roof type and material. Approximate age if known. Number of layers. Number of slopes and pitch. General condition in one or two sentences.\n\nFindings (repeat for each): Finding number. Roof area or slope. What was observed. Measurement or count. Photo numbers. Why it matters, stated factually.\n\nRecommendations: Proposed repair or replacement scope, tied to the numbered findings.\n\nPhoto index: Each photo number with its roof area and a short description.\n\nAttachments: Aerial or manual measurement report, estimate, invoices or other supporting documents.",
+      },
+      {
+        heading: "Photo checklist",
+        content: "Photos carry most of the weight in a damage report. The checklist covers the shots that make a report clear. Take wide shots first, then close-ups, and keep your labels consistent.\n\nFor a deeper guide to what to photograph and when, read the <a href='/blog/roofing-photo-documentation-checklist'>roofing photo documentation checklist</a>. For organizing the files afterward, see <a href='/blog/organize-roofing-supplement-photos-by-claim'>how to organize photos by claim and roof area</a>.",
+      },
+      {
+        heading: "A sample finding (fictional)",
+        content: "Here is one finding written in the style that works:\n\nFinding 3. Rear slope, along the eave. Four sheets of roof decking were soft and deteriorated when walked, found after removing existing shingles and underlayment. Approximately 128 square feet affected. Photos 14 to 19. The condition was not visible from the surface before tear-off.\n\nNotice the order: location, observation, quantity, photo reference and a factual note on why it was not seen earlier. It does not guess at the cause or argue about coverage. If you are documenting rotted decking specifically, see <a href='/blog/document-rotted-roof-decking-tear-off'>how to document rotted roof decking</a>.",
+      },
+      {
+        heading: "Mistakes that make reports hard to use",
+        content: "These are the issues that most often make a report less useful:\n\n• No location: A finding that does not say where on the roof it is forces the reader to guess.\n• Photos without context: A close-up with no wide shot is hard to place.\n• No scale: Without a tape measure or known object, size is a guess.\n• Sweeping statements: Phrases like damage throughout invite doubt.\n• Mismatched numbers: Notes, photos and totals that disagree reduce trust in everything else.\n• Opinions presented as facts: Cause and coverage are for others to decide.\n\nBefore you send, run the finished report through the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a>.",
+      },
+      {
+        heading: "Turning the template into a faster workflow",
+        content: "Writing this by hand works, but it takes time to match photos to notes and build a clean document each time. <a href='/roofing-supplement-software'>Supplement Snap</a> follows the same structure: the crew captures photos, tags the roof area and adds a note on the roof, and the report is assembled for you to review. See the <a href='/roofing-supplement-report-example'>sample supplement report</a> to compare it with the template above.\n\nSoftware makes reports faster and more consistent. It does not guarantee that a claim is approved. Coverage and approval depend on the claim, the policy and the carrier.",
+      },
+      {
+        heading: "How to write the recommendations section",
+        content: "The recommendations section answers one question: given these findings, what work do you propose? Keep it tied to the numbered findings so nothing floats free.\n\nA clear recommendation names the work, the area and the finding it addresses. For example: Replace damaged decking, rear slope, 128 square feet (Finding 3). Replace failed step flashing at the sidewall, 24 linear feet (Finding 5).\n\nTwo habits keep this section trustworthy. First, do not recommend work you cannot point to a finding for. Second, separate what is clearly needed from what is optional, so the reader can see the difference.",
+      },
+      {
+        heading: "Adapting the report for different readers",
+        content: "The same findings can be presented differently depending on who will read the report:\n\n• Homeowner: Use plain language, explain why each finding matters in a sentence and keep the photo selection tight.\n• Insurance adjuster: Lead with location, quantity and photo references. Keep the tone factual and avoid opinions about coverage.\n• Your office: Include everything needed to write an accurate estimate without calling the crew, including measurements and any access or safety notes.\n\nYou do not need three separate reports. Keep one set of findings, and change the summary and emphasis for each reader. If the report is for an insurance claim, the <a href='/blog/how-insurance-adjusters-determine-roof-damage'>guide to how adjusters evaluate roof damage</a> explains what they tend to look for.",
+      },
+    ],
+    faq: [
+      {
+        q: "What should a roof damage report include?",
+        a: "Job and claim details, a roof summary, findings by roof area with measurements and photos, recommended scope, a photo index and any supporting documents.",
+      },
+      {
+        q: "How long should a roof damage report be?",
+        a: "As long as it needs to be to be clear. Short, specific findings with labeled photos are better than long general descriptions.",
+      },
+      {
+        q: "Do I need special software to write one?",
+        a: "No. A document or spreadsheet using a consistent template works. Software mainly saves time matching photos and notes and building the report.",
+      },
+      {
+        q: "Should I state the cause of the damage?",
+        a: "Stick to what you observed and measured. Cause and coverage are decided by others, and speculation can hurt your credibility.",
+      },
+      {
+        q: "Will a good report guarantee an insurance claim is approved?",
+        a: "No. A clear report helps the reviewer verify what you found, but approval depends on the claim, the policy and the carrier.",
+      },
+    ],
+    related: ["roofing-photo-documentation-checklist", "roof-inspection-report", "roofing-supplement-template", "document-rotted-roof-decking-tear-off"],
   },
 ]
 

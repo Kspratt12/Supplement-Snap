@@ -5,7 +5,7 @@ import { SiteFooter } from "../../lib/site-footer"
 
 export const metadata: Metadata = {
   alternates: { canonical: "https://supplementsnap.io/how-roofing-supplements-work" },
-  title: "Roofing Supplements Explained: How They Work | Supplement Snap",
+  title: "Roofing Supplements: How They Work | Supplement Snap",
   description:
     "How roofing insurance supplements work: from hidden damage at tear-off to the adjuster decision, and what documentation to include.",
 }

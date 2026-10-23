@@ -41,6 +41,9 @@ const ARTICLES = [
   { slug: "xactimate-roofing-software-explained", title: "Xactimate Roofing Software Explained: What It Does and What It Does Not", desc: "What Xactimate does for roofing estimates, what it does not do, and how supplement documentation tools fit alongside it.", date: "2026-10-23" },
   { slug: "roof-inspection-report-software", title: "Roof Inspection Report Software: What to Look For", desc: "What roof inspection report software should do, and how to compare options fairly.", date: "2026-10-23" },
   { slug: "roofing-supplement-follow-up-log", title: "Roofing Supplement Follow-Up Log: Track Submissions and Adjuster Responses", desc: "What to track, when to follow up and a copyable column list for submissions and adjuster responses.", date: "2026-10-23" },
+  { slug: "how-insurance-adjusters-determine-roof-damage", title: "How Insurance Adjusters Determine Roof Damage (and What Documentation Helps)", desc: "How adjusters inspect roofs, build estimates and apply policy terms, and what documentation makes a claim easier to review.", date: "2026-10-23" },
+  { slug: "what-is-the-25-percent-rule-for-roofing", title: "What Is the 25% Rule for Roofing? It Depends on Where You Are", desc: "What the 25% rule generally means, why it varies by jurisdiction, and how contractors should handle it on insurance claims.", date: "2026-10-23" },
+  { slug: "roof-damage-report-template", title: "Roof Damage Report Template: Sections, Example and Checklist", desc: "A copyable roof damage report template with sections, a sample finding and a photo checklist.", date: "2026-10-23" },
 ]
 
 export default function BlogIndex() {
