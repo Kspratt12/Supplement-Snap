@@ -6,7 +6,7 @@ import { supabase } from "../../lib/supabase"
 import { extractAllExifData } from "../../lib/exif-utils"
 import { uploadPhotosWithRetry } from "../../lib/upload-utils"
 
-import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang } from "../../lib/speech-langs"
+import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang, fetchAccountSpeechLang } from "../../lib/speech-langs"
 
 const DAMAGE_TYPES = ["Decking", "Flashing", "Vent / Pipe Boot", "Drip Edge", "Ice & Water", "Multiple Layers", "Other"]
 const ROOF_AREAS = ["Front", "Back", "Left", "Right", "Valley", "Chimney", "Ridge", "Eave"]
@@ -151,6 +151,11 @@ export function QuickVoiceRecord({
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState("")
   const [speechLang, setSpeechLang] = useState<string>(() => loadSpeechLang())
+  useEffect(() => {
+    if (speechLang) return
+    fetchAccountSpeechLang().then((code) => { if (code) { setSpeechLang(code); saveSpeechLang(code) } })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
 
   useEffect(() => {

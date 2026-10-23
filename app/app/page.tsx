@@ -9,7 +9,7 @@ import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { PhotoAnnotator } from "../dashboard/photo-annotator"
 import { extractAllExifData, type PhotoMetadata } from "../../lib/exif-utils"
-import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang } from "../../lib/speech-langs"
+import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang, fetchAccountSpeechLang } from "../../lib/speech-langs"
 import { uploadPhotosWithRetry, cleanupOrphanedUploads } from "../../lib/upload-utils"
 import {
   queueCapture,
@@ -164,6 +164,11 @@ function Home() {
   const [files, setFiles] = useState<File[]>([])
   const [damageType, setDamageType] = useState("")
   const [speechLang, setSpeechLang] = useState<string>(() => loadSpeechLang())
+  useEffect(() => {
+    if (speechLang) return
+    fetchAccountSpeechLang().then((code) => { if (code) { setSpeechLang(code); saveSpeechLang(code) } })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const [roofArea, setRoofArea] = useState("")
   const [fieldNote, setFieldNote] = useState("")
   const [status, setStatus] = useState("")
@@ -3211,7 +3216,7 @@ function Home() {
                         {c.roof_area}
                       </span>
                       <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                        ~${SUPPLEMENT_ESTIMATES[c.damage_type] || 200} est.
+                        ${SUPPLEMENT_ESTIMATES[c.damage_type] || 200} est.
                       </span>
                     </div>
                     <span className="text-xs text-zinc-500">

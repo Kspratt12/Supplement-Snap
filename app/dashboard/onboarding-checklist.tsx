@@ -65,7 +65,8 @@ export function OnboardingChecklist({ mode, done, userId, savedState }: Props) {
       // storage unavailable
     }
     // Save on the account so it follows this person to every device
-    supabase.auth.updateUser({ data: { [`ss_onboarding_${mode}`]: next } }).catch(() => {})
+    const data = next === "dismissed" ? { ss_onboarding_free: next, ss_onboarding_paid: next } : { [`ss_onboarding_${mode}`]: next }
+    supabase.auth.updateUser({ data }).catch(() => {})
   }
 
   if (!loaded) return null
