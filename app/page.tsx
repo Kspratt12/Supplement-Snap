@@ -32,9 +32,9 @@ const softwareSchema = {
   url: "https://supplementsnap.io",
   offers: [
     { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free", description: "1 demo project" },
-    { "@type": "Offer", price: "99", priceCurrency: "USD", name: "Starter", description: "Unlimited projects, 1 user", priceSpecification: { "@type": "UnitPriceSpecification", price: "99", priceCurrency: "USD", unitText: "MONTH" } },
-    { "@type": "Offer", price: "199", priceCurrency: "USD", name: "Team", description: "Up to 3 users, Xactimate export", priceSpecification: { "@type": "UnitPriceSpecification", price: "199", priceCurrency: "USD", unitText: "MONTH" } },
-    { "@type": "Offer", price: "299", priceCurrency: "USD", name: "Pro", description: "Up to 5 users, priority support", priceSpecification: { "@type": "UnitPriceSpecification", price: "299", priceCurrency: "USD", unitText: "MONTH" } },
+    { "@type": "Offer", price: "99", priceCurrency: "USD", name: "Starter", description: "Unlimited projects, 1 user, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "99", priceCurrency: "USD" } },
+    { "@type": "Offer", price: "199", priceCurrency: "USD", name: "Team", description: "Up to 3 users, Xactimate export, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "199", priceCurrency: "USD" } },
+    { "@type": "Offer", price: "299", priceCurrency: "USD", name: "Pro", description: "Up to 5 users, priority support, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "299", priceCurrency: "USD" } },
   ],
   author: { "@type": "Organization", name: "Supplement Snap", url: "https://supplementsnap.io" },
 }

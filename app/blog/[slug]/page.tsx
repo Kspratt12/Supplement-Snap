@@ -851,8 +851,8 @@ const ARTICLES: Article[] = [
   {
     slug: "hail-damage-roof-inspection",
     title: "Hail Damage Roof Inspection: What Gets Missed and How to Document It",
-    metaTitle: "Hail Damage Roof Inspection | What Gets Missed & How to Document It",
-    metaDescription: "How to inspect a roof for hail damage, what adjusters commonly miss, hidden damage found at tear-off, and how to document it for successful supplements.",
+    metaTitle: "Hail Damage Roof Inspection Checklist: What to Look For | Supplement Snap",
+    metaDescription: "Hail damage roof inspection checklist: what to look for on shingles, vents and flashing, what gets missed, and how to document it with photos.",
     publishedDate: "2026-02-24",
     externalLinks: [
       { text: "NOAA Storm Prediction Center", url: "https://www.spc.noaa.gov" },
@@ -2273,6 +2273,54 @@ const ARTICLES: Article[] = [
       },
     ],
     related: ["roofing-photo-documentation-checklist", "document-rotted-roof-decking-tear-off", "roofing-supplement-template"],
+  },
+  {
+    slug: "supplemental-roofing-estimate-explained",
+    title: "What Is a Supplemental Roofing Estimate? How Roofing Supplements Work",
+    metaTitle: "What Is a Supplemental Roofing Estimate? | Supplement Snap",
+    metaDescription: "A supplemental roofing estimate asks the insurer to cover damage found after the first estimate. Learn when it applies, what it includes, and how to submit one.",
+    publishedDate: "2026-10-23",
+    sections: [
+      {
+        heading: "What a supplemental roofing estimate is",
+        content: "A supplemental roofing estimate, usually called a roofing supplement, is a request sent to an insurance company for additional costs that were not in the original claim estimate. It is most often needed when work begins and the crew finds damage or conditions that could not be seen before the old roof came off.\n\nThe insurer decides whether the items are covered. A supplement is a documented request, not a guaranteed payment.",
+      },
+      {
+        heading: "Why the first estimate is often incomplete",
+        content: "The first estimate is usually written from an inspection of the roof surface, sometimes with aerial measurements. Anything under the shingles is invisible at that point.\n\nCommon reasons a supplement comes up:\n\n• Decking: Soft or rotted boards found after tear-off.\n• Flashing: Corroded or failed flashing at chimneys, walls and valleys.\n• Underlayment and ice and water shield: Conditions that differ from what the estimate assumed.\n• Quantities: Measurements or counts that differ from the original estimate.\n• Code or manufacturer requirements: Items required for the repair that were left out.",
+      },
+      {
+        heading: "What a supplement request should include",
+        content: "Adjusters respond best to a package they can verify quickly:\n\n1. Claim details: Carrier, claim number, date of loss and adjuster.\n2. Findings: Each item described factually, with its location.\n3. Photos: Wide and close-up shots taken before the condition was covered.\n4. Measurements: Quantities that match the notes and the line items.\n5. Line items: Which estimate items each finding supports.\n6. Supporting documents: Measurement reports, invoices or code references where relevant.\n\nUse the <a href='/free-roofing-supplement-checklist'>free roofing supplement checklist</a> to confirm nothing is missing, and see the <a href='/roofing-supplement-report-example'>sample report</a> for the format.",
+      },
+      {
+        heading: "How the process usually runs",
+        content: "1. The crew finds a condition during tear-off and photographs it.\n2. The contractor notifies the adjuster and documents the finding.\n3. The contractor submits the supplement package.\n4. The adjuster reviews it, may request more information or reinspect, and then approves, adjusts or denies the items.\n5. The contractor follows up and records the outcome.\n\nTimelines and requirements vary by carrier and claim. If a request is denied, read the stated reason and see <a href='/blog/roofing-supplement-denied-what-to-do'>what to do when a supplement is denied</a>.",
+      },
+      {
+        heading: "Doing it yourself or using software",
+        content: "Plenty of contractors write supplements by hand. The slow parts are matching photos to findings and building a clean report. <a href='/roofing-supplement-software'>Roofing supplement software</a> like Supplement Snap helps with exactly that: you capture and describe findings on the roof, and it assembles the report for the adjuster. Compare approaches in <a href='/roofing-supplement-software-vs-spreadsheets'>software vs. spreadsheets</a>.\n\nNo tool can guarantee coverage or approval. That depends on the claim, the policy and the carrier. For the full walkthrough, read <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "What is a supplemental roofing estimate?",
+        a: "It is a request to the insurance company for additional costs not included in the original estimate, usually because damage or conditions were discovered after work started.",
+      },
+      {
+        q: "Who submits a roofing supplement?",
+        a: "Usually the roofing contractor, with documentation of what was found. The insurer decides whether to approve the items.",
+      },
+      {
+        q: "Is a roofing supplement guaranteed to be approved?",
+        a: "No. Approval depends on the claim, the policy, the carrier and the documentation provided.",
+      },
+      {
+        q: "How long does a supplement take?",
+        a: "It varies by carrier and claim. Complete, organized documentation helps avoid back-and-forth requests for more information.",
+      },
+    ],
+    related: ["how-to-write-a-roofing-supplement", "roofing-supplement-template", "roofing-supplement-denied-what-to-do"],
   },
 ]
 
