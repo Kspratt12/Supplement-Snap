@@ -79,10 +79,10 @@ export function InteractiveDemo() {
             <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
               {/* Phone camera mockup */}
               <div className="bg-zinc-900 px-4 py-3 flex items-center justify-between">
-                <span className="text-[10px] text-zinc-500">Camera</span>
+                <span className="text-[10px] text-zinc-400">Camera</span>
                 <div className="flex gap-2">
                   <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
-                  <span className="text-[10px] text-zinc-500">REC</span>
+                  <span className="text-[10px] text-zinc-400">REC</span>
                 </div>
               </div>
               <div className="relative h-40 bg-gradient-to-br from-amber-100 via-amber-50 to-orange-50 flex items-center justify-center">
