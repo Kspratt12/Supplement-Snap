@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { authFetch } from "../../lib/auth-fetch"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "../../lib/supabase"
@@ -60,7 +61,7 @@ export default function ResetPasswordPage() {
       // Send confirmation email
       const { data: { user } } = await supabase.auth.getUser()
       if (user?.email) {
-        fetch("/api/send-report", {
+        authFetch("/api/send-report", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -107,7 +108,7 @@ export default function ResetPasswordPage() {
               <p className="mt-2 text-sm text-zinc-500">
                 Your password has been changed successfully. A confirmation email has been sent.
               </p>
-              <p className="mt-3 text-xs text-zinc-400">Redirecting to dashboard...</p>
+              <p className="mt-3 text-xs text-zinc-500">Redirecting to dashboard...</p>
             </div>
           ) : sessionError ? (
             <div className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm text-center">
@@ -131,7 +132,7 @@ export default function ResetPasswordPage() {
             <div className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm text-center">
               <div className="mx-auto mb-4 h-6 w-6 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
               <p className="text-sm font-medium text-zinc-700">Verifying reset link...</p>
-              <p className="mt-1 text-xs text-zinc-400">This will only take a moment.</p>
+              <p className="mt-1 text-xs text-zinc-500">This will only take a moment.</p>
             </div>
           ) : (
             <>

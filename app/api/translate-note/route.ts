@@ -1,5 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk"
 import { NextResponse } from "next/server"
+import { getAuthenticatedUser } from "../../../lib/auth-utils"
+import { rateLimited } from "../../../lib/rate-limit"
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -43,6 +45,12 @@ When translating roofing terminology, use these precise mappings:
 `.trim()
 
 export async function POST(request: Request) {
+  const user = await getAuthenticatedUser(request)
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (rateLimited(`ai:${user.id}`, 60, 60 * 60 * 1000)) {
+    return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 })
+  }
+
   try {
     const { text } = await request.json()
 
@@ -51,7 +59,7 @@ export async function POST(request: Request) {
     }
 
     const message = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-5-5",
       max_tokens: 300,
       messages: [
         {

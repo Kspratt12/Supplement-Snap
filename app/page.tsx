@@ -13,7 +13,7 @@ const homepageFaqSchema = {
     { "@type": "Question", name: "Do I need special equipment?", acceptedAnswer: { "@type": "Answer", text: "No. Any smartphone with a camera works. Your crew is already carrying everything they need." } },
     { "@type": "Question", name: "Can my office staff see what the crew captures?", acceptedAnswer: { "@type": "Answer", text: "Yes. Everything is saved to the cloud by project. Office staff can log in from any device and see all captures, notes, and reports." } },
     { "@type": "Question", name: "What if my crew speaks Spanish?", acceptedAnswer: { "@type": "Answer", text: "Voice notes are automatically translated to English. Your crew speaks in their language, and the system converts it for the supplement report." } },
-    { "@type": "Question", name: "Is $99/month worth it for one crew?", acceptedAnswer: { "@type": "Answer", text: "One approved supplement typically recovers $1,500–$3,200. At $99/month with no setup fees, the platform pays for itself on the first job." } },
+    { "@type": "Question", name: "Is $99/month worth it for one crew?", acceptedAnswer: { "@type": "Answer", text: "One approved supplement can cover the monthly cost. At $99/month with no setup fees, recovering even one missed line item can pay for the platform. Results vary by claim." } },
   ],
 }
 
@@ -71,7 +71,7 @@ export default function LandingPage() {
           <span className="block sm:inline">Roofing Supplement Software</span>
           <span className="block sm:inline text-indigo-600"> That Recovers More on Every Roof</span>
         </h1>
-        <p className="mx-auto mt-4 text-sm font-medium text-zinc-400">Join roofing teams recovering $2,400+ per supplement</p>
+        <p className="mx-auto mt-4 text-sm font-medium text-zinc-400">Built for roofing crews who document hidden damage during tear-off</p>
         <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl">
           Stop leaving money on the table during tear-off. Supplement Snap helps roofing crews
           capture hidden damage, generate supplement documentation, and email adjuster-ready
@@ -101,7 +101,7 @@ export default function LandingPage() {
       <section className="mx-auto max-w-3xl px-6 pb-16">
         <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-lg">
           <div className="border-b border-zinc-100 px-6 py-4 sm:px-8">
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Typical Roof Claim</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Example Roof Claim</p>
             <p className="mt-1 text-2xl font-extrabold text-zinc-900 sm:text-3xl">$12,000</p>
           </div>
           <div className="border-b border-zinc-100 px-6 py-4 sm:px-8">
@@ -122,7 +122,7 @@ export default function LandingPage() {
           </div>
         </div>
         <p className="mt-6 text-center text-sm text-zinc-500">
-          Every documented item is a line item the adjuster can approve. When damage goes undocumented, the money stays on the table.
+          Every documented item is a line item the adjuster can approve. When damage goes undocumented, the money stays on the table. (Illustrative example, not a guarantee.)
         </p>
       </section>
 
@@ -294,65 +294,6 @@ export default function LandingPage() {
         <InteractiveDemo />
       </section>
 
-      {/* Social Proof */}
-      <section className="border-t border-zinc-100 py-20">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Trusted by Contractors</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              Roofers are recovering more with Supplement Snap
-            </h2>
-          </div>
-
-          <div className="mt-14 grid gap-6 sm:grid-cols-3">
-            {[
-              {
-                quote: "We used to lose supplement money on every tear-off because nobody had time to document it properly. Now my crew snaps photos, adds a voice note, and the report is in the adjuster's inbox before we leave the job site.",
-                name: "Marcus T.",
-                role: "Owner, 12-man crew",
-                metric: "$3,200 recovered on first job",
-              },
-              {
-                quote: "The AI draft saves my office manager 2 hours per supplement. She used to type everything from scratch. Now she just reviews what Supplement Snap generates and hits send.",
-                name: "David R.",
-                role: "Project Manager",
-                metric: "2+ hours saved per supplement",
-              },
-              {
-                quote: "My guys speak Spanish on the roof. They record a voice note in Spanish, and it shows up in English in the report. That alone was worth the subscription. No more miscommunication between field and office.",
-                name: "Carlos M.",
-                role: "Restoration Company Owner",
-                metric: "Zero lost-in-translation issues",
-              },
-            ].map((t) => (
-              <div key={t.name} className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
-                <div className="mb-4 flex gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="h-4 w-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-sm leading-relaxed text-zinc-600">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="mt-4 border-t border-zinc-100 pt-4">
-                  <p className="text-sm font-semibold text-zinc-900">{t.name}</p>
-                  <p className="text-xs text-zinc-500">{t.role}</p>
-                  <p className="mt-2 inline-block rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">{t.metric}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-zinc-400">
-            <span>Used by roofing teams across NC, TX, FL, and CO</span>
-            <span className="hidden sm:inline text-zinc-200">|</span>
-            <span className="font-medium text-zinc-600">Average supplement recovered: $2,400</span>
-          </div>
-        </div>
-      </section>
-
       {/* Before / After */}
       <section className="border-t border-zinc-100 py-20">
         <div className="mx-auto max-w-4xl px-6">
@@ -381,7 +322,7 @@ export default function LandingPage() {
                   "Office spends hours writing supplement from memory",
                   "Documentation submitted days or weeks later",
                   "Adjuster denies supplement due to insufficient evidence",
-                  "You leave $1,500–$3,200 on the table per job",
+                  "You leave supplement money on the table",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5">
                     <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -410,7 +351,7 @@ export default function LandingPage() {
                   "AI generates professional supplement narrative",
                   "PDF report emailed to adjuster the same day",
                   "Adjuster gets clear evidence with every finding",
-                  "You recover $1,500–$3,200 more per job",
+                  "You can recover more supplement revenue on every job",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5">
                     <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -834,7 +775,7 @@ export default function LandingPage() {
                 <span className="text-3xl font-extrabold text-zinc-900">$99</span>
                 <span className="ml-1 text-sm text-zinc-500">/month</span>
               </div>
-              <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
+              <p className="mt-1 text-sm text-zinc-500">14-day free trial, cancel anytime</p>
               <div className="mt-5 flex-1 space-y-2.5">
                 {["Unlimited projects", "AI supplement drafts", "PDF reports & email", "Photo annotations", "Voice notes", "1 user"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
@@ -855,7 +796,7 @@ export default function LandingPage() {
                 <span className="text-3xl font-extrabold text-zinc-900">$199</span>
                 <span className="ml-1 text-sm text-zinc-500">/month</span>
               </div>
-              <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
+              <p className="mt-1 text-sm text-zinc-500">14-day free trial, cancel anytime</p>
               <div className="mt-5 flex-1 space-y-2.5">
                 {["Everything in Starter", "Up to 3 team members", "PDF reports & email", "Xactimate CSV export", "Email open tracking"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
@@ -875,7 +816,7 @@ export default function LandingPage() {
                 <span className="text-3xl font-extrabold text-zinc-900">$299</span>
                 <span className="ml-1 text-sm text-zinc-500">/month</span>
               </div>
-              <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
+              <p className="mt-1 text-sm text-zinc-500">14-day free trial, cancel anytime</p>
               <div className="mt-5 flex-1 space-y-2.5">
                 {["Everything in Team", "Up to 5 team members", "Priority support", "Dedicated onboarding", "Custom branding"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
@@ -923,7 +864,7 @@ export default function LandingPage() {
               },
               {
                 q: "Is $99/month worth it for one crew?",
-                a: "One approved supplement typically recovers $1,500–$3,200. At $99/month with no setup fees, the platform pays for itself on the first job."
+                a: "One approved supplement can cover the monthly cost. At $99/month with no setup fees, recovering even one missed line item can pay for the platform. Results vary by claim."
               },
             ].map((faq) => (
               <div key={faq.q} className="py-5">

@@ -62,7 +62,9 @@ export async function DELETE(request: Request) {
   const { searchParams } = new URL(request.url)
   const id = searchParams.get("id")
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 })
+  const userId = await getUserId(request)
+  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  await supabase().from("adjuster_contacts").delete().eq("id", id)
+  await supabase().from("adjuster_contacts").delete().eq("id", id).eq("user_id", userId)
   return NextResponse.json({ success: true })
 }

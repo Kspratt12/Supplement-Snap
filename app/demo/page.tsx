@@ -7,13 +7,24 @@ const CALENDLY_URL = "https://calendly.com/kelvin-sprattenterprise/30min"
 
 export default function DemoPage() {
   useEffect(() => {
-    // Load Calendly widget script
-    const script = document.createElement("script")
-    script.src = "https://assets.calendly.com/assets/external/widget.js"
-    script.async = true
-    document.body.appendChild(script)
+    // The Calendly widget is ~3 MB. Load it on first interaction (or after 3s)
+    // so it does not compete with the page's own first paint.
+    let script: HTMLScriptElement | null = null
+    const events = ["pointerdown", "scroll", "keydown", "touchstart"] as const
+    const load = () => {
+      if (script) return
+      events.forEach((e) => window.removeEventListener(e, load))
+      script = document.createElement("script")
+      script.src = "https://assets.calendly.com/assets/external/widget.js"
+      script.async = true
+      document.body.appendChild(script)
+    }
+    events.forEach((e) => window.addEventListener(e, load, { passive: true, once: true }))
+    const timer = window.setTimeout(load, 3000)
     return () => {
-      document.body.removeChild(script)
+      window.clearTimeout(timer)
+      events.forEach((e) => window.removeEventListener(e, load))
+      if (script && script.parentNode) script.parentNode.removeChild(script)
     }
   }, [])
 

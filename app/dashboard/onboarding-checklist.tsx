@@ -89,7 +89,7 @@ export function OnboardingChecklist({ isActive, hasProjects, hasCaptures, hasSen
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h2 className="text-sm font-semibold text-zinc-900">Getting Started</h2>
-            <span className="text-xs text-zinc-400">{completedCount} of {STEPS.length} completed</span>
+            <span className="text-xs text-zinc-500">{completedCount} of {STEPS.length} completed</span>
             <div className="flex items-center gap-1">
               {STEPS.map((_, i) => (
                 <div
@@ -131,7 +131,7 @@ export function OnboardingChecklist({ isActive, hasProjects, hasCaptures, hasSen
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-sm font-semibold text-zinc-900">Getting Started</h2>
-          <p className="mt-0.5 text-xs text-zinc-400">
+          <p className="mt-0.5 text-xs text-zinc-500">
             {completedCount} of {STEPS.length} steps completed
           </p>
         </div>
@@ -204,7 +204,7 @@ export function OnboardingChecklist({ isActive, hasProjects, hasCaptures, hasSen
                   {step.label}
                 </p>
                 {!done && !locked && (
-                  <p className="mt-0.5 text-xs text-zinc-400">{step.description}</p>
+                  <p className="mt-0.5 text-xs text-zinc-500">{step.description}</p>
                 )}
               </div>
 

@@ -11,14 +11,14 @@ export function SiteFooter() {
               <div className="flex h-6 w-6 items-center justify-center rounded bg-indigo-600 text-xs font-bold text-white">S</div>
               <span className="text-sm font-semibold">Supplement Snap</span>
             </div>
-            <p className="mt-3 text-xs text-zinc-400">
+            <p className="mt-3 text-xs text-zinc-500">
               &copy; {new Date().getFullYear()} Supplement Snap
             </p>
           </div>
 
           {/* Company links */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Company</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Company</p>
             <div className="mt-3 flex flex-col gap-2">
               <Link href="/pricing" className="text-xs text-zinc-500 hover:text-zinc-700">Pricing</Link>
               <Link href="/demo" className="text-xs text-zinc-500 hover:text-zinc-700">Book a Demo</Link>
@@ -26,12 +26,13 @@ export function SiteFooter() {
               <Link href="/terms" className="text-xs text-zinc-500 hover:text-zinc-700">Terms of Service</Link>
               <Link href="/privacy" className="text-xs text-zinc-500 hover:text-zinc-700">Privacy Policy</Link>
               <Link href="/refund-policy" className="text-xs text-zinc-500 hover:text-zinc-700">Refund Policy</Link>
+              <Link href="/login" className="text-xs text-zinc-500 hover:text-zinc-700">Log In</Link>
             </div>
           </div>
 
           {/* Resources links */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Resources</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Resources</p>
             <div className="mt-3 flex flex-col gap-2">
               <Link href="/roofing-supplement-software" className="text-xs text-zinc-500 hover:text-zinc-700">Roofing Supplement Software</Link>
               <Link href="/how-roofing-supplements-work" className="text-xs text-zinc-500 hover:text-zinc-700">How Supplements Work</Link>
@@ -43,11 +44,12 @@ export function SiteFooter() {
 
           {/* Popular articles */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Popular Articles</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Popular Articles</p>
             <div className="mt-3 flex flex-col gap-2">
               <Link href="/blog/roof-tear-off-cost" className="text-xs text-zinc-500 hover:text-zinc-700">Roof Tear-Off Cost in 2026</Link>
               <Link href="/blog/best-roof-estimating-software" className="text-xs text-zinc-500 hover:text-zinc-700">Best Roof Estimating Software</Link>
               <Link href="/blog/hail-damage-roof-inspection" className="text-xs text-zinc-500 hover:text-zinc-700">Hail Damage Roof Inspection</Link>
+              <Link href="/blog/xactimate-roofing-estimate-approved" className="text-xs text-zinc-500 hover:text-zinc-700">Xactimate Roofing Estimate Guide</Link>
               <Link href="/blog/roofing-software-comparison" className="text-xs text-zinc-500 hover:text-zinc-700">Roofing Software Comparison</Link>
               <Link href="/blog/xactimate-roof-estimate-supplements" className="text-xs text-zinc-500 hover:text-zinc-700">Xactimate Roof Estimate Guide</Link>
             </div>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { authFetch } from "../../lib/auth-fetch"
 
 type TeamMember = {
   id: string
@@ -29,7 +30,7 @@ export function TeamManager({ userId }: { userId: string }) {
   async function loadMembers() {
     setLoading(true)
     try {
-      const res = await fetch(`/api/team?ownerId=${userId}`)
+      const res = await authFetch(`/api/team?ownerId=${userId}`)
       const data = await res.json()
       setMembers(data.members || [])
     } catch {
@@ -45,7 +46,7 @@ export function TeamManager({ userId }: { userId: string }) {
     setSuccess("")
 
     try {
-      const res = await fetch("/api/team", {
+      const res = await authFetch("/api/team", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ownerId: userId, email: email.trim(), name: name.trim(), role }),
@@ -68,7 +69,7 @@ export function TeamManager({ userId }: { userId: string }) {
   }
 
   async function handleRemove(id: string) {
-    await fetch(`/api/team?id=${id}`, { method: "DELETE" })
+    await authFetch(`/api/team?id=${id}`, { method: "DELETE" })
     loadMembers()
   }
 
@@ -77,7 +78,7 @@ export function TeamManager({ userId }: { userId: string }) {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-sm font-semibold text-zinc-900">Your Team</h2>
-          <p className="mt-0.5 text-xs text-zinc-400">{members.length} member{members.length !== 1 ? "s" : ""} invited</p>
+          <p className="mt-0.5 text-xs text-zinc-500">{members.length} member{members.length !== 1 ? "s" : ""} invited</p>
         </div>
         <button
           onClick={() => setShowInvite(!showInvite)}
@@ -151,7 +152,7 @@ export function TeamManager({ userId }: { userId: string }) {
           <div className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
         </div>
       ) : members.length === 0 ? (
-        <p className="mt-4 text-center text-xs text-zinc-400 py-3">
+        <p className="mt-4 text-center text-xs text-zinc-500 py-3">
           No team members yet. Invite your crew to start collaborating.
         </p>
       ) : (
@@ -171,11 +172,11 @@ export function TeamManager({ userId }: { userId: string }) {
                     {m.status === "active" ? "Active" : "Pending"}
                   </span>
                 </div>
-                <p className="text-xs text-zinc-400 truncate">{m.role} · {m.member_email}</p>
+                <p className="text-xs text-zinc-500 truncate">{m.role} · {m.member_email}</p>
               </div>
               <button
                 onClick={() => handleRemove(m.id)}
-                className="flex-shrink-0 text-xs text-zinc-400 hover:text-red-600 ml-2"
+                className="flex-shrink-0 text-xs text-zinc-500 hover:text-red-600 ml-2"
               >
                 Remove
               </button>

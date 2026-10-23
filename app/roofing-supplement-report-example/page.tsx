@@ -59,7 +59,7 @@ export default function SupplementReportExamplePage() {
 
             <div className="mt-5 h-px bg-zinc-200" />
 
-            <p className="mt-5 text-xs font-semibold uppercase tracking-wider text-zinc-400">Findings</p>
+            <p className="mt-5 text-xs font-semibold uppercase tracking-wider text-zinc-500">Findings</p>
 
             <div className="mt-4 space-y-4">
               {[
@@ -84,7 +84,7 @@ export default function SupplementReportExamplePage() {
               <div className="aspect-square rounded-lg bg-gradient-to-br from-red-100 to-red-50 border border-zinc-200" />
               <div className="aspect-square rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 border border-zinc-200" />
             </div>
-            <p className="mt-2 text-[10px] text-zinc-400">Supporting photos attached to each finding</p>
+            <p className="mt-2 text-[10px] text-zinc-500">Supporting photos attached to each finding</p>
           </div>
         </div>
 

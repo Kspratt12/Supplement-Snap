@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { authFetch } from "../../lib/auth-fetch"
 
 type ActivityItem = {
   id: string
@@ -36,8 +37,8 @@ export function ProAnalytics({ userId, projectCount, captureCount, reportCount }
     setLoading(true)
     try {
       const [actRes, emailRes] = await Promise.all([
-        fetch(`/api/activity-log?userId=${userId}&limit=10`),
-        fetch(`/api/email-track/status?projectId=all&userId=${userId}`),
+        authFetch(`/api/activity-log?userId=${userId}&limit=10`),
+        authFetch(`/api/email-track/status?projectId=all&userId=${userId}`),
       ])
       const actData = await actRes.json()
       const emailData = await emailRes.json()
@@ -126,9 +127,9 @@ export function ProAnalytics({ userId, projectCount, captureCount, reportCount }
                 <div className="mt-0.5 h-1.5 w-1.5 rounded-full bg-indigo-400 flex-shrink-0" />
                 <div className="min-w-0">
                   <span className="font-medium text-zinc-700">{a.action}</span>
-                  {a.details && <span className="text-zinc-400"> — {a.details}</span>}
+                  {a.details && <span className="text-zinc-500"> — {a.details}</span>}
                 </div>
-                <span className="flex-shrink-0 text-zinc-400 ml-auto">
+                <span className="flex-shrink-0 text-zinc-500 ml-auto">
                   {new Date(a.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                 </span>
               </div>

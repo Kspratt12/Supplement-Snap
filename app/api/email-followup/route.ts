@@ -6,7 +6,12 @@ import { createClient } from "@supabase/supabase-js"
 // It finds emails that haven't been opened and are past their follow_up_at date,
 // then sends a polite follow-up to the adjuster.
 
-export async function GET() {
+export async function GET(request: Request) {
+  // Vercel Cron sends `Authorization: Bearer $CRON_SECRET` when CRON_SECRET is set
+  if (!process.env.CRON_SECRET || request.headers.get("authorization") !== `Bearer ${process.env.CRON_SECRET}`) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   try {
     if (!process.env.RESEND_API_KEY || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
       return NextResponse.json({ error: "Missing config" }, { status: 500 })
@@ -17,7 +22,7 @@ export async function GET() {
       process.env.SUPABASE_SERVICE_ROLE_KEY || ""
     )
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const fromEmail = process.env.RESEND_FROM_EMAIL || "reports@updates.sprattenterprise.com"
+    const fromEmail = process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.com"
 
     // Find emails due for follow-up: not opened, follow_up_at in the past, not already followed up
     const { data: pending } = await supabase

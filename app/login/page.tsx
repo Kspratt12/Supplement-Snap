@@ -52,8 +52,10 @@ export default function LoginPage() {
 
         <form onSubmit={handleLogin} className="space-y-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700">Email</label>
+            <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-zinc-700">Email</label>
             <input
+              id="email"
+              autoComplete="email"
               type="email"
               required
               value={email}
@@ -65,10 +67,12 @@ export default function LoginPage() {
 
           <div>
             <div className="mb-1.5 flex items-center justify-between">
-              <label className="block text-sm font-medium text-zinc-700">Password</label>
+              <label htmlFor="password" className="block text-sm font-medium text-zinc-700">Password</label>
               <Link href="/forgot-password" className="text-xs font-medium text-indigo-600 hover:text-indigo-500">Forgot password?</Link>
             </div>
             <input
+              id="password"
+              autoComplete="current-password"
               type="password"
               required
               value={password}

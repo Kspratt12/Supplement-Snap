@@ -59,7 +59,7 @@ export default function ForgotPasswordPage() {
                 We sent a password reset link to
               </p>
               <p className="mt-1 text-sm font-semibold text-zinc-900">{email}</p>
-              <p className="mt-3 text-xs text-zinc-400">
+              <p className="mt-3 text-xs text-zinc-500">
                 Click the link in the email to choose a new password. If you don&apos;t see it, check your spam folder.
               </p>
               <div className="mt-6 border-t border-zinc-100 pt-5">

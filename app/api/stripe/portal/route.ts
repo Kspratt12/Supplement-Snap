@@ -1,6 +1,7 @@
 import Stripe from "stripe"
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { getUserId } from "../../../../lib/auth-utils"
 
 export async function POST(request: Request) {
   try {
@@ -8,9 +9,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Stripe not configured" }, { status: 500 })
     }
 
-    const { userId } = await request.json()
+    const userId = await getUserId(request)
     if (!userId) {
-      return NextResponse.json({ error: "User ID required" }, { status: 400 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const supabaseAdmin = createClient(

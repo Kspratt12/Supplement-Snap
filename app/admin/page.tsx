@@ -129,7 +129,7 @@ export default function AdminPage() {
         )}
 
         {loading ? (
-          <div className="flex items-center justify-center gap-2 py-20 text-zinc-400">
+          <div className="flex items-center justify-center gap-2 py-20 text-zinc-500">
             <div className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
             <span className="text-sm">Loading stats...</span>
           </div>
@@ -168,15 +168,15 @@ export default function AdminPage() {
             {/* Subscription breakdown */}
             <div className="mb-8 grid gap-4 grid-cols-1 sm:grid-cols-3">
               <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Active</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Active</p>
                 <p className="mt-2 text-2xl font-bold text-green-700">{totals.activeSubscriptions}</p>
               </div>
               <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Trialing</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Trialing</p>
                 <p className="mt-2 text-2xl font-bold text-blue-700">{totals.trialSubscriptions}</p>
               </div>
               <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Inactive / No Plan</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Inactive / No Plan</p>
                 <p className="mt-2 text-2xl font-bold text-zinc-500">{totals.inactiveUsers}</p>
               </div>
             </div>
@@ -188,16 +188,16 @@ export default function AdminPage() {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="border-b border-zinc-100">
-                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">Name</th>
-                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">Email</th>
-                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">Signed Up</th>
-                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">Status</th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">Name</th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">Email</th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">Signed Up</th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {recentUsers.length === 0 ? (
                       <tr>
-                        <td colSpan={4} className="px-5 py-8 text-center text-zinc-400">No users yet</td>
+                        <td colSpan={4} className="px-5 py-8 text-center text-zinc-500">No users yet</td>
                       </tr>
                     ) : (
                       recentUsers.map((u, i) => (
@@ -230,16 +230,16 @@ export default function AdminPage() {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="border-b border-zinc-100">
-                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">Project</th>
-                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">User</th>
-                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">Created</th>
-                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">Captures</th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">Project</th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">User</th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">Created</th>
+                      <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">Captures</th>
                     </tr>
                   </thead>
                   <tbody>
                     {recentProjects.length === 0 ? (
                       <tr>
-                        <td colSpan={4} className="px-5 py-8 text-center text-zinc-400">No projects yet</td>
+                        <td colSpan={4} className="px-5 py-8 text-center text-zinc-500">No projects yet</td>
                       </tr>
                     ) : (
                       recentProjects.map((p, i) => (

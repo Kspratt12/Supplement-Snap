@@ -35,7 +35,7 @@ export default function DemoConfirmationPage() {
           </p>
 
           <div className="mt-6 rounded-xl border border-zinc-100 bg-zinc-50 p-5 text-left">
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">What happens next</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">What happens next</p>
             <div className="mt-3 space-y-3">
               <div className="flex items-start gap-3">
                 <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">1</span>
@@ -53,7 +53,7 @@ export default function DemoConfirmationPage() {
           </div>
 
           <div className="mt-6 rounded-xl border border-zinc-100 bg-zinc-50 p-5 text-left">
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">What you&apos;ll see in the demo</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">What you&apos;ll see in the demo</p>
             <div className="mt-3 space-y-2">
               {[
                 "How crews capture damage during tear-off",
@@ -85,7 +85,7 @@ export default function DemoConfirmationPage() {
             </Link>
           </div>
 
-          <p className="mt-6 text-xs text-zinc-400">
+          <p className="mt-6 text-xs text-zinc-500">
             A confirmation email has been sent to your inbox.
           </p>
         </div>

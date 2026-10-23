@@ -1,6 +1,7 @@
 "use client"
 
 import { Suspense, useEffect, useRef, useState } from "react"
+import { authFetch } from "../../lib/auth-fetch"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { jsPDF } from "jspdf"
@@ -327,7 +328,7 @@ function Home() {
     setTranslating(true)
     setTranslated(false)
     try {
-      const res = await fetch("/api/translate-note", {
+      const res = await authFetch("/api/translate-note", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
@@ -404,7 +405,7 @@ function Home() {
     if (user) {
       loadProjects()
       // Load company branding
-      fetch(`/api/company-settings?userId=${user.id}`)
+      authFetch(`/api/company-settings?userId=${user.id}`)
         .then(r => r.json())
         .then(d => {
           if (d.settings) {
@@ -669,7 +670,7 @@ function Home() {
     // Log status change
     const capture = captures.find((c) => c.id === captureId)
     if (capture && user) {
-      fetch("/api/activity-log", {
+      authFetch("/api/activity-log", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -714,7 +715,7 @@ function Home() {
         throw new Error("No captures found for this project.")
       }
 
-      const res = await fetch("/api/generate-project-draft", {
+      const res = await authFetch("/api/generate-project-draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -741,7 +742,7 @@ function Home() {
       supabase.from("projects").update({ last_draft: draft }).eq("id", selectedProjectId).then(() => {})
 
       // Log activity
-      fetch("/api/activity-log", {
+      authFetch("/api/activity-log", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -764,7 +765,7 @@ function Home() {
     setDraftErrors((prev) => ({ ...prev, [c.id]: "" }))
 
     try {
-      const res = await fetch("/api/generate-draft", {
+      const res = await authFetch("/api/generate-draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -805,7 +806,7 @@ function Home() {
 
     for (const c of missing) {
       try {
-        const res = await fetch("/api/generate-draft", {
+        const res = await authFetch("/api/generate-draft", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -1386,7 +1387,7 @@ function Home() {
       URL.revokeObjectURL(url)
 
       // Log activity
-      fetch("/api/activity-log", {
+      authFetch("/api/activity-log", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1435,7 +1436,7 @@ function Home() {
       }
       const safeName = selectedProject.project_name.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, "-")
 
-      const res = await fetch("/api/send-report", {
+      const res = await authFetch("/api/send-report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1461,7 +1462,7 @@ function Home() {
       setEmailStatus("sent")
 
       // Log activity
-      fetch("/api/activity-log", {
+      authFetch("/api/activity-log", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1730,7 +1731,7 @@ function Home() {
       : "Capture saved!")
 
     // Log activity (fire-and-forget)
-    fetch("/api/activity-log", {
+    authFetch("/api/activity-log", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -1775,13 +1776,13 @@ function Home() {
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard"
-            className="text-xs font-medium text-zinc-400 hover:text-zinc-600"
+            className="text-xs font-medium text-zinc-500 hover:text-zinc-600"
           >
             Dashboard
           </Link>
           <button
             onClick={async () => { await signOut(); router.push("/") }}
-            className="text-xs font-medium text-zinc-400 hover:text-zinc-600"
+            className="text-xs font-medium text-zinc-500 hover:text-zinc-600"
           >
             Log Out
           </button>
@@ -1942,7 +1943,7 @@ function Home() {
         {selectedProject && (
           <div className="mt-3 space-y-2">
             <div className="flex items-center gap-2 text-xs text-zinc-500">
-              <svg className="h-3.5 w-3.5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="h-3.5 w-3.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
@@ -2042,7 +2043,7 @@ function Home() {
                       await supabase.from("projects").update({ diagram_url: null }).eq("id", selectedProject.id)
                       setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, diagram_url: undefined } : p))
                     }}
-                    className="inline-flex items-center justify-center h-5 w-5 rounded-full hover:bg-red-50 text-zinc-400 hover:text-red-500"
+                    className="inline-flex items-center justify-center h-5 w-5 rounded-full hover:bg-red-50 text-zinc-500 hover:text-red-500"
                     title="Remove diagram"
                   >
                     <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -2109,7 +2110,7 @@ function Home() {
                     <button
                       type="button"
                       onClick={() => { setShowMap(false); setAddressSuggestions([]); setAddressSearch("") }}
-                      className="flex h-5 w-5 items-center justify-center rounded hover:bg-zinc-200 text-zinc-400 hover:text-zinc-600"
+                      className="flex h-5 w-5 items-center justify-center rounded hover:bg-zinc-200 text-zinc-500 hover:text-zinc-600"
                     >
                       <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -2153,7 +2154,7 @@ function Home() {
                           onClick={() => selectAddress(s.display_name)}
                           className="flex w-full items-start gap-2 px-3 py-2 text-left text-xs text-zinc-700 hover:bg-indigo-50 hover:text-indigo-700 border-b border-zinc-50 last:border-0"
                         >
-                          <svg className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <svg className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
@@ -2231,7 +2232,7 @@ function Home() {
                   </p>
                   <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-green-700">Saved</span>
                 </div>
-                <svg className={`h-4 w-4 text-zinc-400 transition-transform ${draftExpanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className={`h-4 w-4 text-zinc-500 transition-transform ${draftExpanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
@@ -2241,7 +2242,7 @@ function Home() {
 
               {/* Findings summary */}
               <div className="mb-4 rounded-lg border border-zinc-100 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-800/30">
-                <p className="mb-2 text-xs font-medium text-zinc-400">
+                <p className="mb-2 text-xs font-medium text-zinc-500">
                   Based on {captures.length} finding{captures.length !== 1 ? "s" : ""}:
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -2307,7 +2308,7 @@ function Home() {
         const unchecked = common.filter(d => !documented.has(d))
         if (unchecked.length === 0 || unchecked.length === common.length) return null
         return (
-          <div className="mb-4 flex items-center gap-2 px-1 text-xs text-zinc-400">
+          <div className="mb-4 flex items-center gap-2 px-1 text-xs text-zinc-500">
             <svg className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -2359,7 +2360,7 @@ function Home() {
               <button
                 type="button"
                 onClick={() => setShowReport(false)}
-                className="text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                className="text-xs text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300"
               >
                 Close
               </button>
@@ -2470,7 +2471,7 @@ function Home() {
                       <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                         {c.damage_type} – {c.roof_area}
                       </h4>
-                      <p className="mt-0.5 text-xs text-zinc-400">
+                      <p className="mt-0.5 text-xs text-zinc-500">
                         {new Date(c.created_at).toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -2483,7 +2484,7 @@ function Home() {
                   {/* Field note */}
                   {c.field_note && (
                     <div className="mt-3 ml-9">
-                      <p className="text-xs font-medium uppercase tracking-wider text-zinc-400">Field Note</p>
+                      <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">Field Note</p>
                       <p className="mt-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
                         {c.field_note}
                       </p>
@@ -2493,7 +2494,7 @@ function Home() {
                   {/* Supplement draft */}
                   {drafts[c.id] && (
                     <div className="mt-3 ml-9 rounded-lg bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                      <p className="mb-1 text-xs font-medium uppercase tracking-wider text-zinc-400">Supplement Explanation</p>
+                      <p className="mb-1 text-xs font-medium uppercase tracking-wider text-zinc-500">Supplement Explanation</p>
                       <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
                         {drafts[c.id]}
                       </p>
@@ -2502,7 +2503,7 @@ function Home() {
 
                   {!drafts[c.id] && (
                     <div className="mt-3 ml-9">
-                      <p className="text-xs italic text-zinc-400">Draft not available for this finding.</p>
+                      <p className="text-xs italic text-zinc-500">Draft not available for this finding.</p>
                     </div>
                   )}
 
@@ -2547,7 +2548,7 @@ function Home() {
                 {previews.length > 0 ? `Photos (${previews.length})` : "Damage Photos"}
               </label>
               {previews.length > 0 && (
-                <span className={`text-xs ${previews.length >= MAX_PHOTOS ? "text-amber-500 font-medium" : "text-zinc-400"}`}>
+                <span className={`text-xs ${previews.length >= MAX_PHOTOS ? "text-amber-500 font-medium" : "text-zinc-500"}`}>
                   {previews.length}/{MAX_PHOTOS} max
                 </span>
               )}
@@ -2658,7 +2659,7 @@ function Home() {
                   </svg>
                   + Add More Photos
                 </button>
-                <span className="hidden sm:inline-flex items-center text-xs text-zinc-400">or drag & drop</span>
+                <span className="hidden sm:inline-flex items-center text-xs text-zinc-500">or drag & drop</span>
               </div>
             )}
           </div>
@@ -2853,7 +2854,7 @@ function Home() {
                   }`}
                 >
                   {s}
-                  <span className={`${statusFilter === s ? "text-indigo-200" : "text-zinc-400"}`}>
+                  <span className={`${statusFilter === s ? "text-indigo-200" : "text-zinc-500"}`}>
                     {count}
                   </span>
                 </button>
@@ -2877,7 +2878,7 @@ function Home() {
                 const urls = (c.image_urls && c.image_urls.length > 0 ? c.image_urls : c.image_url ? [c.image_url] : []).filter(Boolean)
                 if (urls.length === 0) {
                   return (
-                    <label className="flex cursor-pointer flex-col items-center gap-2 border-b border-dashed border-zinc-200 bg-zinc-50 py-10 text-zinc-400 hover:bg-zinc-100">
+                    <label className="flex cursor-pointer flex-col items-center gap-2 border-b border-dashed border-zinc-200 bg-zinc-50 py-10 text-zinc-500 hover:bg-zinc-100">
                       <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
@@ -2938,7 +2939,7 @@ function Home() {
                         ${SUPPLEMENT_ESTIMATES[c.damage_type] || 200}
                       </span>
                     </div>
-                    <span className="text-xs text-zinc-400">
+                    <span className="text-xs text-zinc-500">
                       {new Date(c.created_at).toLocaleDateString(undefined, {
                         month: "short",
                         day: "numeric",
@@ -3032,7 +3033,7 @@ function Home() {
                     <button
                       type="button"
                       onClick={() => deleteCapture(c)}
-                      className="text-xs text-zinc-400 hover:text-red-500"
+                      className="text-xs text-zinc-500 hover:text-red-500"
                     >
                       Delete Capture
                     </button>
@@ -3073,7 +3074,7 @@ function Home() {
                   <button
                     type="button"
                     onClick={() => setShowEmailModal(false)}
-                    className="text-zinc-400 hover:text-zinc-600"
+                    className="text-zinc-500 hover:text-zinc-600"
                   >
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

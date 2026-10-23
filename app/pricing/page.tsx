@@ -43,7 +43,7 @@ const PRO_FEATURES = [
 const FAQ = [
   {
     q: "Can I try it before paying?",
-    a: "Yes! Every paid plan starts with a 14-day free trial, no credit card required. You'll get full access to capture damage, generate AI supplement drafts, create PDF reports, and email adjusters. If it doesn't pay for itself on your first job, cancel anytime.",
+    a: "Yes! Every paid plan starts with a 14-day free trial. A card is required to start and you can cancel anytime before the trial ends without being charged. You'll get full access to capture damage, generate AI supplement drafts, create PDF reports, and email adjusters. If it doesn't pay for itself on your first job, cancel anytime.",
   },
   {
     q: "What's the difference between the plans?",
@@ -107,7 +107,7 @@ export default function PricingPage() {
           Simple pricing for roofing teams
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-zinc-500 sm:text-lg">
-          One approved supplement pays for the entire platform. Start with a 14-day free trial, no credit card required.
+          One approved supplement pays for the entire platform. Start with a 14-day free trial, cancel anytime.
         </p>
       </section>
 
@@ -121,7 +121,7 @@ export default function PricingPage() {
           {/* Free */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-8 shadow-sm">
             <p className="text-sm font-semibold uppercase tracking-wider text-green-600">Free</p>
-            <p className="mt-1 text-xs text-zinc-400">Try it on your next job</p>
+            <p className="mt-1 text-xs text-zinc-500">Try it on your next job</p>
             <div className="mt-5">
               <span className="text-4xl font-extrabold text-zinc-900">$0</span>
             </div>
@@ -149,12 +149,12 @@ export default function PricingPage() {
           {/* Starter */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-8 shadow-sm">
             <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Starter</p>
-            <p className="mt-1 text-xs text-zinc-400">For solo crews</p>
+            <p className="mt-1 text-xs text-zinc-500">For solo crews</p>
             <div className="mt-5">
               <span className="text-4xl font-extrabold text-zinc-900">$99</span>
               <span className="ml-1 text-sm text-zinc-500">/month</span>
             </div>
-            <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
+            <p className="mt-1 text-sm text-zinc-500">14-day free trial, cancel anytime</p>
 
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
               {STARTER_FEATURES.map((f) => (
@@ -176,12 +176,12 @@ export default function PricingPage() {
               Most Popular
             </div>
             <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Team</p>
-            <p className="mt-1 text-xs text-zinc-400">For small crews (2-3)</p>
+            <p className="mt-1 text-xs text-zinc-500">For small crews (2-3)</p>
             <div className="mt-5">
               <span className="text-4xl font-extrabold text-zinc-900">$199</span>
               <span className="ml-1 text-sm text-zinc-500">/month</span>
             </div>
-            <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
+            <p className="mt-1 text-sm text-zinc-500">14-day free trial, cancel anytime</p>
 
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
               {TEAM_FEATURES.map((f) => (
@@ -195,7 +195,7 @@ export default function PricingPage() {
             </div>
 
             <CheckoutButton plan="team" label="Start 14-Day Free Trial" />
-            <p className="mt-3 text-center text-xs text-zinc-400">
+            <p className="mt-3 text-center text-xs text-zinc-500">
               Best value for small crews.
             </p>
           </div>
@@ -203,12 +203,12 @@ export default function PricingPage() {
           {/* Pro */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-8 shadow-sm">
             <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Pro</p>
-            <p className="mt-1 text-xs text-zinc-400">For teams up to 5</p>
+            <p className="mt-1 text-xs text-zinc-500">For teams up to 5</p>
             <div className="mt-5">
               <span className="text-4xl font-extrabold text-zinc-900">$299</span>
               <span className="ml-1 text-sm text-zinc-500">/month</span>
             </div>
-            <p className="mt-1 text-sm text-zinc-500">14-day free trial, no credit card</p>
+            <p className="mt-1 text-sm text-zinc-500">14-day free trial, cancel anytime</p>
 
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
               {PRO_FEATURES.map((f) => (
