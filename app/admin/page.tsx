@@ -6,7 +6,7 @@ import Link from "next/link"
 import { useAuth } from "../../lib/auth-context"
 import { supabase } from "../../lib/supabase"
 
-const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || "admin@supplementsnap.com"
+const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || ""
 
 type Totals = {
   users: number

@@ -58,7 +58,7 @@ export default function TermsPage() {
       </Section>
 
       <Section title="Contact">
-        <p>If you have questions about these terms, contact us at <span className="font-medium text-zinc-900">support@supplementsnap.com</span>.</p>
+        <p>If you have questions about these terms, contact us at <span className="font-medium text-zinc-900">support@supplementsnap.io</span>.</p>
       </Section>
     </LegalLayout>
   )

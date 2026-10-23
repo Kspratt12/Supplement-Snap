@@ -62,7 +62,8 @@ export async function POST(request: Request) {
 
     const message = await anthropic.messages.create({
       model: "claude-sonnet-5-5",
-      max_tokens: 300,
+      thinking: { type: "disabled" },
+      max_tokens: 400,
       messages: [
         {
           role: "user",
@@ -85,8 +86,8 @@ Text: "${text}"`,
       ],
     })
 
-    const block = message.content[0]
-    const result = block.type === "text" ? block.text.trim() : ""
+    // Read every text block: the first block is not always text
+    const result = message.content.filter((b) => b.type === "text").map((b) => b.text).join("").trim()
 
     if (result === "ALREADY_ENGLISH") {
       return NextResponse.json({ translated: false, text })

@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY)
-  const fromAddress = process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.com"
+  const fromAddress = process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.io"
 
   const { error } = await resend.emails.send({
     from: `Supplement Snap <${fromAddress}>`,

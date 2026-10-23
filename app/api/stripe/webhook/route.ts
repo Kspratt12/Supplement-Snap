@@ -87,7 +87,7 @@ export async function POST(request: Request) {
             const appUrl = process.env.NEXT_PUBLIC_SITE_URL
               ? `${process.env.NEXT_PUBLIC_SITE_URL}/app`
               : "https://supplementsnap.io/app"
-            const fromAddress = process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.com"
+            const fromAddress = process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.io"
             const greeting = userName ? `Hi ${userName},` : "Hi there,"
 
             const resend = new Resend(process.env.RESEND_API_KEY)

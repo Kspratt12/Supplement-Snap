@@ -159,7 +159,7 @@ export async function POST(request: Request) {
         : buildSubscriptionActiveEmail(userName)
 
     const fromAddress =
-      process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.com"
+      process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.io"
 
     const { error } = await resend.emails.send({
       from: `Supplement Snap <${fromAddress}>`,
