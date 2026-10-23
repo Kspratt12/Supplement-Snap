@@ -6,8 +6,6 @@ import Link from "next/link"
 import { useAuth } from "../../lib/auth-context"
 import { supabase } from "../../lib/supabase"
 
-const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || ""
-
 type Totals = {
   users: number
   activeSubscriptions: number
@@ -33,7 +31,7 @@ type RecentProject = {
 }
 
 export default function AdminPage() {
-  const { user, loading: authLoading, signOut } = useAuth()
+  const { user, loading: authLoading, signOut, isAdmin, subscriptionLoading } = useAuth()
   const router = useRouter()
   const [totals, setTotals] = useState<Totals | null>(null)
   const [recentUsers, setRecentUsers] = useState<RecentUser[]>([])
@@ -47,12 +45,14 @@ export default function AdminPage() {
       router.replace("/login")
       return
     }
-    if (user.email?.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+    if (subscriptionLoading) return
+    if (!isAdmin) {
       router.replace("/dashboard")
       return
     }
     loadStats()
-  }, [user, authLoading, router])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, authLoading, subscriptionLoading, isAdmin, router])
 
   async function loadStats() {
     setLoading(true)
@@ -88,7 +88,7 @@ export default function AdminPage() {
   }
 
   if (authLoading || !user) return null
-  if (user.email?.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) return null
+  if (!isAdmin) return null
 
   const statusColors: Record<string, string> = {
     active: "bg-green-50 text-green-700",

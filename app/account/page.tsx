@@ -20,7 +20,7 @@ export default function AccountPage() {
   const router = useRouter()
   const {
     user, loading, signOut, signOutEverywhere,
-    subscriptionStatus, subscriptionPlan, subscriptionLoading, subscriptionViaOwner, subscriptionHasBilling,
+    subscriptionStatus, subscriptionPlan, subscriptionLoading, subscriptionViaOwner, subscriptionHasBilling, isAdmin,
   } = useAuth()
 
   const [name, setName] = useState("")
@@ -112,6 +112,7 @@ export default function AccountPage() {
           </Link>
           <div className="flex items-center gap-3">
             <Link href="/dashboard" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">Dashboard</Link>
+            {isAdmin && <Link href="/admin" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Admin</Link>}
             <button onClick={async () => { await signOut(); router.push("/") }} className="text-sm font-medium text-zinc-500 hover:text-zinc-900">Log Out</button>
           </div>
         </div>
@@ -142,7 +143,7 @@ export default function AccountPage() {
               <div className="flex flex-wrap gap-2">
                 {subscriptionHasBilling && (
                   <button onClick={openBilling} disabled={portalLoading} className={btn}>
-                    {portalLoading ? "Opening..." : "Manage billing and invoices"}
+                    {portalLoading ? "Opening..." : "Manage billing or cancel"}
                   </button>
                 )}
                 {!subscriptionViaOwner && planKey !== "pro" && (
@@ -169,6 +170,11 @@ export default function AccountPage() {
               {subscriptionStatus === "past_due" && (
                 <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">
                   Your last payment did not go through. Update your card under Manage billing to restore access.
+                </p>
+              )}
+              {subscriptionHasBilling && !subscriptionViaOwner && (
+                <p className="mt-3 text-xs text-zinc-500">
+                  You can cancel anytime from Manage billing, with no calls and no emails. You keep access until the end of the period you have paid for.
                 </p>
               )}
               {portalError && <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-xs text-red-700">{portalError}</p>}
