@@ -489,7 +489,7 @@ const ARTICLES: Article[] = [
       { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
       { text: "NRCA Roofing Standards", url: "https://www.nrca.net" },
     ],
-    highlight: { label: "Most Used Code", value: "RFG SHTHN", subtext: "Sheathing replacement. The #1 supplement line item on insurance tear-offs." },
+    highlight: { label: "Most Used Code", value: "RFG SHTHN", subtext: "Sheathing replacement. One of the most common supplement line items on tear-offs." },
     visuals: {
       0: { type: "codes", data: [
         { code: "RFG SHTHN", desc: "Sheathing, plywood/OSB, R&R", unit: "SF", price: "$2.18" },
@@ -529,7 +529,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Why Xactimate codes matter for supplements",
-        content: "Insurance adjusters use Xactimate to estimate repair costs. When you submit a supplement using the same line codes and format the adjuster works in, your supplement gets processed faster and has a higher approval rate.\n\nSubmitting a supplement as a plain-text description forces the adjuster to translate your findings into Xactimate themselves, which means they might use lower-cost codes, miss line items, or simply deny the supplement because it's too much work to process."
+        content: "Insurance adjusters use Xactimate to estimate repair costs. When you submit a supplement using the same line codes and format the adjuster works in, your supplement is easier for the adjuster to review. Approval still depends on the claim, the policy and the carrier.\n\nSubmitting a supplement as a plain-text description forces the adjuster to translate your findings into Xactimate themselves, which means they might use lower-cost codes, miss line items, or simply deny the supplement because it's too much work to process."
       },
       {
         heading: "Decking and sheathing codes",
@@ -549,7 +549,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Drip edge codes",
-        content: "For missing or damaged drip edge:\n\n• RFG DRIP — Drip edge, aluminum, remove and replace. Measured in LF (linear feet). National average: ~$4.25/LF\n\nDrip edge is required by most building codes and is a common supplement item when the original installation didn't include it or it has corroded."
+        content: "For missing or damaged drip edge:\n\n• RFG DRIP — Drip edge, aluminum, remove and replace. Measured in LF (linear feet). National average: ~$4.25/LF\n\nDrip edge is required by many building codes (check your local code) and is a common supplement item when the original installation didn't include it or it has corroded."
       },
       {
         heading: "Additional layer removal codes",
@@ -569,7 +569,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Pairing codes with the right proof",
-        content: "A code tells the adjuster what you want. The proof tells them why. For every code on a supplement, attach at least:\n\n• One photo: Labeled to match the line item, showing the condition.\n• One measurement: Length, area or count, with how you got it.\n• One sentence: Why the item applies to this job.\n\nWhen all three are present, the line item can usually be approved without a call. For a full workflow, see <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a> and our <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a>.",
+        content: "A code tells the adjuster what you want. The proof tells them why. For every code on a supplement, attach at least:\n\n• One photo: Labeled to match the line item, showing the condition.\n• One measurement: Length, area or count, with how you got it.\n• One sentence: Why the item applies to this job.\n\nWhen all three are present, the line item is much easier for the adjuster to verify without a call. For a full workflow, see <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a> and our <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a>.",
       },
       {
         heading: "How Supplement Snap handles Xactimate codes",
