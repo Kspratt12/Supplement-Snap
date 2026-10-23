@@ -27,7 +27,6 @@ export const metadata: Metadata = {
     title: "Roofing Supplement Software | Capture Damage, Send Reports",
     description:
       "Capture hidden roofing damage during tear-off, generate supplement documentation, and send adjuster-ready PDF reports in minutes.",
-    url: "https://supplementsnap.io",
     siteName: "Supplement Snap",
     type: "website",
     locale: "en_US",
@@ -37,9 +36,6 @@ export const metadata: Metadata = {
     title: "Roofing Supplement Software | Capture Damage, Send Reports",
     description:
       "Capture hidden roofing damage during tear-off, generate supplement documentation, and send adjuster-ready PDF reports in minutes.",
-  },
-  alternates: {
-    canonical: "https://supplementsnap.io",
   },
   metadataBase: new URL("https://supplementsnap.io"),
   icons: {
@@ -74,34 +70,6 @@ export default function RootLayout({
         <Script id="plausible-init" strategy="afterInteractive">
           {`window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`}
         </Script>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
-              name: "Supplement Snap",
-              applicationCategory: "BusinessApplication",
-              operatingSystem: "Web",
-              description:
-                "Capture hidden roofing damage during tear-off, generate supplement documentation, and send adjuster-ready reports in minutes.",
-              url: "https://supplementsnap.io",
-              offers: {
-                "@type": "AggregateOffer",
-                lowPrice: "99",
-                highPrice: "299",
-                priceCurrency: "USD",
-                offerCount: "2",
-                availability: "https://schema.org/InStock",
-              },
-              provider: {
-                "@type": "Organization",
-                name: "Supplement Snap",
-                url: "https://supplementsnap.io",
-              },
-            }),
-          }}
-        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

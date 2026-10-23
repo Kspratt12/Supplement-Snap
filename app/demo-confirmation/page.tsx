@@ -3,6 +3,7 @@ import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Demo Request Received – Supplement Snap",
+  robots: { index: false, follow: false },
 }
 
 export default function DemoConfirmationPage() {
