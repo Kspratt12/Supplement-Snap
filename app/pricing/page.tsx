@@ -100,6 +100,7 @@ export default function PricingPage() {
           </div>
         </div>
       </nav>
+      <main>
 
       {/* Hero */}
       <section className="mx-auto max-w-4xl px-6 pt-20 pb-4 text-center sm:pt-28">
@@ -326,6 +327,7 @@ export default function PricingPage() {
         </div>
       </section>
 
+      </main>
       <SiteFooter />
     </div>
   )

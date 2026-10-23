@@ -74,7 +74,7 @@ export function InteractiveDemo() {
         </div>
 
         {/* Step 1: Capture */}
-        <div className={`absolute inset-0 p-6 sm:p-8 transition-opacity duration-500 ${step === 0 ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+        <div className={`absolute inset-0 p-6 sm:p-8 transition-[opacity,visibility] duration-500 ${step === 0 ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}>
           <div className="mx-auto max-w-sm">
             <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
               {/* Phone camera mockup */}
@@ -114,7 +114,7 @@ export function InteractiveDemo() {
         </div>
 
         {/* Step 2: Tag */}
-        <div className={`absolute inset-0 p-6 sm:p-8 transition-opacity duration-500 ${step === 1 ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+        <div className={`absolute inset-0 p-6 sm:p-8 transition-[opacity,visibility] duration-500 ${step === 1 ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}>
           <div className="mx-auto max-w-sm">
             <div className="rounded-xl border border-zinc-200 bg-white shadow-sm p-4 space-y-3">
               <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">New Capture</p>
@@ -149,7 +149,7 @@ export function InteractiveDemo() {
         </div>
 
         {/* Step 3: Generate */}
-        <div className={`absolute inset-0 p-6 sm:p-8 transition-opacity duration-500 ${step === 2 ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+        <div className={`absolute inset-0 p-6 sm:p-8 transition-[opacity,visibility] duration-500 ${step === 2 ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}>
           <div className="mx-auto max-w-sm">
             <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
               <div className="bg-indigo-600 px-4 py-2">
@@ -179,7 +179,7 @@ export function InteractiveDemo() {
         </div>
 
         {/* Step 4: Send */}
-        <div className={`absolute inset-0 p-6 sm:p-8 transition-opacity duration-500 ${step === 3 ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+        <div className={`absolute inset-0 p-6 sm:p-8 transition-[opacity,visibility] duration-500 ${step === 3 ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}>
           <div className="mx-auto max-w-sm">
             <div className="rounded-xl border border-zinc-200 bg-white shadow-sm p-4 space-y-3">
               <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Send Report</p>

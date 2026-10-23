@@ -2614,7 +2614,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
         </div>
       </nav>
 
-      <article className="mx-auto max-w-3xl px-6 py-16">
+      <main className="mx-auto max-w-3xl px-6 py-16">
         <div className="mb-10">
           <nav aria-label="Breadcrumb" className="mb-4">
             <ol className="flex items-center gap-1.5 text-xs text-zinc-500">
@@ -2764,7 +2764,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
             ))}
           </div>
         </div>
-      </article>
+      </main>
 
       <SiteFooter />
     </div>
