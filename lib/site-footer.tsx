@@ -14,6 +14,9 @@ export function SiteFooter() {
             <p className="mt-3 text-xs text-zinc-500">
               &copy; {new Date().getFullYear()} Supplement Snap
             </p>
+            <p className="mt-2 text-xs text-zinc-500">
+              Xactimate is a trademark of Verisk Analytics. Supplement Snap is not affiliated with or endorsed by Verisk.
+            </p>
           </div>
 
           {/* Company links */}
