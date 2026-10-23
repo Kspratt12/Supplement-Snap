@@ -285,11 +285,13 @@ export default function DashboardPage() {
             <OnboardingChecklist
               mode={isActive ? "paid" : "free"}
               userId={user.id}
-              savedState={
-                (isActive
-                  ? (user.user_metadata?.ss_onboarding_paid as string | undefined)
-                  : ((user.user_metadata?.ss_onboarding_free as string | undefined) ?? (user.user_metadata?.ss_onboarding as string | undefined))) ?? null
-              }
+              savedState={(() => {
+                const m = user.user_metadata || {}
+                const flags = [m.ss_onboarding_paid, m.ss_onboarding_free, m.ss_onboarding]
+                // Dismissed once, on any plan, means gone for good
+                if (flags.includes("dismissed")) return "dismissed"
+                return ((isActive ? m.ss_onboarding_paid : (m.ss_onboarding_free ?? m.ss_onboarding)) as string | undefined) ?? null
+              })()}
               done={
                 isActive
                   ? [progress.hasRealProject, progress.photoReal, progress.draftReal, progress.sentReal]
