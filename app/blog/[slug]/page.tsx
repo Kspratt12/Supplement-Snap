@@ -2186,6 +2186,94 @@ const ARTICLES: Article[] = [
       }
     ]
   },
+  {
+    slug: "document-rotted-roof-decking-tear-off",
+    title: "How to Document Rotted Roof Decking Found During Tear-Off",
+    metaTitle: "How to Document Rotted Roof Decking at Tear-Off | Supplement Snap",
+    metaDescription: "What to photograph, measure and write down when you find rotted roof decking during tear-off, so the finding is clear to the adjuster.",
+    publishedDate: "2026-10-23",
+    sections: [
+      {
+        heading: "Why decking is the finding adjusters ask about most",
+        content: "Decking is hidden until the shingles and underlayment come off. That is exactly why it needs clear proof. The adjuster was not on the roof at tear-off, so your photos, measurements and notes are the only way they see what you saw.\n\nThe goal is not to argue for more money. It is to show, factually, what condition the decking was in, where it was, and how much of it was affected. Coverage and approval still depend on the claim, the policy and the carrier.",
+      },
+      {
+        heading: "What to record at the roof",
+        content: "Capture these items for every area of damaged decking:\n\n• Location: Which slope or roof area, described the same way in the photo label and the notes.\n• Condition: Soft, rotted, delaminated, water-stained, cracked or sagging, as you actually observed it.\n• Extent: Number of sheets or boards, or the approximate square feet affected.\n• Context: A wide shot showing where the area sits on the roof, then close-ups of the worst boards.\n• Scale: A tape measure or another known object in frame for size.\n\nTake the photos before the decking is replaced or covered. Once new material goes down, the evidence is gone.",
+      },
+      {
+        heading: "How to write the note",
+        content: "Keep it short and factual. A useful note answers four questions: what was found, where, how much, and why it was not visible before tear-off.\n\nExample: Rear slope, along the eave: four sheets of decking soft and deteriorated when walked, found after removing existing shingles and underlayment. Photos 12 to 16 show the condition.\n\nAvoid guessing at the cause or at what the policy covers. Describe what you can see and measure, and let the adjuster evaluate coverage.",
+      },
+      {
+        heading: "Match photos, measurements and line items",
+        content: "Before you submit, check that the numbers agree. If the note says four sheets, the photos should show four sheets and the line item quantity should reflect that. Mismatches are the quickest way to lose trust with an adjuster.\n\nIf you want a full pre-submission check, use the <a href='/free-roofing-supplement-checklist'>free roofing supplement checklist</a>. For layout help, see the <a href='/blog/roofing-supplement-template'>roofing supplement template</a> and the <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a>.",
+      },
+      {
+        heading: "Doing this faster on the roof",
+        content: "The slow part is usually not taking photos. It is matching them to notes and measurements later. Capturing the photo, the roof area and a short note at the same moment keeps everything linked.\n\nThat is the workflow <a href='/roofing-supplement-software'>Supplement Snap</a> is built around: photograph, tag and describe the finding on the roof, then generate a report. You can preview the output in the <a href='/roofing-supplement-report-example'>sample report</a>. Software organizes the evidence; it cannot guarantee a supplement is approved.",
+      },
+    ],
+    faq: [
+      {
+        q: "How many photos of rotted decking should I take?",
+        a: "Take a wide shot showing where the damage sits on the roof, then close-ups of the worst boards with a scale in frame. Take enough that someone who was not there can see the condition and the extent.",
+      },
+      {
+        q: "Should I state why the decking rotted?",
+        a: "Stick to what you observed and measured. Speculating about cause can cause problems. Describe the condition and location and let the adjuster determine coverage.",
+      },
+      {
+        q: "Does documenting decking guarantee the carrier pays for it?",
+        a: "No. Clear documentation helps you present the finding, but payment depends on the claim, policy and carrier.",
+      },
+    ],
+    related: ["roofing-photo-documentation-checklist", "roofing-supplement-template", "hail-damage-roof-inspection"],
+  },
+  {
+    slug: "organize-roofing-supplement-photos-by-claim",
+    title: "How to Organize Roofing Supplement Photos by Claim and Roof Area",
+    metaTitle: "Organize Roofing Supplement Photos by Claim | Supplement Snap",
+    metaDescription: "A repeatable system for naming, grouping and labeling roofing supplement photos by claim and roof area so reports are fast to build.",
+    publishedDate: "2026-10-23",
+    sections: [
+      {
+        heading: "The problem with a camera roll",
+        content: "A single roof can produce a hundred photos. Mixed in with personal pictures and other jobs, they are hard to sort, and the person writing the supplement often was not the person on the roof.\n\nA simple system, applied the same way every job, saves more time than any single tool.",
+      },
+      {
+        heading: "Step 1: One folder per claim",
+        content: "Create one folder per claim, named so it sorts and searches well:\n\n1. Claim number or job number\n2. Last name\n3. Street name\n\nExample: 12345-Smith-Oak-St. Keep the carrier estimate, measurement report and photos together in that folder.",
+      },
+      {
+        heading: "Step 2: Group photos by roof area",
+        content: "Inside the claim folder, use subfolders or file name prefixes for each area:\n\n• Front slope, rear slope, left and right slopes\n• Valleys, ridges, hips\n• Chimney, skylights, pipe boots and vents\n• Eaves, rakes and drip edge\n• Decking and underlayment\n\nUse the same names on every job so anyone on the team can find a photo.",
+      },
+      {
+        heading: "Step 3: Label every photo with what it shows",
+        content: "For each photo, record the area, the condition and the order, for example: rear-slope-decking-soft-03. If you cannot name the photo, you probably cannot explain it to an adjuster either.\n\nTie each photo to a finding in your notes. A finding with no photo, or a photo with no finding, is a gap to close before submitting.",
+      },
+      {
+        heading: "Step 4: Build the report from the folder",
+        content: "With photos grouped and labeled, the report writes itself: one section per finding, with its photos, measurements and note. Check it against the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a> before sending.\n\nIf you would rather not rename files by hand, <a href='/roofing-supplement-software'>Supplement Snap</a> attaches each photo to a finding, roof area and note as you capture it, then builds the PDF. Compare approaches in <a href='/roofing-supplement-software-vs-spreadsheets'>software vs. spreadsheets</a>. Good organization supports a claim but does not guarantee approval.",
+      },
+    ],
+    faq: [
+      {
+        q: "How should I name roofing claim photos?",
+        a: "Use a consistent pattern that includes the roof area, what the photo shows and a sequence number, such as rear-slope-decking-soft-03.",
+      },
+      {
+        q: "Should I keep original photos untouched?",
+        a: "Yes. Keep the originals unedited, because metadata such as the capture time can matter, and make copies if you need to crop or annotate.",
+      },
+      {
+        q: "Do I need software to organize photos?",
+        a: "No. A consistent folder and naming system works. Software mainly saves the time spent matching photos to notes and building the report.",
+      },
+    ],
+    related: ["roofing-photo-documentation-checklist", "document-rotted-roof-decking-tear-off", "roofing-supplement-template"],
+  },
 ]
 
 /* ── Inline link parser ── */
@@ -2570,6 +2658,17 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
             </div>
           </div>
         )}
+
+        {/* Tools and product pages */}
+        <div className="mt-12 rounded-xl border border-zinc-200 bg-white p-6">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Free tools and resources</h3>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            <Link href="/free-roofing-supplement-checklist" className="text-sm font-medium text-indigo-600 hover:text-indigo-800">Free roofing supplement checklist &rarr;</Link>
+            <Link href="/roofing-supplement-report-example" className="text-sm font-medium text-indigo-600 hover:text-indigo-800">Roofing supplement report example &rarr;</Link>
+            <Link href="/roofing-supplement-documentation" className="text-sm font-medium text-indigo-600 hover:text-indigo-800">Roofing supplement documentation guide &rarr;</Link>
+            <Link href="/roofing-supplement-software" className="text-sm font-medium text-indigo-600 hover:text-indigo-800">Roofing supplement software &rarr;</Link>
+          </div>
+        </div>
 
         {/* CTA */}
         <div className="mt-16 rounded-xl border border-indigo-200 bg-indigo-50 p-6 text-center">

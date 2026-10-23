@@ -20,6 +20,9 @@ const CITIES = [
   { slug: "pittsboro-nc", name: "Pittsboro", county: "Chatham County", state: "NC", nearby: ["Chapel Hill", "Siler City", "Sanford", "Cary"] },
 ]
 
+// Only the cities with distinct local detail are indexed; the rest stay reachable but noindex until they have unique content
+const INDEXED_CITIES = ["raleigh-nc", "durham-nc", "cary-nc", "apex-nc", "wake-forest-nc"]
+
 export function generateStaticParams() {
   return CITIES.map((city) => ({ city: city.slug }))
 }
@@ -30,6 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   if (!city) return {}
   return {
     title: `Roofing Supplement Software in ${city.name}, NC | Supplement Snap`,
+    robots: INDEXED_CITIES.includes(city.slug) ? { index: true, follow: true } : { index: false, follow: true },
     alternates: { canonical: `https://supplementsnap.io/roofing-supplement-software/${city.slug}` },
     description: `Roofing crews in ${city.name}, ${city.state} use Supplement Snap to capture hidden tear-off damage, generate AI supplement reports and email adjusters.`,
     openGraph: {
@@ -45,8 +49,43 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
   const city = CITIES.find((c) => c.slug === citySlug)
   if (!city) notFound()
 
+  const faq = [
+    {
+      q: `What is roofing supplement software?`,
+      a: `Roofing supplement software helps contractors capture hidden damage found during tear-off, organize photos and notes, and generate a report to send to the insurance adjuster.`,
+    },
+    {
+      q: `Can ${city.name} roofers use Supplement Snap from a phone?`,
+      a: `Yes. Crews capture photos, tag findings and add notes from a phone on the roof, then generate and email the report from the same project.`,
+    },
+    {
+      q: `Does documentation guarantee a supplement is approved in ${city.county}?`,
+      a: `No. Coverage and approval depend on the claim, the policy, the carrier and the documentation. Good documentation helps you present what you found clearly, but it cannot guarantee a result.`,
+    },
+  ]
+
+  const schemas = [
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://supplementsnap.io" },
+        { "@type": "ListItem", position: 2, name: "Roofing Supplement Software", item: "https://supplementsnap.io/roofing-supplement-software" },
+        { "@type": "ListItem", position: 3, name: `${city.name}, NC`, item: `https://supplementsnap.io/roofing-supplement-software/${city.slug}` },
+      ],
+    },
+  ]
+
   return (
     <div className="bg-white text-zinc-900">
+      {schemas.map((s, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(s) }} />
+      ))}
       <nav className="border-b border-zinc-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5">
@@ -85,13 +124,13 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             The supplement problem {city.name} roofers face
           </h2>
           <p className="mt-4 text-base leading-relaxed text-zinc-500">
-            During tear-off on homes across {city.name} and {city.county}, crews discover concealed damage like rotted decking, failed flashing, and missing ice and water shield. This hidden damage qualifies for insurance supplements worth $1,500–$3,200 per job. But without proper documentation captured in real time, most of that money is left on the table.
+            During tear-off on homes across {city.name} and {city.county}, crews can uncover concealed damage like rotted decking, failed flashing, and missing ice and water shield. When that damage is photographed, measured and described at the time, it is far easier to support a supplement request. Results vary by claim, policy and carrier, and approval is never guaranteed.
           </p>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             {[
-              { stat: "$2,400", label: "Average supplement recovered", desc: "Per documented tear-off job" },
-              { stat: "2 min", label: "Time to capture a finding", desc: "Photo, tag, voice note. Done." },
-              { stat: "Same day", label: "Report to adjuster", desc: "PDF emailed before you leave" },
+              { stat: "Photo + tag", label: "Capture on the roof", desc: "Label the finding while it is exposed" },
+              { stat: "Voice or text", label: "Add the note on site", desc: "Voice notes in any language" },
+              { stat: "PDF", label: "Report for the adjuster", desc: "Emailed from the project" },
             ].map((s) => (
               <div key={s.label} className="rounded-xl border border-zinc-200 bg-white p-5 text-center shadow-sm">
                 <p className="text-2xl font-extrabold text-indigo-600">{s.stat}</p>
@@ -150,6 +189,44 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
                 <span className="text-sm text-zinc-700">{f}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Local workflow + FAQ */}
+      <section className="border-t border-zinc-100 py-16">
+        <div className="mx-auto max-w-4xl px-6">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            Documenting supplements in {city.name} and {city.county}
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-zinc-500">
+            Every carrier and jurisdiction asks for slightly different things, so build the package around what you can prove on the roof. For {city.name} jobs, a repeatable routine looks like this:
+          </p>
+          <ul className="mt-4 list-disc space-y-2 pl-6 text-sm leading-relaxed text-zinc-600">
+            <li>Record the carrier, claim number, adjuster and date of loss before tear-off starts.</li>
+            <li>Photograph each exposed condition wide and close, with a measurement in frame, before it is covered again.</li>
+            <li>Confirm permit and inspection requirements with the local building inspections office that covers the address in {city.county}. Requirements can differ by municipality and change over time.</li>
+            <li>Cite a code or manufacturer requirement only when you can point to the source, and let the adjuster verify it.</li>
+            <li>Send the report, record the date, and set a follow-up reminder.</li>
+          </ul>
+          <p className="mt-4 text-sm text-zinc-500">
+            North Carolina homeowners with claim questions can also contact the NC Department of Insurance. This page is general information, not legal or insurance advice.
+          </p>
+          <p className="mt-6 text-sm text-zinc-600">
+            Want the full list? Use the{" "}
+            <Link href="/free-roofing-supplement-checklist" className="text-indigo-600 underline hover:text-indigo-800">free roofing supplement checklist</Link>
+            {" "}or see a{" "}
+            <Link href="/roofing-supplement-report-example" className="text-indigo-600 underline hover:text-indigo-800">sample supplement report</Link>.
+          </p>
+
+          <h3 className="mt-10 text-lg font-bold text-zinc-900">Frequently asked questions</h3>
+          <div className="mt-4 divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white">
+            {faq.map((f) => (
+              <div key={f.q} className="p-5">
+                <h4 className="text-base font-semibold text-zinc-900">{f.q}</h4>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-600">{f.a}</p>
               </div>
             ))}
           </div>

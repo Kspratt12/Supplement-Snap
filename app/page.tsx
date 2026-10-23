@@ -113,7 +113,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="border-b border-zinc-100 bg-green-50 px-6 py-4 sm:px-8">
-            <p className="text-xs font-semibold uppercase tracking-wider text-green-700">Supplement Approved</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-green-700">Example Supplement Amount</p>
             <p className="mt-1 text-2xl font-extrabold text-green-700 sm:text-3xl">+$3,200</p>
           </div>
           <div className="px-6 py-4 sm:px-8">

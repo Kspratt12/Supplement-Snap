@@ -22,6 +22,7 @@ export function SiteFooter() {
             <div className="mt-3 flex flex-col gap-2">
               <Link href="/pricing" className="text-xs text-zinc-500 hover:text-zinc-700">Pricing</Link>
               <Link href="/demo" className="text-xs text-zinc-500 hover:text-zinc-700">Book a Demo</Link>
+              <Link href="/about" className="text-xs text-zinc-500 hover:text-zinc-700">About</Link>
               <Link href="/blog" className="text-xs text-zinc-500 hover:text-zinc-700">Blog</Link>
               <Link href="/terms" className="text-xs text-zinc-500 hover:text-zinc-700">Terms of Service</Link>
               <Link href="/privacy" className="text-xs text-zinc-500 hover:text-zinc-700">Privacy Policy</Link>
@@ -39,6 +40,8 @@ export function SiteFooter() {
               <Link href="/hidden-roof-damage-tear-off" className="text-xs text-zinc-500 hover:text-zinc-700">Hidden Damage During Tear-Off</Link>
               <Link href="/roofing-supplement-documentation" className="text-xs text-zinc-500 hover:text-zinc-700">Supplement Documentation</Link>
               <Link href="/roofing-supplement-report-example" className="text-xs text-zinc-500 hover:text-zinc-700">Supplement Report Example</Link>
+              <Link href="/free-roofing-supplement-checklist" className="text-xs text-zinc-500 hover:text-zinc-700">Free Supplement Checklist</Link>
+              <Link href="/roofing-supplement-software-vs-spreadsheets" className="text-xs text-zinc-500 hover:text-zinc-700">Software vs. Spreadsheets</Link>
             </div>
           </div>
 
