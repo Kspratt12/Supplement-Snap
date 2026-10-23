@@ -97,7 +97,7 @@ const STATUS_STYLES: Record<CaptureStatus, string> = {
   "Captured": "bg-zinc-100 text-zinc-600",
   "Needs Review": "bg-amber-50 text-amber-600",
   "Ready to Send": "bg-blue-50 text-blue-600",
-  "Sent": "bg-green-50 text-green-600",
+  "Sent": "bg-green-50 text-green-700",
 }
 
 type Capture = {
@@ -2206,7 +2206,7 @@ function Home() {
 
           {projectDraftError && (
             <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 dark:border-red-900 dark:bg-red-950/30">
-              <p className="text-sm text-red-600 dark:text-red-400">{projectDraftError}</p>
+              <p className="text-sm text-red-700 dark:text-red-400">{projectDraftError}</p>
               <button
                 type="button"
                 onClick={generateProjectDraft}
@@ -2289,7 +2289,7 @@ function Home() {
                 >
                   Regenerate
                 </button>
-                <span className="inline-flex items-center gap-1 text-xs text-green-600">
+                <span className="inline-flex items-center gap-1 text-xs text-green-700">
                   <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
@@ -2386,8 +2386,8 @@ function Home() {
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs text-green-600">{captures.length} finding{captures.length !== 1 ? "s" : ""} documented</p>
-                  <p className="text-xs text-green-600">Based on avg supplement values</p>
+                  <p className="text-xs text-green-700">{captures.length} finding{captures.length !== 1 ? "s" : ""} documented</p>
+                  <p className="text-xs text-green-700">Based on avg supplement values</p>
                 </div>
               </div>
             )}
@@ -2781,7 +2781,7 @@ function Home() {
               </p>
             )}
             {translated && !translating && (
-              <p className="mt-2 flex items-center gap-1.5 text-xs text-green-600 dark:text-green-400">
+              <p className="mt-2 flex items-center gap-1.5 text-xs text-green-700 dark:text-green-400">
                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
@@ -2794,9 +2794,9 @@ function Home() {
             <p
               className={`rounded-lg px-3 py-2 text-sm ${
                 status.includes("failed")
-                  ? "bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400"
+                  ? "bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400"
                   : status.includes("saved")
-                    ? "bg-green-50 text-green-600 dark:bg-green-950/30 dark:text-green-400"
+                    ? "bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400"
                     : "bg-zinc-50 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
               }`}
             >
@@ -2981,7 +2981,7 @@ function Home() {
                   {/* Draft error */}
                   {draftErrors[c.id] && (
                     <div className="rounded-lg bg-red-50 px-3 py-2 dark:bg-red-950/30">
-                      <p className="text-xs text-red-600 dark:text-red-400">
+                      <p className="text-xs text-red-700 dark:text-red-400">
                         {draftErrors[c.id]}
                       </p>
                       <button
@@ -3053,7 +3053,7 @@ function Home() {
             {emailStatus === "sent" ? (
               <div className="text-center">
                 <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                  <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="h-6 w-6 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
@@ -3131,7 +3131,7 @@ function Home() {
                   </label>
 
                   {emailStatus === "error" && (
-                    <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+                    <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
                       {emailError}
                     </div>
                   )}

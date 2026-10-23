@@ -69,11 +69,11 @@ export function ProAnalytics({ userId, projectCount, captureCount, reportCount }
           <p className="mt-1 text-xs text-zinc-500">Captures</p>
         </div>
         <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm text-center">
-          <p className="text-2xl font-bold text-green-600">{reportCount}</p>
+          <p className="text-2xl font-bold text-green-700">{reportCount}</p>
           <p className="mt-1 text-xs text-zinc-500">Reports Sent</p>
         </div>
         <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm text-center">
-          <p className="text-2xl font-bold text-green-600">${estimatedValue.toLocaleString()}</p>
+          <p className="text-2xl font-bold text-green-700">${estimatedValue.toLocaleString()}</p>
           <p className="mt-1 text-xs text-zinc-500">Est. Documented</p>
         </div>
       </div>
@@ -88,7 +88,7 @@ export function ProAnalytics({ userId, projectCount, captureCount, reportCount }
               <p className="text-xs text-zinc-500">Sent</p>
             </div>
             <div>
-              <p className="text-xl font-bold text-green-600">{emailsOpened}</p>
+              <p className="text-xl font-bold text-green-700">{emailsOpened}</p>
               <p className="text-xs text-zinc-500">Opened</p>
             </div>
             <div>

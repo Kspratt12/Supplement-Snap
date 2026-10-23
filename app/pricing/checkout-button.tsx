@@ -37,7 +37,7 @@ export function CheckoutButton({ plan = "starter", label = "Get Started" }: { pl
   return (
     <>
       {error && (
-        <div className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-center text-sm text-red-600">
+        <div className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-center text-sm text-red-700">
           {error}
         </div>
       )}

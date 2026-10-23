@@ -312,7 +312,7 @@ export function QuickVoiceRecord({
           {saved ? (
             <div className="py-8 text-center">
               <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="h-6 w-6 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
@@ -359,7 +359,7 @@ export function QuickVoiceRecord({
                 </div>
               )}
               {translated && (
-                <div className="flex items-center justify-center gap-1.5 text-xs text-green-600">
+                <div className="flex items-center justify-center gap-1.5 text-xs text-green-700">
                   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
@@ -419,7 +419,7 @@ export function QuickVoiceRecord({
               {/* Project */}
               <ProjectPicker p={p} />
 
-              {error && <p className="text-xs text-red-600">{error}</p>}
+              {error && <p className="text-xs text-red-700">{error}</p>}
 
               <button
                 onClick={handleSave}
@@ -604,7 +604,7 @@ export function QuickPhotoCapture({
           {saved ? (
             <div className="py-8 text-center">
               <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="h-6 w-6 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
@@ -721,7 +721,7 @@ export function QuickPhotoCapture({
                     />
                   </div>
 
-                  {error && <p className="text-xs text-red-600">{error}</p>}
+                  {error && <p className="text-xs text-red-700">{error}</p>}
 
                   <button
                     onClick={handleSave}

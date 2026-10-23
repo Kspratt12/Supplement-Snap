@@ -167,7 +167,7 @@ export default function DashboardPage() {
     active: { text: `${planLabel} — Active`, color: "bg-green-50 text-green-700 border-green-200" },
     trialing: { text: `${planLabel} — Trial`, color: "bg-blue-50 text-blue-700 border-blue-200" },
     past_due: { text: `${planLabel} — Past Due`, color: "bg-amber-50 text-amber-700 border-amber-200" },
-    canceled: { text: "Canceled", color: "bg-red-50 text-red-600 border-red-200" },
+    canceled: { text: "Canceled", color: "bg-red-50 text-red-700 border-red-200" },
     inactive: { text: "Free", color: "bg-zinc-100 text-zinc-500 border-zinc-200" },
   }
   const badge = statusBadge[subscriptionStatus] || statusBadge.inactive
@@ -285,7 +285,7 @@ export default function DashboardPage() {
                 <p className="mt-1 text-xs sm:text-sm text-zinc-500">Reports</p>
               </div>
               <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm text-center">
-                <p className={`text-2xl sm:text-3xl font-bold ${emailOpens > 0 ? "text-green-600" : "text-zinc-900"}`}>{emailOpens}</p>
+                <p className={`text-2xl sm:text-3xl font-bold ${emailOpens > 0 ? "text-green-700" : "text-zinc-900"}`}>{emailOpens}</p>
                 <p className="mt-1 text-xs sm:text-sm text-zinc-500">Emails Opened</p>
               </div>
             </div>
@@ -445,7 +445,7 @@ export default function DashboardPage() {
                         )}
                         {p.claim_status && p.claim_status !== "In Progress" && (
                           <span className={`rounded-full px-2 py-0.5 font-medium ${
-                            p.claim_status === "Approved" ? "bg-green-50 text-green-600" :
+                            p.claim_status === "Approved" ? "bg-green-50 text-green-700" :
                             p.claim_status === "Submitted" ? "bg-indigo-50 text-indigo-600" :
                             p.claim_status === "Ready to Submit" ? "bg-amber-50 text-amber-600" :
                             "bg-zinc-100 text-zinc-500"
@@ -650,14 +650,14 @@ function ResetSuccessBanner() {
   return (
     <div className="mb-6 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-center">
       <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-        <svg className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="h-5 w-5 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
         </svg>
       </div>
       <p className="text-sm font-medium text-green-700">
         Password changed successfully
       </p>
-      <p className="mt-1 text-xs text-green-600">
+      <p className="mt-1 text-xs text-green-700">
         A confirmation email has been sent to your inbox.
       </p>
     </div>
