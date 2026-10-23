@@ -52,7 +52,6 @@ export async function POST(request: Request) {
 
     const message = await anthropic.messages.create({
       model: "claude-sonnet-5-5",
-      thinking: { type: "disabled" },
       max_tokens: 1500,
       messages: [
         {
@@ -84,6 +83,10 @@ Instructions:
 
     // Read every text block: the first block is not always text
     const draft = message.content.filter((b) => b.type === "text").map((b) => b.text).join("")
+    if (!draft.trim()) {
+      console.error("Claude returned no text", { stop_reason: message.stop_reason, blocks: message.content.map((b) => b.type) })
+      return NextResponse.json({ error: "The AI returned an empty draft. Please try again." }, { status: 502 })
+    }
 
     return NextResponse.json({ draft })
   } catch (err) {
