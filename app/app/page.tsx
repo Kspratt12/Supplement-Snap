@@ -1449,12 +1449,15 @@ function Home() {
     }
   }
 
-  function openEmailModal() {
+  function openEmailModal(withDraft = false) {
     if (isFreeUser) { setShowUpgradeModal(true); return }
     if (!selectedProject) return
     setEmailTo(selectedProject.adjuster_email || "")
     setEmailSubject(`Supplement Request – ${selectedProject.project_name}`)
     setEmailMessage(`Hello,\n\nDuring tear-off operations on this roofing claim, concealed damage was discovered that was not visible during the initial inspection.\n\nPlease see the attached supplement documentation and supporting photos.\n\nThank you.`)
+    if (withDraft && projectDraft.trim()) {
+      setEmailMessage("Hello," + String.fromCharCode(10, 10) + projectDraft.trim() + String.fromCharCode(10, 10) + "Please see the attached report and supporting photos." + String.fromCharCode(10, 10) + "Thank you.")
+    }
     setEmailStatus("")
     setEmailError("")
     setShowEmailModal(true)
@@ -2555,6 +2558,13 @@ function Home() {
                 >
                   Word (.docx)
                 </button>
+                <button
+                  type="button"
+                  onClick={() => openEmailModal(true)}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                >
+                  Email to adjuster
+                </button>
                 <span className="inline-flex items-center gap-1 text-xs text-green-700">
                   <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -2694,7 +2704,7 @@ function Home() {
               </button>
               <button
                 type="button"
-                onClick={openEmailModal}
+                onClick={() => openEmailModal()}
                 className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
               >
                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
