@@ -71,7 +71,7 @@ export default function LandingPage() {
           <span className="block sm:inline">Roofing Supplement Software</span>
           <span className="block sm:inline text-indigo-600"> That Recovers More on Every Roof</span>
         </h1>
-        <p className="mx-auto mt-4 text-sm font-medium text-zinc-400">Built for roofing crews who document hidden damage during tear-off</p>
+        <p className="mx-auto mt-4 text-sm font-medium text-zinc-500">Built for roofing crews who document hidden damage during tear-off</p>
         <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl">
           Stop leaving money on the table during tear-off. Supplement Snap helps roofing crews
           capture hidden damage, generate supplement documentation, and email adjuster-ready
@@ -101,11 +101,11 @@ export default function LandingPage() {
       <section className="mx-auto max-w-3xl px-6 pb-16">
         <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-lg">
           <div className="border-b border-zinc-100 px-6 py-4 sm:px-8">
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Example Roof Claim</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Example Roof Claim</p>
             <p className="mt-1 text-2xl font-extrabold text-zinc-900 sm:text-3xl">$12,000</p>
           </div>
           <div className="border-b border-zinc-100 px-6 py-4 sm:px-8">
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Hidden Damage Found During Tear-Off</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Hidden Damage Found During Tear-Off</p>
             <div className="mt-2 flex flex-wrap gap-2">
               {["Rotten decking", "Flashing failure", "Missing ice & water shield"].map((item) => (
                 <span key={item} className="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">{item}</span>
@@ -117,7 +117,7 @@ export default function LandingPage() {
             <p className="mt-1 text-2xl font-extrabold text-green-700 sm:text-3xl">+$3,200</p>
           </div>
           <div className="px-6 py-4 sm:px-8">
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Final Claim Value</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Final Claim Value</p>
             <p className="mt-1 text-2xl font-extrabold text-indigo-600 sm:text-3xl">$15,200</p>
           </div>
         </div>
@@ -165,14 +165,14 @@ export default function LandingPage() {
                     <div className="flex items-center justify-between rounded border border-zinc-100 px-2 py-1.5">
                       <div>
                         <p className="text-[7px] font-semibold text-zinc-700">Smith Residence</p>
-                        <p className="text-[6px] text-zinc-400">3 captures</p>
+                        <p className="text-[6px] text-zinc-500">3 captures</p>
                       </div>
                       <span className="text-[6px] font-medium text-indigo-600">Open →</span>
                     </div>
                     <div className="flex items-center justify-between rounded border border-zinc-100 px-2 py-1.5">
                       <div>
                         <p className="text-[7px] font-semibold text-zinc-700">Johnson Property</p>
-                        <p className="text-[6px] text-zinc-400">5 captures</p>
+                        <p className="text-[6px] text-zinc-500">5 captures</p>
                       </div>
                       <span className="text-[6px] font-medium text-indigo-600">Open →</span>
                     </div>
@@ -198,13 +198,13 @@ export default function LandingPage() {
                   <span className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
                 </div>
                 <div className="p-3">
-                  <p className="mb-2 text-[7px] font-semibold uppercase tracking-wider text-zinc-400">New Capture</p>
+                  <p className="mb-2 text-[7px] font-semibold uppercase tracking-wider text-zinc-500">New Capture</p>
                   <div className="mb-2 text-[7px] font-medium text-zinc-600">Photos (2)</div>
                   <div className="mb-2 grid grid-cols-3 gap-1">
                     <div className="aspect-square rounded bg-gradient-to-br from-amber-100 to-amber-50 border border-zinc-200" />
                     <div className="aspect-square rounded bg-gradient-to-br from-red-100 to-red-50 border border-zinc-200" />
                     <div className="flex aspect-square items-center justify-center rounded border-2 border-dashed border-zinc-200 bg-zinc-50">
-                      <span className="text-[7px] text-zinc-400">+ Add</span>
+                      <span className="text-[7px] text-zinc-500">+ Add</span>
                     </div>
                   </div>
                   <div className="mb-1.5 flex gap-1">
@@ -212,7 +212,7 @@ export default function LandingPage() {
                     <span className="rounded-full bg-zinc-100 px-1.5 py-0.5 text-[6px] font-medium text-zinc-600">Front</span>
                   </div>
                   <div className="rounded border border-zinc-100 px-1.5 py-1">
-                    <p className="text-[6px] text-zinc-400">3 sheets of rotted decking found...</p>
+                    <p className="text-[6px] text-zinc-500">3 sheets of rotted decking found...</p>
                   </div>
                   <div className="mt-1.5 h-4 rounded bg-indigo-600 flex items-center justify-center">
                     <span className="text-[6px] font-semibold text-white">Save Capture</span>
@@ -237,28 +237,28 @@ export default function LandingPage() {
                 </div>
                 <div className="p-3">
                   <p className="text-[8px] font-bold text-zinc-800">Smith Residence</p>
-                  <p className="text-[6px] text-zinc-400">742 Evergreen Terrace • Mar 12, 2026</p>
+                  <p className="text-[6px] text-zinc-500">742 Evergreen Terrace • Mar 12, 2026</p>
                   <div className="mt-2 h-px bg-zinc-100" />
                   <div className="mt-2 space-y-1.5">
                     <div className="flex items-start gap-1.5">
                       <span className="mt-0.5 flex h-3 w-3 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[5px] font-bold text-indigo-700">1</span>
                       <div>
                         <p className="text-[7px] font-semibold text-zinc-700">Decking: Front</p>
-                        <p className="text-[5px] text-zinc-400 leading-relaxed">Rotted OSB discovered along eave edge...</p>
+                        <p className="text-[5px] text-zinc-500 leading-relaxed">Rotted OSB discovered along eave edge...</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-1.5">
                       <span className="mt-0.5 flex h-3 w-3 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[5px] font-bold text-indigo-700">2</span>
                       <div>
                         <p className="text-[7px] font-semibold text-zinc-700">Flashing: Chimney</p>
-                        <p className="text-[5px] text-zinc-400 leading-relaxed">Step flashing corroded at chimney wall...</p>
+                        <p className="text-[5px] text-zinc-500 leading-relaxed">Step flashing corroded at chimney wall...</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-1.5">
                       <span className="mt-0.5 flex h-3 w-3 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[5px] font-bold text-indigo-700">3</span>
                       <div>
                         <p className="text-[7px] font-semibold text-zinc-700">Ice &amp; Water: Valley</p>
-                        <p className="text-[5px] text-zinc-400 leading-relaxed">No I&amp;W shield present in valley...</p>
+                        <p className="text-[5px] text-zinc-500 leading-relaxed">No I&amp;W shield present in valley...</p>
                       </div>
                     </div>
                   </div>
@@ -338,7 +338,7 @@ export default function LandingPage() {
             <div className="rounded-xl border border-green-200 bg-green-50/50 p-6">
               <div className="mb-4 flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
-                  <svg className="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="h-4 w-4 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
@@ -354,7 +354,7 @@ export default function LandingPage() {
                   "You can recover more supplement revenue on every job",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5">
-                    <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <span className="text-sm text-green-800">{item}</span>
@@ -475,7 +475,7 @@ export default function LandingPage() {
 
               {/* Findings */}
               <div className="mt-6 mb-2">
-                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Findings</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Findings</p>
               </div>
 
               {/* Finding 1 */}
@@ -521,20 +521,20 @@ export default function LandingPage() {
 
               {/* Photos section */}
               <div className="mt-6 mb-3">
-                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Supporting Photos</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Supporting Photos</p>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <div>
                   <div className="aspect-square rounded-lg bg-gradient-to-br from-amber-100 to-amber-50 border border-zinc-200" />
-                  <p className="mt-1.5 text-[10px] text-zinc-400">Photo 1: Decking rot exposure</p>
+                  <p className="mt-1.5 text-[10px] text-zinc-500">Photo 1: Decking rot exposure</p>
                 </div>
                 <div>
                   <div className="aspect-square rounded-lg bg-gradient-to-br from-red-100 to-red-50 border border-zinc-200" />
-                  <p className="mt-1.5 text-[10px] text-zinc-400">Photo 2: Flashing corrosion</p>
+                  <p className="mt-1.5 text-[10px] text-zinc-500">Photo 2: Flashing corrosion</p>
                 </div>
                 <div>
                   <div className="aspect-square rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 border border-zinc-200" />
-                  <p className="mt-1.5 text-[10px] text-zinc-400">Photo 3: Valley underlayment absence</p>
+                  <p className="mt-1.5 text-[10px] text-zinc-500">Photo 3: Valley underlayment absence</p>
                 </div>
               </div>
 
@@ -542,7 +542,7 @@ export default function LandingPage() {
 
               {/* Summary */}
               <div className="mt-6 rounded-lg bg-zinc-50 px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Summary</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Summary</p>
                 <p className="mt-2 text-xs leading-relaxed text-zinc-600">
                   3 supplement items documented during tear-off inspection. All findings represent concealed conditions not visible during initial inspection. Documentation and supporting photos are ready for adjuster review and supplement submission.
                 </p>
@@ -724,7 +724,7 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-              <p className="mt-4 text-xs text-zinc-400">
+              <p className="mt-4 text-xs text-zinc-500">
                 Designed to work in the field during real roofing tear-offs.
               </p>
             </div>
@@ -748,8 +748,8 @@ export default function LandingPage() {
           <div className="mx-auto mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl">
             {/* Free */}
             <div className="flex flex-col rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
-              <p className="text-sm font-semibold uppercase tracking-wider text-green-600">Free</p>
-              <p className="mt-1 text-xs text-zinc-400">Try it on your next job</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-green-700">Free</p>
+              <p className="mt-1 text-xs text-zinc-500">Try it on your next job</p>
               <div className="mt-4">
                 <span className="text-3xl font-extrabold text-zinc-900">$0</span>
               </div>
@@ -757,7 +757,7 @@ export default function LandingPage() {
               <div className="mt-5 flex-1 space-y-2.5">
                 {["1 demo project", "Damage photo capture", "AI supplement draft", "Voice notes", "See sample PDF"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
-                    <svg className="h-4 w-4 flex-shrink-0 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <svg className="h-4 w-4 flex-shrink-0 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                     <span className="text-sm text-zinc-700">{f}</span>
                   </div>
                 ))}
@@ -770,7 +770,7 @@ export default function LandingPage() {
             {/* Starter */}
             <div className="flex flex-col rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
               <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Starter</p>
-              <p className="mt-1 text-xs text-zinc-400">For solo crews</p>
+              <p className="mt-1 text-xs text-zinc-500">For solo crews</p>
               <div className="mt-4">
                 <span className="text-3xl font-extrabold text-zinc-900">$99</span>
                 <span className="ml-1 text-sm text-zinc-500">/month</span>
@@ -791,7 +791,7 @@ export default function LandingPage() {
             <div className="flex flex-col rounded-2xl border-2 border-indigo-600 bg-white p-7 shadow-lg relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo-600 px-3 py-0.5 text-xs font-semibold text-white">Most Popular</div>
               <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Team</p>
-              <p className="mt-1 text-xs text-zinc-400">For small crews (2-3)</p>
+              <p className="mt-1 text-xs text-zinc-500">For small crews (2-3)</p>
               <div className="mt-4">
                 <span className="text-3xl font-extrabold text-zinc-900">$199</span>
                 <span className="ml-1 text-sm text-zinc-500">/month</span>
@@ -811,7 +811,7 @@ export default function LandingPage() {
             {/* Pro */}
             <div className="flex flex-col rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
               <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">Pro</p>
-              <p className="mt-1 text-xs text-zinc-400">For teams up to 5</p>
+              <p className="mt-1 text-xs text-zinc-500">For teams up to 5</p>
               <div className="mt-4">
                 <span className="text-3xl font-extrabold text-zinc-900">$299</span>
                 <span className="ml-1 text-sm text-zinc-500">/month</span>

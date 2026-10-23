@@ -127,7 +127,7 @@ export function TeamManager({ userId }: { userId: string }) {
               <option value="manager">Project Manager</option>
             </select>
           </div>
-          {error && <p className="text-xs text-red-600">{error}</p>}
+          {error && <p className="text-xs text-red-700">{error}</p>}
           <div className="flex gap-2">
             <button
               onClick={handleInvite}

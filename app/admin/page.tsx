@@ -88,7 +88,7 @@ export default function AdminPage() {
     active: "bg-green-50 text-green-700",
     trialing: "bg-blue-50 text-blue-700",
     past_due: "bg-amber-50 text-amber-700",
-    canceled: "bg-red-50 text-red-600",
+    canceled: "bg-red-50 text-red-700",
     inactive: "bg-zinc-100 text-zinc-500",
   }
 
@@ -143,7 +143,7 @@ export default function AdminPage() {
                 </svg>
               } bgColor="bg-indigo-50" />
               <StatCard label="Active Subscriptions" value={totals.activeSubscriptions} icon={
-                <svg className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <svg className="h-5 w-5 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               } bgColor="bg-green-50" />

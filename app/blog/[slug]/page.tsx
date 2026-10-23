@@ -49,7 +49,7 @@ function StepsFlow({ items }: { items: Array<{ num: string; title: string; desc:
             {item.num}
           </div>
           <div className="min-w-0">
-            <h4 className="text-sm font-bold text-zinc-900">{item.title}</h4>
+            <h3 className="text-sm font-bold text-zinc-900">{item.title}</h3>
             <p className="mt-1 text-sm text-zinc-500">{item.desc}</p>
           </div>
         </div>
@@ -91,18 +91,18 @@ function CompareCard({ before, after }: { before: { label: string; items: string
       <div className="rounded-xl border border-red-200 bg-red-50 p-5">
         <div className="flex items-center gap-2">
           <svg className="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-          <h4 className="text-sm font-bold text-red-700">{before.label}</h4>
+          <h3 className="text-sm font-bold text-red-700">{before.label}</h3>
         </div>
         <ul className="mt-3 space-y-2">
           {before.items.map((item, i) => (
-            <li key={i} className="text-sm text-red-600">{item}</li>
+            <li key={i} className="text-sm text-red-700">{item}</li>
           ))}
         </ul>
       </div>
       <div className="rounded-xl border border-green-200 bg-green-50 p-5">
         <div className="flex items-center gap-2">
-          <svg className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-          <h4 className="text-sm font-bold text-green-700">{after.label}</h4>
+          <svg className="h-5 w-5 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+          <h3 className="text-sm font-bold text-green-700">{after.label}</h3>
         </div>
         <ul className="mt-3 space-y-2">
           {after.items.map((item, i) => (
@@ -117,13 +117,13 @@ function CompareCard({ before, after }: { before: { label: string; items: string
 function ChecklistCard({ title, items }: { title: string; items: Array<{ text: string; checked: boolean }> }) {
   return (
     <div className="my-8 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
-      <h4 className="text-sm font-bold uppercase tracking-wider text-indigo-600">{title}</h4>
+      <h3 className="text-sm font-bold uppercase tracking-wider text-indigo-600">{title}</h3>
       <div className="mt-4 space-y-3">
         {items.map((item, i) => (
           <div key={i} className="flex items-start gap-3">
             <div className={`mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded ${item.checked ? "bg-green-100" : "bg-zinc-100"}`}>
               {item.checked ? (
-                <svg className="h-3.5 w-3.5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <svg className="h-3.5 w-3.5 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
               ) : (
                 <div className="h-2 w-2 rounded-full bg-zinc-300" />
               )}
@@ -144,7 +144,7 @@ function TimelineVisual({ items }: { items: Array<{ time: string; title: string;
           <div key={i} className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
             <div className="flex items-center gap-2 mb-1.5">
               <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-bold whitespace-nowrap ${item.color === "green" ? "bg-green-100 text-green-700" : item.color === "red" ? "bg-red-100 text-red-700" : "bg-indigo-100 text-indigo-700"}`}>{item.time}</span>
-              <h4 className="text-sm font-bold text-zinc-900">{item.title}</h4>
+              <h3 className="text-sm font-bold text-zinc-900">{item.title}</h3>
             </div>
             <p className="text-sm text-zinc-500">{item.desc}</p>
           </div>
@@ -158,7 +158,7 @@ function CalculatorCard({ title, rows, total }: { title: string; rows: Array<{ l
   return (
     <div className="my-8 overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
       <div className="bg-zinc-50 px-5 py-3 border-b border-zinc-200">
-        <h4 className="text-sm font-bold text-zinc-900">{title}</h4>
+        <h3 className="text-sm font-bold text-zinc-900">{title}</h3>
       </div>
       <div className="divide-y divide-zinc-100">
         {rows.map((row, i) => (
@@ -178,7 +178,7 @@ function CalculatorCard({ title, rows, total }: { title: string; rows: Array<{ l
 
 function TipBox({ type, title, text }: { type: "tip" | "warning" | "info"; title: string; text: string }) {
   const styles = {
-    tip: { bg: "bg-green-50", border: "border-green-200", icon: "text-green-600", title: "text-green-800", text: "text-green-700" },
+    tip: { bg: "bg-green-50", border: "border-green-200", icon: "text-green-700", title: "text-green-800", text: "text-green-700" },
     warning: { bg: "bg-amber-50", border: "border-amber-200", icon: "text-amber-600", title: "text-amber-800", text: "text-amber-700" },
     info: { bg: "bg-blue-50", border: "border-blue-200", icon: "text-blue-600", title: "text-blue-800", text: "text-blue-700" },
   }
@@ -192,7 +192,7 @@ function TipBox({ type, title, text }: { type: "tip" | "warning" | "info"; title
           {type === "info" && <svg className={`h-5 w-5 ${s.icon}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
         </div>
         <div>
-          <h4 className={`text-sm font-bold ${s.title}`}>{title}</h4>
+          <h3 className={`text-sm font-bold ${s.title}`}>{title}</h3>
           <p className={`mt-1 text-sm ${s.text}`}>{text}</p>
         </div>
       </div>
@@ -224,7 +224,7 @@ function DamageCards({ items }: { items: Array<{ icon: string; title: string; de
                     <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17l-5.384-3.19A1.5 1.5 0 015.5 10.7V7.8a1.5 1.5 0 01.536-1.15l5.384-3.19a1.5 1.5 0 011.56 0l5.384 3.19A1.5 1.5 0 0118.5 7.8v2.9a1.5 1.5 0 01-.536 1.15l-5.384 3.19a1.5 1.5 0 01-1.56 0z" />
                   </svg>
                 </div>
-                <h4 className="text-sm font-bold text-zinc-900">{item.title}</h4>
+                <h3 className="text-sm font-bold text-zinc-900">{item.title}</h3>
               </div>
               <span className="text-sm font-extrabold text-indigo-600">{item.value}</span>
             </div>
@@ -255,7 +255,7 @@ function ComparisonMatrix({ headers, rows }: { headers: string[]; rows: Array<{ 
               {row.values.map((val, j) => (
                 <td key={j} className="px-4 py-3 text-center">
                   {val === true ? (
-                    <svg className="mx-auto h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <svg className="mx-auto h-4 w-4 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                   ) : val === false ? (
                     <span className="text-zinc-300">-</span>
                   ) : (
@@ -595,10 +595,10 @@ const ARTICLES: Article[] = [
       ]},
       3: { type: "stats", data: [
         { label: "Monthly revenue (no supplements)", value: "$120,000" },
-        { label: "Monthly revenue (with supplements)", value: "$144,000", color: "text-green-600" },
-        { label: "Additional annual revenue", value: "$288,000", color: "text-green-600" },
+        { label: "Monthly revenue (with supplements)", value: "$144,000", color: "text-green-700" },
+        { label: "Additional annual revenue", value: "$288,000", color: "text-green-700" },
       ]},
-      6: {"type":"calculator","data":{"title":"Illustrative Supplement Example","rows":[{"label":"Decking replacement (96 SF at $2.50)","value":"$240"},{"label":"Step flashing (20 LF at $9.00)","value":"$180"},{"label":"Ice and water barrier (100 SF at $2.00)","value":"$200"},{"label":"Pipe jacks (3 at $90)","value":"$270"},{"label":"Drip edge (120 LF at $4.50)","value":"$540"}],"total":{"label":"Example supplement total","value":"$1,430","color":"text-green-600"}}},
+      6: {"type":"calculator","data":{"title":"Illustrative Supplement Example","rows":[{"label":"Decking replacement (96 SF at $2.50)","value":"$240"},{"label":"Step flashing (20 LF at $9.00)","value":"$180"},{"label":"Ice and water barrier (100 SF at $2.00)","value":"$200"},{"label":"Pipe jacks (3 at $90)","value":"$270"},{"label":"Drip edge (120 LF at $4.50)","value":"$540"}],"total":{"label":"Example supplement total","value":"$1,430","color":"text-green-700"}}},
     },
     updatedDate: "2026-10-22",
     related: ["roofing-overhead-and-profit-claims","roof-replacement-estimate-vs-final-cost","how-to-write-a-roofing-supplement","roofing-supplement-process-explained"],
@@ -684,7 +684,7 @@ const ARTICLES: Article[] = [
       ]},
       3: { type: "stats", data: [
         { label: "Adjuster review time", value: "3–14 days" },
-        { label: "Approval rate with strong docs", value: "High", color: "text-green-600" },
+        { label: "Approval rate with strong docs", value: "High", color: "text-green-700" },
         { label: "Typical approval timeline", value: "Same week", color: "text-indigo-600" },
       ]},
       6: {"type":"timeline","data":[{"time":"Day 1","title":"Tear-off and discovery","desc":"Hidden damage is found, photographed and measured before it is covered."},{"time":"Same day","title":"Write and send","desc":"The narrative, line items and photos go to the adjuster with a clear summary."},{"time":"Following days","title":"Carrier review","desc":"The adjuster verifies the package and may ask questions or request a visit."},{"time":"After review","title":"Approval or negotiation","desc":"Approved items are paid. Disputed items get a written response with evidence."}]},

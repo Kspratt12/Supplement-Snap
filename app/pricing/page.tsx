@@ -120,7 +120,7 @@ export default function PricingPage() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {/* Free */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-7 sm:p-8 shadow-sm">
-            <p className="text-sm font-semibold uppercase tracking-wider text-green-600">Free</p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-green-700">Free</p>
             <p className="mt-1 text-xs text-zinc-500">Try it on your next job</p>
             <div className="mt-5">
               <span className="text-4xl font-extrabold text-zinc-900">$0</span>
@@ -130,7 +130,7 @@ export default function PricingPage() {
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
               {["1 demo project", "Capture damage photos", "Voice-to-note documentation", "AI supplement draft", "See sample PDF report"].map((f) => (
                 <div key={f} className="flex items-start gap-2.5">
-                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                   <span className="text-sm text-zinc-700">{f}</span>
@@ -249,7 +249,7 @@ export default function PricingPage() {
               <thead>
                 <tr className="border-b border-zinc-200">
                   <th className="py-3 text-left font-medium text-zinc-500">Feature</th>
-                  <th className="py-3 text-center font-medium text-green-600">Free</th>
+                  <th className="py-3 text-center font-medium text-green-700">Free</th>
                   <th className="py-3 text-center font-medium text-zinc-500">Starter</th>
                   <th className="py-3 text-center font-medium text-indigo-600">Team</th>
                   <th className="py-3 text-center font-medium text-zinc-500">Pro</th>

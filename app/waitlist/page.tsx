@@ -67,7 +67,7 @@ export default function WaitlistPage() {
               className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-900 outline-none focus:border-indigo-500"
             />
             {status === "error" && (
-              <p className="text-sm text-red-600">Something went wrong. Please try again, or request a demo instead.</p>
+              <p className="text-sm text-red-700">Something went wrong. Please try again, or request a demo instead.</p>
             )}
             <button
               type="submit"

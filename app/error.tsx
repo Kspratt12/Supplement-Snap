@@ -33,7 +33,7 @@ export default function Error({
           Go to Dashboard
         </Link>
       </div>
-      <p className="mt-6 text-xs text-zinc-400">
+      <p className="mt-6 text-xs text-zinc-500">
         Need help? Email{" "}
         <a href="mailto:support@supplementsnap.com" className="text-indigo-600 hover:underline">
           support@supplementsnap.com
