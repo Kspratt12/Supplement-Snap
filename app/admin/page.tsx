@@ -68,6 +68,12 @@ export default function AdminPage() {
       })
       if (!res.ok) {
         const data = await res.json().catch(() => null)
+        if (data?.error === "reauth") {
+          // The admin login is older than the allowed age: sign out and ask for a fresh login
+          await signOut()
+          router.replace("/login")
+          return
+        }
         throw new Error(data?.error || `Request failed (${res.status})`)
       }
       const data = await res.json()

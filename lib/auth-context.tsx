@@ -14,6 +14,7 @@ type AuthContextType = {
   subscriptionPlan: SubscriptionPlan
   subscriptionLoading: boolean
   signOut: () => Promise<void>
+  signOutEverywhere: () => Promise<void>
   refreshSubscription: () => Promise<void>
 }
 
@@ -24,6 +25,7 @@ const AuthContext = createContext<AuthContextType>({
   subscriptionPlan: "none",
   subscriptionLoading: true,
   signOut: async () => {},
+  signOutEverywhere: async () => {},
   refreshSubscription: async () => {},
 })
 
@@ -109,8 +111,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSubscriptionPlan("none")
   }
 
+  // "global" revokes the login on every device, not just this one
+  async function signOutEverywhere() {
+    await supabase.auth.signOut({ scope: "global" })
+    setUser(null)
+    setSubscriptionStatus("inactive")
+    setSubscriptionPlan("none")
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, subscriptionStatus, subscriptionPlan, subscriptionLoading, signOut, refreshSubscription }}>
+    <AuthContext.Provider value={{ user, loading, subscriptionStatus, subscriptionPlan, subscriptionLoading, signOut, signOutEverywhere, refreshSubscription }}>
       {children}
     </AuthContext.Provider>
   )

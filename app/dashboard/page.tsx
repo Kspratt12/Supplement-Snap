@@ -27,7 +27,7 @@ type ProjectWithCount = {
 }
 
 export default function DashboardPage() {
-  const { user, loading: authLoading, signOut, subscriptionStatus, subscriptionPlan, subscriptionLoading } = useAuth()
+  const { user, loading: authLoading, signOut, signOutEverywhere, subscriptionStatus, subscriptionPlan, subscriptionLoading } = useAuth()
   const router = useRouter()
   const [projects, setProjects] = useState<ProjectWithCount[]>([])
   const [loadingProjects, setLoadingProjects] = useState(true)
@@ -638,6 +638,18 @@ export default function DashboardPage() {
           />
         )}
 
+        <div className="mt-10 border-t border-zinc-100 pt-6 text-center">
+          <button
+            onClick={async () => {
+              if (!confirm("Log out of Supplement Snap on every device, including this one?")) return
+              await signOutEverywhere()
+              router.push("/")
+            }}
+            className="text-xs font-medium text-zinc-500 hover:text-zinc-900"
+          >
+            Lost a phone or used a shared computer? Log out of all devices
+          </button>
+        </div>
       </main>
     </div>
   )
