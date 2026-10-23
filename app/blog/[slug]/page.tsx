@@ -2656,6 +2656,21 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
           </p>
         </div>
 
+        {/* Early call-out for readers who will not scroll to the end */}
+        <div className="mb-12 flex flex-col gap-3 rounded-xl border border-zinc-200 bg-zinc-50 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-zinc-700">
+            <span className="font-semibold text-zinc-900">Preparing a supplement?</span> Use the free checklist so nothing is missing when you submit.
+          </p>
+          <div className="flex gap-2">
+            <Link href="/free-roofing-supplement-checklist" className="rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-indigo-500">
+              Free checklist
+            </Link>
+            <Link href="/roofing-supplement-report-example" className="rounded-lg border border-zinc-300 bg-white px-4 py-2 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
+              Sample report
+            </Link>
+          </div>
+        </div>
+
         <div className="space-y-10">
           {article.sections.map((section, i) => (
             <section key={i}>
