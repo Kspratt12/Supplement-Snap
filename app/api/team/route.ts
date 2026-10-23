@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { getUserId } from "../../../lib/auth-utils"
+import { MAX_INVITES } from "../../../lib/plan"
 
 const supabase = () => createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -39,13 +40,18 @@ export async function POST(request: Request) {
     // Check plan limits
     const { data: sub } = await supabase()
       .from("subscriptions")
-      .select("plan")
+      .select("plan, status")
       .eq("user_id", ownerId)
-      .single()
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle()
 
+    const live = !!sub && (sub.status === "active" || sub.status === "trialing")
+    if (!live) {
+      return NextResponse.json({ error: "An active Team or Pro plan is required to invite team members." }, { status: 403 })
+    }
     const plan = sub?.plan || "starter"
-    const maxMembers: Record<string, number> = { starter: 0, team: 2, pro: 4 }
-    const limit = maxMembers[plan] ?? 0
+    const limit = MAX_INVITES[plan] ?? 0
 
     const { count } = await supabase()
       .from("team_members")

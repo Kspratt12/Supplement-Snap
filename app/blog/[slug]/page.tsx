@@ -20,6 +20,9 @@ type Article = {
   visuals?: Record<number, Visual>
   sections: Array<{ heading: string; content: string }>
   externalLinks?: Array<{ text: string; url: string }>
+  updatedDate?: string
+  faq?: Array<{ q: string; a: string }>
+  related?: string[]
 }
 
 /* ── Visual Components ── */
@@ -295,7 +298,7 @@ const ARTICLES: Article[] = [
       { text: "NRCA Roofing Manual: Best Practices", url: "https://www.nrca.net" },
       { text: "Verisk Xactimate Official Site", url: "https://www.verisk.com/insurance/products/xactimate/" },
     ],
-    highlight: { label: "Average Supplement Recovery", value: "$1,500–$3,200", subtext: "Per job when properly documented" },
+    highlight: { label: "Example Recovery Range", value: "$1,500–$3,200", subtext: "Illustrative range, not a guarantee. Results vary by claim." },
     visuals: {
       1: { type: "compare", data: {
         before: { label: "Why Supplements Get Denied", items: ["Blurry or missing photos", "No written narrative", "Submitted weeks late", "Vague descriptions", "No building code references"] },
@@ -311,6 +314,30 @@ const ARTICLES: Article[] = [
         { code: "RFG TEAR", desc: "Remove additional layer", unit: "SQ", price: "$45.00" },
       ]},
     },
+    updatedDate: "2026-10-22",
+    related: ["roofing-supplement-template","roofing-supplement-denied-what-to-do","xactimate-codes-for-roofing-supplements","roofing-photo-documentation-checklist"],
+    faq: [
+      {
+        "q": "Do I need Xactimate to submit a roofing supplement?",
+        "a": "No. You can submit a clear written supplement with photos, measurements and line items. Many contractors still format items the way Xactimate does because adjusters work in that format and it speeds up review."
+      },
+      {
+        "q": "How long does a roofing supplement take to get approved?",
+        "a": "It depends on the carrier, the size of the supplement and how complete your documentation is. Complete, well-organized packages are usually reviewed faster than ones that require follow-up questions."
+      },
+      {
+        "q": "Can a homeowner submit a supplement instead of the contractor?",
+        "a": "Yes, a homeowner can ask the carrier to review additional damage, but contractors usually submit because they have the photos, measurements and technical detail."
+      },
+      {
+        "q": "What if the insurance company only pays part of my supplement?",
+        "a": "Compare the approved items to your request, identify what was cut and why, and respond in writing with the specific photo or measurement that supports each cut item."
+      },
+      {
+        "q": "Can I add a supplement after the job is finished?",
+        "a": "It is much harder. The evidence is covered and the adjuster cannot verify it. Document and submit while the damage is still visible."
+      }
+    ],
     sections: [
       {
         heading: "What is a roofing supplement?",
@@ -335,6 +362,26 @@ const ARTICLES: Article[] = [
       {
         heading: "Step 4: Submit with photos and PDF report",
         content: "Package everything into a clean, professional report. The best supplement submissions include:\n\n• A cover page with project name, property address, date, insurance company, and claim number\n• Each finding with its photos, description, and supplement narrative\n• A findings summary table\n• Supporting photos labeled with what they show\n• A certification statement that the damage was concealed and discovered during tear-off\n\nEmail the report directly to the adjuster the same day you find the damage. Speed matters. The sooner you submit, the fresher the documentation, and the faster you get paid."
+      },
+      {
+        heading: "What adjusters look for when they review a supplement",
+        content: "An adjuster reviewing a supplement is asking one question: can I verify this without a site visit? Anything that forces a phone call, a second inspection or a manager's sign-off slows the decision down or ends in a denial.\n\nIn practice they check four things:\n\n• The damage is real: Clear photos that show the condition up close and in context.\n• The damage was hidden: Evidence that it could not be seen during the first inspection, usually because shingles or underlayment covered it.\n• The scope is reasonable: Quantities that match the photos and the roof measurements.\n• The item is covered: A line item and a reason that fit the policy and the local building code.\n\nWrite every supplement so those four answers are on the first page. If the adjuster has to hunt for them, the supplement is at risk.",
+      },
+      {
+        heading: "A supplement narrative you can adapt",
+        content: "The narrative is the short written explanation that sits beside each photo. It should be factual, specific and free of opinion. A simple structure works well for every finding:\n\n1. What was found: Name the component and the condition, for example rotted OSB decking along the eave.\n2. Where it was found: Slope, area and approximate measurements.\n3. When it was found: During tear-off, after the shingles and underlayment were removed.\n4. Why it matters: Water intrusion, a code requirement or a manufacturer requirement.\n5. What is needed: The repair and the quantity.\n\nExample: During tear-off of the front slope, three sheets of OSB decking along the eave were found soft and deteriorated from prolonged moisture exposure. The damage was concealed beneath the existing shingles and underlayment. The decking cannot hold fasteners and must be replaced before new underlayment is installed. Photos 4 through 7 show the condition.\n\nNotice what is missing: no blame, no guesses about how long the damage existed and no emotional language. Adjusters respond to facts.",
+      },
+      {
+        heading: "Common supplement items and when each one applies",
+        content: "Most roofing supplements come from the same short list. Knowing when each item applies keeps you from missing money and from claiming items that do not fit the job.\n\n• Decking replacement: Rotted, delaminated or damaged sheathing found after tear-off.\n• Flashing: Corroded, separated or missing step flashing, counter flashing or valley metal.\n• Ice and water barrier: Required by code in many climates at eaves and valleys, and often missing on older roofs.\n• Pipe jacks and vents: Cracked or failed boots that cannot be reused.\n• Drip edge: Missing or non-compliant drip edge where code requires it.\n• Extra layers: A second layer of shingles that adds tear-off and disposal.\n• Code-required upgrades: Items required by the local building authority, which depend on the policy having the right coverage. See our guide to <a href='/blog/roofing-code-upgrades-ordinance-and-law'>code upgrades and Ordinance and Law coverage</a>.\n\nFor line codes and units, use our <a href='/blog/xactimate-codes-for-roofing-supplements'>Xactimate codes reference</a>.",
+      },
+      {
+        heading: "Supplement, change order or new claim? Know the difference",
+        content: "These three terms get mixed up, and using the wrong one causes delays.\n\n• Supplement: A request for additional payment on an existing claim, for damage or costs that were not in the original estimate.\n• Change order: A change to the contract between you and the homeowner. It does not automatically change what the insurance company pays.\n• New claim: A separate loss event. A supplement cannot be used to add unrelated damage from a different storm.\n\nA supplement is tied to the original claim number and the original cause of loss. If the damage you found was caused by something unrelated to the covered event, such as long-term neglect or an old leak, the carrier may not owe it. Document why the hidden damage connects to the covered loss, and be honest about what you cannot prove.",
+      },
+      {
+        heading: "Timing: when to submit and how to follow up",
+        content: "Submit the supplement as soon as the damage is documented, ideally the same day. Fresh photos, clear dates and an open job site all help. A supplement sent weeks later looks like an afterthought, and the evidence may already be covered by new underlayment.\n\nAfter you submit:\n\n1. Confirm receipt: Ask for the name of the person handling it and a reference number.\n2. Put dates on everything: Record when you sent it, how, and what was attached.\n3. Follow up in writing: A short email beats a voicemail because it creates a record.\n4. Keep the job moving: Ask what the carrier needs, not just whether it is approved.\n\nResponse times vary by carrier and by claim volume, especially after a major storm, so ask the adjuster what to expect instead of assuming. If a decision stalls, our guide on <a href='/blog/roofing-supplement-denied-what-to-do'>what to do when a supplement is denied or ignored</a> covers the escalation steps.",
       },
       {
         heading: "How Supplement Snap automates this process",
@@ -365,6 +412,30 @@ const ARTICLES: Article[] = [
         after: { label: "How to Get It Approved", items: ["Tagged photos with damage type + location", "Professional narrative per finding", "Submitted same day as tear-off", "Correct Xactimate codes + quantities", "Statement that damage was under shingles"] },
       }},
     },
+    updatedDate: "2026-10-22",
+    related: ["how-to-write-a-roofing-supplement","roofing-photo-documentation-checklist","roofing-supplement-template","roofing-code-upgrades-ordinance-and-law"],
+    faq: [
+      {
+        "q": "Can I resubmit a denied roofing supplement?",
+        "a": "Yes. A strong resubmission answers the stated denial reason directly with new or clearer evidence instead of repeating the original package."
+      },
+      {
+        "q": "How do I appeal a denied roofing supplement?",
+        "a": "Respond in writing item by item, attach the supporting photo or measurement for each, and request a reinspection or supervisor review if the dispute is about what the damage looks like."
+      },
+      {
+        "q": "What if the insurance company says the damage is pre-existing?",
+        "a": "Document why the condition is consistent with the covered event, compare it to undamaged areas, and ask the adjuster to explain what evidence they used to classify it as pre-existing."
+      },
+      {
+        "q": "Is a public adjuster worth it for a denied supplement?",
+        "a": "It can be on larger disputes. Public adjusters generally take a percentage of the recovery, so compare that cost to the amount in dispute."
+      },
+      {
+        "q": "How long do I have to dispute a denial?",
+        "a": "It depends on your policy and your state. Check the denial letter and the policy for deadlines as soon as you receive it."
+      }
+    ],
     sections: [
       {
         heading: "Why your roofing supplement was denied",
@@ -385,6 +456,22 @@ const ARTICLES: Article[] = [
       {
         heading: "Step 4: Resubmit with a complete package",
         content: "Resubmit the supplement as a complete package, not just a reply to the denial. Include a fresh PDF report with all photos, narratives, Xactimate line items, and a cover letter referencing the original claim number and explaining why the supplement should be reconsidered.\n\nRequest a re-inspection if the denial was based on the adjuster not seeing the damage. You may also escalate to a supervisor or file a complaint with your state's Department of Insurance if you believe the denial was unjustified."
+      },
+      {
+        heading: "Common denial reasons and the evidence that answers each",
+        content: "A denial is rarely random. Carriers usually give one of a handful of reasons, and each one has a matching kind of evidence.\n\n• Damage not related to the covered loss: Show timing, location and condition that tie the damage to the storm or event, and photograph surrounding areas for context.\n• Pre-existing or wear and tear: Explain why the condition is not simple age. Compare to undamaged areas of the same roof where you can.\n• Insufficient documentation: Add clearer photos, measurements and a written narrative for each finding.\n• Item not covered by the policy: Check the policy language and any endorsements before arguing. Some items, such as code upgrades, depend on specific coverage.\n• Quantity disputed: Provide measurements, a sketch or a measurement report that shows how you arrived at the number.\n• Price disputed: Show that the unit price matches the current price list for your area.\n\nRead the denial letter closely and match each stated reason to the right kind of proof. Responding to the real reason is far more effective than resubmitting the same package.",
+      },
+      {
+        heading: "How to request a reinspection",
+        content: "When the disagreement is about what the damage looks like, a second look often resolves it faster than letters. Ask for a reinspection in writing and make it easy to say yes.\n\n1. Offer specific times: Propose two or three windows when you or your crew can meet the adjuster on site.\n2. Keep the damage visible: If possible, hold off covering the area until the adjuster has seen it.\n3. Bring a one-page summary: List each disputed item with its photo number and measurement.\n4. Be polite and factual: You are asking for a review, not accusing anyone.\n\nAfter the visit, send a short email confirming what was discussed and what the adjuster agreed to review. That summary becomes part of the claim record.",
+      },
+      {
+        heading: "Escalating when the first response does not resolve it",
+        content: "If a denial stands after you have responded with proper evidence, you have several options. The right one depends on the amount at stake and on your state's rules.\n\n• Ask for a supervisor or claims manager: Front-line adjusters often have limited authority. A manager can sometimes approve items they cannot.\n• Invoke the appraisal clause: Many policies include an appraisal process for disputes about the amount of loss. Read the policy for the exact steps and costs.\n• Contact your state department of insurance: Most states accept complaints about claim handling and have timelines carriers must follow.\n• Bring in a public adjuster: A licensed public adjuster works for the policyholder and typically charges a percentage of the recovery.\n• Consult an attorney: For large or clearly mishandled claims, a lawyer who handles insurance disputes can advise on options.\n\nThis is general information, not legal advice. Rules differ by state and by policy, so confirm the details that apply to your situation.",
+      },
+      {
+        heading: "Watch your deadlines",
+        content: "Policies and state laws set time limits for reporting, for submitting additional damage and for responding to claim decisions. Missing one can cost you the right to dispute.\n\nAt the start of every dispute:\n\n• Find the dates: Note the date of loss, the date of the denial and any deadline named in the letter.\n• Check the policy: Look for suit limitation and appraisal deadlines.\n• Calendar the follow-ups: Set reminders for your own response and for the date the carrier should reply.\n\nKeep every email, letter and photo. A clean paper trail is your strongest asset in any dispute.",
       },
       {
         heading: "How to prevent supplement denials in the future",
@@ -415,6 +502,26 @@ const ARTICLES: Article[] = [
         { code: "RFG HAUL", desc: "Haul debris, additional layer", unit: "SQ", price: "$22.50" },
       ]},
     },
+    updatedDate: "2026-10-22",
+    related: ["xactimate-roofing-estimate-approved","xactimate-roof-estimate-supplements","how-to-write-a-roofing-supplement","roofing-supplement-template"],
+    faq: [
+      {
+        "q": "Do I need an Xactimate license to use these codes?",
+        "a": "You do not need a license to reference item names in a written supplement, but you need the software to build a native Xactimate estimate. Many contractors submit a clearly formatted document that mirrors Xactimate items."
+      },
+      {
+        "q": "Are Xactimate codes the same everywhere?",
+        "a": "Item names are largely consistent, but unit prices come from regional price lists and change over time, so totals differ by location and date."
+      },
+      {
+        "q": "Where do I find the current price list?",
+        "a": "The adjuster's estimate shows the price list used for the claim. In Xactimate you select the price list for the project's location and date."
+      },
+      {
+        "q": "Why was my line item rejected even though the code was right?",
+        "a": "Usually the quantity or the proof was the problem, not the code. Add a measurement, a labeled photo and a short explanation of why the item applies."
+      }
+    ],
     sections: [
       {
         heading: "Why Xactimate codes matter for supplements",
@@ -443,6 +550,22 @@ const ARTICLES: Article[] = [
       {
         heading: "Additional layer removal codes",
         content: "For roofs with multiple layers:\n\n• RFG TEAR — Remove additional layer of roofing. Measured in SQ (squares, 100 SF). National average: ~$45.00/SQ\n• RFG HAUL — Haul debris, additional roofing layer. Measured in SQ. National average: ~$22.50/SQ\n\nMultiple layers are only discovered during tear-off. Document the number of layers found and photograph the cross-section showing multiple layers of shingles."
+      },
+      {
+        heading: "How to find the right code and unit",
+        content: "Codes only help if you pick the right one. In Xactimate, roofing items live in the roofing category, and each item has a description, a unit of measure and a unit price from the price list you are working in.\n\nFollow these habits every time:\n\n1. Search by what the item does: Look for the component and the action, such as remove and replace or install only.\n2. Read the full description: Two items can sound similar but differ in material, size or what is included.\n3. Match the unit: Square feet, linear feet, squares and each are not interchangeable. Your quantity has to use the unit the item uses.\n4. Check the price list: Confirm the price list name and date matches the location and time of the loss.\n\nThe code names and prices shown in this guide are shorthand examples. Always confirm the exact item and price in your own software or with the adjuster.",
+      },
+      {
+        heading: "Codes and items people forget",
+        content: "Missing a small item costs little on one job and a lot across a year. These are the ones crews and estimators overlook most often:\n\n• Starter strip: Installed at eaves and rakes on most shingle systems.\n• Ridge and hip cap: Priced separately from field shingles.\n• Underlayment: Felt or synthetic, matched to local code and manufacturer requirements.\n• Drip edge and rake metal: Often required by code and frequently left off.\n• Step flashing and counter flashing: Measured in linear feet along walls and chimneys.\n• Pipe jacks, vents and exhaust caps: Counted individually.\n• Debris removal: Including extra layers.\n• Permits and dumpster fees: Where local rules require them.\n\nWalk this list before you finish any estimate or supplement. It takes a minute and often finds items worth hundreds of dollars.",
+      },
+      {
+        heading: "Understanding unit prices and price lists",
+        content: "Unit prices in Xactimate come from regional price lists that are updated regularly. The same item can carry a different price in two nearby cities, and the price for the same city changes over time.\n\nThree practical rules:\n\n• Use the price list tied to the claim: The adjuster's estimate names it. Match it so your numbers can be compared line by line.\n• Do not mix price lists: Combining items from different lists confuses review.\n• Explain exceptions: If a job needs something the price list handles poorly, such as a hard access site, add a short note and a photo instead of silently changing a price.\n\nThe example prices in the table above are national-style averages and will not match your area. Treat them as a sanity check, not a quote.",
+      },
+      {
+        heading: "Pairing codes with the right proof",
+        content: "A code tells the adjuster what you want. The proof tells them why. For every code on a supplement, attach at least:\n\n• One photo: Labeled to match the line item, showing the condition.\n• One measurement: Length, area or count, with how you got it.\n• One sentence: Why the item applies to this job.\n\nWhen all three are present, the line item can usually be approved without a call. For a full workflow, see <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a> and our <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a>.",
       },
       {
         heading: "How Supplement Snap handles Xactimate codes",
@@ -475,10 +598,31 @@ const ARTICLES: Article[] = [
         { label: "Monthly revenue (with supplements)", value: "$144,000", color: "text-green-600" },
         { label: "Additional annual revenue", value: "$288,000", color: "text-green-600" },
       ]},
+      6: {"type":"calculator","data":{"title":"Illustrative Supplement Example","rows":[{"label":"Decking replacement (96 SF at $2.50)","value":"$240"},{"label":"Step flashing (20 LF at $9.00)","value":"$180"},{"label":"Ice and water barrier (100 SF at $2.00)","value":"$200"},{"label":"Pipe jacks (3 at $90)","value":"$270"},{"label":"Drip edge (120 LF at $4.50)","value":"$540"}],"total":{"label":"Example supplement total","value":"$1,430","color":"text-green-600"}}},
     },
+    updatedDate: "2026-10-22",
+    related: ["roofing-overhead-and-profit-claims","roof-replacement-estimate-vs-final-cost","how-to-write-a-roofing-supplement","roofing-supplement-process-explained"],
+    faq: [
+      {
+        "q": "How much does the average roofing supplement pay?",
+        "a": "There is no reliable national figure because amounts depend on the roof, the policy and the documentation. Track the supplements on your own jobs to find your real average."
+      },
+      {
+        "q": "What roofing items are most commonly supplemented?",
+        "a": "Decking, flashing, ice and water barrier, pipe jacks and vents, drip edge, extra layers and code-required upgrades."
+      },
+      {
+        "q": "Do supplements affect the homeowner's out-of-pocket cost?",
+        "a": "They can reduce it. Items the carrier approves are paid under the claim instead of coming out of the homeowner's pocket, subject to the deductible and coverage terms."
+      },
+      {
+        "q": "Are roofing supplements guaranteed to be approved?",
+        "a": "No. Approval depends on the evidence, the policy and the carrier's review."
+      }
+    ],
     sections: [
       {
-        heading: "The short answer: $1,500–$3,200 per job",
+        heading: "The short answer: it depends on the roof and the paperwork",
         content: "On a typical residential roof replacement with an insurance claim value of $10,000–$15,000, the average supplement recovery is $1,500–$3,200. This represents hidden damage found during tear-off that wasn't included in the original adjuster estimate.\n\nSome jobs yield more, some less. A simple re-roof on a ranch-style home might only produce $800–$1,200 in supplementable items. A complex roof with multiple penetrations, valleys, and older construction can produce $4,000–$6,000 in supplements."
       },
       {
@@ -496,6 +640,22 @@ const ARTICLES: Article[] = [
       {
         heading: "Why most contractors leave this money on the table",
         content: "The gap between 'finding damage' and 'recovering supplement money' is documentation. Most contractors fall into one of these traps:\n\n• Crew finds damage but doesn't photograph it properly\n• Photos get lost in text messages between crew and office\n• Office doesn't have time to write up supplements for every job\n• Supplement gets submitted weeks later with weak documentation\n• Adjuster denies it due to insufficient evidence\n\nThe solution is capturing documentation at the point of discovery, on the roof, during tear-off, in real time. That's exactly what Supplement Snap was built for."
+      },
+      {
+        heading: "How to read these numbers",
+        content: "The ranges on this page are illustrative. Every claim is different, and no article can tell you what your next supplement will pay. What drives the amount is the roof and the paperwork, not a national average.\n\nTreat any published figure, including ours, as a starting point for your own tracking. The most useful number is the one from your own jobs: how many had supplementable damage, what you requested, and what was approved.",
+      },
+      {
+        heading: "A worked example with illustrative numbers",
+        content: "To show how small items add up, here is a simple example. The unit prices below are made up for illustration and will differ in your market. The point is the arithmetic, not the prices.\n\nA crew tears off a 28-square roof and finds rotted decking at one eave, a corroded chimney flashing, no ice and water barrier in the main valley, three failed pipe jacks and missing drip edge. None of these were in the first estimate. Written up with photos and measurements, the line items come to about the amount shown below. No single item is large. Together they make a meaningful difference on one job.\n\nNow multiply across a year. If even a share of your tear-offs turn up items like these, the missed revenue becomes a real number.",
+      },
+      {
+        heading: "What makes one supplement larger than another",
+        content: "Several factors push a supplement up or down:\n\n• Roof age and condition: Older roofs hide more deterioration.\n• Climate: Cold-weather regions often have ice barrier requirements that older roofs lack.\n• Number of layers: Extra layers add tear-off and disposal.\n• Roof complexity: More valleys, walls and penetrations mean more flashing and accessories.\n• Documentation quality: Items without photos and measurements are the first to be cut.\n• Coverage: Code upgrade items depend on the policy.\n\nNotice that most of these are about completeness. Missing items are usually missing because nobody wrote them down, not because the carrier refused them.",
+      },
+      {
+        heading: "How to estimate your own potential recovery",
+        content: "You can build a rough picture of your opportunity in three steps:\n\n1. Count your tear-offs: How many insurance roof replacements did you complete in the last 12 months?\n2. Sample your files: Review 10 recent jobs and note how many had hidden damage that was not in the original estimate.\n3. Total what was missed or left undocumented: Add up what the items would have been worth at your price list.\n\nThat gives you a defensible estimate based on your real jobs. It also shows you which items you miss most, which tells you where to improve your checklist. For items and codes, see our <a href='/blog/xactimate-codes-for-roofing-supplements'>Xactimate codes reference</a>.",
       },
       {
         heading: "How to start recovering supplements today",
@@ -527,7 +687,28 @@ const ARTICLES: Article[] = [
         { label: "Approval rate with strong docs", value: "High", color: "text-green-600" },
         { label: "Typical approval timeline", value: "Same week", color: "text-indigo-600" },
       ]},
+      6: {"type":"timeline","data":[{"time":"Day 1","title":"Tear-off and discovery","desc":"Hidden damage is found, photographed and measured before it is covered."},{"time":"Same day","title":"Write and send","desc":"The narrative, line items and photos go to the adjuster with a clear summary."},{"time":"Following days","title":"Carrier review","desc":"The adjuster verifies the package and may ask questions or request a visit."},{"time":"After review","title":"Approval or negotiation","desc":"Approved items are paid. Disputed items get a written response with evidence."}]},
     },
+    updatedDate: "2026-10-22",
+    related: ["how-to-write-a-roofing-supplement","roofing-photo-documentation-checklist","roofing-supplement-denied-what-to-do","roofing-supplement-template"],
+    faq: [
+      {
+        "q": "How long does the roofing supplement process take?",
+        "a": "It varies by carrier and claim. The part you control is how fast you document and submit, so do both on the day damage is found."
+      },
+      {
+        "q": "When should a supplement be submitted?",
+        "a": "As soon as the hidden damage is documented, ideally the same day and before new materials cover the area."
+      },
+      {
+        "q": "Who submits the supplement, the contractor or the homeowner?",
+        "a": "Usually the contractor, since they have the photos, measurements and technical detail."
+      },
+      {
+        "q": "What happens if the adjuster wants to inspect the roof again?",
+        "a": "Offer specific times, keep the damage visible if possible and bring a one-page summary of the disputed items."
+      }
+    ],
     sections: [
       {
         heading: "What happens when your crew finds hidden damage",
@@ -548,6 +729,22 @@ const ARTICLES: Article[] = [
       {
         heading: "Phase 4: Adjuster review and negotiation",
         content: "After submission, the adjuster reviews your supplement. This can take 3–14 business days depending on the carrier. Possible outcomes:\n\n• Approved in full: the carrier agrees with your findings and adjusts the claim\n• Partially approved: some items approved, others denied or reduced\n• Re-inspection requested: the adjuster wants to see the damage in person\n• Denied: the carrier rejects the supplement (see our guide on what to do when this happens)\n\nIf partially approved, review which items were denied and why. You can resubmit with additional documentation or escalate to a supervisor. If a re-inspection is requested, coordinate with the adjuster and be prepared to show the documented evidence."
+      },
+      {
+        heading: "Who does what in the supplement process",
+        content: "A smooth supplement depends on clear handoffs between the people involved.\n\n• The crew: Finds and photographs damage during tear-off, with labels and notes.\n• The project manager or estimator: Measures, writes the narrative and builds the line items.\n• The office: Assembles the package, sends it and tracks the response.\n• The adjuster: Reviews the package, may visit and decides what is approved.\n• The homeowner: Stays informed and may need to sign documents.\n\nMost delays come from a handoff that fails, usually photos that never reach the office or notes that no one recorded. Fixing that handoff is often the biggest improvement a roofing company can make.",
+      },
+      {
+        heading: "What a realistic timeline looks like",
+        content: "Timelines vary by carrier, claim volume and the size of the supplement, so use the steps below as a rough order of events and not a promise. What you control is the first half: documenting and sending quickly.\n\nThe longer you wait to send, the harder verification becomes, and the more the job moves on without you. The sooner the package reaches the adjuster, the sooner questions can be answered while the damage is still visible.",
+      },
+      {
+        heading: "What to have ready before you call the adjuster",
+        content: "A short phone call goes much better when you are prepared. Have these in front of you:\n\n• The claim number and policy holder name\n• The date of loss and the date of tear-off\n• A one-page list of findings with photo numbers\n• Measurements and quantities for each item\n• Any code references you rely on\n• The email address the carrier wants documents sent to\n\nAfter the call, send a short email summarizing what was agreed. That record protects you if details are disputed later.",
+      },
+      {
+        heading: "Where time gets lost, and how to get it back",
+        content: "Four steps eat most of the time:\n\n1. Photos stuck on phones: Fix this by uploading from the roof, not at the end of the day.\n2. Writing from memory: Fix this by capturing a short note with every photo.\n3. Formatting: Fix this with a consistent template for narratives and reports. See our <a href='/blog/roofing-supplement-template'>supplement template</a>.\n4. Chasing the carrier: Fix this with dated written follow-ups.\n\nIf you improve only one thing, make it the first: getting labeled photos off the roof and to the office the same day.",
       },
       {
         heading: "How Supplement Snap streamlines the entire process",
@@ -605,7 +802,7 @@ const ARTICLES: Article[] = [
   {
     slug: "best-roof-estimating-software",
     title: "Best Roof Estimating Software for Contractors in 2026",
-    metaTitle: "Best Roof Estimating Software for Contractors in 2026 | Comparison Guide",
+    metaTitle: "Best Roof Estimating Software for Contractors (2026)",
     metaDescription: "Compare the best roof estimating software for contractors in 2026: satellite measurement, field documentation, CRM and supplement tools.",
     publishedDate: "2026-02-17",
     externalLinks: [
@@ -745,7 +942,7 @@ const ARTICLES: Article[] = [
   {
     slug: "xactimate-roof-estimate-supplements",
     title: "How to Build an Xactimate Roof Estimate for Insurance Supplements",
-    metaTitle: "How to Build an Xactimate Roof Estimate for Supplements | Contractor Guide",
+    metaTitle: "Xactimate Roof Estimates for Insurance Supplements",
     metaDescription: "How to build an Xactimate roof estimate for insurance supplements: key line codes, pricing benchmarks and the common mistakes that get supplements denied.",
     publishedDate: "2026-03-07",
     externalLinks: [
@@ -791,7 +988,7 @@ const ARTICLES: Article[] = [
   {
     slug: "roof-replacement-estimate-vs-final-cost",
     title: "Roof Replacement Estimate vs. Final Cost: Why Supplements Close the Gap",
-    metaTitle: "Roof Replacement Estimate vs. Final Cost: Why Supplements Close the Gap",
+    metaTitle: "Roof Replacement Estimate vs. Final Cost: The Gap",
     metaDescription: "Why the first roof replacement estimate is lower than the final cost, what adjuster inspections miss, and how supplements bridge the gap.",
     publishedDate: "2026-03-10",
     externalLinks: [
@@ -837,7 +1034,7 @@ const ARTICLES: Article[] = [
   {
     slug: "storm-damage-roof-repair-near-me",
     title: "Storm Damage Roof Repair Near Me: How Contractors Win Local Storm Jobs",
-    metaTitle: "Storm Damage Roof Repair Near Me: How Contractors Capture Local Storm Jobs (2026)",
+    metaTitle: "Storm Damage Roof Repair Near Me: Win Local Jobs",
     metaDescription: "How roofing contractors can win local storm damage repair searches: lead generation, insurance claim workflows and beating storm chasers.",
     publishedDate: "2026-03-14",
     externalLinks: [
@@ -928,7 +1125,7 @@ const ARTICLES: Article[] = [
   {
     slug: "best-roofing-crm",
     title: "Best Roofing CRM in 2026: What to Look For and What's Missing",
-    metaTitle: "Best Roofing CRM in 2026: Features, Options, and the Revenue Gap | Guide",
+    metaTitle: "Best Roofing CRM in 2026: Features and Options",
     metaDescription: "Compare the best roofing CRMs in 2026: JobNimbus, AccuLynx, Leap and RoofLink. What features matter, what CRMs miss, and how to capture supplement revenue.",
     publishedDate: "2026-03-17",
     externalLinks: [
@@ -1014,7 +1211,7 @@ const ARTICLES: Article[] = [
   {
     slug: "storm-damage-roof-repair",
     title: "Storm Damage Roof Repair: What Contractors Need to Know in 2026",
-    metaTitle: "Storm Damage Roof Repair: Contractor Guide for Insurance Claims in 2026",
+    metaTitle: "Storm Damage Roof Repair: Contractor Guide (2026)",
     metaDescription: "Complete guide to storm damage roof repair for contractors: identify wind, hail and debris damage, handle insurance claims and maximize recovery on every job.",
     publishedDate: "2026-03-20",
     externalLinks: [
@@ -1092,7 +1289,7 @@ const ARTICLES: Article[] = [
   {
     slug: "roof-damage-repair-guide",
     title: "Roof Damage Repair: Contractor Guide to Identifying, Documenting, and Getting Paid",
-    metaTitle: "Roof Damage Repair: Contractor Guide to Documentation and Insurance Recovery (2026)",
+    metaTitle: "Roof Damage Repair Guide: Document and Get Paid",
     metaDescription: "Contractor guide to roof damage repair: identify damage types, document findings for insurance, decide repair vs replace and recover full value.",
     publishedDate: "2026-03-24",
     externalLinks: [
@@ -1178,7 +1375,7 @@ const ARTICLES: Article[] = [
   {
     slug: "roof-inspection-report",
     title: "Roof Inspection Report: What to Include and How to Write One",
-    metaTitle: "Roof Inspection Report: What to Include and How to Write One (2026 Guide)",
+    metaTitle: "How to Write a Roof Inspection Report (2026 Guide)",
     metaDescription: "How to write a professional roof inspection report that gets claims approved: what to document, report structure, common mistakes and software tools.",
     publishedDate: "2026-03-27",
     externalLinks: [
@@ -1307,6 +1504,26 @@ const ARTICLES: Article[] = [
         ],
       }},
     },
+    updatedDate: "2026-10-22",
+    related: ["xactimate-codes-for-roofing-supplements","roofing-overhead-and-profit-claims","roofing-photo-documentation-checklist","xactimate-roof-estimate-supplements"],
+    faq: [
+      {
+        "q": "What is an Xactimate roofing estimate?",
+        "a": "It is a repair or replacement estimate for a roof built in Xactimate, using standard line items, units and regional unit prices that insurance carriers recognize."
+      },
+      {
+        "q": "Why do adjusters reduce roofing estimates?",
+        "a": "Common reasons are unverified quantities, missing photos, items that do not match the policy and charges that were not explained."
+      },
+      {
+        "q": "Do I need a measurement report to write a roof estimate?",
+        "a": "It is not required, but a satellite or drone report makes your quantities easier to verify, and taped dimensions can confirm it."
+      },
+      {
+        "q": "What is the difference between an estimate and a supplement?",
+        "a": "The estimate covers visible, known work. A supplement covers additional damage or items found later or left out."
+      }
+    ],
     sections: [
       {
         heading: "What does an approved Xactimate roofing estimate actually look like?",
@@ -1345,10 +1562,619 @@ const ARTICLES: Article[] = [
         content: "Even a strong estimate can come back reduced. Do not accept the first number without reading the reasons. Compare the carrier's version to yours line by line and identify exactly what changed: quantities, items removed, or charges disallowed.\n\nRespond in writing, item by item, and attach the photo or measurement that answers each cut. Our guide on <a href='/blog/roofing-supplement-denied-what-to-do'>what to do when a roofing supplement is denied</a> walks through the appeal process, and <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a> shows how to document additional damage found during tear-off.",
       },
       {
+        heading: "A simple worked example of the process",
+        content: "Here is how the steps fit together on a straightforward asphalt shingle replacement. The quantities are illustrative.\n\nYou measure a gable roof at 28 squares on a 6/12 pitch. You note two stories on the street side and photograph each slope. You choose the tear-off and install items for the shingle type on the roof, then apply a waste percentage appropriate for a simple gable roof. You add starter, ridge cap, drip edge, underlayment and ice and water barrier at the eaves and valleys, count the pipe jacks and vents, and add step flashing along the chimney. Then you apply any pitch or height charge that fits, attach the measurement report and photos, and review the checklist.\n\nNothing in that list is exotic. A good estimate is a complete and traceable version of ordinary work.",
+      },
+      {
+        heading: "Estimate versus supplement: what goes where",
+        content: "The estimate covers what is visible and known when the roof is inspected. The supplement covers what is found later or was left out.\n\n• Put in the estimate: Measured area, shingle type, standard accessories, known code requirements and visible damage.\n• Save for the supplement: Hidden damage found at tear-off, such as rotted decking, and items that could not be seen from the surface.\n\nA thorough estimate means a smaller, easier supplement. If you want the supplement side, read <a href='/blog/xactimate-roof-estimate-supplements'>how to build an Xactimate roof estimate for supplements</a>.",
+      },
+      {
+        heading: "Matching, repairability and discontinued shingles",
+        content: "When only part of a roof is damaged, a common question is whether the carrier must replace more than the damaged area so the roof matches. The answer depends on the policy and on the rules in your state, and these disputes are common.\n\nIf matching is an issue on your job:\n\n• Document the shingle: Take photos of the product, the exposure and any markings, and note whether it is still manufactured.\n• Document the condition: Record brittleness, age and any repair attempts, and describe how you tested repairability.\n• Check the rules: Look at the policy and your state's guidance before you argue the point.\n\nKeep the discussion factual. Photos and manufacturer information carry far more weight than opinion.",
+      },
+      {
+        heading: "How carriers review roof estimates",
+        content: "Carriers often use a mix of desk review, measurement reports and photo review. Understanding that helps you write estimates that pass quickly.\n\n• Desk review: A reviewer checks your numbers against the measurement report and standard pricing.\n• Photo review: A reviewer looks for a photo behind each major line item.\n• Exception review: Anything unusual gets extra scrutiny and may be sent to a supervisor.\n\nThe lesson is consistent across all three. Make every number traceable, every item visible in a photo and every exception explained in a sentence.",
+      },
+      {
         heading: "How Supplement Snap helps you build estimates adjusters approve",
         content: "Most estimate disputes come down to documentation. Photos are scattered across phones, notes get lost and nobody remembers which picture shows which damage.\n\nSupplement Snap lets your crew capture photos from the roof, attach notes to each finding, and organize everything by project. It generates a supplement narrative and a PDF report you can send to the adjuster, so the evidence that supports your estimate is ready when the adjuster asks for it.",
       },
     ],
+  },
+  {
+    "slug": "roofing-supplement-template",
+    "title": "Roofing Supplement Template: Format, Checklist and Example",
+    "metaTitle": "Roofing Supplement Template and Checklist (Free Format)",
+    "metaDescription": "A roofing supplement template you can copy: cover page, findings format, narrative wording, line items and a pre-submission checklist adjusters respond to.",
+    "publishedDate": "2026-10-22",
+    "related": [
+      "how-to-write-a-roofing-supplement",
+      "roofing-photo-documentation-checklist",
+      "xactimate-codes-for-roofing-supplements",
+      "roofing-supplement-denied-what-to-do"
+    ],
+    "externalLinks": [
+      {
+        "text": "Verisk Xactimate Product Page",
+        "url": "https://www.verisk.com/insurance/products/xactimate/"
+      },
+      {
+        "text": "NRCA Roofing Manual and Standards",
+        "url": "https://www.nrca.net"
+      }
+    ],
+    "highlight": {
+      "label": "What This Template Covers",
+      "value": "5 Parts",
+      "subtext": "Cover page, findings, narratives, line items and a submission checklist"
+    },
+    "visuals": {
+      "1": {
+        "type": "steps",
+        "data": [
+          {
+            "num": "1",
+            "title": "Cover page",
+            "desc": "Project, address, claim number, carrier, adjuster, date of loss and inspection date."
+          },
+          {
+            "num": "2",
+            "title": "Findings summary",
+            "desc": "A numbered list of every item with its location and photo numbers."
+          },
+          {
+            "num": "3",
+            "title": "Narratives and photos",
+            "desc": "One short narrative and one or more labeled photos for each finding."
+          },
+          {
+            "num": "4",
+            "title": "Line items",
+            "desc": "Item, quantity, unit and price, in the format the adjuster works in."
+          },
+          {
+            "num": "5",
+            "title": "Certification and contact",
+            "desc": "A short statement and who to call with questions."
+          }
+        ]
+      },
+      "4": {
+        "type": "checklist",
+        "data": {
+          "title": "Before You Send the Supplement",
+          "items": [
+            {
+              "text": "Claim number, policy holder and date of loss are on every page",
+              "checked": true
+            },
+            {
+              "text": "Every finding has at least one labeled photo",
+              "checked": true
+            },
+            {
+              "text": "Quantities match your measurements or measurement report",
+              "checked": true
+            },
+            {
+              "text": "Each narrative says what, where, when, why and what is needed",
+              "checked": true
+            },
+            {
+              "text": "Code or manufacturer references are attached where you rely on them",
+              "checked": true
+            },
+            {
+              "text": "The PDF opens cleanly and photos are legible",
+              "checked": true
+            },
+            {
+              "text": "You know who received it and when you will follow up",
+              "checked": true
+            }
+          ]
+        }
+      }
+    },
+    "sections": [
+      {
+        "heading": "Why a template saves you time and gets better results",
+        "content": "Every supplement answers the same questions, so there is no reason to start from a blank page. A consistent template gets you three things.\n\nSpeed: Your office fills in blanks instead of composing from scratch. Consistency: The adjuster learns where to find everything, so reviews go faster. Fewer mistakes: A fixed structure makes missing items obvious.\n\nThe format below works for most residential roofing supplements. Adjust it to your carrier's requests and your state's rules. For the thinking behind it, read <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a>."
+      },
+      {
+        "heading": "The five parts of a supplement package",
+        "content": "A complete package has five parts. Keep each one short and scannable.\n\n1. Cover page: Everything an adjuster needs to file it correctly, in one place.\n2. Findings summary: A short numbered list of each item and where it is.\n3. Narratives and photos: One finding per block, with the narrative beside its photos.\n4. Line items: A simple table of item, quantity, unit and price.\n5. Certification and contact: A short sign-off and a direct way to reach you.\n\nSend it as a single PDF when you can, so nothing gets separated."
+      },
+      {
+        "heading": "Cover page: what to include",
+        "content": "Put these on the first page so the adjuster can match the document to the claim immediately:\n\n• Project name and property address\n• Policy holder name\n• Claim number and carrier\n• Adjuster name, email and phone\n• Date of loss, date of tear-off and date documented\n• Your company name and a contact person\n\nA missing claim number is one of the most common reasons a package gets misfiled or delayed."
+      },
+      {
+        "heading": "Findings format you can copy",
+        "content": "Use the same block for every finding. Replace the bracketed text:\n\n• Finding: [Component], [location, for example front slope eave]\n• Condition: [What you observed, in one or two plain sentences]\n• When found: [During tear-off, after shingles and underlayment were removed]\n• Why it matters: [Water intrusion, code requirement or manufacturer requirement]\n• Needed: [Repair and quantity]\n• Photos: [Photo numbers]\n\nExample: Finding: Decking, front slope eave. Condition: Three sheets of OSB soft and deteriorated from moisture. When found: During tear-off. Why it matters: Cannot hold fasteners. Needed: Replace three sheets. Photos: 4, 5, 6.\n\nKeep wording neutral and factual. Avoid guessing at causes you cannot prove."
+      },
+      {
+        "heading": "Line items and quantities",
+        "content": "List each item with its quantity and unit, in the format your adjuster uses. A simple layout is enough:\n\n• Item description\n• Quantity and unit\n• Unit price from the price list on the claim\n• Total\n\nIf you build estimates in Xactimate, mirror its item names. If you do not, a clear table with measurements still works. Our <a href='/blog/xactimate-codes-for-roofing-supplements'>Xactimate codes reference</a> lists common items, and the units to use.\n\nShow how you got each quantity, even if it is only a line such as 12 feet by 8 feet equals 96 square feet."
+      },
+      {
+        "heading": "Sending it and following up",
+        "content": "Send the package by email with a clear subject line that includes the claim number and the words supplement request. In the body, list the number of findings, the total requested and what you attached.\n\nThen follow up in writing. A short note a few days later asking whether the adjuster needs anything else keeps the file moving. If you need more guidance on disputes, see <a href='/blog/roofing-supplement-denied-what-to-do'>what to do when a supplement is denied</a>.\n\nThis template is a starting point. It is general guidance, not legal advice, and your carrier may require its own forms."
+      }
+    ],
+    "faq": [
+      {
+        "q": "What should a roofing supplement include?",
+        "a": "A cover page with claim details, a findings summary, a narrative and photos for each finding, line items with quantities and units, and a short certification and contact section."
+      },
+      {
+        "q": "Is there a standard roofing supplement format?",
+        "a": "There is no single legal standard. Carriers differ, so use a clear consistent format and adjust to what your adjuster asks for."
+      },
+      {
+        "q": "How long should a supplement narrative be?",
+        "a": "A few sentences per finding is usually enough. Say what was found, where, when, why it matters and what is needed."
+      },
+      {
+        "q": "Should I send photos inside the PDF or separately?",
+        "a": "Embedding labeled photos in a single PDF keeps everything together. Some carriers also ask for original files, so keep them available."
+      }
+    ]
+  },
+  {
+    "slug": "roofing-photo-documentation-checklist",
+    "title": "Roofing Photo Documentation Checklist: What to Photograph at Tear-Off",
+    "metaTitle": "Roofing Photo Documentation Checklist for Insurance Claims",
+    "metaDescription": "What roofers should photograph at inspection and tear-off for insurance claims: required shots, hidden damage, labels and a checklist adjusters accept.",
+    "publishedDate": "2026-10-22",
+    "related": [
+      "roofing-supplement-template",
+      "hail-damage-roof-inspection",
+      "how-to-write-a-roofing-supplement",
+      "roof-inspection-report"
+    ],
+    "externalLinks": [
+      {
+        "text": "NRCA Roofing Manual and Standards",
+        "url": "https://www.nrca.net"
+      }
+    ],
+    "highlight": {
+      "label": "Photos Per Finding",
+      "value": "3 Views",
+      "subtext": "Wide for location, medium for context, close-up for detail"
+    },
+    "visuals": {
+      "2": {
+        "type": "checklist",
+        "data": {
+          "title": "Photos to Capture on Every Roof",
+          "items": [
+            {
+              "text": "Front, rear, left and right of the house from the ground",
+              "checked": true
+            },
+            {
+              "text": "Each roof slope, labeled",
+              "checked": true
+            },
+            {
+              "text": "Pitch confirmed with a gauge or level in frame",
+              "checked": true
+            },
+            {
+              "text": "Eaves, rakes, ridges, hips and valleys",
+              "checked": true
+            },
+            {
+              "text": "Every penetration: pipes, vents, chimneys, skylights",
+              "checked": true
+            },
+            {
+              "text": "Existing flashing, drip edge and starter condition",
+              "checked": true
+            },
+            {
+              "text": "Number of shingle layers at an exposed edge",
+              "checked": true
+            },
+            {
+              "text": "Gutters, downspouts and any collateral damage",
+              "checked": true
+            }
+          ]
+        }
+      },
+      "4": {
+        "type": "tip",
+        "data": {
+          "type": "tip",
+          "title": "Shoot three views of every finding",
+          "text": "Take one wide photo that shows where it is, one medium photo that shows the area around it, and one close-up that shows the condition. Adjusters trust a finding more when they can see all three."
+        }
+      }
+    },
+    "sections": [
+      {
+        "heading": "Why photos decide whether a roofing claim item is paid",
+        "content": "An adjuster who was not on your roof relies on your photos to understand it. If an item is not in a photo, it is very hard to get paid for. If it is in a photo but unclear, it invites a question or a denial.\n\nGood photo documentation does three jobs. It proves the damage exists, it proves where and when it was found, and it connects each photo to a line item. Do those three things consistently and most supplement disputes get easier."
+      },
+      {
+        "heading": "The basics: photograph before anything is removed",
+        "content": "Start every job with photos of the roof as it is. These are the pictures that show condition before work begins and they cannot be retaken later.\n\n• The house from four sides\n• Every slope from a distance and up close\n• Pitch with a gauge or level in the frame\n• Existing flashing, vents, drip edge and ridge\n• Visible damage such as impacts, lifted shingles or granule loss\n\nThen walk the interior of the attic or ceilings if you have access and the homeowner agrees. Stains and wet spots show up in different places than roof damage."
+      },
+      {
+        "heading": "The core checklist",
+        "content": "Use the checklist below on every roof. Print it, or keep it in your phone. The goal is a repeatable routine that crews can follow without thinking.\n\nOnce you have the baseline shots, add finding-specific photos as you go. Keep every photo in the order taken, because the sequence helps an adjuster follow the story."
+      },
+      {
+        "heading": "Hidden damage found at tear-off",
+        "content": "This is where supplements are won or lost. The moment shingles and underlayment come off, photograph what is underneath before anything gets covered.\n\n• Decking: Photograph soft, stained, cracked or delaminated sheathing. Include a tape measure or a marked area for scale.\n• Flashing: Show corrosion, separation and gaps from the front and from the side.\n• Ice and water barrier: Show the bare deck at eaves and valleys where barrier is missing.\n• Penetrations: Show cracked boots, rusted vents and failed seals.\n• Extra layers: Show an edge with two layers of old shingles.\n\nAdd a chalk circle or marker around each problem and photograph it again. A circled problem is easier to understand than a close-up of a texture."
+      },
+      {
+        "heading": "Label, number and organize",
+        "content": "A pile of unlabeled photos forces the adjuster to guess. A short label makes each one useful.\n\nFor each finding, record:\n\n• What it is, such as rotted decking\n• Where it is, such as front slope eave\n• When it was found, such as during tear-off\n• Which line item it supports\n\nUpload from the roof or the truck instead of waiting until the end of the day. Photos stuck on phones are the most common reason supplements go out late. <a href='/blog/roofing-supplement-template'>Our supplement template</a> shows how to lay out labeled photos in a package."
+      },
+      {
+        "heading": "Metadata, originals and honesty",
+        "content": "Photos usually carry the date, time and sometimes location, which helps show when and where they were taken. Compressing or editing a photo can strip that information, so keep the original files.\n\nNever alter a photo to make damage look worse, and do not claim damage you did not find. Accurate documentation protects your credibility and your license. If you are unsure whether something is damage, photograph it and note that it needs review.\n\nFor what to look for on a storm-damaged roof, see our guide to <a href='/blog/hail-damage-roof-inspection'>hail damage roof inspection</a>."
+      }
+    ],
+    "faq": [
+      {
+        "q": "How many photos should I take on a roofing job?",
+        "a": "As many as it takes to show every slope, every penetration and every finding in three views. For most residential roofs that is dozens of photos, not a handful."
+      },
+      {
+        "q": "What photos do insurance adjusters want for a roof claim?",
+        "a": "Overall photos of each slope, close-ups of damage, pitch, penetrations, flashing and drip edge, and any hidden damage found at tear-off, all clearly labeled."
+      },
+      {
+        "q": "Should I photograph the roof before tear-off?",
+        "a": "Yes. Pre-work photos show original condition and cannot be retaken after materials are removed."
+      },
+      {
+        "q": "Do photos need to be geotagged?",
+        "a": "Not always, but date and location metadata help show when and where a photo was taken. Keep the original files."
+      }
+    ]
+  },
+  {
+    "slug": "roofing-overhead-and-profit-claims",
+    "title": "Overhead and Profit on Roofing Claims: When You Can Charge O&P",
+    "metaTitle": "Overhead and Profit (O&P) on Roofing Insurance Claims",
+    "metaDescription": "How overhead and profit works on roofing insurance claims: when O&P applies, how to document multiple trades, what carriers push back on, and how to respond.",
+    "publishedDate": "2026-10-22",
+    "related": [
+      "xactimate-roofing-estimate-approved",
+      "how-much-do-roofing-supplements-pay",
+      "roofing-supplement-denied-what-to-do",
+      "how-to-write-a-roofing-supplement"
+    ],
+    "externalLinks": [
+      {
+        "text": "Verisk Xactimate Product Page",
+        "url": "https://www.verisk.com/insurance/products/xactimate/"
+      },
+      {
+        "text": "NRCA Roofing Manual and Standards",
+        "url": "https://www.nrca.net"
+      }
+    ],
+    "highlight": {
+      "label": "Commonly Discussed Rate",
+      "value": "10 + 10",
+      "subtext": "Ten percent overhead plus ten percent profit is a common starting point, but rules vary"
+    },
+    "visuals": {
+      "2": {
+        "type": "compare",
+        "data": {
+          "before": {
+            "label": "O&P Is Usually Questioned When",
+            "items": [
+              "Only one trade is involved",
+              "No explanation of coordination",
+              "No general contractor role shown",
+              "Requested as a flat add-on"
+            ]
+          },
+          "after": {
+            "label": "O&P Is Easier to Support When",
+            "items": [
+              "Several trades are needed",
+              "Each trade is listed with scope",
+              "A general contractor coordinates the work",
+              "Policy and state rules are cited"
+            ]
+          }
+        }
+      },
+      "4": {
+        "type": "tip",
+        "data": {
+          "type": "warning",
+          "title": "Rules vary by state and policy",
+          "text": "Whether and when O&P is owed depends on the policy language and on state rules and case law. Check both before you argue the point, and consider advice from a licensed professional on large disputes."
+        }
+      }
+    },
+    "sections": [
+      {
+        "heading": "What overhead and profit means on a claim",
+        "content": "Overhead covers the general contractor's cost of running a job: coordinating trades, scheduling, supervising, insurance, office staff and similar business costs. Profit is the margin for taking on the risk of the project. In an insurance estimate, both are usually added as percentages on top of the direct costs of labor and materials.\n\nO&P matters because it can be a meaningful part of a claim, and because it is one of the items carriers most often question. Getting it right starts with understanding when it applies."
+      },
+      {
+        "heading": "When O&P is typically requested",
+        "content": "O&P is most often requested when a repair needs a general contractor to coordinate several trades. A roof replacement that also needs gutters, siding, paint, drywall or electrical work is a typical example.\n\nIt is commonly discussed as a 10 percent overhead and 10 percent profit combination, but that figure is a convention and not a rule. The right amount for your claim depends on the policy, the carrier and your state. A single-trade roof replacement with no coordination is much harder to justify."
+      },
+      {
+        "heading": "How carriers push back, and what supports your request",
+        "content": "Carriers push back on O&P for predictable reasons. The comparison below shows what raises questions and what makes a request easier to support.\n\nA good O&P request does four things: it lists the trades involved, it shows why a general contractor is needed to coordinate them, it ties the request to policy language, and it stays consistent with how you priced the rest of the job."
+      },
+      {
+        "heading": "How to document an O&P request",
+        "content": "Treat O&P like any other line item: it needs proof.\n\n1. List the trades: Roofing, gutters, siding, interior repairs and anything else on the scope.\n2. Show the coordination: Note scheduling, permits, inspections and supervision your company handles.\n3. Quote the policy: Point to the language that covers general contractor overhead and profit.\n4. Keep the math clear: Show the base amount and the percentages applied.\n5. Respond in writing: If the carrier disputes it, answer with specifics instead of repeating the request.\n\nKeep your tone factual. Carriers respond better to organized support than to demands."
+      },
+      {
+        "heading": "Mistakes that cost contractors O&P",
+        "content": "A few habits make O&P harder to win.\n\n• Adding it at the end: Requesting it without any supporting explanation.\n• Ignoring the policy: Assuming it applies without checking the language.\n• Inconsistent pricing: Padding line items and also asking for O&P.\n• No record of coordination: Failing to show who managed the trades.\n\nWhen you document the full scope well, as covered in our guide on <a href='/blog/xactimate-roofing-estimate-approved'>writing an Xactimate roofing estimate that gets approved</a>, O&P becomes part of a professional package instead of an afterthought."
+      }
+    ],
+    "faq": [
+      {
+        "q": "What does O&P mean in roofing insurance?",
+        "a": "O&P stands for overhead and profit. It is the general contractor's cost of coordinating a job plus a profit margin, usually added as percentages to the direct costs."
+      },
+      {
+        "q": "Is O&P always paid on a roofing claim?",
+        "a": "No. It depends on the policy, the carrier and your state, and it is most often supported when several trades are involved."
+      },
+      {
+        "q": "What is the 10 and 10 rule?",
+        "a": "It is a common convention of 10 percent overhead and 10 percent profit. It is not a universal rule, and carriers and states treat it differently."
+      },
+      {
+        "q": "Can a roofing-only job include O&P?",
+        "a": "It is harder to justify when only one trade is involved and no coordination is needed. Check your policy and local rules."
+      }
+    ]
+  },
+  {
+    "slug": "roofing-code-upgrades-ordinance-and-law",
+    "title": "Code Upgrades in Roofing Claims: Ordinance and Law Coverage Explained",
+    "metaTitle": "Roofing Code Upgrades and Ordinance and Law Coverage",
+    "metaDescription": "How code upgrades work in roofing claims: what Ordinance and Law coverage is, which roof items it can cover, and how to document them for adjusters.",
+    "publishedDate": "2026-10-22",
+    "related": [
+      "how-to-write-a-roofing-supplement",
+      "xactimate-codes-for-roofing-supplements",
+      "roofing-photo-documentation-checklist",
+      "roof-replacement-estimate-vs-final-cost"
+    ],
+    "externalLinks": [
+      {
+        "text": "International Code Council",
+        "url": "https://www.iccsafe.org"
+      },
+      {
+        "text": "NRCA Roofing Manual and Standards",
+        "url": "https://www.nrca.net"
+      }
+    ],
+    "highlight": {
+      "label": "Key Question",
+      "value": "Is It Covered?",
+      "subtext": "Code upgrade items depend on the policy, not just the building code"
+    },
+    "visuals": {
+      "1": {
+        "type": "steps",
+        "data": [
+          {
+            "num": "1",
+            "title": "Find the requirement",
+            "desc": "Identify the local code or manufacturer requirement that applies to the item."
+          },
+          {
+            "num": "2",
+            "title": "Check the policy",
+            "desc": "Confirm the policy includes ordinance or law coverage and what limit applies."
+          },
+          {
+            "num": "3",
+            "title": "Document the gap",
+            "desc": "Photograph what is missing or non-compliant before it is covered."
+          },
+          {
+            "num": "4",
+            "title": "Cite and submit",
+            "desc": "Attach the code reference and request the item with a short explanation."
+          }
+        ]
+      },
+      "3": {
+        "type": "tip",
+        "data": {
+          "type": "info",
+          "title": "Codes differ by location",
+          "text": "Building codes and amendments are set by local authorities and change over time. Confirm the current requirement with your building department before you cite it."
+        }
+      }
+    },
+    "sections": [
+      {
+        "heading": "What code upgrades are and why they come up on roofs",
+        "content": "A code upgrade is work that building codes require when a roof is replaced, even if the old roof did not meet current standards. Older roofs often lack items that are now required, such as ice barrier at the eaves, compliant drip edge or proper ventilation.\n\nThese items are not hidden damage. They are missing components that must be added to pass inspection. That is why they are handled differently from a normal supplement, and why the policy matters so much."
+      },
+      {
+        "heading": "How the process works",
+        "content": "Code upgrades follow a clear order. Skipping a step is the usual reason they are denied.\n\nThe most important step is the second one. A building code can require an item and a policy can still decline to pay for it. Policies handle this through coverage often called ordinance or law coverage, which usually carries its own limit."
+      },
+      {
+        "heading": "What Ordinance and Law coverage means",
+        "content": "Ordinance or law coverage is an optional or built-in part of many property policies. In general terms, it addresses the extra cost of meeting building codes when a covered loss is repaired. It often has a separate limit, sometimes expressed as a percentage of the dwelling coverage.\n\nWhat your client's policy includes can vary widely. Some policies include it, some exclude it and some limit it. Ask the carrier or read the declarations and endorsements. Do not assume a code requirement automatically means payment."
+      },
+      {
+        "heading": "Roof items commonly tied to code requirements",
+        "content": "These are items contractors often raise as code-driven. Whether each applies depends on the local code and the policy.\n\n• Drip edge: Required in many jurisdictions at eaves and rakes.\n• Ice and water barrier: Required in many cold-weather areas at eaves and valleys.\n• Underlayment: Type and number of layers may be specified.\n• Ventilation: Minimum airflow requirements for the attic.\n• Flashing and step flashing: Specific requirements at walls and chimneys.\n• Decking thickness or fastening: Some areas specify minimums.\n\nAlways verify the current requirement with the local building department."
+      },
+      {
+        "heading": "How to document a code upgrade supplement",
+        "content": "Give the adjuster everything needed to say yes without research.\n\n1. Photograph what is missing: Show the bare deck where barrier is absent, or the edge with no drip edge.\n2. Cite the requirement: Include the code section or a letter or printout from the building department.\n3. Quote the policy: Point to the ordinance or law language and note the limit if you know it.\n4. Explain the work: State the item, quantity and unit in plain terms.\n5. Keep it separate: List code items apart from hidden damage so each can be reviewed on its own merits.\n\nFor the broader workflow, see <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a> and our <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a>.\n\nThis is general information and not legal advice. Policy terms and local rules determine what is owed."
+      }
+    ],
+    "faq": [
+      {
+        "q": "What is a code upgrade in a roofing claim?",
+        "a": "It is work required by current building codes when a roof is replaced, such as drip edge or ice barrier, even if the old roof did not include it."
+      },
+      {
+        "q": "What is Ordinance and Law coverage?",
+        "a": "It is policy coverage for the extra cost of meeting building codes when a covered loss is repaired. It often has its own limit and not every policy includes it."
+      },
+      {
+        "q": "Will insurance always pay for code upgrades?",
+        "a": "No. Payment depends on the policy language and limits, so check the coverage before you request the item."
+      },
+      {
+        "q": "How do I prove a code requirement to an adjuster?",
+        "a": "Cite the specific code section or provide documentation from the local building department, and attach photos showing the item is missing."
+      }
+    ]
+  },
+  {
+    "slug": "companycam-alternative-roofing-supplements",
+    "title": "CompanyCam Alternative for Roofing Supplements: How to Choose",
+    "metaTitle": "CompanyCam Alternative for Roofers: Supplement Tools",
+    "metaDescription": "Comparing photo apps with supplement-focused tools for roofers: what each does well, where gaps appear and how to choose for your crew.",
+    "publishedDate": "2026-10-22",
+    "related": [
+      "roofing-software-comparison",
+      "best-roof-estimating-software",
+      "roofing-photo-documentation-checklist",
+      "best-roofing-crm"
+    ],
+    "externalLinks": [
+      {
+        "text": "CompanyCam",
+        "url": "https://companycam.com"
+      },
+      {
+        "text": "NRCA Roofing Manual and Standards",
+        "url": "https://www.nrca.net"
+      }
+    ],
+    "highlight": {
+      "label": "Disclosure",
+      "value": "We Make One",
+      "subtext": "Supplement Snap is our product. Verify every vendor's current features yourself"
+    },
+    "visuals": {
+      "2": {
+        "type": "matrix",
+        "data": {
+          "headers": [
+            "General photo app",
+            "Supplement-focused tool"
+          ],
+          "rows": [
+            {
+              "feature": "Organizes job photos by project",
+              "values": [
+                true,
+                true
+              ]
+            },
+            {
+              "feature": "Built for many trades",
+              "values": [
+                true,
+                false
+              ]
+            },
+            {
+              "feature": "Findings tied to roofing damage types",
+              "values": [
+                "Varies",
+                true
+              ]
+            },
+            {
+              "feature": "Supplement narrative drafting",
+              "values": [
+                "Varies",
+                true
+              ]
+            },
+            {
+              "feature": "Adjuster-ready PDF report",
+              "values": [
+                "Varies",
+                true
+              ]
+            },
+            {
+              "feature": "Xactimate-style item export",
+              "values": [
+                "Varies",
+                true
+              ]
+            }
+          ]
+        }
+      },
+      "4": {
+        "type": "tip",
+        "data": {
+          "type": "info",
+          "title": "Check features and pricing directly",
+          "text": "Products change. Before you decide, confirm each vendor's current features, limits and pricing on their own site and try a real job with each."
+        }
+      }
+    },
+    "sections": [
+      {
+        "heading": "Photo apps and supplement tools solve different problems",
+        "content": "General-purpose job photo apps, CompanyCam being a well-known example, are built to help crews in many trades capture, organize and share job photos. Many roofers use them every day, and they do that job well.\n\nSupplement-focused tools start from a different question: how do we turn those photos into a document an insurance adjuster will approve? That adds roofing-specific findings, written narratives, line items and a formatted report.\n\nSo the honest answer to which is better is that it depends on the problem you are trying to solve."
+      },
+      {
+        "heading": "What a roofing company actually needs",
+        "content": "Before comparing products, write down your real workflow. Most roofing companies need to do five things:\n\n1. Capture photos on the roof: Fast, with labels, and ideally without typing.\n2. Keep them organized: By job, by slope and by finding.\n3. Describe what was found: A short factual note for each photo.\n4. Turn findings into a supplement: Narratives and line items.\n5. Send something an adjuster accepts: Usually a clean PDF.\n\nA photo app covers the first two well and may help with the third. The last two are where supplement-focused tools focus. Pick the product that closes the gaps you actually have."
+      },
+      {
+        "heading": "How the two types compare",
+        "content": "The comparison below is a general guide to categories, not a claim about any single product. Features vary by vendor and change over time, so verify before you decide.\n\nIf your crew already has a photo app they like and your office writes supplements well, you may not need another tool. If supplement paperwork is where jobs slow down or money gets missed, a supplement-focused tool is worth testing."
+      },
+      {
+        "heading": "Questions to ask any vendor",
+        "content": "Use the same questions on every product you try:\n\n• How fast can a crew capture a labeled photo from the roof?\n• Does it work with a weak signal, and what happens offline?\n• Can I add a note or voice note to each photo?\n• How does it turn findings into a written supplement?\n• What does the report look like to an adjuster?\n• Can I export items in a format my estimating software accepts?\n• What do users, storage and support cost as I grow?\n• Who owns my photos and can I export them?"
+      },
+      {
+        "heading": "How to run a fair test",
+        "content": "Do not decide from a demo. Run a real job through each tool.\n\n1. Pick one active job with hidden damage.\n2. Have the same crew capture the same findings in each tool.\n3. Time how long it takes to get from photos to a sendable package.\n4. Send both packages to a trusted contact and ask which is clearer.\n5. Compare the cost of each at your volume.\n\nThe winner is the one that saves your office time and produces documentation adjusters respond to. For a broader view of tool categories, read our <a href='/blog/roofing-software-comparison'>roofing software comparison</a>, and for what to capture in the field, see the <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a>."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Can I use a photo app for roofing supplements?",
+        "a": "Yes. Many roofers do, and then write the supplement separately. A supplement-focused tool can reduce that extra work by drafting narratives and reports."
+      },
+      {
+        "q": "What is the difference between a photo app and supplement software?",
+        "a": "A photo app organizes job photos for many trades. Supplement software turns roofing findings into narratives, line items and an adjuster-ready report."
+      },
+      {
+        "q": "Do I need both?",
+        "a": "Not necessarily. If your photo app and office process already produce approved supplements, you may not. If supplement paperwork is a bottleneck, test a focused tool."
+      },
+      {
+        "q": "How do I choose between tools?",
+        "a": "Run a real job through each, time the path from photos to a sendable package and compare what adjusters respond to and what each costs."
+      }
+    ]
   },
 ]
 
@@ -1533,6 +2359,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: article.metaDescription,
       type: "article",
       publishedTime: article.publishedDate,
+      ...(article.updatedDate && { modifiedTime: article.updatedDate }),
       url: `https://supplementsnap.io/blog/${slug}`,
       images: [{ url: ogImage, width: 1200, height: 630, alt: firstImage?.alt || article.title }],
     },
@@ -1559,7 +2386,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
     headline: article.title,
     description: article.metaDescription,
     datePublished: article.publishedDate,
-    dateModified: article.publishedDate,
+    dateModified: article.updatedDate || article.publishedDate,
     wordCount,
     ...(firstImg && { image: `https://supplementsnap.io${firstImg.src}` }),
     author: {
@@ -1598,6 +2425,22 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
     ],
   }
 
+  const faqSchema = article.faq && article.faq.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: article.faq.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  } : null
+
+  // Related posts: the ones the article names first, then fill with the rest
+  const relatedPosts = [
+    ...(article.related || []).map((r) => ARTICLES.find((a) => a.slug === r)).filter((a): a is Article => !!a && a.slug !== slug),
+    ...ARTICLES.filter((a) => a.slug !== slug && !(article.related || []).includes(a.slug)),
+  ].slice(0, 4)
+
   return (
     <div className="bg-white text-zinc-900">
       <ScrollToTop />
@@ -1609,6 +2452,12 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <nav className="border-b border-zinc-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5">
@@ -1635,7 +2484,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold text-white">KS</div>
             <div>
               <p className="text-sm font-medium text-zinc-900">Kelvin Spratt</p>
-              <p className="text-xs text-zinc-500">Founder, Supplement Snap &middot; {new Date(article.publishedDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</p>
+              <p className="text-xs text-zinc-500">Founder, Supplement Snap &middot; {new Date(article.publishedDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}{article.updatedDate && <> &middot; Updated {new Date(article.updatedDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</>}</p>
             </div>
           </div>
         </div>
@@ -1680,6 +2529,20 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
             </section>
           ))}
         </div>
+
+        {article.faq && article.faq.length > 0 && (
+          <section className="mt-14">
+            <h2 className="text-xl font-bold tracking-tight text-zinc-900">Frequently asked questions</h2>
+            <div className="mt-4 divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white">
+              {article.faq.map((f, i) => (
+                <div key={i} className="p-5">
+                  <h3 className="text-base font-semibold text-zinc-900">{f.q}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-zinc-600">{f.a}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* External Links */}
         {article.externalLinks && article.externalLinks.length > 0 && (
@@ -1734,7 +2597,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
         <div className="mt-16 border-t border-zinc-100 pt-10">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500">More Articles</h3>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            {ARTICLES.filter((a) => a.slug !== slug).slice(0, 4).map((a) => (
+            {relatedPosts.map((a) => (
               <Link key={a.slug} href={`/blog/${a.slug}`} className="rounded-lg border border-zinc-200 bg-white p-4 hover:border-indigo-200 hover:shadow-sm">
                 <h4 className="text-sm font-semibold text-zinc-900">{a.title}</h4>
                 <p className="mt-1 text-xs text-indigo-600">Read more &rarr;</p>

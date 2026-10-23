@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
-import { getUserId } from "../../../lib/auth-utils"
+import { getUserId, getAuthenticatedUser } from "../../../lib/auth-utils"
+import { getAccess, can } from "../../../lib/plan"
 
 const supabase = () => createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -29,7 +30,12 @@ export async function POST(request: Request) {
     const { companyName, logoUrl } = body
 
     const userId = await getUserId(request, body.userId)
-    if (!userId) return NextResponse.json({ error: "Missing userId" }, { status: 400 })
+    if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
+    const authed = await getAuthenticatedUser(request)
+    if (!authed || !can.customBranding(await getAccess(authed.id, authed.email))) {
+      return NextResponse.json({ error: "Custom branding is available on the Pro plan." }, { status: 403 })
+    }
 
     // Upsert
     const { data: existing } = await supabase()

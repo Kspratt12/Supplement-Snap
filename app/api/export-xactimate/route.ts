@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server"
+import { getAuthenticatedUser } from "../../../lib/auth-utils"
+import { getAccess, can } from "../../../lib/plan"
 
 // Comprehensive Xactimate-compatible line items with realistic pricing
 // Prices are approximate national averages — contractors can adjust in Xactimate
@@ -44,6 +46,12 @@ const XACTIMATE_CODES: Record<string, { items: Array<{ code: string; description
 }
 
 export async function POST(request: Request) {
+  const user = await getAuthenticatedUser(request)
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!can.xactimateExport(await getAccess(user.id, user.email))) {
+    return NextResponse.json({ error: "Xactimate export is available on the Team and Pro plans." }, { status: 403 })
+  }
+
   try {
     const { projectName, propertyAddress, captures } = await request.json()
 

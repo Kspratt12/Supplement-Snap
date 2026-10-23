@@ -29,6 +29,11 @@ const ARTICLES = [
   { slug: "roof-damage-repair-guide", title: "Roof Damage Repair: Contractor Guide to Identifying, Documenting, and Getting Paid", desc: "Contractor guide to roof damage repair: identify all damage types, document for insurance, navigate repair vs. replace, and recover full value through supplements.", date: "2026-03-24" },
   { slug: "roof-inspection-report", title: "Roof Inspection Report: What to Include and How to Write One", desc: "What a roof inspection report is, what to include, step-by-step writing guide, report structure, common mistakes, and how software automates it.", date: "2026-03-27" },
   { slug: "xactimate-roofing-estimate-approved", title: "How to Write an Xactimate Roofing Estimate That Actually Gets Approved", desc: "Measurements, line items, waste and pitch charges, O&P and photo proof: how to write a roof estimate adjusters approve.", date: "2026-10-22" },
+  { slug: "roofing-supplement-template", title: "Roofing Supplement Template: Format, Checklist and Example", desc: "A copyable supplement format with cover page, findings, narratives, line items and a checklist.", date: "2026-10-22" },
+  { slug: "roofing-photo-documentation-checklist", title: "Roofing Photo Documentation Checklist: What to Photograph at Tear-Off", desc: "What to photograph at inspection and tear-off so every claim item has proof.", date: "2026-10-22" },
+  { slug: "roofing-overhead-and-profit-claims", title: "Overhead and Profit on Roofing Claims: When You Can Charge O&P", desc: "When O&P applies on roofing claims, how to document it and how carriers push back.", date: "2026-10-22" },
+  { slug: "roofing-code-upgrades-ordinance-and-law", title: "Code Upgrades in Roofing Claims: Ordinance and Law Coverage Explained", desc: "How code upgrade items and Ordinance and Law coverage work on roofing claims.", date: "2026-10-22" },
+  { slug: "companycam-alternative-roofing-supplements", title: "CompanyCam Alternative for Roofing Supplements: How to Choose", desc: "Photo apps versus supplement-focused tools, and how to choose for your crew.", date: "2026-10-22" },
 ]
 
 export default function BlogIndex() {

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { getAuthenticatedUser } from "../../../lib/auth-utils"
 import { rateLimited } from "../../../lib/rate-limit"
+import { getAccess, can } from "../../../lib/plan"
 
 export async function POST(request: Request) {
   try {
@@ -30,6 +31,11 @@ export async function POST(request: Request) {
     if (typeof to !== "string" || !/^[^\s@,;]+@[^\s@,;]+\.[^\s@,;]+$/.test(to)) {
       return NextResponse.json({ error: "A single valid recipient email is required" }, { status: 400 })
     }
+    const access = await getAccess(user.id, user.email)
+    const emailingSelf = to.toLowerCase() === (user.email || "").toLowerCase()
+    if (!access.active && !emailingSelf) {
+      return NextResponse.json({ error: "An active plan is required to email reports to adjusters." }, { status: 403 })
+    }
     if (typeof pdfBase64 === "string" && pdfBase64.length > 14_000_000) {
       return NextResponse.json({ error: "Attachment too large" }, { status: 413 })
     }
@@ -44,6 +50,7 @@ export async function POST(request: Request) {
     // Create email tracking record
     let trackingPixelHtml = ""
     try {
+      if (!can.emailTracking(access)) throw new Error("Open tracking is not on this plan")
       const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL || "",
         process.env.SUPABASE_SERVICE_ROLE_KEY || ""

@@ -1361,7 +1361,7 @@ function Home() {
     if (!isProUser) { setShowUpgradeModal(true); return }
     if (!selectedProject || captures.length === 0) return
     try {
-      const res = await fetch("/api/export-xactimate", {
+      const res = await authFetch("/api/export-xactimate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

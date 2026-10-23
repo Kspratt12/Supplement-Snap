@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
     alternates: { canonical: `https://supplementsnap.io/roofing-supplement-software/${city.slug}` },
     description: `Roofing crews in ${city.name}, ${city.state} use Supplement Snap to capture hidden tear-off damage, generate AI supplement reports and email adjusters.`,
     openGraph: {
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Supplement Snap" }],
       title: `Roofing Supplement Software in ${city.name}, NC | Supplement Snap`,
       description: `Roofing crews in ${city.name}, ${city.state} use Supplement Snap to capture hidden tear-off damage, generate AI supplement reports and email adjusters.`,
     },

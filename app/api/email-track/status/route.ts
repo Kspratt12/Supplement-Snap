@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
-import { getUserId } from "../../../../lib/auth-utils"
+import { getUserId, getAuthenticatedUser } from "../../../../lib/auth-utils"
+import { getAccess, can } from "../../../../lib/plan"
 
 const supabase = () => createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -11,8 +12,12 @@ const supabase = () => createClient(
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const projectId = searchParams.get("projectId")
-  const userId = await getUserId(request)
-  if (!userId || !projectId) return NextResponse.json({ records: [] })
+  const authed = await getAuthenticatedUser(request)
+  if (!authed || !projectId) return NextResponse.json({ records: [] })
+  if (!can.emailTracking(await getAccess(authed.id, authed.email))) {
+    return NextResponse.json({ records: [], locked: true })
+  }
+  const userId = authed.id
 
   let query = supabase()
     .from("email_tracking")

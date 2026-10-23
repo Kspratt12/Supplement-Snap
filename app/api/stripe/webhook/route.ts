@@ -2,6 +2,7 @@ import Stripe from "stripe"
 import { Resend } from "resend"
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { planFromPriceId } from "../../../../lib/plan"
 
 export async function POST(request: Request) {
   if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
@@ -133,7 +134,7 @@ export async function POST(request: Request) {
       case "customer.subscription.updated": {
         const sub = event.data.object as Stripe.Subscription
         const customerId = sub.customer as string
-        const updatedPlan = sub.metadata?.plan
+        const updatedPlan = planFromPriceId(sub.items?.data?.[0]?.price?.id) || sub.metadata?.plan
         const statusMap: Record<string, string> = {
           active: "active",
           trialing: "trialing",
