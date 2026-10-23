@@ -111,6 +111,19 @@ type Capture = {
   status?: CaptureStatus
   created_at: string
   photo_metadata?: PhotoMetadata[]
+  quantity?: number | null
+  unit?: string | null
+}
+
+// AI replies sometimes arrive with markdown marks. Show, copy and export plain text.
+function cleanAi(text: string): string {
+  return (text || "")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/__(.+?)__/g, "$1")
+    .replace(/^\s*#{1,6}\s*/gm, "")
+    .replace(/^\s*-{3,}\s*$/gm, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim()
 }
 
 export default function AppPage() {
@@ -187,6 +200,14 @@ function Home() {
   const [captures, setCaptures] = useState<Capture[]>([])
   const [statusFilter, setStatusFilter] = useState<"All" | CaptureStatus>("All")
   const [drafts, setDrafts] = useState<Record<string, string>>({})
+  // Photos and edits on saved findings
+  const [cardBusy, setCardBusy] = useState<Record<string, boolean>>({})
+  const [cardMsg, setCardMsg] = useState<Record<string, string>>({})
+  const [editingCaptureId, setEditingCaptureId] = useState<string | null>(null)
+  const [editForm, setEditForm] = useState({ damage_type: "", roof_area: "", field_note: "", quantity: "1", unit: "" })
+  // Editing AI drafts: "project" or a capture id
+  const [editingDraftId, setEditingDraftId] = useState<string | null>(null)
+  const [editingDraftText, setEditingDraftText] = useState("")
   const [draftLoading, setDraftLoading] = useState<Record<string, boolean>>({})
   const [draftErrors, setDraftErrors] = useState<Record<string, string>>({})
   const [copied, setCopied] = useState<Record<string, boolean>>({})
@@ -441,7 +462,7 @@ function Home() {
     // Load saved project draft if available
     if (selectedProjectId) {
       supabase.from("projects").select("last_draft").eq("id", selectedProjectId).single().then(({ data }) => {
-        setProjectDraft(data?.last_draft || "")
+        setProjectDraft(cleanAi(data?.last_draft || ""))
       })
     } else {
       setProjectDraft("")
@@ -588,7 +609,7 @@ function Home() {
     if (data) {
       const savedDrafts: Record<string, string> = {}
       data.forEach((c: any) => {
-        if (c.draft) savedDrafts[c.id] = c.draft
+        if (c.draft) savedDrafts[c.id] = cleanAi(c.draft)
       })
       if (Object.keys(savedDrafts).length > 0) {
         setDrafts((prev) => ({ ...prev, ...savedDrafts }))
@@ -650,7 +671,7 @@ function Home() {
     if (!confirm("Delete this capture? This cannot be undone.")) return
 
     // Delete all associated images from storage
-    const urls = c.image_urls && c.image_urls.length > 0 ? c.image_urls : [c.image_url]
+    const urls = (c.image_urls && c.image_urls.length > 0 ? c.image_urls : [c.image_url]).filter(Boolean)
     const filePaths = urls
       .map((url) => url.match(/test-uploads\/(.+)$/)?.[1])
       .filter((p): p is string => !!p)
@@ -737,7 +758,8 @@ function Home() {
         throw new Error(data?.error || `Request failed (${res.status})`)
       }
 
-      const { draft } = await res.json()
+      const { draft: rawDraft } = await res.json()
+      const draft = cleanAi(rawDraft)
       setProjectDraft(draft)
       setDraftExpanded(true)
       // Persist project draft
@@ -782,7 +804,8 @@ function Home() {
         throw new Error(data?.error || `Request failed (${res.status})`)
       }
 
-      const { draft } = await res.json()
+      const { draft: rawDraft } = await res.json()
+      const draft = cleanAi(rawDraft)
       setDrafts((prev) => ({ ...prev, [c.id]: draft }))
       // Persist draft to capture record
       supabase.from("captures").update({ draft: draft }).eq("id", c.id).then(() => {})
@@ -818,7 +841,8 @@ function Home() {
           }),
         })
         if (res.ok) {
-          const { draft } = await res.json()
+          const { draft: rawDraft } = await res.json()
+      const draft = cleanAi(rawDraft)
           setDrafts((prev) => ({ ...prev, [c.id]: draft }))
         }
       } catch {
@@ -1519,10 +1543,49 @@ function Home() {
     })
   }
 
-  function addFiles(newFiles: File[]) {
-    // Filter to only image files
-    const imageFiles = newFiles.filter((f) => f.type.startsWith("image/"))
-    if (imageFiles.length === 0) return
+  // Quantity can be a decimal such as 12.5; blank or zero counts as 1
+  function quantityValue() {
+    const n = parseFloat(quantity)
+    return Number.isFinite(n) && n > 0 ? n : 1
+  }
+
+  // Accept any common photo format, even when the computer reports no file type
+  const IMAGE_EXT = /\.(jpe?g|jfif|png|webp|gif|bmp|avif|heic|heif)$/i
+  function looksLikeImage(file: File) {
+    return file.type.startsWith("image/") || IMAGE_EXT.test(file.name)
+  }
+  function browserCanShow(file: File): Promise<boolean> {
+    return new Promise((resolve) => {
+      const url = URL.createObjectURL(file)
+      const img = new Image()
+      img.onload = () => { URL.revokeObjectURL(url); resolve(true) }
+      img.onerror = () => { URL.revokeObjectURL(url); resolve(false) }
+      img.src = url
+    })
+  }
+  async function acceptImageFiles(list: File[]): Promise<{ ok: File[]; problem: string }> {
+    const ok: File[] = []
+    const notImages: string[] = []
+    const cannotShow: string[] = []
+    for (const file of list) {
+      if (!looksLikeImage(file)) { notImages.push(file.name); continue }
+      if (!(await browserCanShow(file))) { cannotShow.push(file.name); continue }
+      ok.push(file)
+    }
+    let problem = ""
+    if (notImages.length > 0) problem = "Only photos can be added (JPG, PNG, WEBP, GIF or HEIC)."
+    if (cannotShow.length > 0) {
+      problem = "This browser cannot open " + cannotShow[0] + ". Use a JPG or PNG. On iPhone: Settings, Camera, Formats, Most Compatible."
+    }
+    return { ok, problem }
+  }
+
+  async function addFiles(newFiles: File[]) {
+    const { ok: imageFiles, problem } = await acceptImageFiles(newFiles)
+    if (imageFiles.length === 0) {
+      if (problem) setStatus(problem)
+      return
+    }
 
     const remaining = MAX_PHOTOS - files.length
     if (remaining <= 0) {
@@ -1533,7 +1596,7 @@ function Home() {
     if (toAdd.length < imageFiles.length) {
       setStatus(`Only ${remaining} more photo${remaining !== 1 ? "s" : ""} allowed. ${imageFiles.length - toAdd.length} skipped.`)
     } else {
-      setStatus("")
+      setStatus(problem)
     }
     setFiles((prev) => [...prev, ...toAdd])
     setPreviews((prev) => [...prev, ...toAdd.map((f) => URL.createObjectURL(f))])
@@ -1590,8 +1653,9 @@ function Home() {
       setStatus("Please select or create a project first.")
       return
     }
-    if (files.length === 0) {
-      setStatus("Please select at least one photo.")
+    // A finding needs a photo or a note (a note-only finding is fine)
+    if (files.length === 0 && !fieldNote.trim()) {
+      setStatus("Add at least one photo or a field note.")
       return
     }
     if (!damageType) {
@@ -1606,11 +1670,11 @@ function Home() {
     setSaving(true)
 
     // Step 1: Extract EXIF metadata BEFORE compression (compression strips it)
-    setStatus("Reading photo metadata...")
+    if (files.length > 0) setStatus("Reading photo metadata...")
     const photoMetadata = await extractAllExifData(files)
 
     // Step 2: Compress images
-    setStatus(`Compressing ${files.length} photo${files.length !== 1 ? "s" : ""}...`)
+    if (files.length > 0) setStatus(`Compressing ${files.length} photo${files.length !== 1 ? "s" : ""}...`)
     const compressed = await Promise.all(files.map((f) => compressImage(f)))
 
     // Step 3: Check if we're online. If offline, queue for later.
@@ -1624,7 +1688,7 @@ function Home() {
           damageType,
           roofArea,
           fieldNote,
-          quantity: parseInt(quantity) || 1,
+          quantity: quantityValue(),
           unit: unit || "",
           photos: photoBuffers,
           photoNames: files.map((f) => f.name),
@@ -1664,14 +1728,14 @@ function Home() {
     }
 
     // Step 4: Upload with retry logic (online path)
-    setStatus(`Uploading ${compressed.length} photo${compressed.length !== 1 ? "s" : ""}...`)
+    if (files.length > 0) setStatus(`Uploading ${compressed.length} photo${compressed.length !== 1 ? "s" : ""}...`)
     const { urls: uploadedUrls, failedIndexes } = await uploadPhotosWithRetry(
       compressed,
       3,
       (uploaded, total) => setStatus(`Uploaded ${uploaded}/${total} photos...`)
     )
 
-    if (uploadedUrls.length === 0) {
+    if (files.length > 0 && uploadedUrls.length === 0) {
       setStatus("All uploads failed. Check your connection and try again.")
       setSaving(false)
       return
@@ -1686,19 +1750,19 @@ function Home() {
     // Step 5: Insert capture record with EXIF metadata
     const fullRow = {
       project_id: selectedProjectId,
-      image_url: uploadedUrls[0],
+      image_url: uploadedUrls[0] || "",
       image_urls: uploadedUrls,
       damage_type: damageType,
       roof_area: roofArea,
       field_note: fieldNote,
       status: "Captured",
-      quantity: parseInt(quantity) || 1,
+      quantity: quantityValue(),
       unit: unit || null,
       photo_metadata: photoMetadata,
     }
     const coreRow = {
       project_id: selectedProjectId,
-      image_url: uploadedUrls[0],
+      image_url: uploadedUrls[0] || "",
       image_urls: uploadedUrls,
       damage_type: damageType,
       roof_area: roofArea,
@@ -1754,6 +1818,128 @@ function Home() {
     setSaving(false)
 
     await loadCaptures(selectedProjectId)
+  }
+
+  // ---- Add photos to a saved finding (works for findings that had none, and to add more)
+  async function addPhotosToCapture(c: Capture, list: FileList | null) {
+    if (!list || list.length === 0) return
+    const say = (text: string) => setCardMsg((prev) => ({ ...prev, [c.id]: text }))
+    const existing = (c.image_urls && c.image_urls.length > 0 ? c.image_urls : c.image_url ? [c.image_url] : []).filter(Boolean)
+    const room = MAX_PHOTOS - existing.length
+    if (room <= 0) { say(`This finding already has ${MAX_PHOTOS} photos.`); return }
+    if (!navigator.onLine) { say("You are offline. Connect to add photos to a saved finding."); return }
+    const { ok, problem } = await acceptImageFiles(Array.from(list))
+    if (ok.length === 0) { say(problem || "No photo was added."); return }
+    const chosen = ok.slice(0, room)
+    setCardBusy((prev) => ({ ...prev, [c.id]: true }))
+    say(chosen.length > 1 ? "Adding photos..." : "Adding photo...")
+    try {
+      const meta = await extractAllExifData(chosen)
+      const compressed = await Promise.all(chosen.map((file) => compressImage(file)))
+      const { urls, failedIndexes } = await uploadPhotosWithRetry(compressed, 3)
+      if (urls.length === 0) throw new Error("The upload failed. Check your connection and try again.")
+      const all = [...existing, ...urls]
+      const prevMeta = Array.isArray(c.photo_metadata) ? c.photo_metadata : []
+      const nextMeta = [...prevMeta, ...meta]
+      let { error } = await supabase.from("captures").update({ image_url: all[0], image_urls: all, photo_metadata: nextMeta }).eq("id", c.id)
+      if (error?.message?.includes("schema cache")) {
+        ;({ error } = await supabase.from("captures").update({ image_url: all[0], image_urls: all }).eq("id", c.id))
+      }
+      if (error) {
+        await cleanupOrphanedUploads(urls)
+        throw new Error(error.message)
+      }
+      setCaptures((prev) => prev.map((x) => (x.id === c.id ? { ...x, image_url: all[0], image_urls: all, photo_metadata: nextMeta } : x)))
+      say(failedIndexes.length > 0 ? `${urls.length} added, ${failedIndexes.length} failed. You can try those again.` : urls.length > 1 ? "Photos added." : "Photo added.")
+    } catch (err) {
+      say(err instanceof Error ? err.message : "Could not add the photo.")
+    } finally {
+      setCardBusy((prev) => ({ ...prev, [c.id]: false }))
+      setTimeout(() => setCardMsg((prev) => ({ ...prev, [c.id]: "" })), 5000)
+    }
+  }
+
+  // ---- Edit a saved finding (damage type, area, quantity, unit, note)
+  function startEditCapture(c: Capture) {
+    setEditingCaptureId(c.id)
+    setEditForm({
+      damage_type: c.damage_type,
+      roof_area: c.roof_area,
+      field_note: c.field_note || "",
+      quantity: String(c.quantity ?? 1),
+      unit: c.unit || "",
+    })
+  }
+
+  async function saveEditCapture(c: Capture) {
+    const say = (text: string) => setCardMsg((prev) => ({ ...prev, [c.id]: text }))
+    if (!editForm.damage_type || !editForm.roof_area) { say("Choose a damage type and a roof area."); return }
+    const qty = parseFloat(editForm.quantity)
+    const patch = {
+      damage_type: editForm.damage_type,
+      roof_area: editForm.roof_area,
+      field_note: editForm.field_note.trim(),
+      quantity: Number.isFinite(qty) && qty > 0 ? qty : 1,
+      unit: editForm.unit || null,
+    }
+    setCardBusy((prev) => ({ ...prev, [c.id]: true }))
+    const { error } = await supabase.from("captures").update(patch).eq("id", c.id)
+    setCardBusy((prev) => ({ ...prev, [c.id]: false }))
+    if (error) { say(`Could not save: ${error.message}`); return }
+    setCaptures((prev) => prev.map((x) => (x.id === c.id ? { ...x, ...patch } : x)))
+    setEditingCaptureId(null)
+    say(drafts[c.id] ? "Saved. Regenerate the draft so it matches your changes." : "Saved.")
+    setTimeout(() => setCardMsg((prev) => ({ ...prev, [c.id]: "" })), 6000)
+  }
+
+  // ---- Edit the AI drafts by hand
+  async function saveCaptureDraftEdit(c: Capture) {
+    const text = cleanAi(editingDraftText)
+    const { error } = await supabase.from("captures").update({ draft: text }).eq("id", c.id)
+    if (error) { setCardMsg((prev) => ({ ...prev, [c.id]: `Could not save: ${error.message}` })); return }
+    setDrafts((prev) => ({ ...prev, [c.id]: text }))
+    setEditingDraftId(null)
+  }
+
+  async function saveProjectDraftEdit() {
+    if (!selectedProjectId) return
+    const text = cleanAi(editingDraftText)
+    const { error } = await supabase.from("projects").update({ last_draft: text }).eq("id", selectedProjectId)
+    if (error) { setProjectDraftError(`Could not save: ${error.message}`); return }
+    setProjectDraft(text)
+    setEditingDraftId(null)
+  }
+
+  // ---- Word (.docx) copy of the project draft, for people who want to edit it in Word
+  async function downloadProjectDraftWord() {
+    const project = projects.find((p) => p.id === selectedProjectId)
+    if (!project || !projectDraft) return
+    const { Document, Packer, Paragraph, TextRun, HeadingLevel } = await import("docx")
+    const body = cleanAi(projectDraft)
+      .split(/\n{2,}/)
+      .map((t) => new Paragraph({ children: [new TextRun(t.replace(/\n/g, " "))], spacing: { after: 200 } }))
+    const doc = new Document({
+      sections: [
+        {
+          children: [
+            new Paragraph({ text: "Supplement Narrative", heading: HeadingLevel.HEADING_1 }),
+            new Paragraph({ children: [new TextRun({ text: project.project_name, bold: true })] }),
+            new Paragraph({ children: [new TextRun(project.property_address || "")], spacing: { after: 300 } }),
+            ...body,
+          ],
+        },
+      ],
+    })
+    const blob = await Packer.toBlob(doc)
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    const safe = (project.project_name || "project").replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "")
+    a.href = url
+    a.download = `${safe}-Supplement-Draft.docx`
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    setTimeout(() => URL.revokeObjectURL(url), 2000)
   }
 
   const selectedProject = projects.find((p) => p.id === selectedProjectId)
@@ -2269,11 +2455,26 @@ function Home() {
 
               {/* Draft text */}
               <div className="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-800/50">
-                <p className="whitespace-pre-wrap text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-                  {projectDraft}
-                </p>
+                {editingDraftId === "project" ? (
+                  <div>
+                    <textarea
+                      rows={16}
+                      value={editingDraftText}
+                      onChange={(e) => setEditingDraftText(e.target.value)}
+                      className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm leading-relaxed text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                    />
+                    <div className="mt-2 flex gap-2">
+                      <button type="button" onClick={saveProjectDraftEdit} className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500">Save changes</button>
+                      <button type="button" onClick={() => setEditingDraftId(null)} className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">Cancel</button>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+                    {projectDraft}
+                  </p>
+                )}
               </div>
-              <div className="mt-4 flex gap-2">
+              <div className="mt-4 flex flex-wrap gap-2">
                 <button
                   type="button"
                   onClick={() => {
@@ -2294,6 +2495,22 @@ function Home() {
                   className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750"
                 >
                   Regenerate
+                </button>
+                {editingDraftId !== "project" && (
+                  <button
+                    type="button"
+                    onClick={() => { setEditingDraftId("project"); setEditingDraftText(projectDraft) }}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                  >
+                    Edit
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => { void downloadProjectDraftWord() }}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                >
+                  Word (.docx)
                 </button>
                 <span className="inline-flex items-center gap-1 text-xs text-green-700">
                   <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -2467,7 +2684,7 @@ function Home() {
           {/* Findings */}
           <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
             {captures.map((c, i) => {
-              const urls = c.image_urls && c.image_urls.length > 0 ? c.image_urls : [c.image_url]
+              const urls = (c.image_urls && c.image_urls.length > 0 ? c.image_urls : [c.image_url]).filter(Boolean)
               return (
                 <div key={c.id} className="p-5">
                   {/* Finding header */}
@@ -2522,6 +2739,7 @@ function Home() {
                         <img
                           src={url}
                           alt={`Finding ${i + 1} photo ${j + 1}`}
+                          onError={(e) => { (e.currentTarget.parentElement as HTMLElement).style.display = "none" }}
                           className="h-24 w-auto rounded-lg border border-zinc-200 object-cover dark:border-zinc-700 cursor-pointer"
                           onClick={() => openViewer(urls, j)}
                         />
@@ -2716,8 +2934,9 @@ function Home() {
               </label>
               <input
                 type="number"
-                min="1"
-                step="1"
+                inputMode="decimal"
+                min="0"
+                step="any"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
@@ -2891,13 +3110,19 @@ function Home() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
                       </svg>
-                      <span className="text-sm font-medium">No photos added</span>
-                      <span className="text-xs">Tap to upload damage photos</span>
-                      <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => {
-                        if (!e.target.files) return
-                        // This is a minimal inline handler — photos won't attach to the saved capture
-                        // but it opens the dialog as requested
-                      }} />
+                      <span className="text-sm font-medium">{cardBusy[c.id] ? "Uploading..." : "No photos added"}</span>
+                      <span className="text-xs">{cardBusy[c.id] ? "Please wait" : "Tap to upload damage photos"}</span>
+                      <input
+                        type="file"
+                        accept="image/*,.heic,.heif"
+                        multiple
+                        className="hidden"
+                        disabled={!!cardBusy[c.id]}
+                        onChange={(e) => {
+                          const picked = e.target.files
+                          void addPhotosToCapture(c, picked).finally(() => { e.target.value = "" })
+                        }}
+                      />
                     </label>
                   )
                 }
@@ -2957,9 +3182,97 @@ function Home() {
                     </span>
                   </div>
 
-                  {/* Field note */}
-                  {c.field_note && (
-                    <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{c.field_note}</p>
+                  {/* Quantity */}
+                  {c.quantity ? (
+                    <p className="text-xs text-zinc-500">Quantity: {c.quantity}{c.unit ? " " + c.unit : ""}</p>
+                  ) : null}
+
+                  {/* Field note or edit form */}
+                  {editingCaptureId === c.id ? (
+                    <div className="space-y-3 rounded-lg border border-indigo-200 bg-indigo-50/40 p-3 dark:border-indigo-900 dark:bg-indigo-950/20">
+                      <div className="grid grid-cols-2 gap-3">
+                        <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                          Damage type
+                          <select
+                            value={editForm.damage_type}
+                            onChange={(e) => setEditForm((p) => ({ ...p, damage_type: e.target.value }))}
+                            className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-2 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          >
+                            {DAMAGE_TYPES.map((d) => (<option key={d} value={d}>{d}</option>))}
+                          </select>
+                        </label>
+                        <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                          Roof area
+                          <select
+                            value={editForm.roof_area}
+                            onChange={(e) => setEditForm((p) => ({ ...p, roof_area: e.target.value }))}
+                            className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-2 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          >
+                            {ROOF_AREAS.map((a) => (<option key={a} value={a}>{a}</option>))}
+                          </select>
+                        </label>
+                        <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                          Quantity
+                          <input
+                            type="number"
+                            inputMode="decimal"
+                            min="0"
+                            step="any"
+                            value={editForm.quantity}
+                            onChange={(e) => setEditForm((p) => ({ ...p, quantity: e.target.value }))}
+                            className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-2 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          />
+                        </label>
+                        <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                          Unit
+                          <select
+                            value={editForm.unit}
+                            onChange={(e) => setEditForm((p) => ({ ...p, unit: e.target.value }))}
+                            className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-2 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          >
+                            <option value="">Auto-detect</option>
+                            <option value="SF">SF (sq ft)</option>
+                            <option value="LF">LF (linear ft)</option>
+                            <option value="SQ">SQ (squares)</option>
+                            <option value="EA">EA (each)</option>
+                          </select>
+                        </label>
+                      </div>
+                      <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                        Field note
+                        <textarea
+                          rows={4}
+                          value={editForm.field_note}
+                          onChange={(e) => setEditForm((p) => ({ ...p, field_note: e.target.value }))}
+                          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                        />
+                      </label>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          disabled={!!cardBusy[c.id]}
+                          onClick={() => saveEditCapture(c)}
+                          className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+                        >
+                          {cardBusy[c.id] ? "Saving..." : "Save changes"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditingCaptureId(null)}
+                          className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    c.field_note && (
+                      <p className="whitespace-pre-wrap text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{c.field_note}</p>
+                    )
+                  )}
+
+                  {cardMsg[c.id] && (
+                    <p className="text-xs text-indigo-700 dark:text-indigo-400" role="status">{cardMsg[c.id]}</p>
                   )}
 
                   {/* Generate draft button */}
@@ -3011,7 +3324,22 @@ function Home() {
                           Supplement Draft
                         </p>
                       </div>
-                      <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">{drafts[c.id]}</p>
+                      {editingDraftId === c.id ? (
+                        <div>
+                          <textarea
+                            rows={8}
+                            value={editingDraftText}
+                            onChange={(e) => setEditingDraftText(e.target.value)}
+                            className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm leading-relaxed text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                          />
+                          <div className="mt-2 flex gap-2">
+                            <button type="button" onClick={() => saveCaptureDraftEdit(c)} className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500">Save</button>
+                            <button type="button" onClick={() => setEditingDraftId(null)} className="rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">Cancel</button>
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="whitespace-pre-wrap text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">{drafts[c.id]}</p>
+                      )}
                       <button
                         type="button"
                         onClick={() => {
@@ -3033,11 +3361,45 @@ function Home() {
                         </svg>
                         {copied[c.id] ? "Copied!" : "Copy Draft"}
                       </button>
+                      {editingDraftId !== c.id && (
+                        <button
+                          type="button"
+                          onClick={() => { setEditingDraftId(c.id); setEditingDraftText(drafts[c.id]) }}
+                          className="mt-3 ml-2 inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                        >
+                          Edit
+                        </button>
+                      )}
                     </div>
                   )}
 
                   {/* Delete */}
-                  <div className="border-t border-zinc-100 pt-3 dark:border-zinc-800">
+                  <div className="flex flex-wrap items-center gap-4 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+                    {editingCaptureId !== c.id && (
+                      <button
+                        type="button"
+                        onClick={() => startEditCapture(c)}
+                        className="text-xs font-medium text-indigo-600 hover:text-indigo-500"
+                      >
+                        Edit Capture
+                      </button>
+                    )}
+                    {((c.image_urls && c.image_urls.length > 0 ? c.image_urls : c.image_url ? [c.image_url] : []).filter(Boolean).length > 0) && (
+                      <label className="cursor-pointer text-xs font-medium text-indigo-600 hover:text-indigo-500">
+                        {cardBusy[c.id] ? "Uploading..." : "Add Photos"}
+                        <input
+                          type="file"
+                          accept="image/*,.heic,.heif"
+                          multiple
+                          className="hidden"
+                          disabled={!!cardBusy[c.id]}
+                          onChange={(e) => {
+                            const picked = e.target.files
+                            void addPhotosToCapture(c, picked).finally(() => { e.target.value = "" })
+                          }}
+                        />
+                      </label>
+                    )}
                     <button
                       type="button"
                       onClick={() => deleteCapture(c)}
