@@ -54,7 +54,7 @@ export function InteractiveDemo() {
             className={`flex-1 px-3 py-3 text-xs font-medium transition-colors border-b-2 ${
               i === step
                 ? "bg-indigo-50 text-indigo-700 border-indigo-600"
-                : "text-zinc-400 hover:text-zinc-600 border-transparent"
+                : "text-zinc-500 hover:text-zinc-600 border-transparent"
             }`}
           >
             <span className="hidden sm:inline">{s.label}</span>
@@ -79,10 +79,10 @@ export function InteractiveDemo() {
             <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
               {/* Phone camera mockup */}
               <div className="bg-zinc-900 px-4 py-3 flex items-center justify-between">
-                <span className="text-[10px] text-zinc-400">Camera</span>
+                <span className="text-[10px] text-zinc-500">Camera</span>
                 <div className="flex gap-2">
                   <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
-                  <span className="text-[10px] text-zinc-400">REC</span>
+                  <span className="text-[10px] text-zinc-500">REC</span>
                 </div>
               </div>
               <div className="relative h-40 bg-gradient-to-br from-amber-100 via-amber-50 to-orange-50 flex items-center justify-center">
@@ -117,11 +117,11 @@ export function InteractiveDemo() {
         <div className={`absolute inset-0 p-6 sm:p-8 transition-opacity duration-500 ${step === 1 ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <div className="mx-auto max-w-sm">
             <div className="rounded-xl border border-zinc-200 bg-white shadow-sm p-4 space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">New Capture</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">New Capture</p>
               <div className="grid grid-cols-3 gap-1.5">
                 <div className="aspect-square rounded-lg bg-gradient-to-br from-amber-100 to-amber-50 border border-zinc-200" />
                 <div className="aspect-square rounded-lg bg-gradient-to-br from-amber-100 to-orange-50 border border-zinc-200" />
-                <div className="flex aspect-square items-center justify-center rounded-lg border-2 border-dashed border-zinc-200 text-xs text-zinc-400">+</div>
+                <div className="flex aspect-square items-center justify-center rounded-lg border-2 border-dashed border-zinc-200 text-xs text-zinc-500">+</div>
               </div>
               <div className="space-y-2">
                 <div className="flex gap-2">
@@ -182,14 +182,14 @@ export function InteractiveDemo() {
         <div className={`absolute inset-0 p-6 sm:p-8 transition-opacity duration-500 ${step === 3 ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <div className="mx-auto max-w-sm">
             <div className="rounded-xl border border-zinc-200 bg-white shadow-sm p-4 space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Send Report</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Send Report</p>
               <div className="space-y-2">
                 <div className="rounded-lg border border-zinc-200 px-3 py-2">
-                  <p className="text-[10px] text-zinc-400">To</p>
+                  <p className="text-[10px] text-zinc-500">To</p>
                   <p className="text-xs text-zinc-700">adjuster@insuranceco.com</p>
                 </div>
                 <div className="rounded-lg border border-zinc-200 px-3 py-2">
-                  <p className="text-[10px] text-zinc-400">Subject</p>
+                  <p className="text-[10px] text-zinc-500">Subject</p>
                   <p className="text-xs text-zinc-700">Supplement Request — Smith Residence</p>
                 </div>
                 <div className="rounded-lg border border-zinc-200 px-3 py-2 flex items-center gap-2">
@@ -198,7 +198,7 @@ export function InteractiveDemo() {
                   </svg>
                   <div>
                     <p className="text-xs font-medium text-zinc-700">Smith-Residence-Report.pdf</p>
-                    <p className="text-[10px] text-zinc-400">3 findings, 4 photos attached</p>
+                    <p className="text-[10px] text-zinc-500">3 findings, 4 photos attached</p>
                   </div>
                 </div>
               </div>

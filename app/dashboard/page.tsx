@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, Suspense } from "react"
+import { authFetch } from "../../lib/auth-fetch"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "../../lib/supabase"
@@ -136,7 +137,7 @@ export default function DashboardPage() {
   async function openBillingPortal() {
     setPortalLoading(true)
     try {
-      const res = await fetch("/api/stripe/portal", {
+      const res = await authFetch("/api/stripe/portal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: user?.id }),
@@ -259,7 +260,7 @@ export default function DashboardPage() {
               hasSentReport={hasSentReport}
             />
             {!isActive && (
-              <p className="mb-6 -mt-4 text-center text-sm text-zinc-400">
+              <p className="mb-6 -mt-4 text-center text-sm text-zinc-500">
                 Start your subscription to begin capturing roof damage and generating supplement reports.
               </p>
             )}
@@ -388,7 +389,7 @@ export default function DashboardPage() {
               <div className="flex gap-2">
                 {projects.length > 0 && (
                   <div className="relative flex-1 sm:flex-none">
-                    <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                     <input
@@ -409,7 +410,7 @@ export default function DashboardPage() {
             </div>
 
             {loadingProjects ? (
-              <div className="flex items-center gap-2 py-12 justify-center text-zinc-400">
+              <div className="flex items-center gap-2 py-12 justify-center text-zinc-500">
                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
                 <span className="text-sm">Loading projects...</span>
               </div>
@@ -436,7 +437,7 @@ export default function DashboardPage() {
                     <div className="min-w-0">
                       <h3 className="text-sm sm:text-base font-semibold text-zinc-900 truncate">{p.project_name}</h3>
                       <p className="mt-0.5 text-xs sm:text-sm text-zinc-500 truncate">{p.property_address || "No address"}</p>
-                      <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-zinc-400">
+                      <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
                         <span>{p.capture_count} capture{p.capture_count !== 1 ? "s" : ""}</span>
                         <span>{new Date(p.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
                         {p.insurance_company && (
@@ -533,7 +534,7 @@ export default function DashboardPage() {
                   onClick={() => setShowSampleReport(false)}
                   className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-zinc-100"
                 >
-                  <svg className="h-5 w-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="h-5 w-5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -552,10 +553,10 @@ export default function DashboardPage() {
                 <div className="px-4 sm:px-5 py-5">
                   <p className="text-sm font-bold text-zinc-900">Smith Residence</p>
                   <p className="mt-1 text-xs text-zinc-500">742 Evergreen Terrace, Springfield</p>
-                  <p className="text-xs text-zinc-500">Inspection Date: March 12, 2026</p>
+                  <p className="text-xs text-zinc-500">Inspection Date: Sample date</p>
 
                   <div className="mt-4 h-px bg-zinc-200" />
-                  <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-zinc-400">Findings</p>
+                  <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-zinc-500">Findings</p>
 
                   <div className="mt-3 space-y-4">
                     <div className="flex items-start gap-2.5">
@@ -588,7 +589,7 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="mt-4 h-px bg-zinc-200" />
-                  <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-zinc-400">Supporting Photos</p>
+                  <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-zinc-500">Supporting Photos</p>
                   <div className="mt-3 grid grid-cols-3 gap-2">
                     <div className="aspect-square rounded-lg bg-gradient-to-br from-amber-100 to-amber-50 border border-zinc-200" />
                     <div className="aspect-square rounded-lg bg-gradient-to-br from-red-100 to-red-50 border border-zinc-200" />
@@ -597,7 +598,7 @@ export default function DashboardPage() {
 
                   <div className="mt-4 h-px bg-zinc-200" />
                   <div className="mt-4 rounded-lg bg-zinc-50 px-4 py-3">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Summary</p>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Summary</p>
                     <p className="mt-2 text-xs leading-relaxed text-zinc-600">
                       3 supplement items documented during tear-off. Documentation and photos ready for adjuster review.
                     </p>

@@ -63,14 +63,11 @@ export async function getAuthenticatedUser(request: Request) {
  */
 export async function getUserId(
   request: Request,
-  fallbackUserId?: string | null
+  // Kept so existing call sites compile. A client-supplied id is never trusted.
+  _ignoredClientUserId?: string | null
 ): Promise<string | null> {
-  // Try token-based auth first (most secure)
   const user = await getAuthenticatedUser(request)
-  if (user) return user.id
-
-  // Fall back to client-supplied userId (backward compatible)
-  return fallbackUserId || null
+  return user?.id ?? null
 }
 
 /** Standard 401 response */

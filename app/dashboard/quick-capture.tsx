@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import { authFetch } from "../../lib/auth-fetch"
 import { supabase } from "../../lib/supabase"
 import { extractAllExifData } from "../../lib/exif-utils"
 import { uploadPhotosWithRetry } from "../../lib/upload-utils"
@@ -222,7 +223,7 @@ export function QuickVoiceRecord({
 
     setTranslating(true)
     try {
-      const res = await fetch("/api/translate-note", {
+      const res = await authFetch("/api/translate-note", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: currentNote }),
@@ -301,7 +302,7 @@ export function QuickVoiceRecord({
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-100 bg-white px-5 py-3.5 rounded-t-2xl sm:rounded-t-xl">
           <h2 className="text-base font-bold text-zinc-900">Quick Voice Record</h2>
           <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-zinc-100">
-            <svg className="h-5 w-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="h-5 w-5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -342,12 +343,12 @@ export function QuickVoiceRecord({
                     )}
                   </button>
                 ) : (
-                  <p className="text-xs text-zinc-400">Voice recording not supported in this browser.</p>
+                  <p className="text-xs text-zinc-500">Voice recording not supported in this browser.</p>
                 )}
                 <p className="mt-3 text-sm font-medium text-zinc-600">
                   {recording ? "Recording... tap to stop" : "Tap to record damage note"}
                 </p>
-                <p className="mt-1 text-xs text-zinc-400">Speak in any language — auto-translates to English</p>
+                <p className="mt-1 text-xs text-zinc-500">Speak in any language — auto-translates to English</p>
               </div>
 
               {/* Translation indicator */}
@@ -593,7 +594,7 @@ export function QuickPhotoCapture({
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-100 bg-white px-5 py-3.5 rounded-t-2xl sm:rounded-t-xl">
           <h2 className="text-base font-bold text-zinc-900">Quick Photo Capture</h2>
           <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-zinc-100">
-            <svg className="h-5 w-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="h-5 w-5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -632,7 +633,7 @@ export function QuickPhotoCapture({
                     {photos.length < 6 && (
                       <button
                         onClick={() => fileInputRef.current?.click()}
-                        className="aspect-square rounded-lg border-2 border-dashed border-zinc-300 flex items-center justify-center text-zinc-400 hover:border-indigo-400 hover:text-indigo-500"
+                        className="aspect-square rounded-lg border-2 border-dashed border-zinc-300 flex items-center justify-center text-zinc-500 hover:border-indigo-400 hover:text-indigo-500"
                       >
                         <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

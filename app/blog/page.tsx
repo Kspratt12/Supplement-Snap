@@ -56,7 +56,7 @@ export default function BlogIndex() {
         <div className="grid gap-6 sm:grid-cols-2">
           {ARTICLES.map((a) => (
             <Link key={a.slug} href={`/blog/${a.slug}`} className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm hover:border-indigo-200 hover:shadow-md transition-all">
-              <p className="text-xs text-zinc-400">{new Date(a.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</p>
+              <p className="text-xs text-zinc-500">{new Date(a.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</p>
               <h2 className="mt-2 text-base font-semibold text-zinc-900">{a.title}</h2>
               <p className="mt-2 text-sm leading-relaxed text-zinc-500">{a.desc}</p>
               <p className="mt-3 text-sm font-medium text-indigo-600">Read more &rarr;</p>

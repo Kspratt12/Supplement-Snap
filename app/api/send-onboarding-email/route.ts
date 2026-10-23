@@ -1,5 +1,6 @@
 import { Resend } from "resend"
 import { NextResponse } from "next/server"
+import { getAuthenticatedUser } from "../../../lib/auth-utils"
 
 type EmailType = "welcome" | "subscription_active"
 
@@ -124,6 +125,11 @@ function buildSubscriptionActiveEmail(name: string): { subject: string; html: st
 
 export async function POST(request: Request) {
   try {
+    const authedUser = await getAuthenticatedUser(request)
+    if (!authedUser?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     if (!process.env.RESEND_API_KEY) {
       // Email is optional: report it but never fail the caller
       console.error("Onboarding email skipped: RESEND_API_KEY not set")
@@ -131,13 +137,15 @@ export async function POST(request: Request) {
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const { to, name, type } = (await request.json()) as {
-      to: string
+    const { name, type } = (await request.json()) as {
       name?: string
       type: EmailType
     }
 
-    if (!to || !type) {
+    // Only ever send to the signed-in user's own address
+    const to = authedUser.email
+
+    if (!type) {
       return NextResponse.json(
         { error: "Recipient email and email type are required" },
         { status: 400 }

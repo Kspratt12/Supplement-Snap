@@ -16,7 +16,7 @@ export function LegalLayout({ title, children }: { title: string; children: Reac
 
       <main className="mx-auto max-w-3xl px-6 py-14">
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h1>
-        <p className="mt-2 text-sm text-zinc-400">Last updated: March 15, 2026</p>
+        <p className="mt-2 text-sm text-zinc-500">Last updated: March 15, 2026</p>
         <div className="mt-8 space-y-8 text-sm leading-relaxed text-zinc-600">
           {children}
         </div>

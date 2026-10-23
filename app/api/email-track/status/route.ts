@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { getUserId } from "../../../../lib/auth-utils"
 
 const supabase = () => createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -10,13 +11,16 @@ const supabase = () => createClient(
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const projectId = searchParams.get("projectId")
-  if (!projectId) return NextResponse.json({ records: [] })
+  const userId = await getUserId(request)
+  if (!userId || !projectId) return NextResponse.json({ records: [] })
 
-  const { data } = await supabase()
+  let query = supabase()
     .from("email_tracking")
     .select("*")
-    .eq("project_id", projectId)
+    .eq("user_id", userId)
     .order("sent_at", { ascending: false })
+  if (projectId !== "all") query = query.eq("project_id", projectId)
+  const { data } = await query
 
   return NextResponse.json({ records: data || [] })
 }
@@ -24,12 +28,15 @@ export async function GET(request: Request) {
 // POST — create a tracking record when email is sent
 export async function POST(request: Request) {
   try {
+    const userId = await getUserId(request)
+    if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     const { projectId, recipientEmail, subject } = await request.json()
 
     const { data, error } = await supabase()
       .from("email_tracking")
       .insert({
         project_id: projectId,
+        user_id: userId,
         recipient_email: recipientEmail,
         subject: subject,
       })

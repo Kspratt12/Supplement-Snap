@@ -1,6 +1,8 @@
 import { Resend } from "resend"
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { getAuthenticatedUser } from "../../../lib/auth-utils"
+import { rateLimited } from "../../../lib/rate-limit"
 
 export async function POST(request: Request) {
   try {
@@ -13,7 +15,24 @@ export async function POST(request: Request) {
 
     const resend = new Resend(process.env.RESEND_API_KEY)
 
-    const { to, subject, message, pdfBase64, fileName, projectName, propertyAddress, projectId, userId, companyName, followUpDays } = await request.json()
+    const user = await getAuthenticatedUser(request)
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+    if (rateLimited(`send-report:${user.id}`, 30, 60 * 60 * 1000)) {
+      return NextResponse.json({ error: "Too many emails sent. Please try again later." }, { status: 429 })
+    }
+
+    const { to, subject, message, pdfBase64, fileName, projectName, propertyAddress, projectId, companyName, followUpDays } = await request.json()
+    // Never trust a client-supplied user id
+    const userId = user.id
+
+    if (typeof to !== "string" || !/^[^\s@,;]+@[^\s@,;]+\.[^\s@,;]+$/.test(to)) {
+      return NextResponse.json({ error: "A single valid recipient email is required" }, { status: 400 })
+    }
+    if (typeof pdfBase64 === "string" && pdfBase64.length > 14_000_000) {
+      return NextResponse.json({ error: "Attachment too large" }, { status: 413 })
+    }
 
     if (!to || !subject) {
       return NextResponse.json(

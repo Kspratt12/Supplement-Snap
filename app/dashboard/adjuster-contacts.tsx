@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { authFetch } from "../../lib/auth-fetch"
 
 type Contact = {
   id: string
@@ -24,7 +25,7 @@ export function AdjusterContacts({ userId }: { userId: string }) {
   async function loadContacts() {
     setLoading(true)
     try {
-      const res = await fetch(`/api/adjuster-contacts?userId=${userId}`)
+      const res = await authFetch(`/api/adjuster-contacts?userId=${userId}`)
       const data = await res.json()
       setContacts(data.contacts || [])
     } catch {}
@@ -34,7 +35,7 @@ export function AdjusterContacts({ userId }: { userId: string }) {
   async function handleAdd() {
     if (!name.trim() || !email.trim()) return
     setSaving(true)
-    await fetch("/api/adjuster-contacts", {
+    await authFetch("/api/adjuster-contacts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, name: name.trim(), email: email.trim(), company: company.trim() }),
@@ -48,7 +49,7 @@ export function AdjusterContacts({ userId }: { userId: string }) {
   }
 
   async function handleDelete(id: string) {
-    await fetch(`/api/adjuster-contacts?id=${id}`, { method: "DELETE" })
+    await authFetch(`/api/adjuster-contacts?id=${id}`, { method: "DELETE" })
     loadContacts()
   }
 
@@ -57,7 +58,7 @@ export function AdjusterContacts({ userId }: { userId: string }) {
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-sm font-semibold text-zinc-900">Saved Adjusters</h3>
-          <p className="mt-0.5 text-xs text-zinc-400">Quick-select when sending reports</p>
+          <p className="mt-0.5 text-xs text-zinc-500">Quick-select when sending reports</p>
         </div>
         <button
           onClick={() => setShowAdd(!showAdd)}
@@ -107,16 +108,16 @@ export function AdjusterContacts({ userId }: { userId: string }) {
           <div className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
         </div>
       ) : contacts.length === 0 ? (
-        <p className="mt-3 text-center text-xs text-zinc-400 py-2">No saved adjusters yet.</p>
+        <p className="mt-3 text-center text-xs text-zinc-500 py-2">No saved adjusters yet.</p>
       ) : (
         <div className="mt-3 space-y-1.5">
           {contacts.map((c) => (
             <div key={c.id} className="flex items-center justify-between rounded-lg border border-zinc-100 bg-zinc-50 px-3 py-2">
               <div className="min-w-0">
                 <p className="text-sm font-medium text-zinc-900 truncate">{c.name}</p>
-                <p className="text-xs text-zinc-400 truncate">{c.email}{c.company ? ` · ${c.company}` : ""}</p>
+                <p className="text-xs text-zinc-500 truncate">{c.email}{c.company ? ` · ${c.company}` : ""}</p>
               </div>
-              <button onClick={() => handleDelete(c.id)} className="text-xs text-zinc-400 hover:text-red-600 flex-shrink-0 ml-2">
+              <button onClick={() => handleDelete(c.id)} className="text-xs text-zinc-500 hover:text-red-600 flex-shrink-0 ml-2">
                 Remove
               </button>
             </div>

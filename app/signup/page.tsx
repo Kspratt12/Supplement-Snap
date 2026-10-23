@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { authFetch } from "../../lib/auth-fetch"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "../../lib/supabase"
@@ -68,7 +69,7 @@ export default function SignupPage() {
 
     trackEvent("signup_completed")
     // Welcome email is optional: never block or fail the signup on it
-    fetch("/api/send-onboarding-email", {
+    authFetch("/api/send-onboarding-email", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ to: email, name, type: "welcome" }),
@@ -93,8 +94,10 @@ export default function SignupPage() {
 
         <form onSubmit={handleSignup} className="space-y-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700">Name</label>
+            <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-zinc-700">Name</label>
             <input
+              id="name"
+              autoComplete="name"
               type="text"
               required
               value={name}
@@ -105,8 +108,10 @@ export default function SignupPage() {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700">Email</label>
+            <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-zinc-700">Email</label>
             <input
+              id="email"
+              autoComplete="email"
               type="email"
               required
               value={email}
@@ -117,8 +122,10 @@ export default function SignupPage() {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700">Password</label>
+            <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-zinc-700">Password</label>
             <input
+              id="password"
+              autoComplete="new-password"
               type="password"
               required
               minLength={6}
@@ -130,8 +137,10 @@ export default function SignupPage() {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-zinc-700">Confirm Password</label>
+            <label htmlFor="confirm-password" className="mb-1.5 block text-sm font-medium text-zinc-700">Confirm Password</label>
             <input
+              id="confirm-password"
+              autoComplete="new-password"
               type="password"
               required
               minLength={6}

@@ -1,6 +1,7 @@
 import React from "react"
 import type { Metadata } from "next"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 import { SiteFooter } from "../../../lib/site-footer"
 import { NavLinks } from "../../../lib/nav-links"
 import { ScrollToTop } from "../../../lib/scroll-to-top"
@@ -124,7 +125,7 @@ function ChecklistCard({ title, items }: { title: string; items: Array<{ text: s
                 <div className="h-2 w-2 rounded-full bg-zinc-300" />
               )}
             </div>
-            <span className={`text-sm ${item.checked ? "text-zinc-900" : "text-zinc-400"}`}>{item.text}</span>
+            <span className={`text-sm ${item.checked ? "text-zinc-900" : "text-zinc-500"}`}>{item.text}</span>
           </div>
         ))}
       </div>
@@ -1509,6 +1510,8 @@ function RichContent({ text }: { text: string }) {
   )
 }
 
+export const dynamicParams = false
+
 export async function generateStaticParams() {
   return ARTICLES.map((a) => ({ slug: a.slug }))
 }
@@ -1545,7 +1548,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BlogArticle({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const article = ARTICLES.find((a) => a.slug === slug)
-  if (!article) return null
+  if (!article) notFound()
 
   const firstImg = article.images ? Object.values(article.images)[0] : null
   const wordCount = article.sections.reduce((sum, s) => sum + s.content.split(/\s+/).length, 0)
@@ -1619,7 +1622,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
       <article className="mx-auto max-w-3xl px-6 py-16">
         <div className="mb-10">
           <nav aria-label="Breadcrumb" className="mb-4">
-            <ol className="flex items-center gap-1.5 text-xs text-zinc-400">
+            <ol className="flex items-center gap-1.5 text-xs text-zinc-500">
               <li><Link href="/" className="hover:text-zinc-600">Home</Link></li>
               <li>/</li>
               <li><Link href="/blog" className="hover:text-zinc-600">Blog</Link></li>
@@ -1632,7 +1635,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold text-white">KS</div>
             <div>
               <p className="text-sm font-medium text-zinc-900">Kelvin Spratt</p>
-              <p className="text-xs text-zinc-400">Founder, Supplement Snap &middot; {new Date(article.publishedDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</p>
+              <p className="text-xs text-zinc-500">Founder, Supplement Snap &middot; {new Date(article.publishedDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</p>
             </div>
           </div>
         </div>
@@ -1681,7 +1684,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
         {/* External Links */}
         {article.externalLinks && article.externalLinks.length > 0 && (
           <div className="mt-12 rounded-xl border border-zinc-200 bg-zinc-50 p-6">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">References & Resources</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500">References & Resources</h3>
             <div className="mt-3 space-y-2">
               {article.externalLinks.map((link, i) => (
                 <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-500">
@@ -1729,7 +1732,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
 
         {/* Related articles */}
         <div className="mt-16 border-t border-zinc-100 pt-10">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">More Articles</h3>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500">More Articles</h3>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {ARTICLES.filter((a) => a.slug !== slug).slice(0, 4).map((a) => (
               <Link key={a.slug} href={`/blog/${a.slug}`} className="rounded-lg border border-zinc-200 bg-white p-4 hover:border-indigo-200 hover:shadow-sm">

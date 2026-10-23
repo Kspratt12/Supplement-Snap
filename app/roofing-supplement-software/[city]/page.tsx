@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 import { SiteFooter } from "../../../lib/site-footer"
 import { NavLinks } from "../../../lib/nav-links"
 
@@ -41,7 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
 export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
   const { city: citySlug } = await params
   const city = CITIES.find((c) => c.slug === citySlug)
-  if (!city) return null
+  if (!city) notFound()
 
   return (
     <div className="bg-white text-zinc-900">
@@ -177,7 +178,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       {/* Nearby cities */}
       <section className="border-t border-zinc-100 bg-zinc-50 py-12">
         <div className="mx-auto max-w-4xl px-6">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-zinc-400">Also serving nearby areas</p>
+          <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-zinc-500">Also serving nearby areas</p>
           <div className="flex flex-wrap gap-2">
             {city.nearby.map((nearby) => {
               const nearbyCity = CITIES.find((c) => c.name === nearby)
@@ -202,7 +203,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       {/* Resources */}
       <section className="border-t border-zinc-100 py-12">
         <div className="mx-auto max-w-4xl px-6">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-zinc-400">Learn More</p>
+          <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-zinc-500">Learn More</p>
           <div className="grid gap-3 sm:grid-cols-3">
             {[
               { href: "/roofing-supplement-software", title: "Roofing Supplement Software" },

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import { authFetch } from "../../lib/auth-fetch"
 import { supabase } from "../../lib/supabase"
 
 export function CompanySettings({ userId }: { userId: string }) {
@@ -17,7 +18,7 @@ export function CompanySettings({ userId }: { userId: string }) {
 
   async function loadSettings() {
     try {
-      const res = await fetch(`/api/company-settings?userId=${userId}`)
+      const res = await authFetch(`/api/company-settings?userId=${userId}`)
       const data = await res.json()
       if (data.settings) {
         setCompanyName(data.settings.company_name || "")
@@ -28,7 +29,7 @@ export function CompanySettings({ userId }: { userId: string }) {
 
   async function handleSave() {
     setSaving(true)
-    await fetch("/api/company-settings", {
+    await authFetch("/api/company-settings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, companyName, logoUrl }),
@@ -53,7 +54,7 @@ export function CompanySettings({ userId }: { userId: string }) {
   return (
     <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm">
       <h3 className="text-sm font-semibold text-zinc-900">Company Branding</h3>
-      <p className="mt-0.5 text-xs text-zinc-400">Your logo appears on PDF reports sent to adjusters.</p>
+      <p className="mt-0.5 text-xs text-zinc-500">Your logo appears on PDF reports sent to adjusters.</p>
 
       <div className="mt-4 space-y-3">
         {/* Logo */}
