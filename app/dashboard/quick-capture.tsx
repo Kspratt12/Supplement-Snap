@@ -6,6 +6,8 @@ import { supabase } from "../../lib/supabase"
 import { extractAllExifData } from "../../lib/exif-utils"
 import { uploadPhotosWithRetry } from "../../lib/upload-utils"
 
+import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang } from "../../lib/speech-langs"
+
 const DAMAGE_TYPES = ["Decking", "Flashing", "Vent / Pipe Boot", "Drip Edge", "Ice & Water", "Multiple Layers", "Other"]
 const ROOF_AREAS = ["Front", "Back", "Left", "Right", "Valley", "Chimney", "Ridge", "Eave"]
 
@@ -148,6 +150,7 @@ export function QuickVoiceRecord({
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState("")
+  const [speechLang, setSpeechLang] = useState<string>(() => loadSpeechLang())
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
 
   useEffect(() => {
@@ -184,6 +187,7 @@ export function QuickVoiceRecord({
     const recognition = new SR()
     recognition.continuous = true
     recognition.interimResults = false
+    if (speechLang) recognition.lang = speechLang
     recognitionRef.current = recognition
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
@@ -349,6 +353,19 @@ export function QuickVoiceRecord({
                   {recording ? "Recording... tap to stop" : "Tap to record damage note"}
                 </p>
                 <p className="mt-1 text-xs text-zinc-500">Speak in any language — auto-translates to English</p>
+              </div>
+
+              <div>
+                <label className="mt-3 block text-xs font-medium text-zinc-500">
+                  Voice language
+                  <select
+                    value={speechLang}
+                    onChange={(e) => { setSpeechLang(e.target.value); saveSpeechLang(e.target.value) }}
+                    className="mt-1 block w-full rounded-lg border border-zinc-300 bg-white px-2 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                  >
+                    {SPEECH_LANGS.map((l) => (<option key={l.code} value={l.code}>{l.label}</option>))}
+                  </select>
+                </label>
               </div>
 
               {/* Translation indicator */}

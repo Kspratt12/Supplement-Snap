@@ -9,6 +9,7 @@ import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { PhotoAnnotator } from "../dashboard/photo-annotator"
 import { extractAllExifData, type PhotoMetadata } from "../../lib/exif-utils"
+import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang } from "../../lib/speech-langs"
 import { uploadPhotosWithRetry, cleanupOrphanedUploads } from "../../lib/upload-utils"
 import {
   queueCapture,
@@ -162,6 +163,7 @@ function Home() {
   const [previews, setPreviews] = useState<string[]>([])
   const [files, setFiles] = useState<File[]>([])
   const [damageType, setDamageType] = useState("")
+  const [speechLang, setSpeechLang] = useState<string>(() => loadSpeechLang())
   const [roofArea, setRoofArea] = useState("")
   const [fieldNote, setFieldNote] = useState("")
   const [status, setStatus] = useState("")
@@ -389,6 +391,7 @@ function Home() {
     const recognition = new SpeechRecognitionAPI()
     recognition.continuous = true
     recognition.interimResults = false
+    if (speechLang) recognition.lang = speechLang
 
     recognition.onresult = (event) => {
       let transcript = ""
@@ -1859,6 +1862,28 @@ function Home() {
     }
   }
 
+  // ---- Remove one photo from a saved finding (to swap in the right one)
+  async function removePhotoFromCapture(c: Capture, url: string) {
+    if (!confirm("Remove this photo? You can add a different one afterwards.")) return
+    const say = (text: string) => setCardMsg((prev) => ({ ...prev, [c.id]: text }))
+    const existing = (c.image_urls && c.image_urls.length > 0 ? c.image_urls : c.image_url ? [c.image_url] : []).filter(Boolean)
+    const idx = existing.indexOf(url)
+    if (idx === -1) return
+    const all = existing.filter((_, i) => i !== idx)
+    const prevMeta = Array.isArray(c.photo_metadata) ? c.photo_metadata : []
+    const nextMeta = prevMeta.length === existing.length ? prevMeta.filter((_, i) => i !== idx) : prevMeta
+    let { error } = await supabase.from("captures").update({ image_url: all[0] || "", image_urls: all, photo_metadata: nextMeta }).eq("id", c.id)
+    if (error?.message?.includes("schema cache")) {
+      ;({ error } = await supabase.from("captures").update({ image_url: all[0] || "", image_urls: all }).eq("id", c.id))
+    }
+    if (error) { say(`Could not remove the photo: ${error.message}`); return }
+    const path = url.match(/test-uploads\/(.+)$/)?.[1]
+    if (path) await supabase.storage.from("test-uploads").remove([path])
+    setCaptures((prev) => prev.map((x) => (x.id === c.id ? { ...x, image_url: all[0] || "", image_urls: all, photo_metadata: nextMeta } : x)))
+    say(all.length === 0 ? "Photo removed. Tap the box to add the right one." : "Photo removed.")
+    setTimeout(() => setCardMsg((prev) => ({ ...prev, [c.id]: "" })), 5000)
+  }
+
   // ---- Edit a saved finding (damage type, area, quantity, unit, note)
   function startEditCapture(c: Capture) {
     setEditingCaptureId(c.id)
@@ -2896,7 +2921,7 @@ function Home() {
             </label>
             <select
               value={damageType}
-              onChange={(e) => setDamageType(e.target.value)}
+              onChange={(e) => { setDamageType(e.target.value); if (status.startsWith("Please select")) setStatus("") }}
               className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
             >
               <option value="">Select damage type...</option>
@@ -2914,7 +2939,7 @@ function Home() {
             </label>
             <select
               value={roofArea}
-              onChange={(e) => setRoofArea(e.target.value)}
+              onChange={(e) => { setRoofArea(e.target.value); if (status.startsWith("Please select")) setStatus("") }}
               className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
             >
               <option value="">Select roof area...</option>
@@ -2971,6 +2996,18 @@ function Home() {
               rows={3}
               className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
             />
+            {speechSupported && (
+              <label className="mt-3 block text-xs font-medium text-zinc-500">
+                Voice language
+                <select
+                  value={speechLang}
+                  onChange={(e) => { setSpeechLang(e.target.value); saveSpeechLang(e.target.value) }}
+                  className="mt-1 block w-full rounded-lg border border-zinc-300 bg-white px-2 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+                >
+                  {SPEECH_LANGS.map((l) => (<option key={l.code} value={l.code}>{l.label}</option>))}
+                </select>
+              </label>
+            )}
             {speechSupported && (
               <button
                 type="button"
@@ -3127,23 +3164,28 @@ function Home() {
                   )
                 }
                 return urls.length === 1 ? (
-                  <img
-                    src={urls[0]}
-                    alt={`${c.damage_type} - ${c.roof_area}`}
-                    className="w-full object-cover cursor-pointer"
-                    style={{ maxHeight: "280px" }}
-                    onClick={() => openViewer(urls, 0)}
-                  />
+                  <div className="relative">
+                    <img
+                      src={urls[0]}
+                      alt={`${c.damage_type} - ${c.roof_area}`}
+                      className="w-full object-cover cursor-pointer"
+                      style={{ maxHeight: "280px" }}
+                      onClick={() => openViewer(urls, 0)}
+                    />
+                    <button type="button" onClick={() => removePhotoFromCapture(c, urls[0])} aria-label="Remove this photo" title="Remove this photo" className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm font-bold text-white hover:bg-red-600">&times;</button>
+                  </div>
                 ) : (
                   <div className="grid grid-cols-3 gap-1 p-1">
                     {urls.map((url, i) => (
-                      <img
-                        key={i}
-                        src={url}
-                        alt={`${c.damage_type} - ${c.roof_area} (${i + 1})`}
-                        className="aspect-square w-full rounded-lg object-cover cursor-pointer"
-                        onClick={() => openViewer(urls, i)}
-                      />
+                      <div key={i} className="relative">
+                        <img
+                          src={url}
+                          alt={`${c.damage_type} - ${c.roof_area} (${i + 1})`}
+                          className="aspect-square w-full rounded-lg object-cover cursor-pointer"
+                          onClick={() => openViewer(urls, i)}
+                        />
+                        <button type="button" onClick={() => removePhotoFromCapture(c, url)} aria-label="Remove this photo" title="Remove this photo" className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm font-bold text-white hover:bg-red-600">&times;</button>
+                      </div>
                     ))}
                   </div>
                 )
@@ -3169,7 +3211,7 @@ function Home() {
                         {c.roof_area}
                       </span>
                       <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                        ${SUPPLEMENT_ESTIMATES[c.damage_type] || 200}
+                        ~${SUPPLEMENT_ESTIMATES[c.damage_type] || 200} est.
                       </span>
                     </div>
                     <span className="text-xs text-zinc-500">
