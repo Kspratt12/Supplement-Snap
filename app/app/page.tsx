@@ -8,6 +8,7 @@ import { jsPDF } from "jspdf"
 import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { PhotoAnnotator } from "../dashboard/photo-annotator"
+import { FeedbackBox } from "../dashboard/feedback-box"
 import { extractAllExifData, type PhotoMetadata } from "../../lib/exif-utils"
 import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang, fetchAccountSpeechLang } from "../../lib/speech-langs"
 import { uploadPhotosWithRetry, cleanupOrphanedUploads } from "../../lib/upload-utils"
@@ -3474,6 +3475,10 @@ function Home() {
         <Link href="/dashboard" className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
           &larr; Back to Dashboard
         </Link>
+      </div>
+
+      <div className="mx-auto mb-8 max-w-xl px-4">
+        <FeedbackBox page="capture" />
       </div>
 
       {undoCapture && (
