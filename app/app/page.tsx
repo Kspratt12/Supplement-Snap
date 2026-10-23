@@ -3379,6 +3379,7 @@ function Home() {
                           Supplement Draft
                         </p>
                       </div>
+                      <p className="mb-2 text-[11px] text-zinc-500">AI-written from your notes. Review and edit before you send it to an adjuster.</p>
                       {editingDraftId === c.id ? (
                         <div>
                           <textarea

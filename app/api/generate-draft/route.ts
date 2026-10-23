@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       : "No additional field notes were provided by the contractor."
 
     const hallucGuard = isMinimalNote
-      ? `\n- IMPORTANT: The field note is very brief or absent. Write ONLY 1-2 sentences. Do NOT invent specific damage details, measurements, quantities, or conditions not stated in the note. Only state the damage type, location, and that it was concealed until tear-off.`
+      ? `\n- IMPORTANT: The field note is very brief or absent. Write ONLY 1-2 sentences. Do NOT invent specific damage details, measurements, quantities, causes, or conditions not stated in the note. Do NOT cite any building code and do NOT claim that repair or replacement is required. Only state the damage type, the roof area, and that the contractor documented it during tear-off. The contractor must add the detail before this is sent.`
       : ""
 
     const message = await anthropic.messages.create({
@@ -54,7 +54,8 @@ Rules:
 - Use professional, insurance-friendly language.
 - State that the damage was discovered during tear-off and was not visible prior to shingle removal.
 - Where applicable, reference the relevant building code requirement (e.g., IRC R905.2.8.2 for ice barrier, IRC R903.2 for flashing, IRC R906.1 for ventilation, local building code for decking replacement). Only cite a code if it genuinely applies to the damage type.
-- Do NOT invent specific measurements or dimensions unless the field note includes them.
+- Do NOT invent specific measurements, dimensions, causes or conditions unless the field note includes them. Use only facts given above.
+- Cite a building code only when the field note or damage type clearly supports it, and the contractor will verify it against their local code.
 - Do NOT reference Xactimate codes.
 - Do NOT use generic AI filler language.
 - Sound like a real supplement writer at a roofing restoration company.
