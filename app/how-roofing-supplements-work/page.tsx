@@ -5,14 +5,43 @@ import { SiteFooter } from "../../lib/site-footer"
 
 export const metadata: Metadata = {
   alternates: { canonical: "https://supplementsnap.io/how-roofing-supplements-work" },
-  title: "How Roofing Supplements Work | Supplement Snap",
+  title: "Roofing Supplements Explained: How They Work | Supplement Snap",
   description:
-    "Learn the roofing supplement process from hidden damage discovery to adjuster approval. Understand how proper documentation improves supplement approval rates.",
+    "How roofing insurance supplements work: from hidden damage at tear-off to the adjuster decision, and what documentation to include.",
 }
+
+const FAQ = [
+  {
+    q: "What is a roofing supplement?",
+    a: "A roofing supplement is a request to the insurance company for additional costs not in the original estimate, usually for damage or conditions found after work begins.",
+  },
+  {
+    q: "Who submits a roofing insurance supplement?",
+    a: "Usually the roofing contractor, with photos, measurements and notes. The insurance company decides whether the items are covered.",
+  },
+  {
+    q: "When is a supplement needed?",
+    a: "When tear-off reveals conditions the first estimate could not account for, such as damaged decking, failed flashing, missing underlayment or additional roofing layers.",
+  },
+  {
+    q: "Are roofing supplements always approved?",
+    a: "No. Coverage and approval depend on the claim, the policy, the carrier and the documentation. Clear documentation helps present the request but does not guarantee a result.",
+  },
+]
 
 export default function HowRoofingSupplementsWorkPage() {
   return (
     <div className="bg-white text-zinc-900">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+          }),
+        }}
+      />
       <nav className="border-b border-zinc-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5">
@@ -25,11 +54,11 @@ export default function HowRoofingSupplementsWorkPage() {
 
       <main className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
         <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-          How Roofing Supplements Work
+          Roofing Supplements: How the Insurance Supplement Process Works
         </h1>
 
         <p className="mt-6 text-base leading-relaxed text-zinc-600">
-          A roofing supplement is an additional claim submitted to an insurance company when hidden damage is discovered that was not included in the original estimate. Supplements are a standard part of the roofing restoration process and represent legitimate additional work that the insurance policy covers.
+          A roofing supplement is an additional claim submitted to an insurance company when hidden damage is discovered that was not included in the original estimate. Supplements are a standard part of the roofing restoration process and may represent legitimate additional work, depending on the policy and the carrier.
         </p>
 
         <h2 className="mt-12 text-xl font-bold text-zinc-900">The supplement process</h2>
@@ -74,12 +103,28 @@ export default function HowRoofingSupplementsWorkPage() {
           ))}
         </div>
 
-        <h2 className="mt-12 text-xl font-bold text-zinc-900">Better documentation improves approval rates</h2>
+        <h2 className="mt-12 text-xl font-bold text-zinc-900">Why documentation matters for approval</h2>
         <p className="mt-3 text-base leading-relaxed text-zinc-600">
           The difference between a supplement that gets approved and one that gets denied often comes down to the quality of the documentation. Adjusters need clear, organized evidence to justify additional payments. When findings are documented with photos, professional damage narratives, and specific roof locations, the adjuster has everything they need to approve the claim.
         </p>
         <p className="mt-3 text-base leading-relaxed text-zinc-600">
-          Contractors who document damage in real time during tear-off, rather than trying to reconstruct notes later, consistently produce stronger supplement packages.
+          Contractors who document damage in real time during tear-off, rather than trying to reconstruct notes later, tend to produce clearer supplement packages. Approval is never guaranteed.
+        </p>
+
+        <h2 className="mt-12 text-xl font-bold text-zinc-900">Roofing insurance supplements: common questions</h2>
+        <div className="mt-4 divide-y divide-zinc-100 rounded-xl border border-zinc-200">
+          {FAQ.map((f) => (
+            <div key={f.q} className="p-5">
+              <h3 className="text-base font-semibold text-zinc-900">{f.q}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-600">{f.a}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-6 text-sm text-zinc-600">
+          Keep going:{" "}
+          <Link href="/blog/supplemental-roofing-estimate-explained" className="text-indigo-600 underline hover:text-indigo-800">what a supplemental roofing estimate is</Link>,{" "}
+          <Link href="/free-roofing-supplement-checklist" className="text-indigo-600 underline hover:text-indigo-800">the free supplement checklist</Link> and{" "}
+          <Link href="/roofing-supplement-report-example" className="text-indigo-600 underline hover:text-indigo-800">a sample supplement report</Link>.
         </p>
 
         <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 text-center">
