@@ -13,5 +13,6 @@ export async function GET(request: Request) {
     status: access.status,
     plan: access.active ? access.plan : "none",
     viaOwner: access.viaOwner,
+    hasBilling: access.hasBilling,
   })
 }

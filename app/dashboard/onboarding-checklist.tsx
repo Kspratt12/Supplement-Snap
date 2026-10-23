@@ -2,123 +2,94 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import { supabase } from "../../lib/supabase"
 
-type ChecklistProps = {
-  isActive: boolean
-  hasProjects: boolean
-  hasCaptures: boolean
-  hasSentReport: boolean
-}
+type Step = { label: string; description: string; href: string; cta: string }
 
-const STEPS = [
-  {
-    label: "Start your subscription",
-    description: "Activate your plan to unlock all features.",
-    href: "/pricing",
-    key: "subscription" as const,
-  },
-  {
-    label: "Create your first project",
-    description: "Set up a project for a property you're working on.",
-    href: "/app",
-    key: "project" as const,
-  },
-  {
-    label: "Capture damage photos",
-    description: "Document concealed damage found during tear-off.",
-    href: "/app",
-    key: "capture" as const,
-  },
-  {
-    label: "Generate your first supplement report",
-    description: "Create and send a professional supplement to the adjuster.",
-    href: "/app",
-    key: "report" as const,
-  },
+// Free accounts only get the demo project, so their steps are about trying it and upgrading.
+const FREE_STEPS: Step[] = [
+  { label: "Open your demo project", description: "See how a project, its findings and photos fit together.", href: "/app", cta: "Open" },
+  { label: "Add a damage photo", description: "Take or upload a photo and save it as a capture.", href: "/app", cta: "Add photo" },
+  { label: "Generate an AI supplement draft", description: "Turn one finding into a professional paragraph.", href: "/app", cta: "Try it" },
+  { label: "Upgrade to unlock reports", description: "Unlimited projects, PDF reports and email to adjusters.", href: "/pricing", cta: "View plans" },
 ]
 
-const STORAGE_KEY = "ss_onboarding_state"
+const PAID_STEPS: Step[] = [
+  { label: "Create your first project", description: "Set up a project for a property you're working on.", href: "/app", cta: "Create" },
+  { label: "Capture damage photos", description: "Document concealed damage found during tear-off.", href: "/app", cta: "Capture" },
+  { label: "Generate your first supplement draft", description: "Turn your findings into supplement-ready text.", href: "/app", cta: "Generate" },
+  { label: "Send your first report to an adjuster", description: "Create the PDF report and email it from the field.", href: "/app", cta: "Send" },
+]
 
-export function OnboardingChecklist({ isActive, hasProjects, hasCaptures, hasSentReport }: ChecklistProps) {
-  const completed = [isActive, hasProjects, hasCaptures, hasSentReport]
-  const completedCount = completed.filter(Boolean).length
+type Props = {
+  mode: "free" | "paid"
+  /** Whether each of the four steps is complete */
+  done: boolean[]
+  userId: string
+  /** Saved on the account, so it follows the person to any device */
+  savedState?: string | null
+}
 
-  const [dismissed, setDismissed] = useState(false)
-  const [minimized, setMinimized] = useState(false)
+type Saved = "" | "minimized" | "dismissed"
+
+export function OnboardingChecklist({ mode, done, userId, savedState }: Props) {
+  const steps = mode === "free" ? FREE_STEPS : PAID_STEPS
+  const completedCount = done.filter(Boolean).length
+
+  const storageKey = `ss_onboarding:${userId}`
+  const [state, setState] = useState<Saved>((savedState as Saved) || "")
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved === "dismissed") setDismissed(true)
-    else if (saved === "minimized") setMinimized(true)
+    // Account setting wins; the browser copy only covers the moment before it syncs
+    if (!savedState) {
+      try {
+        const local = localStorage.getItem(storageKey)
+        if (local === "dismissed" || local === "minimized") setState(local)
+      } catch {
+        // storage unavailable
+      }
+    } else {
+      setState(savedState as Saved)
+    }
     setLoaded(true)
-  }, [])
+  }, [savedState, storageKey])
 
-  if (completedCount === 4) return null
+  function persist(next: Saved) {
+    setState(next)
+    try {
+      if (next) localStorage.setItem(storageKey, next)
+      else localStorage.removeItem(storageKey)
+    } catch {
+      // storage unavailable
+    }
+    // Save on the account so it follows this person to every device
+    supabase.auth.updateUser({ data: { ss_onboarding: next } }).catch(() => {})
+  }
+
   if (!loaded) return null
-  if (dismissed) return null
+  if (state === "dismissed") return null
+  if (done.every(Boolean)) return null
 
-  function isStepComplete(index: number) {
-    return completed[index]
-  }
-
-  function isStepLocked(index: number) {
-    if (index === 0) return false
-    return !isActive
-  }
-
-  function handleMinimize() {
-    setMinimized(!minimized)
-    localStorage.setItem(STORAGE_KEY, !minimized ? "minimized" : "")
-  }
-
-  function handleDismiss() {
-    setDismissed(true)
-    localStorage.setItem(STORAGE_KEY, "dismissed")
-  }
-
-  function handleRestore() {
-    setMinimized(false)
-    localStorage.removeItem(STORAGE_KEY)
-  }
-
-  // Minimized state: compact bar
-  if (minimized) {
+  if (state === "minimized") {
     return (
       <div className="mb-8 rounded-xl border border-zinc-200 bg-white px-5 py-3 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h2 className="text-sm font-semibold text-zinc-900">Getting Started</h2>
-            <span className="text-xs text-zinc-500">{completedCount} of {STEPS.length} completed</span>
+            <span className="text-xs text-zinc-500">{completedCount} of {steps.length} completed</span>
             <div className="flex items-center gap-1">
-              {STEPS.map((_, i) => (
-                <div
-                  key={i}
-                  className={`h-1.5 w-4 rounded-full ${
-                    isStepComplete(i) ? "bg-indigo-600" : "bg-zinc-200"
-                  }`}
-                />
+              {steps.map((_, i) => (
+                <div key={i} className={`h-1.5 w-4 rounded-full ${done[i] ? "bg-indigo-600" : "bg-zinc-200"}`} />
               ))}
             </div>
           </div>
           <div className="flex items-center gap-1">
-            <button
-              onClick={handleRestore}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700"
-              title="Expand"
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
+            <button onClick={() => persist("")} aria-label="Expand checklist" title="Expand" className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
             </button>
-            <button
-              onClick={handleDismiss}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700"
-              title="Dismiss"
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+            <button onClick={() => persist("dismissed")} aria-label="Dismiss checklist" title="Dismiss" className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
           </div>
         </div>
@@ -126,104 +97,54 @@ export function OnboardingChecklist({ isActive, hasProjects, hasCaptures, hasSen
     )
   }
 
+  // The first step that is not done is the one to nudge
+  const nextIndex = done.findIndex((d) => !d)
+
   return (
-    <div className="mb-8 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-      <div className="flex items-center justify-between">
+    <div className="mb-8 rounded-xl border border-zinc-200 bg-white shadow-sm">
+      <div className="flex items-center justify-between px-5 py-4">
         <div>
           <h2 className="text-sm font-semibold text-zinc-900">Getting Started</h2>
-          <p className="mt-0.5 text-xs text-zinc-500">
-            {completedCount} of {STEPS.length} steps completed
-          </p>
+          <p className="mt-0.5 text-xs text-zinc-500">{completedCount} of {steps.length} steps completed</p>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5">
-            {STEPS.map((_, i) => (
-              <div
-                key={i}
-                className={`h-1.5 w-6 rounded-full ${
-                  isStepComplete(i) ? "bg-indigo-600" : "bg-zinc-200"
-                }`}
-              />
+        <div className="flex items-center gap-3">
+          <div className="hidden items-center gap-1 sm:flex">
+            {steps.map((_, i) => (
+              <div key={i} className={`h-1.5 w-8 rounded-full ${done[i] ? "bg-indigo-600" : "bg-zinc-200"}`} />
             ))}
           </div>
-          <button
-            onClick={handleMinimize}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700"
-            title="Minimize"
-          >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-            </svg>
-          </button>
-          <button
-            onClick={handleDismiss}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700"
-            title="Dismiss checklist"
-          >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <div className="flex items-center gap-1">
+            <button onClick={() => persist("minimized")} aria-label="Minimize checklist" title="Minimize" className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" /></svg>
+            </button>
+            <button onClick={() => persist("dismissed")} aria-label="Dismiss checklist" title="Dismiss" className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="mt-4 space-y-1">
-        {STEPS.map((step, i) => {
-          const done = isStepComplete(i)
-          const locked = isStepLocked(i)
-
-          return (
-            <div
-              key={step.key}
-              className={`flex items-start gap-3 rounded-lg px-3 py-2.5 ${
-                done ? "opacity-60" : locked ? "opacity-40" : ""
-              }`}
-            >
-              {/* Checkbox indicator */}
-              <div className="mt-0.5 flex-shrink-0">
-                {done ? (
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600">
-                    <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                ) : locked ? (
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-zinc-200 bg-zinc-50">
-                    <svg className="h-3 w-3 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                    </svg>
-                  </div>
-                ) : (
-                  <div className="h-5 w-5 rounded-full border-2 border-zinc-300" />
-                )}
-              </div>
-
-              {/* Label + description */}
-              <div className="min-w-0 flex-1">
-                <p className={`text-sm font-medium ${done ? "text-zinc-500 line-through" : "text-zinc-900"}`}>
-                  {step.label}
-                </p>
-                {!done && !locked && (
-                  <p className="mt-0.5 text-xs text-zinc-500">{step.description}</p>
-                )}
-              </div>
-
-              {/* Action link */}
-              {!done && !locked && (
-                <Link
-                  href={step.href}
-                  className="flex-shrink-0 rounded-md bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-200"
-                >
-                  {i === 0 ? "View Plans" : "Go"}
-                </Link>
-              )}
-              {locked && (
-                <span className="flex-shrink-0 text-xs text-zinc-300">Locked</span>
-              )}
+      <ul className="border-t border-zinc-100">
+        {steps.map((step, i) => (
+          <li key={step.label} className={`flex items-center gap-3 px-5 py-3.5 ${i > 0 ? "border-t border-zinc-50" : ""}`}>
+            <div className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border-2 ${done[i] ? "border-indigo-600 bg-indigo-600 text-white" : "border-zinc-300 text-transparent"}`}>
+              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
             </div>
-          )
-        })}
-      </div>
+            <div className="min-w-0 flex-1">
+              <p className={`text-sm font-medium ${done[i] ? "text-zinc-500 line-through" : "text-zinc-900"}`}>{step.label}</p>
+              {!done[i] && <p className="mt-0.5 text-xs text-zinc-500">{step.description}</p>}
+            </div>
+            {!done[i] && (
+              <Link
+                href={step.href}
+                className={`flex-shrink-0 rounded-md px-3 py-1.5 text-xs font-medium ${i === nextIndex ? "bg-indigo-600 text-white hover:bg-indigo-500" : "border border-zinc-200 text-zinc-600 hover:bg-zinc-50"}`}
+              >
+                {step.cta}
+              </Link>
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

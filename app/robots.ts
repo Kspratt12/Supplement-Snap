@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/dashboard", "/app", "/admin", "/api/"],
+      disallow: ["/dashboard", "/app", "/account", "/admin", "/api/"],
     },
     sitemap: "https://supplementsnap.io/sitemap.xml",
   }
