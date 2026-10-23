@@ -9,10 +9,13 @@ export async function GET(request: Request) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
   const access = await getAccess(user.id, user.email)
+  const adminEmail = process.env.ADMIN_EMAIL
+  const isAdmin = !!adminEmail && (user.email || "").toLowerCase() === adminEmail.toLowerCase()
   return NextResponse.json({
     status: access.status,
     plan: access.active ? access.plan : "none",
     viaOwner: access.viaOwner,
     hasBilling: access.hasBilling,
-  })
+    isAdmin,
+  }, { headers: { "Cache-Control": "no-store" } })
 }

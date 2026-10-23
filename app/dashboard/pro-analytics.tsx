@@ -74,7 +74,7 @@ export function ProAnalytics({ userId, projectCount, captureCount, reportCount }
         </div>
         <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm text-center">
           <p className="text-2xl font-bold text-green-700">${estimatedValue.toLocaleString()}</p>
-          <p className="mt-1 text-xs text-zinc-500">Est. Documented</p>
+          <p className="mt-1 text-xs text-zinc-500">Est. value at $800 per finding</p>
         </div>
       </div>
 

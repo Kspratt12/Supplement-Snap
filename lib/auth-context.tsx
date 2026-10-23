@@ -17,6 +17,8 @@ type AuthContextType = {
   subscriptionViaOwner: boolean
   /** this account has its own Stripe billing */
   subscriptionHasBilling: boolean
+  /** this login is the site admin (decided by the server) */
+  isAdmin: boolean
   signOut: () => Promise<void>
   signOutEverywhere: () => Promise<void>
   refreshSubscription: () => Promise<void>
@@ -30,6 +32,7 @@ const AuthContext = createContext<AuthContextType>({
   subscriptionLoading: true,
   subscriptionViaOwner: false,
   subscriptionHasBilling: false,
+  isAdmin: false,
   signOut: async () => {},
   signOutEverywhere: async () => {},
   refreshSubscription: async () => {},
@@ -43,17 +46,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [subscriptionLoading, setSubscriptionLoading] = useState(true)
   const [subscriptionViaOwner, setSubscriptionViaOwner] = useState(false)
   const [subscriptionHasBilling, setSubscriptionHasBilling] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
 
-  async function loadSubscription(userId: string) {
-    setSubscriptionLoading(true)
+  async function loadSubscription(userId: string, silent = false) {
+    if (!silent) setSubscriptionLoading(true)
     let status: string | undefined
     let plan: string | undefined
     let viaOwner = false
     let hasBilling = false
+    let admin = false
     try {
       // The server also covers team members who inherit their owner's plan
       const { data: { session } } = await supabase.auth.getSession()
       const res = await fetch("/api/subscription", {
+        cache: "no-store",
         headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
       })
       if (res.ok) {
@@ -62,6 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         plan = json.plan
         viaOwner = !!json.viaOwner
         hasBilling = !!json.hasBilling
+        admin = !!json.isAdmin
       }
     } catch {
       // fall through to the direct lookup below
@@ -83,8 +90,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSubscriptionPlan((plan as SubscriptionPlan) || "none")
     setSubscriptionViaOwner(viaOwner)
     setSubscriptionHasBilling(hasBilling)
+    setIsAdmin(admin)
     setSubscriptionLoading(false)
   }
+
+  useEffect(() => {
+    if (!user) return
+    const onVisible = () => {
+      if (document.visibilityState === "visible") loadSubscription(user.id, true)
+    }
+    document.addEventListener("visibilitychange", onVisible)
+    return () => document.removeEventListener("visibilitychange", onVisible)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id])
 
   async function refreshSubscription() {
     if (user) await loadSubscription(user.id)
@@ -135,7 +153,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, subscriptionStatus, subscriptionPlan, subscriptionLoading, subscriptionViaOwner, subscriptionHasBilling, signOut, signOutEverywhere, refreshSubscription }}>
+    <AuthContext.Provider value={{ user, loading, subscriptionStatus, subscriptionPlan, subscriptionLoading, subscriptionViaOwner, subscriptionHasBilling, isAdmin, signOut, signOutEverywhere, refreshSubscription }}>
       {children}
     </AuthContext.Provider>
   )

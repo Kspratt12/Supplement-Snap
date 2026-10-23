@@ -27,7 +27,7 @@ type ProjectWithCount = {
 }
 
 export default function DashboardPage() {
-  const { user, loading: authLoading, signOut, signOutEverywhere, subscriptionStatus, subscriptionPlan, subscriptionLoading, subscriptionViaOwner, subscriptionHasBilling } = useAuth()
+  const { user, loading: authLoading, signOut, signOutEverywhere, subscriptionStatus, subscriptionPlan, subscriptionLoading, subscriptionViaOwner, subscriptionHasBilling, isAdmin } = useAuth()
   const router = useRouter()
   const [projects, setProjects] = useState<ProjectWithCount[]>([])
   const [loadingProjects, setLoadingProjects] = useState(true)
@@ -131,7 +131,7 @@ export default function DashboardPage() {
         .from("captures")
         .select("*", { count: "exact", head: true })
         .in("project_id", projectIds)
-        .in("status", ["Sent", "Ready to Send"])
+        .eq("status", "Sent")
       const sc = sentCount || 0
       setHasSentReport(sc > 0)
       setReportCount(sc)
@@ -177,8 +177,12 @@ export default function DashboardPage() {
 
   const isActive = hasActiveSubscription(subscriptionStatus)
   const userName = user.user_metadata?.full_name || user.email?.split("@")[0] || "there"
-  const totalCaptures = projects.reduce((sum, p) => sum + p.capture_count, 0)
-  const hasAnyData = projects.length > 0 || totalCaptures > 0 || reportCount > 0
+  // The sample project stays in the list but is not counted as the person's own work
+  const isSampleProject = (p: { claim_number?: string | null; project_name?: string | null }) =>
+    p.claim_number === "SF-2026-DEMO" || /^Demo Project/i.test(p.project_name || "")
+  const statProjects = projects.filter((p) => !isSampleProject(p as { claim_number?: string | null; project_name?: string | null }))
+  const totalCaptures = statProjects.reduce((sum, p) => sum + p.capture_count, 0)
+  const hasAnyData = statProjects.length > 0 || totalCaptures > 0 || reportCount > 0
 
   const planName = subscriptionPlan === "pro" ? "Pro" : subscriptionPlan === "team" ? "Team" : subscriptionPlan === "starter" ? "Starter" : "Free"
   const planLabel = subscriptionViaOwner ? `${planName} (team access)` : planName
@@ -207,6 +211,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <Link href="/app" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">{isActive ? "My Projects" : "Open App"}</Link>
             <Link href="/account" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">Account</Link>
+            {isAdmin && <Link href="/admin" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Admin</Link>}
             <button
               onClick={async () => { await signOut(); router.push("/") }}
               className="text-sm font-medium text-zinc-500 hover:text-zinc-900"
@@ -280,7 +285,11 @@ export default function DashboardPage() {
             <OnboardingChecklist
               mode={isActive ? "paid" : "free"}
               userId={user.id}
-              savedState={(user.user_metadata?.ss_onboarding as string | undefined) ?? null}
+              savedState={
+                (isActive
+                  ? (user.user_metadata?.ss_onboarding_paid as string | undefined)
+                  : ((user.user_metadata?.ss_onboarding_free as string | undefined) ?? (user.user_metadata?.ss_onboarding as string | undefined))) ?? null
+              }
               done={
                 isActive
                   ? [progress.hasRealProject, progress.photoReal, progress.draftReal, progress.sentReal]
@@ -301,7 +310,7 @@ export default function DashboardPage() {
             <h2 className="mb-3 text-sm font-semibold text-zinc-500">Your Activity</h2>
             <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
               <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm text-center">
-                <p className="text-2xl sm:text-3xl font-bold text-zinc-900">{projects.length}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-zinc-900">{statProjects.length}</p>
                 <p className="mt-1 text-xs sm:text-sm text-zinc-500">Projects</p>
               </div>
               <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm text-center">
@@ -390,7 +399,7 @@ export default function DashboardPage() {
         {isActive && (
           <>
           {/* Claim Pipeline */}
-          {projects.length > 0 && (
+          {statProjects.length > 0 && (
             <div className="mb-6 sm:mb-8">
               <h2 className="mb-3 text-sm font-semibold text-zinc-500">Claim Pipeline</h2>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -400,7 +409,7 @@ export default function DashboardPage() {
                   { status: "Submitted", color: "bg-indigo-50 border-indigo-200 text-indigo-700" },
                   { status: "Approved", color: "bg-green-50 border-green-200 text-green-700" },
                 ].map(({ status, color }) => {
-                  const count = projects.filter(p => (p.claim_status || "In Progress") === status).length
+                  const count = statProjects.filter(p => (p.claim_status || "In Progress") === status).length
                   return (
                     <div key={status} className={`rounded-xl border p-3 sm:p-4 text-center ${color}`}>
                       <p className="text-xl sm:text-2xl font-bold">{count}</p>
@@ -500,7 +509,7 @@ export default function DashboardPage() {
                 <h2 className="mb-3 text-sm font-semibold text-zinc-500">{isTeamOrPro ? "Pro Insights" : "Insights"}</h2>
                 <ProAnalytics
                   userId={user.id}
-                  projectCount={projects.length}
+                  projectCount={statProjects.length}
                   captureCount={totalCaptures}
                   reportCount={reportCount}
                 />

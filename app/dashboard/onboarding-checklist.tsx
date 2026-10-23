@@ -36,22 +36,23 @@ export function OnboardingChecklist({ mode, done, userId, savedState }: Props) {
   const steps = mode === "free" ? FREE_STEPS : PAID_STEPS
   const completedCount = done.filter(Boolean).length
 
-  const storageKey = `ss_onboarding:${userId}`
+  // Free and paid have different steps, so each remembers its own dismiss
+  const storageKey = `ss_onboarding:${userId}:${mode}`
   const [state, setState] = useState<Saved>((savedState as Saved) || "")
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     // Account setting wins; the browser copy only covers the moment before it syncs
-    if (!savedState) {
+    let next: Saved = (savedState as Saved) || ""
+    if (!next) {
       try {
         const local = localStorage.getItem(storageKey)
-        if (local === "dismissed" || local === "minimized") setState(local)
+        if (local === "dismissed" || local === "minimized") next = local
       } catch {
         // storage unavailable
       }
-    } else {
-      setState(savedState as Saved)
     }
+    setState(next)
     setLoaded(true)
   }, [savedState, storageKey])
 
@@ -64,7 +65,7 @@ export function OnboardingChecklist({ mode, done, userId, savedState }: Props) {
       // storage unavailable
     }
     // Save on the account so it follows this person to every device
-    supabase.auth.updateUser({ data: { ss_onboarding: next } }).catch(() => {})
+    supabase.auth.updateUser({ data: { [`ss_onboarding_${mode}`]: next } }).catch(() => {})
   }
 
   if (!loaded) return null
