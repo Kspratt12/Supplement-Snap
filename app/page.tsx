@@ -356,7 +356,7 @@ export default function LandingPage() {
                   "Voice notes auto-transcribed (any language)",
                   "AI generates professional supplement narrative",
                   "PDF report emailed to adjuster the same day",
-                  "Adjuster gets clear evidence with every finding",
+                  "Photos and notes go to the adjuster with every finding",
                   "You can recover more supplement revenue on every job",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5">
