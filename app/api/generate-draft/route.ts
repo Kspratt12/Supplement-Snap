@@ -58,7 +58,8 @@ Rules:
 - Do NOT reference Xactimate codes.
 - Do NOT use generic AI filler language.
 - Sound like a real supplement writer at a roofing restoration company.
-- The tone should be factual and non-adversarial.${hallucGuard}`,
+- The tone should be factual and non-adversarial.
+- Plain text only: no markdown, asterisks or headings.${hallucGuard}`,
         },
       ],
     })

@@ -382,11 +382,13 @@ export function QuickVoiceRecord({
 
               {/* Damage type */}
               <div>
-                <label className="text-xs font-medium text-zinc-500">Damage Type</label>
+                <label className="text-xs font-medium text-zinc-500">Damage Type {!damageType && <span className="text-red-600">(choose one)</span>}</label>
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                   {DAMAGE_TYPES.map((type) => (
                     <button
                       key={type}
+                      type="button"
+                      aria-pressed={damageType === type}
                       onClick={() => setDamageType(type)}
                       className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                         damageType === type ? "bg-indigo-600 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
@@ -400,11 +402,13 @@ export function QuickVoiceRecord({
 
               {/* Roof area */}
               <div>
-                <label className="text-xs font-medium text-zinc-500">Roof Area</label>
+                <label className="text-xs font-medium text-zinc-500">Roof Area {!roofArea && <span className="text-red-600">(choose one)</span>}</label>
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                   {ROOF_AREAS.map((area) => (
                     <button
                       key={area}
+                      type="button"
+                      aria-pressed={roofArea === area}
                       onClick={() => setRoofArea(area)}
                       className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                         roofArea === area ? "bg-indigo-600 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
@@ -419,7 +423,7 @@ export function QuickVoiceRecord({
               {/* Project */}
               <ProjectPicker p={p} />
 
-              {error && <p className="text-xs text-red-700">{error}</p>}
+              {error && <p role="alert" ref={(el) => { el?.scrollIntoView({ block: "nearest", behavior: "smooth" }) }} className="rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700">{error}</p>}
 
               <button
                 onClick={handleSave}
@@ -677,12 +681,14 @@ export function QuickPhotoCapture({
                   <ProjectPicker p={p} />
 
                   <div>
-                    <label className="text-xs font-medium text-zinc-500">Damage Type</label>
+                    <label className="text-xs font-medium text-zinc-500">Damage Type {!damageType && <span className="text-red-600">(choose one)</span>}</label>
                     <div className="mt-1.5 flex flex-wrap gap-1.5">
                       {DAMAGE_TYPES.map((type) => (
                         <button
                           key={type}
-                          onClick={() => setDamageType(type)}
+                          type="button"
+                      aria-pressed={damageType === type}
+                      onClick={() => setDamageType(type)}
                           className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                             damageType === type ? "bg-indigo-600 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
                           }`}
@@ -694,12 +700,14 @@ export function QuickPhotoCapture({
                   </div>
 
                   <div>
-                    <label className="text-xs font-medium text-zinc-500">Roof Area</label>
+                    <label className="text-xs font-medium text-zinc-500">Roof Area {!roofArea && <span className="text-red-600">(choose one)</span>}</label>
                     <div className="mt-1.5 flex flex-wrap gap-1.5">
                       {ROOF_AREAS.map((area) => (
                         <button
                           key={area}
-                          onClick={() => setRoofArea(area)}
+                          type="button"
+                      aria-pressed={roofArea === area}
+                      onClick={() => setRoofArea(area)}
                           className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                             roofArea === area ? "bg-indigo-600 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
                           }`}
@@ -721,7 +729,7 @@ export function QuickPhotoCapture({
                     />
                   </div>
 
-                  {error && <p className="text-xs text-red-700">{error}</p>}
+                  {error && <p role="alert" ref={(el) => { el?.scrollIntoView({ block: "nearest", behavior: "smooth" }) }} className="rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700">{error}</p>}
 
                   <button
                     onClick={handleSave}

@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 
     const message = await anthropic.messages.create({
       model: "claude-sonnet-5-5",
-      max_tokens: 1500,
+      max_tokens: 4000,
       messages: [
         {
           role: "user",
@@ -76,6 +76,9 @@ Instructions:
 - Do NOT reference Xactimate line items or codes.
 - Do NOT use generic AI filler language, marketing speak, or overly formal legalese.
 - Sound like a real supplement writer — factual, direct, non-adversarial, and professional.
+- Plain text only: no markdown, asterisks, headings or horizontal rules.
+- Start directly with the narrative. No preface, no notes, no caveats or comments to the user, and no sign-off placeholders.
+- Always finish with a complete closing sentence.
 - The output should be ready to copy and paste into a supplement submission or adjuster correspondence.`,
         },
       ],
