@@ -42,7 +42,7 @@ export default function RefundPolicyPage() {
       </Section>
 
       <Section title="How to Request a Refund">
-        <p>To request a refund or discuss a billing concern, contact us at <span className="font-medium text-zinc-900">billing@supplementsnap.com</span> with your account email and a description of the issue.</p>
+        <p>To request a refund or discuss a billing concern, contact us at <span className="font-medium text-zinc-900">billing@supplementsnap.io</span> with your account email and a description of the issue.</p>
         <p className="mt-2">We aim to respond to all refund requests within 2 business days.</p>
       </Section>
 

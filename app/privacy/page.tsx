@@ -79,7 +79,7 @@ export default function PrivacyPage() {
       </Section>
 
       <Section title="Contact">
-        <p>For privacy-related questions or requests, contact us at <span className="font-medium text-zinc-900">privacy@supplementsnap.com</span>.</p>
+        <p>For privacy-related questions or requests, contact us at <span className="font-medium text-zinc-900">privacy@supplementsnap.io</span>.</p>
       </Section>
     </LegalLayout>
   )

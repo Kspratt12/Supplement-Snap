@@ -52,7 +52,8 @@ export async function POST(request: Request) {
 
     const message = await anthropic.messages.create({
       model: "claude-sonnet-5-5",
-      max_tokens: 1200,
+      thinking: { type: "disabled" },
+      max_tokens: 1500,
       messages: [
         {
           role: "user",
@@ -81,8 +82,8 @@ Instructions:
       ],
     })
 
-    const block = message.content[0]
-    const draft = block.type === "text" ? block.text : ""
+    // Read every text block: the first block is not always text
+    const draft = message.content.filter((b) => b.type === "text").map((b) => b.text).join("")
 
     return NextResponse.json({ draft })
   } catch (err) {

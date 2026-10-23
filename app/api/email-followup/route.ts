@@ -22,7 +22,7 @@ export async function GET(request: Request) {
       process.env.SUPABASE_SERVICE_ROLE_KEY || ""
     )
     const resend = new Resend(process.env.RESEND_API_KEY)
-    const fromEmail = process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.com"
+    const fromEmail = process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.io"
 
     // Find emails due for follow-up: not opened, follow_up_at in the past, not already followed up
     const { data: pending } = await supabase

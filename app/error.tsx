@@ -35,8 +35,8 @@ export default function Error({
       </div>
       <p className="mt-6 text-xs text-zinc-500">
         Need help? Email{" "}
-        <a href="mailto:support@supplementsnap.com" className="text-indigo-600 hover:underline">
-          support@supplementsnap.com
+        <a href="mailto:support@supplementsnap.io" className="text-indigo-600 hover:underline">
+          support@supplementsnap.io
         </a>
       </p>
     </div>

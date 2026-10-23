@@ -134,7 +134,7 @@ ${message}
       </div>
     `
 
-    const fromAddress = process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.com"
+    const fromAddress = process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.io"
     const fromName = companyName ? `${companyName} via Supplement Snap` : "Supplement Snap"
 
     const { error } = await resend.emails.send({
