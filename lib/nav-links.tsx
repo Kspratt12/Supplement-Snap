@@ -9,12 +9,12 @@ export function NavLinks() {
   const router = useRouter()
 
   if (loading) {
-    return <div className="flex items-center gap-4"><span className="h-4 w-16" /></div>
+    return <div className="flex h-9 items-center gap-4"><span className="h-4 w-16" /></div>
   }
 
   if (user) {
     return (
-      <div className="flex items-center gap-4">
+      <div className="flex h-9 items-center gap-4">
         <Link href="/dashboard" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">
           Dashboard
         </Link>
@@ -32,7 +32,7 @@ export function NavLinks() {
   }
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex h-9 items-center gap-4">
       <Link href="/roofing-supplement-software" className="hidden text-sm font-medium text-zinc-600 hover:text-zinc-900 lg:block">
         How It Works
       </Link>
