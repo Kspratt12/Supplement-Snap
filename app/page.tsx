@@ -28,7 +28,7 @@ const softwareSchema = {
   "@type": "SoftwareApplication",
   name: "Supplement Snap",
   applicationCategory: "BusinessApplication",
-  operatingSystem: "Web, iOS, Android",
+  operatingSystem: "Web",
   description: "Roofing supplement software that helps contractors capture hidden damage during tear-off, generate AI supplement drafts, and send adjuster-ready PDF reports in minutes.",
   url: "https://supplementsnap.io",
   offers: [

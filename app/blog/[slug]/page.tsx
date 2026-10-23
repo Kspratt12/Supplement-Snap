@@ -856,7 +856,7 @@ const ARTICLES: Article[] = [
   {
     slug: "hail-damage-roof-inspection",
     title: "Hail Damage Roof Inspection: What Gets Missed and How to Document It",
-    metaTitle: "Hail Damage Roof Inspection Checklist: What to Look For | Supplement Snap",
+    metaTitle: "Hail Damage Roof Inspection Checklist",
     metaDescription: "Hail damage roof inspection checklist: what to look for on shingles, vents and flashing, what gets missed, and how to document it with photos.",
     publishedDate: "2026-02-24",
     externalLinks: [
@@ -904,7 +904,7 @@ const ARTICLES: Article[] = [
   {
     slug: "roofing-software-comparison",
     title: "Roofing Software Comparison: CRM vs. Estimating vs. Supplement Tools",
-    metaTitle: "Roofing Software for Contractors: CRM, Estimating & Supplements",
+    metaTitle: "Roofing Software for Contractors Compared (2026)",
     metaDescription: "Roofing software for contractors compared: CRM, estimating and supplement tools. What each does, when you need it, and where the gaps are.",
     publishedDate: "2026-03-03",
     externalLinks: [
@@ -2194,7 +2194,7 @@ const ARTICLES: Article[] = [
   {
     slug: "document-rotted-roof-decking-tear-off",
     title: "How to Document Rotted Roof Decking Found During Tear-Off",
-    metaTitle: "How to Document Rotted Roof Decking at Tear-Off | Supplement Snap",
+    metaTitle: "How to Document Rotted Roof Decking at Tear-Off",
     metaDescription: "What to photograph, measure and write down when you find rotted roof decking during tear-off, so the finding is clear to the adjuster.",
     publishedDate: "2026-10-23",
     sections: [
@@ -2238,7 +2238,7 @@ const ARTICLES: Article[] = [
   {
     slug: "organize-roofing-supplement-photos-by-claim",
     title: "How to Organize Roofing Supplement Photos by Claim and Roof Area",
-    metaTitle: "Organize Roofing Supplement Photos by Claim | Supplement Snap",
+    metaTitle: "Organize Roofing Supplement Photos by Claim",
     metaDescription: "A repeatable system for naming, grouping and labeling roofing supplement photos by claim and roof area so reports are fast to build.",
     publishedDate: "2026-10-23",
     sections: [
@@ -2330,7 +2330,7 @@ const ARTICLES: Article[] = [
   {
     slug: "xactimate-roofing-estimate-example",
     title: "Xactimate Roofing Estimate Example: How a Supplement Line-Item List Looks",
-    metaTitle: "Xactimate Roofing Estimate Example (Sample Layout) | Supplement Snap",
+    metaTitle: "Xactimate Roofing Estimate Example (Sample Layout)",
     metaDescription: "A sample Xactimate-style roofing estimate layout: the sections it contains, how supplement line items are written, and how to attach photo proof.",
     publishedDate: "2026-10-23",
     updatedDate: "2026-10-23",
@@ -2415,7 +2415,7 @@ const ARTICLES: Article[] = [
   {
     slug: "xactimate-roofing-software-explained",
     title: "Xactimate Roofing Software Explained: What It Does and What It Does Not",
-    metaTitle: "Xactimate Roofing Software: What It Does (and Doesn't) | Supplement Snap",
+    metaTitle: "Xactimate Roofing Software: What It Does and Doesn't",
     metaDescription: "What Xactimate does for roofing estimates, what it does not do for supplements, and how a documentation tool fits alongside it.",
     publishedDate: "2026-10-23",
     updatedDate: "2026-10-23",
@@ -2503,7 +2503,7 @@ const ARTICLES: Article[] = [
   {
     slug: "roof-inspection-report-software",
     title: "Roof Inspection Report Software: What to Look For",
-    metaTitle: "Roof Inspection Report Software: What to Look For | Supplement Snap",
+    metaTitle: "Roof Inspection Report Software: What to Look For",
     metaDescription: "What roof inspection report software should do: capture labeled photos, attach notes and produce a clear report. Features, types of tools and how to compare them.",
     publishedDate: "2026-10-23",
     updatedDate: "2026-10-23",
@@ -2599,7 +2599,7 @@ const ARTICLES: Article[] = [
   {
     slug: "roofing-supplement-follow-up-log",
     title: "Roofing Supplement Follow-Up Log: Track Submissions and Adjuster Responses",
-    metaTitle: "Roofing Supplement Follow-Up Log (Free Template) | Supplement Snap",
+    metaTitle: "Roofing Supplement Follow-Up Log (Free Template)",
     metaDescription: "A simple roofing supplement follow-up log: the columns to track, status definitions, a follow-up routine and how to learn from adjuster responses.",
     publishedDate: "2026-10-23",
     updatedDate: "2026-10-23",
@@ -2866,7 +2866,7 @@ const ARTICLES: Article[] = [
   {
     slug: "roof-damage-report-template",
     title: "Roof Damage Report Template: Sections, Example and Checklist",
-    metaTitle: "Roof Damage Report Template (Free, Copyable) | Supplement Snap",
+    metaTitle: "Roof Damage Report Template (Free, Copyable)",
     metaDescription: "A copyable roof damage report template with the sections to include, a sample finding, a photo checklist and the mistakes that make reports hard to use.",
     publishedDate: "2026-10-23",
     updatedDate: "2026-10-23",
