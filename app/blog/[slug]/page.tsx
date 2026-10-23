@@ -289,7 +289,7 @@ const ARTICLES: Article[] = [
     slug: "how-to-write-a-roofing-supplement",
     title: "How to Write a Roofing Supplement That Gets Approved",
     metaTitle: "How to Write a Roofing Supplement for Insurance | Step-by-Step Guide",
-    metaDescription: "Learn how to write a roofing supplement that insurance adjusters approve. Step-by-step guide with documentation tips, Xactimate codes, and common mistakes to avoid.",
+    metaDescription: "Learn how to write a roofing supplement adjusters approve. Step-by-step guide with documentation tips, Xactimate codes and common mistakes to avoid.",
     publishedDate: "2026-01-06",
     externalLinks: [
       { text: "NRCA Roofing Manual: Best Practices", url: "https://www.nrca.net" },
@@ -559,7 +559,7 @@ const ARTICLES: Article[] = [
     slug: "roof-tear-off-cost",
     title: "Roof Tear-Off Cost in 2026: What Contractors and Homeowners Should Know",
     metaTitle: "Roof Tear-Off Cost in 2026 | Pricing by Size, Material & Pitch",
-    metaDescription: "What does a roof tear-off cost in 2026? Breakdown by roof size, material, pitch, and layers, plus hidden costs discovered during tear-off and how supplements recover them.",
+    metaDescription: "What does a roof tear-off cost in 2026? Costs by roof size, material, pitch and layers, plus hidden costs found at tear-off and how supplements recover them.",
     publishedDate: "2026-02-10",
     externalLinks: [
       { text: "RSMeans Construction Cost Data", url: "https://www.rsmeans.com" },
@@ -606,7 +606,7 @@ const ARTICLES: Article[] = [
     slug: "best-roof-estimating-software",
     title: "Best Roof Estimating Software for Contractors in 2026",
     metaTitle: "Best Roof Estimating Software for Contractors in 2026 | Comparison Guide",
-    metaDescription: "Compare the best roof estimating software for contractors in 2026. Satellite measurement, field documentation, CRM, and supplement tools. What to look for and how they work together.",
+    metaDescription: "Compare the best roof estimating software for contractors in 2026: satellite measurement, field documentation, CRM and supplement tools.",
     publishedDate: "2026-02-17",
     externalLinks: [
       { text: "Verisk Xactimate", url: "https://www.verisk.com/insurance/products/xactimate/" },
@@ -653,7 +653,7 @@ const ARTICLES: Article[] = [
     slug: "hail-damage-roof-inspection",
     title: "Hail Damage Roof Inspection: What Gets Missed and How to Document It",
     metaTitle: "Hail Damage Roof Inspection | What Gets Missed & How to Document It",
-    metaDescription: "How to inspect a roof for hail damage, what adjusters commonly miss, hidden damage found during tear-off, and how to document everything for successful supplements.",
+    metaDescription: "How to inspect a roof for hail damage, what adjusters commonly miss, hidden damage found at tear-off, and how to document it for successful supplements.",
     publishedDate: "2026-02-24",
     externalLinks: [
       { text: "NOAA Storm Prediction Center", url: "https://www.spc.noaa.gov" },
@@ -700,7 +700,7 @@ const ARTICLES: Article[] = [
     slug: "roofing-software-comparison",
     title: "Roofing Software Comparison: CRM vs. Estimating vs. Supplement Tools",
     metaTitle: "Roofing Software Comparison: CRM vs. Estimating vs. Supplement Tools",
-    metaDescription: "Compare the three categories of roofing software: CRM, estimating, and supplement tools. Learn what each does, when you need each one, and where the gaps are costing you money.",
+    metaDescription: "Compare the three types of roofing software: CRM, estimating and supplement tools. What each does, when you need it, and where gaps are costing you money.",
     publishedDate: "2026-03-03",
     externalLinks: [
       { text: "NRCA: Technology in Roofing", url: "https://www.nrca.net" },
@@ -746,7 +746,7 @@ const ARTICLES: Article[] = [
     slug: "xactimate-roof-estimate-supplements",
     title: "How to Build an Xactimate Roof Estimate for Insurance Supplements",
     metaTitle: "How to Build an Xactimate Roof Estimate for Supplements | Contractor Guide",
-    metaDescription: "Learn how to build an Xactimate roof estimate for insurance supplements. Covers key line codes like RFG SHTHN, RFG FLSH, RFG I&WS, pricing benchmarks, and common mistakes that get supplements denied.",
+    metaDescription: "How to build an Xactimate roof estimate for insurance supplements: key line codes, pricing benchmarks and the common mistakes that get supplements denied.",
     publishedDate: "2026-03-07",
     externalLinks: [
       { text: "Verisk Xactimate Official Documentation", url: "https://www.verisk.com/insurance/products/xactimate/" },
@@ -792,7 +792,7 @@ const ARTICLES: Article[] = [
     slug: "roof-replacement-estimate-vs-final-cost",
     title: "Roof Replacement Estimate vs. Final Cost: Why Supplements Close the Gap",
     metaTitle: "Roof Replacement Estimate vs. Final Cost: Why Supplements Close the Gap",
-    metaDescription: "Why the initial roof replacement estimate is always lower than the final cost, what gets missed in adjuster inspections, and how supplements bridge the gap between estimate and actual cost.",
+    metaDescription: "Why the first roof replacement estimate is lower than the final cost, what adjuster inspections miss, and how supplements bridge the gap.",
     publishedDate: "2026-03-10",
     externalLinks: [
       { text: "Insurance Information Institute", url: "https://www.iii.org" },
@@ -838,7 +838,7 @@ const ARTICLES: Article[] = [
     slug: "storm-damage-roof-repair-near-me",
     title: "Storm Damage Roof Repair Near Me: How Contractors Win Local Storm Jobs",
     metaTitle: "Storm Damage Roof Repair Near Me: How Contractors Capture Local Storm Jobs (2026)",
-    metaDescription: "Learn how roofing contractors can dominate local storm damage repair searches. Lead generation strategies, insurance claim workflows, supplement documentation, and how to stand out from storm chasers.",
+    metaDescription: "How roofing contractors can win local storm damage repair searches: lead generation, insurance claim workflows and beating storm chasers.",
     publishedDate: "2026-03-14",
     externalLinks: [
       { text: "Better Business Bureau: Contractor Lookup", url: "https://www.bbb.org" },
@@ -929,7 +929,7 @@ const ARTICLES: Article[] = [
     slug: "best-roofing-crm",
     title: "Best Roofing CRM in 2026: What to Look For and What's Missing",
     metaTitle: "Best Roofing CRM in 2026: Features, Options, and the Revenue Gap | Guide",
-    metaDescription: "Compare the best roofing CRMs in 2026: JobNimbus, AccuLynx, Leap, and RoofLink. Learn what features matter, what CRMs don't do, and how to build a complete tech stack that captures supplement revenue.",
+    metaDescription: "Compare the best roofing CRMs in 2026: JobNimbus, AccuLynx, Leap and RoofLink. What features matter, what CRMs miss, and how to capture supplement revenue.",
     publishedDate: "2026-03-17",
     externalLinks: [
       { text: "NRCA: Technology Resources", url: "https://www.nrca.net" },
@@ -1015,7 +1015,7 @@ const ARTICLES: Article[] = [
     slug: "storm-damage-roof-repair",
     title: "Storm Damage Roof Repair: What Contractors Need to Know in 2026",
     metaTitle: "Storm Damage Roof Repair: Contractor Guide for Insurance Claims in 2026",
-    metaDescription: "Complete guide to storm damage roof repair for contractors. Learn how to identify wind, hail, and debris damage, navigate insurance claims, and maximize recovery on every storm job.",
+    metaDescription: "Complete guide to storm damage roof repair for contractors: identify wind, hail and debris damage, handle insurance claims and maximize recovery on every job.",
     publishedDate: "2026-03-20",
     externalLinks: [
       { text: "NOAA Storm Prediction Center", url: "https://www.spc.noaa.gov" },
@@ -1093,7 +1093,7 @@ const ARTICLES: Article[] = [
     slug: "roof-damage-repair-guide",
     title: "Roof Damage Repair: Contractor Guide to Identifying, Documenting, and Getting Paid",
     metaTitle: "Roof Damage Repair: Contractor Guide to Documentation and Insurance Recovery (2026)",
-    metaDescription: "Contractor guide to roof damage repair: how to identify all damage types, document findings for insurance, navigate repair vs. replace decisions, and recover full value through supplements.",
+    metaDescription: "Contractor guide to roof damage repair: identify damage types, document findings for insurance, decide repair vs replace and recover full value.",
     publishedDate: "2026-03-24",
     externalLinks: [
       { text: "NRCA: Roof Repair Standards", url: "https://www.nrca.net" },
@@ -1179,7 +1179,7 @@ const ARTICLES: Article[] = [
     slug: "roof-inspection-report",
     title: "Roof Inspection Report: What to Include and How to Write One",
     metaTitle: "Roof Inspection Report: What to Include and How to Write One (2026 Guide)",
-    metaDescription: "Learn how to write a professional roof inspection report that gets insurance claims approved. Includes what to document, report structure, common mistakes, and software tools.",
+    metaDescription: "How to write a professional roof inspection report that gets claims approved: what to document, report structure, common mistakes and software tools.",
     publishedDate: "2026-03-27",
     externalLinks: [
       { text: "NRCA: Roof Inspection Guidelines", url: "https://www.nrca.net" },
@@ -1252,7 +1252,7 @@ const ARTICLES: Article[] = [
     slug: "xactimate-roofing-estimate-approved",
     title: "How to Write an Xactimate Roofing Estimate That Actually Gets Approved",
     metaTitle: "Xactimate Roofing Estimate: How to Get It Approved",
-    metaDescription: "How to write an Xactimate roofing estimate adjusters approve: accurate measurements, complete line items, waste and pitch charges, O&P, and the photos that back it up.",
+    metaDescription: "How to write an Xactimate roofing estimate adjusters approve: accurate measurements, complete line items, waste and pitch charges, O&P and photo proof.",
     publishedDate: "2026-10-22",
     externalLinks: [
       { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
