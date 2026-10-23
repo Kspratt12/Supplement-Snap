@@ -482,8 +482,8 @@ const ARTICLES: Article[] = [
   {
     slug: "xactimate-codes-for-roofing-supplements",
     title: "Xactimate Codes for Roofing Supplements: Complete Reference",
-    metaTitle: "Xactimate Codes for Roofing Supplements | Complete Code List",
-    metaDescription: "Complete list of Xactimate line codes for roofing supplements: decking, flashing, ice & water shield, pipe boots, drip edge, tear-off, and more.",
+    metaTitle: "Xactimate Roofing Supplement List: Codes for Decking, Flashing & More",
+    metaDescription: "Xactimate roofing supplement list: quick-reference line codes for decking, flashing, ice & water shield, pipe boots, drip edge and tear-off, with units and proof tips.",
     publishedDate: "2026-01-20",
     externalLinks: [
       { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
@@ -502,7 +502,7 @@ const ARTICLES: Article[] = [
         { code: "RFG HAUL", desc: "Haul debris, additional layer", unit: "SQ", price: "$22.50" },
       ]},
     },
-    updatedDate: "2026-10-22",
+    updatedDate: "2026-10-23",
     related: ["xactimate-roofing-estimate-approved","xactimate-roof-estimate-supplements","how-to-write-a-roofing-supplement","roofing-supplement-template"],
     faq: [
       {
@@ -523,6 +523,10 @@ const ARTICLES: Article[] = [
       }
     ],
     sections: [
+      {
+        heading: "Xactimate roofing supplement list: quick reference",
+        content: "This is the short list of line items that come up most often on roofing supplements, with the unit each one is measured in. The prices shown are national-average examples for illustration. Your price list, region and date will differ, so always use the price list named on the adjuster's estimate.\n\nThe sections below explain when each item applies and what proof to attach. If you are assembling a package, run it against the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a> before you send it.",
+      },
       {
         heading: "Why Xactimate codes matter for supplements",
         content: "Insurance adjusters use Xactimate to estimate repair costs. When you submit a supplement using the same line codes and format the adjuster works in, your supplement gets processed faster and has a higher approval rate.\n\nSubmitting a supplement as a plain-text description forces the adjuster to translate your findings into Xactimate themselves, which means they might use lower-cost codes, miss line items, or simply deny the supplement because it's too much work to process."
