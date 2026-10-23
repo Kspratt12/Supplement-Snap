@@ -904,8 +904,8 @@ const ARTICLES: Article[] = [
   {
     slug: "roofing-software-comparison",
     title: "Roofing Software Comparison: CRM vs. Estimating vs. Supplement Tools",
-    metaTitle: "Roofing Software Comparison: CRM vs. Estimating vs. Supplement Tools",
-    metaDescription: "Compare the three types of roofing software: CRM, estimating and supplement tools. What each does, when you need it, and where gaps are costing you money.",
+    metaTitle: "Roofing Software for Contractors: CRM, Estimating & Supplements",
+    metaDescription: "Roofing software for contractors compared: CRM, estimating and supplement tools. What each does, when you need it, and where the gaps are.",
     publishedDate: "2026-03-03",
     externalLinks: [
       { text: "NRCA: Technology in Roofing", url: "https://www.nrca.net" },
@@ -2326,6 +2326,182 @@ const ARTICLES: Article[] = [
       },
     ],
     related: ["how-to-write-a-roofing-supplement", "roofing-supplement-template", "roofing-supplement-denied-what-to-do"],
+  },
+  {
+    slug: "xactimate-roofing-estimate-example",
+    title: "Xactimate Roofing Estimate Example: How a Supplement Line-Item List Looks",
+    metaTitle: "Xactimate Roofing Estimate Example (Sample Layout) | Supplement Snap",
+    metaDescription: "A sample Xactimate-style roofing estimate layout: which sections to include, how to list supplement line items, and how to attach photo proof.",
+    publishedDate: "2026-10-23",
+    sections: [
+      {
+        heading: "What an Xactimate roofing estimate contains",
+        content: "An Xactimate roofing estimate is a structured list of line items. Each line has a description, a quantity, a unit and a price from the price list in use. Adjusters read estimates in this format all day, so a supplement that follows it is easy to review.\n\nThe example below is fictional and uses quantities only. Prices are left out on purpose because they come from the price list on your claim.",
+      },
+      {
+        heading: "Sample layout: original estimate vs. supplement",
+        content: "A clear package shows what the original estimate covered and what the supplement adds.\n\nOriginal estimate (illustrative):\n\n• Remove and replace composition shingles: 32 SQ\n• Underlayment: 32 SQ\n• Ridge cap: 120 LF\n• Drip edge: 160 LF\n\nSupplement items found at tear-off (illustrative):\n\n• Replace damaged sheathing: 96 SF (three sheets, rear slope)\n• Step flashing at sidewall: 24 LF\n• Pipe jack replacement: 3 EA\n• Ice and water barrier at eaves: 320 SF\n\nEvery supplement line should point to proof: a labeled photo, a measurement and a one-sentence reason.",
+      },
+      {
+        heading: "How to write each supplement line",
+        content: "Use the same structure every time:\n\n1. Item: The line item name as it appears in the price list.\n2. Quantity and unit: Matching your measurement.\n3. Location: Slope, area or component.\n4. Proof: The photo numbers that show it.\n5. Reason: Why it was not visible before tear-off.\n\nFor common items and units, see the <a href='/blog/xactimate-codes-for-roofing-supplements'>Xactimate roofing supplement list</a>.",
+      },
+      {
+        heading: "Common mistakes in estimate and supplement packages",
+        content: "• Quantities that do not match the photos or notes.\n• Mixing price lists from different dates or regions.\n• Missing units, or using the wrong unit for an item.\n• Items listed with no proof attached.\n• Claiming more than the documentation shows.\n\nRun the finished package through the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a> before sending.",
+      },
+      {
+        heading: "Where software fits",
+        content: "Building this list by hand is slow, and mismatches creep in between photos, notes and line items. <a href='/roofing-supplement-software'>Supplement Snap</a> links each finding to its photo and note, and can export Xactimate-style line items. You still review everything before it goes out. See the <a href='/roofing-supplement-report-example'>sample report</a> for the output. No tool can guarantee that a supplement is approved.",
+      },
+    ],
+    faq: [
+      {
+        q: "Can I write an Xactimate-style estimate without Xactimate?",
+        a: "You can submit a clearly formatted document that mirrors line items, quantities and units. Building a native Xactimate estimate requires the software.",
+      },
+      {
+        q: "What price list should I use?",
+        a: "Use the one named on the adjuster's estimate for your claim, so line items can be compared directly.",
+      },
+      {
+        q: "How many supplement items should I include?",
+        a: "Include only the items you can support with photos, measurements and a reason. Padding a list can reduce trust.",
+      },
+    ],
+    related: ["xactimate-codes-for-roofing-supplements", "xactimate-roofing-estimate-approved", "roofing-supplement-template"],
+  },
+  {
+    slug: "xactimate-roofing-software-explained",
+    title: "Xactimate Roofing Software Explained: What It Does and What It Does Not",
+    metaTitle: "Xactimate Roofing Software: What It Does (and Doesn't) | Supplement Snap",
+    metaDescription: "What Xactimate does for roofing estimates, what it does not do, and how supplement documentation tools fit alongside it.",
+    publishedDate: "2026-10-23",
+    sections: [
+      {
+        heading: "What Xactimate is",
+        content: "Xactimate is estimating software widely used by insurance carriers and contractors to price repair work. It organizes line items, quantities and regional pricing so adjusters and contractors can compare estimates line by line.\n\nCheck Verisk's product page for current features and pricing, since they change.",
+      },
+      {
+        heading: "What it does well",
+        content: "• Structured line items with units and regional price lists.\n• A format adjusters already use, which makes review faster.\n• Sketching and measurement tools for building the estimate.",
+      },
+      {
+        heading: "What it does not do for a supplement",
+        content: "Xactimate prices work. It does not capture the proof on the roof. The photos, measurements and written reasons that support each supplement item usually live somewhere else: a phone camera, a photo app, notes and email.\n\nThe gap is not the price. It is connecting each finding to its photo and explanation, then packaging it so the adjuster can verify it quickly.",
+      },
+      {
+        heading: "Where supplement documentation tools fit",
+        content: "A documentation tool sits next to Xactimate, not in place of it:\n\n1. The crew captures and labels findings on the roof.\n2. Notes and measurements stay attached to each photo.\n3. A report is generated for the adjuster.\n4. Line items are exported in a format you can bring into your estimate.\n\n<a href='/roofing-supplement-software'>Supplement Snap</a> is built for steps 1 to 4. Its Xactimate-style export is a starting list you review, not a replacement for your own estimating. See <a href='/blog/xactimate-roofing-estimate-example'>an example layout</a> and the <a href='/roofing-supplement-report-example'>sample report</a>.",
+      },
+      {
+        heading: "Questions to ask before adding another tool",
+        content: "• Does it export something I can use in my estimate?\n• Can the crew use it on a phone with weak signal?\n• Will the adjuster understand the report without a call?\n• What does it cost at my volume?\n\nTest it on one real job before committing.",
+      },
+    ],
+    faq: [
+      {
+        q: "Is Xactimate required to submit a supplement?",
+        a: "Not always. Many contractors submit a clear document that mirrors Xactimate line items. Requirements vary by carrier.",
+      },
+      {
+        q: "Does supplement software replace Xactimate?",
+        a: "No. It helps capture and organize proof and can produce a starting line-item list. You still estimate and price in your own tools.",
+      },
+      {
+        q: "Will using a documentation tool get supplements approved?",
+        a: "It can make your package clearer, but approval depends on the claim, policy and carrier.",
+      },
+    ],
+    related: ["xactimate-codes-for-roofing-supplements", "xactimate-roofing-estimate-example", "roofing-software-comparison"],
+  },
+  {
+    slug: "roof-inspection-report-software",
+    title: "Roof Inspection Report Software: What to Look For",
+    metaTitle: "Roof Inspection Report Software: What to Look For | Supplement Snap",
+    metaDescription: "What roof inspection report software should do: capture photos, label findings, add notes and produce a clear report an adjuster can verify.",
+    publishedDate: "2026-10-23",
+    sections: [
+      {
+        heading: "What roof inspection report software is for",
+        content: "Roof inspection report software helps you record what you find on a roof and turn it into a document someone else can understand. The reader might be a homeowner, an insurance adjuster or your own office.\n\nThe core job is simple: capture, label, describe and report.",
+      },
+      {
+        heading: "Features that matter",
+        content: "• Fast photo capture on a phone, including with weak signal.\n• Labels for roof area and finding type.\n• A note or voice note attached to each photo.\n• A report layout that shows each finding with its photos.\n• A way to send or share the report.\n• Exportable data, so the work is not locked in.",
+      },
+      {
+        heading: "Features that are nice but not essential",
+        content: "• Aerial or satellite measurements, which many teams get from a separate service.\n• CRM and scheduling, which you may already have.\n• Branding options, which matter more once the basics work.\n\nDecide what you actually need before comparing tools, so you do not pay for features you will not use.",
+      },
+      {
+        heading: "How to compare options fairly",
+        content: "1. Pick one real job.\n2. Capture the same findings in each tool.\n3. Time the path from first photo to finished report.\n4. Show both reports to someone who did not do the job.\n5. Compare the cost at your volume.\n\nFor what goes into the report itself, read <a href='/blog/roof-inspection-report'>how to write a roof inspection report</a>.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> is built for roofing contractors documenting hidden damage found at tear-off and preparing supplement reports. If your main need is a general inspection or aerial measurement, check whether it matches your workflow first. See the <a href='/roofing-supplement-report-example'>sample report</a> and the <a href='/free-roofing-supplement-checklist'>free checklist</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "What should a roof inspection report include?",
+        a: "Property and claim details, labeled photos, findings by roof area, measurements and a short factual description of each condition.",
+      },
+      {
+        q: "Do I need software to write an inspection report?",
+        a: "No. A consistent photo and notes routine works. Software mainly saves time matching photos to findings and building the report.",
+      },
+      {
+        q: "Can inspection software replace a measurement report?",
+        a: "Usually not. Aerial measurement reports come from separate services, and tools differ in what they support.",
+      },
+    ],
+    related: ["roof-inspection-report", "roofing-photo-documentation-checklist", "roofing-software-comparison"],
+  },
+  {
+    slug: "roofing-supplement-follow-up-log",
+    title: "Roofing Supplement Follow-Up Log: Track Submissions and Adjuster Responses",
+    metaTitle: "Roofing Supplement Follow-Up Log (Free Template) | Supplement Snap",
+    metaDescription: "A simple roofing supplement follow-up log: what to track, when to follow up and a copyable table for submissions and adjuster responses.",
+    publishedDate: "2026-10-23",
+    sections: [
+      {
+        heading: "Why a follow-up log matters",
+        content: "A supplement is not finished when you send it. It can sit unanswered, get a request for more information or come back partly approved. Without a record, the follow-up depends on memory, and requests get missed.\n\nA simple log keeps every open supplement visible.",
+      },
+      {
+        heading: "What to track for each supplement",
+        content: "Copy these columns into a spreadsheet:\n\n• Job and address\n• Carrier and claim number\n• Adjuster name and contact\n• Date submitted and method\n• Items requested (short list)\n• Amount requested\n• Date of last contact\n• Adjuster response and any information requested\n• Next follow-up date\n• Outcome and date",
+      },
+      {
+        heading: "A follow-up routine that works",
+        content: "1. Record the submission the day you send it.\n2. Set the next follow-up date right away.\n3. When you follow up, note the date and what was said.\n4. If the adjuster asks for more, add it to the log and answer promptly.\n5. Record the final outcome, including partial approvals.\n\nHow long to wait varies by carrier, so use what your experience and the carrier's guidance suggest.",
+      },
+      {
+        heading: "What to do with the data",
+        content: "After a few months the log shows patterns: which carriers ask for more information, which items get questioned and how long responses take. Use that to improve your packages. For the packages themselves, start with the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a> and see what to do when <a href='/blog/roofing-supplement-denied-what-to-do'>a supplement is denied</a>.",
+      },
+      {
+        heading: "When a spreadsheet is not enough",
+        content: "A spreadsheet works for a handful of open claims. When several people touch the same claim, or you want the report, photos and status in one place, <a href='/roofing-supplement-software'>software</a> may be worth testing. Compare in <a href='/roofing-supplement-software-vs-spreadsheets'>software vs. spreadsheets</a>. No tracking method can guarantee approval, which depends on the claim, policy and carrier.",
+      },
+    ],
+    faq: [
+      {
+        q: "How often should I follow up on a supplement?",
+        a: "It depends on the carrier and the claim. Set a follow-up date when you submit, and adjust based on how that carrier usually responds.",
+      },
+      {
+        q: "What should I record when the adjuster responds?",
+        a: "The date, what was approved or questioned, anything requested, and your next step with a date.",
+      },
+      {
+        q: "Should I track denied supplements too?",
+        a: "Yes. Record the reason given. Patterns in denials show what documentation to strengthen.",
+      },
+    ],
+    related: ["roofing-supplement-denied-what-to-do", "roofing-supplement-template", "supplemental-roofing-estimate-explained"],
   },
 ]
 

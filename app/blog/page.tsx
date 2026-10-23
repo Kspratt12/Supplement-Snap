@@ -37,6 +37,10 @@ const ARTICLES = [
   { slug: "document-rotted-roof-decking-tear-off", title: "How to Document Rotted Roof Decking Found During Tear-Off", desc: "What to photograph, measure and write down when you find rotted decking, so the finding is clear to the adjuster.", date: "2026-10-23" },
   { slug: "organize-roofing-supplement-photos-by-claim", title: "How to Organize Roofing Supplement Photos by Claim and Roof Area", desc: "A repeatable system for naming, grouping and labeling supplement photos so reports are fast to build.", date: "2026-10-23" },
   { slug: "supplemental-roofing-estimate-explained", title: "What Is a Supplemental Roofing Estimate? How Roofing Supplements Work", desc: "A supplemental roofing estimate asks the insurer to cover damage found after the first estimate. When it applies and how to submit one.", date: "2026-10-23" },
+  { slug: "xactimate-roofing-estimate-example", title: "Xactimate Roofing Estimate Example: How a Supplement Line-Item List Looks", desc: "A sample Xactimate-style layout: sections to include, how to list supplement items, and how to attach photo proof.", date: "2026-10-23" },
+  { slug: "xactimate-roofing-software-explained", title: "Xactimate Roofing Software Explained: What It Does and What It Does Not", desc: "What Xactimate does for roofing estimates, what it does not do, and how supplement documentation tools fit alongside it.", date: "2026-10-23" },
+  { slug: "roof-inspection-report-software", title: "Roof Inspection Report Software: What to Look For", desc: "What roof inspection report software should do, and how to compare options fairly.", date: "2026-10-23" },
+  { slug: "roofing-supplement-follow-up-log", title: "Roofing Supplement Follow-Up Log: Track Submissions and Adjuster Responses", desc: "What to track, when to follow up and a copyable column list for submissions and adjuster responses.", date: "2026-10-23" },
 ]
 
 export default function BlogIndex() {
