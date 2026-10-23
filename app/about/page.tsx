@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { TrackedLink } from "../../lib/tracked-link"
 import { NavLinks } from "../../lib/nav-links"
 import { SiteFooter } from "../../lib/site-footer"
 
@@ -75,15 +76,15 @@ export default function AboutPage() {
         </ul>
 
         <div className="mt-12 flex flex-col gap-3 sm:flex-row">
-          <Link href="/signup" className="rounded-lg bg-indigo-600 px-6 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-500">
+          <TrackedLink location="about-signup" href="/signup" className="rounded-lg bg-indigo-600 px-6 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-500">
             Start Your Free Project
-          </Link>
-          <Link href="/roofing-supplement-report-example" className="rounded-lg border border-zinc-300 px-6 py-2.5 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
+          </TrackedLink>
+          <TrackedLink location="about-sample-report" href="/roofing-supplement-report-example" className="rounded-lg border border-zinc-300 px-6 py-2.5 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
             View a Sample Report
-          </Link>
-          <Link href="/demo" className="rounded-lg border border-zinc-300 px-6 py-2.5 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
+          </TrackedLink>
+          <TrackedLink location="about-demo" href="/demo" className="rounded-lg border border-zinc-300 px-6 py-2.5 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
             Book a Demo
-          </Link>
+          </TrackedLink>
         </div>
       </main>
       <SiteFooter />

@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { TrackedLink } from "../../lib/tracked-link"
 import { NavLinks } from "../../lib/nav-links"
 import { SiteFooter } from "../../lib/site-footer"
 
@@ -137,12 +138,12 @@ export default function VsSpreadsheetsPage() {
           <h2 className="text-lg font-bold">Try it on one real job</h2>
           <p className="mt-2 text-sm text-zinc-600">Start a free project, or look at a sample report first.</p>
           <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link href="/signup" className="w-full rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 sm:w-auto">
+            <TrackedLink location="vs-spreadsheets-signup" href="/signup" className="w-full rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 sm:w-auto">
               Start Your Free Project
-            </Link>
-            <Link href="/roofing-supplement-report-example" className="w-full rounded-lg border border-zinc-300 bg-white px-6 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
+            </TrackedLink>
+            <TrackedLink location="vs-spreadsheets-sample-report" href="/roofing-supplement-report-example" className="w-full rounded-lg border border-zinc-300 bg-white px-6 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
               View a Sample Report
-            </Link>
+            </TrackedLink>
           </div>
         </section>
 

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation"
 import { SiteFooter } from "../../../lib/site-footer"
 import { NavLinks } from "../../../lib/nav-links"
 import { ScrollToTop } from "../../../lib/scroll-to-top"
+import { TrackedLink } from "../../../lib/tracked-link"
 
 type BlogImage = { src: string; alt: string; width?: number; height?: number }
 type Visual = { type: "stats" | "steps" | "codes" | "compare" | "checklist" | "timeline" | "calculator" | "tip" | "damage-cards" | "matrix"; data: any }
@@ -2666,12 +2667,12 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
             <span className="font-semibold text-zinc-900">Preparing a supplement?</span> Use the free checklist so nothing is missing when you submit.
           </p>
           <div className="flex gap-2">
-            <Link href="/free-roofing-supplement-checklist" className="rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-indigo-500">
+            <TrackedLink location="article-top-checklist" href="/free-roofing-supplement-checklist" className="rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-indigo-500">
               Free checklist
-            </Link>
-            <Link href="/roofing-supplement-report-example" className="rounded-lg border border-zinc-300 bg-white px-4 py-2 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
+            </TrackedLink>
+            <TrackedLink location="article-top-sample-report" href="/roofing-supplement-report-example" className="rounded-lg border border-zinc-300 bg-white px-4 py-2 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
               Sample report
-            </Link>
+            </TrackedLink>
           </div>
         </div>
 
@@ -2744,12 +2745,12 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
             Supplement Snap helps your crew capture hidden damage during tear-off and generate adjuster-ready reports in minutes.
           </p>
           <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link href="/pricing" className="rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500">
+            <TrackedLink location="article-bottom-start-trial" href="/pricing" className="rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500">
               Start Free Trial
-            </Link>
-            <Link href="/pricing" className="rounded-lg border border-zinc-300 bg-white px-6 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
+            </TrackedLink>
+            <TrackedLink location="article-bottom-pricing" href="/pricing" className="rounded-lg border border-zinc-300 bg-white px-6 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
               See Pricing
-            </Link>
+            </TrackedLink>
           </div>
         </div>
 
