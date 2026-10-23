@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { LegalLayout } from "../../lib/legal-layout"
 
-export const metadata: Metadata = { title: "Privacy Policy – Supplement Snap", description: "How Supplement Snap collects, uses and protects your information.", alternates: { canonical: "https://supplementsnap.io/privacy" } }
+export const metadata: Metadata = { title: "Privacy Policy – Supplement Snap", description: "How Supplement Snap collects, uses and protects your information, including account data, photos and payment details.", alternates: { canonical: "https://supplementsnap.io/privacy" } }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (

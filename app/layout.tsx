@@ -20,11 +20,11 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "Roofing Supplement Software | Document Damage, Generate Reports in Minutes",
+  title: "Roofing Supplement Software | Capture Damage, Send Reports",
   description:
     "Capture hidden roofing damage during tear-off, generate supplement documentation, and send adjuster-ready PDF reports in minutes.",
   openGraph: {
-    title: "Roofing Supplement Software | Document Damage, Generate Reports in Minutes",
+    title: "Roofing Supplement Software | Capture Damage, Send Reports",
     description:
       "Capture hidden roofing damage during tear-off, generate supplement documentation, and send adjuster-ready PDF reports in minutes.",
     url: "https://supplementsnap.io",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Roofing Supplement Software | Document Damage, Generate Reports in Minutes",
+    title: "Roofing Supplement Software | Capture Damage, Send Reports",
     description:
       "Capture hidden roofing damage during tear-off, generate supplement documentation, and send adjuster-ready PDF reports in minutes.",
   },

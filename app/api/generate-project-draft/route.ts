@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk"
 import { NextResponse } from "next/server"
 import { getAuthenticatedUser } from "../../../lib/auth-utils"
 import { rateLimited } from "../../../lib/rate-limit"
+import { getAccess } from "../../../lib/plan"
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -10,7 +11,8 @@ const anthropic = new Anthropic({
 export async function POST(request: Request) {
   const user = await getAuthenticatedUser(request)
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  if (rateLimited(`ai:${user.id}`, 60, 60 * 60 * 1000)) {
+  const access = await getAccess(user.id, user.email)
+  if (rateLimited(`ai:${user.id}`, access.active ? 120 : 15, 60 * 60 * 1000)) {
     return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 })
   }
 

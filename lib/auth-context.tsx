@@ -36,16 +36,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function loadSubscription(userId: string) {
     setSubscriptionLoading(true)
-    const { data } = await supabase
-      .from("subscriptions")
-      .select("status, plan")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .single()
+    let status: string | undefined
+    let plan: string | undefined
+    try {
+      // The server also covers team members who inherit their owner's plan
+      const { data: { session } } = await supabase.auth.getSession()
+      const res = await fetch("/api/subscription", {
+        headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {},
+      })
+      if (res.ok) {
+        const json = await res.json()
+        status = json.status
+        plan = json.plan
+      }
+    } catch {
+      // fall through to the direct lookup below
+    }
+    if (!status) {
+      const { data } = await supabase
+        .from("subscriptions")
+        .select("status, plan")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle()
+      status = data?.status
+      plan = data?.plan
+    }
 
-    setSubscriptionStatus((data?.status as SubscriptionStatus) || "inactive")
-    setSubscriptionPlan((data?.plan as SubscriptionPlan) || "none")
+    setSubscriptionStatus((status as SubscriptionStatus) || "inactive")
+    setSubscriptionPlan((plan as SubscriptionPlan) || "none")
     setSubscriptionLoading(false)
   }
 
