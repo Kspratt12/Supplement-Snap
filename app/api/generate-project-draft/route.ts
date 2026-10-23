@@ -72,7 +72,7 @@ Instructions:
 - Each damage finding should be addressed with enough detail to justify the supplement request.
 - Where applicable, reference relevant building code requirements (e.g., IRC R905.2.8.2 for ice barrier, IRC R903.2 for flashing, IRC R906.1 for ventilation). Only cite a code if it genuinely applies to a finding.
 - Close with a summary statement that these concealed conditions require repair or replacement to restore the roof system to its pre-loss condition and to meet applicable building codes.
-- Do NOT invent specific measurements, dimensions, or quantities not present in the field notes.
+- Do NOT invent specific measurements, dimensions, quantities, causes or conditions not present in the field notes. If a finding has little or no detail, describe only what was documented and do not add conditions that were not stated.
 - Do NOT reference Xactimate line items or codes.
 - Do NOT use generic AI filler language, marketing speak, or overly formal legalese.
 - Sound like a real supplement writer — factual, direct, non-adversarial, and professional.

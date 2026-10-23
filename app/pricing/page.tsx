@@ -108,7 +108,7 @@ export default function PricingPage() {
           Simple pricing for roofing teams
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-zinc-500 sm:text-lg">
-          One approved supplement pays for the entire platform. Start with a 14-day free trial, cancel anytime.
+          One approved supplement can pay for the entire platform. Results vary by claim. Start with a 14-day free trial (card required), cancel anytime.
         </p>
       </section>
 
@@ -155,7 +155,7 @@ export default function PricingPage() {
               <span className="text-4xl font-extrabold text-zinc-900">$99</span>
               <span className="ml-1 text-sm text-zinc-500">/month</span>
             </div>
-            <p className="mt-1 text-sm text-zinc-500">14-day free trial, cancel anytime</p>
+            <p className="mt-1 text-sm text-zinc-500">14-day free trial, card required, cancel anytime</p>
 
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
               {STARTER_FEATURES.map((f) => (
@@ -174,7 +174,7 @@ export default function PricingPage() {
           {/* Team */}
           <div className="rounded-2xl border-2 border-indigo-600 bg-white p-7 sm:p-8 shadow-xl relative">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo-600 px-4 py-1 text-xs font-semibold text-white">
-              Most Popular
+              Best for Small Crews
             </div>
             <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">Team</p>
             <p className="mt-1 text-xs text-zinc-500">For small crews (2-3)</p>
@@ -182,7 +182,7 @@ export default function PricingPage() {
               <span className="text-4xl font-extrabold text-zinc-900">$199</span>
               <span className="ml-1 text-sm text-zinc-500">/month</span>
             </div>
-            <p className="mt-1 text-sm text-zinc-500">14-day free trial, cancel anytime</p>
+            <p className="mt-1 text-sm text-zinc-500">14-day free trial, card required, cancel anytime</p>
 
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
               {TEAM_FEATURES.map((f) => (
@@ -209,7 +209,7 @@ export default function PricingPage() {
               <span className="text-4xl font-extrabold text-zinc-900">$299</span>
               <span className="ml-1 text-sm text-zinc-500">/month</span>
             </div>
-            <p className="mt-1 text-sm text-zinc-500">14-day free trial, cancel anytime</p>
+            <p className="mt-1 text-sm text-zinc-500">14-day free trial, card required, cancel anytime</p>
 
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
               {PRO_FEATURES.map((f) => (

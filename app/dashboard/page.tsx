@@ -7,6 +7,7 @@ import Link from "next/link"
 import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { OnboardingChecklist } from "./onboarding-checklist"
+import { FeedbackBox } from "./feedback-box"
 import { QuickVoiceRecord, QuickPhotoCapture } from "./quick-capture"
 import { TeamManager } from "./team-manager"
 import { ProAnalytics } from "./pro-analytics"
@@ -697,6 +698,8 @@ export default function DashboardPage() {
             Lost a phone or used a shared computer? Log out of all devices
           </button>
         </div>
+
+        <FeedbackBox page="dashboard" />
       </main>
     </div>
   )

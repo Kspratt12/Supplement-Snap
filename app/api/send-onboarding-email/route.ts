@@ -36,7 +36,7 @@ function buildWelcomeEmail(name: string): { subject: string; html: string } {
             <table style="width: 100%; border-collapse: collapse;">
               <tr>
                 <td style="padding: 6px 0; font-size: 14px; color: #52525b; vertical-align: top; width: 28px;"><strong>1.</strong></td>
-                <td style="padding: 6px 0; font-size: 14px; color: #52525b;">Start your subscription</td>
+                <td style="padding: 6px 0; font-size: 14px; color: #52525b;">Open your dashboard (your first project is free)</td>
               </tr>
               <tr>
                 <td style="padding: 6px 0; font-size: 14px; color: #52525b; vertical-align: top;"><strong>2.</strong></td>
