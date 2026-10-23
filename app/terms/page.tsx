@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { LegalLayout } from "../../lib/legal-layout"
 
-export const metadata: Metadata = { title: "Terms of Service – Supplement Snap", alternates: { canonical: "https://supplementsnap.io/terms" } }
+export const metadata: Metadata = { title: "Terms of Service – Supplement Snap", description: "Terms of Service for Supplement Snap, roofing supplement documentation software for contractors.", alternates: { canonical: "https://supplementsnap.io/terms" } }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
