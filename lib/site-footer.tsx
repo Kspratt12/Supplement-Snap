@@ -55,6 +55,26 @@ export function SiteFooter() {
             </div>
           </div>
         </div>
+
+        {/* Service areas */}
+        <div className="mt-8 border-t border-zinc-100 pt-6">
+          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Roofing Supplement Software by City</p>
+          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+            <Link href="/roofing-supplement-software/raleigh-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Raleigh, NC</Link>
+            <Link href="/roofing-supplement-software/apex-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Apex, NC</Link>
+            <Link href="/roofing-supplement-software/cary-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Cary, NC</Link>
+            <Link href="/roofing-supplement-software/durham-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Durham, NC</Link>
+            <Link href="/roofing-supplement-software/wake-forest-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Wake Forest, NC</Link>
+            <Link href="/roofing-supplement-software/fuquay-varina-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Fuquay Varina, NC</Link>
+            <Link href="/roofing-supplement-software/garner-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Garner, NC</Link>
+            <Link href="/roofing-supplement-software/chapel-hill-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Chapel Hill, NC</Link>
+            <Link href="/roofing-supplement-software/clayton-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Clayton, NC</Link>
+            <Link href="/roofing-supplement-software/holly-springs-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Holly Springs, NC</Link>
+            <Link href="/roofing-supplement-software/zebulon-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Zebulon, NC</Link>
+            <Link href="/roofing-supplement-software/dunn-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Dunn, NC</Link>
+            <Link href="/roofing-supplement-software/pittsboro-nc" className="text-xs text-zinc-500 hover:text-zinc-700">Pittsboro, NC</Link>
+          </div>
+        </div>
       </div>
     </footer>
   )
