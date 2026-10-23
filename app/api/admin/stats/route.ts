@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 
-import { isAdminRequest } from "../../../../lib/admin-auth"
+import { checkAdminRequest } from "../../../../lib/admin-auth"
 
 export async function POST(request: Request) {
   try {
-    if (!(await isAdminRequest(request))) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
-    }
+    const check = await checkAdminRequest(request)
+    if (check === "stale") return NextResponse.json({ error: "reauth" }, { status: 401 })
+    if (check !== "ok") return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
 
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL || "",
