@@ -67,6 +67,7 @@ export default function LandingPage() {
           <NavLinks />
         </div>
       </nav>
+      <main>
 
       {/* Hero */}
       <section className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center sm:pt-28 sm:pb-20">
@@ -980,6 +981,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      </main>
 
       {/* Footer */}
       <SiteFooter />

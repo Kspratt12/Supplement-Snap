@@ -95,6 +95,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           <NavLinks />
         </div>
       </nav>
+      <main>
 
       {/* Hero */}
       <section className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center">
@@ -296,6 +297,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         </div>
       </section>
 
+      </main>
       <SiteFooter />
     </div>
   )
