@@ -181,6 +181,7 @@ function Home() {
   const [translating, setTranslating] = useState(false)
   const [translated, setTranslated] = useState(false)
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
+  const demoCreatedFor = useRef<string | null>(null) // stops two concurrent loads both creating the demo project
 
   // Captures + drafts
   const [captures, setCaptures] = useState<Capture[]>([])
@@ -525,7 +526,8 @@ function Home() {
     const unique = all.filter((p, i) => all.findIndex(x => x.id === p.id) === i)
 
     // Auto-create a demo project for brand new users
-    if (unique.length === 0 && user?.id) {
+    if (unique.length === 0 && user?.id && demoCreatedFor.current !== user.id) {
+      demoCreatedFor.current = user.id
       try {
         const { data: demo } = await supabase
           .from("projects")
