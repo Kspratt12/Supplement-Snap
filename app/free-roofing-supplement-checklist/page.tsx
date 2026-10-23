@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { TrackedLink } from "../../lib/tracked-link"
 import { NavLinks } from "../../lib/nav-links"
 import { SiteFooter } from "../../lib/site-footer"
 import { ChecklistClient } from "./checklist-client"
@@ -158,12 +159,12 @@ export default function FreeChecklistPage() {
             Supplement Snap lets your crew photograph, label and describe findings on the roof, then builds the report for the adjuster.
           </p>
           <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link href="/signup" className="w-full rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 sm:w-auto">
+            <TrackedLink location="checklist-signup" href="/signup" className="w-full rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 sm:w-auto">
               Start Your Free Project
-            </Link>
-            <Link href="/roofing-supplement-report-example" className="w-full rounded-lg border border-zinc-300 bg-white px-6 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
+            </TrackedLink>
+            <TrackedLink location="checklist-sample-report" href="/roofing-supplement-report-example" className="w-full rounded-lg border border-zinc-300 bg-white px-6 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
               View a Sample Report
-            </Link>
+            </TrackedLink>
           </div>
         </section>
 

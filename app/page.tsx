@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { TrackedLink } from "../lib/tracked-link"
 import { NavLinks } from "../lib/nav-links"
 import { SiteFooter } from "../lib/site-footer"
 import { InteractiveDemo } from "./components/interactive-demo"
@@ -83,18 +84,18 @@ export default function LandingPage() {
           PDF reports, all in minutes.
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Link
+          <TrackedLink location="home-hero-get-started"
             href="/pricing"
             className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
           >
             Get Started
-          </Link>
-          <Link
+          </TrackedLink>
+          <TrackedLink location="home-hero-demo"
             href="/demo"
             className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
           >
             Book a Demo
-          </Link>
+          </TrackedLink>
         </div>
         <div className="mx-auto mt-6 flex items-center gap-2 justify-center">
           <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">New</span>
@@ -767,9 +768,9 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-              <Link href="/signup" className="mt-6 block w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
+              <TrackedLink location="home-plan-free-project" href="/signup" className="mt-6 block w-full rounded-lg border border-zinc-300 bg-white px-6 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
                 Start Free Project
-              </Link>
+              </TrackedLink>
             </div>
 
             {/* Starter */}
@@ -891,18 +892,18 @@ export default function LandingPage() {
             Try your first project free, or book a demo to see how Supplement Snap helps your crew document damage and recover more supplement revenue.
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link
+            <TrackedLink location="home-bottom-start-free"
               href="/signup?trial=1"
               className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
             >
               Start Free Project
-            </Link>
-            <Link
+            </TrackedLink>
+            <TrackedLink location="home-bottom-demo"
               href="/demo"
               className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
             >
               Book a Demo
-            </Link>
+            </TrackedLink>
           </div>
         </div>
       </section>

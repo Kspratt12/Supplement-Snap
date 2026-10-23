@@ -10,18 +10,23 @@ type AnalyticsEvent =
   | "checkout_started"
   | "subscription_active"
   | "waitlist_joined"
+  | "checklist_printed"
+  | "cta_click"
+
+type EventProps = Record<string, string | number | boolean>
 
 declare global {
   interface Window {
     plausible?: (
       event: string,
-      options?: { props?: Record<string, string | number | boolean> }
+      options?: { props?: EventProps }
     ) => void
   }
 }
 
-export function trackEvent(event: AnalyticsEvent) {
+export function trackEvent(event: AnalyticsEvent, props?: EventProps) {
   if (typeof window !== "undefined" && window.plausible) {
-    window.plausible(event)
+    if (props) window.plausible(event, { props })
+    else window.plausible(event)
   }
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { trackEvent } from "../../lib/analytics"
 
 type Group = { title: string; items: string[] }
 
@@ -51,7 +52,7 @@ export function ChecklistClient({ groups }: { groups: Group[] }) {
         <div className="flex gap-2">
           <button
             type="button"
-            onClick={() => window.print()}
+            onClick={() => { trackEvent("checklist_printed"); window.print() }}
             className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
           >
             Print or save as PDF
