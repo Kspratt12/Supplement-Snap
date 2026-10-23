@@ -1,8 +1,13 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { NavLinks } from "../lib/nav-links"
 import { SiteFooter } from "../lib/site-footer"
 import { InteractiveDemo } from "./components/interactive-demo"
 import { CheckoutButton } from "./pricing/checkout-button"
+
+export const metadata: Metadata = {
+  alternates: { canonical: "https://supplementsnap.io" },
+}
 
 const homepageFaqSchema = {
   "@context": "https://schema.org",
@@ -42,7 +47,6 @@ const orgSchema = {
   logo: "https://supplementsnap.io/favicon.png",
   description: "Roofing supplement software for contractors. Capture hidden damage, generate reports, recover more revenue.",
   founder: { "@type": "Person", name: "Kelvin Spratt" },
-  sameAs: [],
 }
 
 export default function LandingPage() {
