@@ -10,6 +10,8 @@ export type Access = {
   active: boolean
   /** true when the access comes from a team owner's subscription, not the user's own */
   viaOwner: boolean
+  /** true when this account has its own Stripe customer (so a billing portal exists) */
+  hasBilling: boolean
   ownerId?: string
 }
 
@@ -29,14 +31,14 @@ export async function getAccess(userId: string, email?: string | null): Promise<
 
   const { data: own } = await db
     .from("subscriptions")
-    .select("status, plan")
+    .select("status, plan, stripe_customer_id")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle()
 
   if (own && isLive(own.status)) {
-    return { plan: normPlan(own.plan), status: own.status as SubStatus, active: true, viaOwner: false }
+    return { plan: normPlan(own.plan), status: own.status as SubStatus, active: true, viaOwner: false, hasBilling: !!own.stripe_customer_id }
   }
 
   if (email) {
@@ -64,7 +66,7 @@ export async function getAccess(userId: string, email?: string | null): Promise<
         .limit(1)
         .maybeSingle()
       if (ownerSub && isLive(ownerSub.status)) {
-        return { plan: normPlan(ownerSub.plan), status: ownerSub.status as SubStatus, active: true, viaOwner: true, ownerId: m.owner_id }
+        return { plan: normPlan(ownerSub.plan), status: ownerSub.status as SubStatus, active: true, viaOwner: true, hasBilling: false, ownerId: m.owner_id }
       }
     }
   }
@@ -74,6 +76,7 @@ export async function getAccess(userId: string, email?: string | null): Promise<
     status: (own?.status as SubStatus) || "inactive",
     active: false,
     viaOwner: false,
+    hasBilling: false,
   }
 }
 

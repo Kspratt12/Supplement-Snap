@@ -1782,6 +1782,12 @@ function Home() {
           >
             Dashboard
           </Link>
+          <Link
+            href="/account"
+            className="text-xs font-medium text-zinc-500 hover:text-zinc-600"
+          >
+            Account
+          </Link>
           <button
             onClick={async () => { await signOut(); router.push("/") }}
             className="text-xs font-medium text-zinc-500 hover:text-zinc-600"

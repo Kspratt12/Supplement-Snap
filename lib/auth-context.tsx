@@ -13,6 +13,10 @@ type AuthContextType = {
   subscriptionStatus: SubscriptionStatus
   subscriptionPlan: SubscriptionPlan
   subscriptionLoading: boolean
+  /** access comes from a team owner's plan */
+  subscriptionViaOwner: boolean
+  /** this account has its own Stripe billing */
+  subscriptionHasBilling: boolean
   signOut: () => Promise<void>
   signOutEverywhere: () => Promise<void>
   refreshSubscription: () => Promise<void>
@@ -24,6 +28,8 @@ const AuthContext = createContext<AuthContextType>({
   subscriptionStatus: "inactive",
   subscriptionPlan: "none",
   subscriptionLoading: true,
+  subscriptionViaOwner: false,
+  subscriptionHasBilling: false,
   signOut: async () => {},
   signOutEverywhere: async () => {},
   refreshSubscription: async () => {},
@@ -35,11 +41,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus>("inactive")
   const [subscriptionPlan, setSubscriptionPlan] = useState<SubscriptionPlan>("none")
   const [subscriptionLoading, setSubscriptionLoading] = useState(true)
+  const [subscriptionViaOwner, setSubscriptionViaOwner] = useState(false)
+  const [subscriptionHasBilling, setSubscriptionHasBilling] = useState(false)
 
   async function loadSubscription(userId: string) {
     setSubscriptionLoading(true)
     let status: string | undefined
     let plan: string | undefined
+    let viaOwner = false
+    let hasBilling = false
     try {
       // The server also covers team members who inherit their owner's plan
       const { data: { session } } = await supabase.auth.getSession()
@@ -50,6 +60,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const json = await res.json()
         status = json.status
         plan = json.plan
+        viaOwner = !!json.viaOwner
+        hasBilling = !!json.hasBilling
       }
     } catch {
       // fall through to the direct lookup below
@@ -57,17 +69,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!status) {
       const { data } = await supabase
         .from("subscriptions")
-        .select("status, plan")
+        .select("status, plan, stripe_customer_id")
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle()
       status = data?.status
       plan = data?.plan
+      hasBilling = !!data?.stripe_customer_id
     }
 
     setSubscriptionStatus((status as SubscriptionStatus) || "inactive")
     setSubscriptionPlan((plan as SubscriptionPlan) || "none")
+    setSubscriptionViaOwner(viaOwner)
+    setSubscriptionHasBilling(hasBilling)
     setSubscriptionLoading(false)
   }
 
@@ -120,7 +135,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, subscriptionStatus, subscriptionPlan, subscriptionLoading, signOut, signOutEverywhere, refreshSubscription }}>
+    <AuthContext.Provider value={{ user, loading, subscriptionStatus, subscriptionPlan, subscriptionLoading, subscriptionViaOwner, subscriptionHasBilling, signOut, signOutEverywhere, refreshSubscription }}>
       {children}
     </AuthContext.Provider>
   )

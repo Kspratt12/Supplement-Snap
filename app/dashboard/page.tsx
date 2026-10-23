@@ -27,12 +27,14 @@ type ProjectWithCount = {
 }
 
 export default function DashboardPage() {
-  const { user, loading: authLoading, signOut, signOutEverywhere, subscriptionStatus, subscriptionPlan, subscriptionLoading } = useAuth()
+  const { user, loading: authLoading, signOut, signOutEverywhere, subscriptionStatus, subscriptionPlan, subscriptionLoading, subscriptionViaOwner, subscriptionHasBilling } = useAuth()
   const router = useRouter()
   const [projects, setProjects] = useState<ProjectWithCount[]>([])
   const [loadingProjects, setLoadingProjects] = useState(true)
   const [portalLoading, setPortalLoading] = useState(false)
   const [hasSentReport, setHasSentReport] = useState(false)
+  // Real progress for the Getting Started checklist (the auto-created demo project does not count as the user's own work)
+  const [progress, setProgress] = useState({ hasDemo: false, hasRealProject: false, photoAny: false, photoReal: false, draftAny: false, draftReal: false, sentReal: false })
   const [reportCount, setReportCount] = useState(0)
   const [showSubModal, setShowSubModal] = useState(false)
   const [showSampleReport, setShowSampleReport] = useState(false)
@@ -94,12 +96,28 @@ export default function DashboardPage() {
     // One query for all capture counts instead of one request per project
     const { data: captureRows } = await supabase
       .from("captures")
-      .select("project_id")
+      .select("project_id, image_url, status, draft")
       .in("project_id", projectsData.map((p: { id: string }) => p.id))
     const countByProject = new Map<string, number>()
     for (const row of captureRows || []) {
       countByProject.set(row.project_id, (countByProject.get(row.project_id) || 0) + 1)
     }
+
+    const isDemo = (p: { claim_number?: string | null; project_name?: string | null }) =>
+      p.claim_number === "SF-2026-DEMO" || /^Demo Project/i.test(p.project_name || "")
+    const demoIds = new Set(projectsData.filter(isDemo).map((p: { id: string }) => p.id))
+    const rows = captureRows || []
+    const realRows = rows.filter((r) => !demoIds.has(r.project_id))
+    const hasText = (v?: string | null) => !!v && v.trim().length > 0
+    setProgress({
+      hasDemo: demoIds.size > 0,
+      hasRealProject: projectsData.some((p: { claim_number?: string | null; project_name?: string | null }) => !isDemo(p)),
+      photoAny: rows.some((r) => hasText(r.image_url)),
+      photoReal: realRows.some((r) => hasText(r.image_url)),
+      draftAny: rows.some((r) => hasText(r.draft)),
+      draftReal: realRows.some((r) => hasText(r.draft)),
+      sentReal: realRows.some((r) => r.status === "Sent"),
+    })
     const projectsWithCounts: ProjectWithCount[] = projectsData.map((p: { id: string }) => ({
       ...p,
       capture_count: countByProject.get(p.id) || 0,
@@ -162,7 +180,12 @@ export default function DashboardPage() {
   const totalCaptures = projects.reduce((sum, p) => sum + p.capture_count, 0)
   const hasAnyData = projects.length > 0 || totalCaptures > 0 || reportCount > 0
 
-  const planLabel = subscriptionPlan === "pro" ? "Pro" : subscriptionPlan === "team" ? "Team" : subscriptionPlan === "starter" ? "Starter" : "Free"
+  const planName = subscriptionPlan === "pro" ? "Pro" : subscriptionPlan === "team" ? "Team" : subscriptionPlan === "starter" ? "Starter" : "Free"
+  const planLabel = subscriptionViaOwner ? `${planName} (team access)` : planName
+  // Owners pay for their plan; team members use their owner's plan and cannot manage it
+  const isOwnerPlan = isActive && !subscriptionViaOwner
+  const isTeamOrPro = isActive && (subscriptionPlan === "team" || subscriptionPlan === "pro")
+  const canManageTeam = isOwnerPlan && isTeamOrPro
   const statusBadge: Record<string, { text: string; color: string }> = {
     active: { text: `${planLabel} — Active`, color: "bg-green-50 text-green-700 border-green-200" },
     trialing: { text: `${planLabel} — Trial`, color: "bg-blue-50 text-blue-700 border-blue-200" },
@@ -183,6 +206,7 @@ export default function DashboardPage() {
           </Link>
           <div className="flex items-center gap-3">
             <Link href="/app" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">{isActive ? "My Projects" : "Open App"}</Link>
+            <Link href="/account" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">Account</Link>
             <button
               onClick={async () => { await signOut(); router.push("/") }}
               className="text-sm font-medium text-zinc-500 hover:text-zinc-900"
@@ -212,7 +236,7 @@ export default function DashboardPage() {
               <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${badge.color}`}>
                 {badge.text}
               </span>
-              {isActive && (
+              {isActive && subscriptionHasBilling && (
                 <button
                   onClick={openBillingPortal}
                   disabled={portalLoading}
@@ -254,10 +278,14 @@ export default function DashboardPage() {
         {!subscriptionLoading && !loadingProjects && (
           <>
             <OnboardingChecklist
-              isActive={isActive}
-              hasProjects={projects.length > 0}
-              hasCaptures={projects.some((p) => p.capture_count > 0)}
-              hasSentReport={hasSentReport}
+              mode={isActive ? "paid" : "free"}
+              userId={user.id}
+              savedState={(user.user_metadata?.ss_onboarding as string | undefined) ?? null}
+              done={
+                isActive
+                  ? [progress.hasRealProject, progress.photoReal, progress.draftReal, progress.sentReal]
+                  : [progress.hasDemo, progress.photoAny, progress.draftAny, false]
+              }
             />
             {!isActive && (
               <p className="mb-6 -mt-4 text-center text-sm text-zinc-500">
@@ -469,7 +497,7 @@ export default function DashboardPage() {
             {/* Pro Analytics */}
             {hasAnyData && (
               <div>
-                <h2 className="mb-3 text-sm font-semibold text-zinc-500">Pro Insights</h2>
+                <h2 className="mb-3 text-sm font-semibold text-zinc-500">{isTeamOrPro ? "Pro Insights" : "Insights"}</h2>
                 <ProAnalytics
                   userId={user.id}
                   projectCount={projects.length}
@@ -482,12 +510,20 @@ export default function DashboardPage() {
             {/* Team + Contacts + Branding */}
             <div className="grid gap-4 sm:grid-cols-2 items-start">
               <div className="space-y-4">
-                <TeamManager userId={user.id} />
+                {canManageTeam ? (
+                  <TeamManager userId={user.id} />
+                ) : isOwnerPlan ? (
+                  <div className="rounded-xl border border-zinc-200 bg-white p-5">
+                    <h3 className="text-sm font-semibold text-zinc-900">Team Members</h3>
+                    <p className="mt-1 text-xs text-zinc-500">Starter is for one user. Team includes 3 users and Pro includes 5.</p>
+                    <Link href="/pricing" className="mt-3 inline-block text-xs font-medium text-indigo-600 hover:text-indigo-500">Upgrade to add your crew &rarr;</Link>
+                  </div>
+                ) : null}
                 <AdjusterContacts userId={user.id} />
               </div>
               {subscriptionPlan === "pro" ? (
                 <CompanySettings userId={user.id} />
-              ) : (
+              ) : subscriptionViaOwner ? null : (
                 <div className="rounded-xl border border-zinc-200 bg-white p-5">
                   <h3 className="text-sm font-semibold text-zinc-900">Custom Branding</h3>
                   <p className="mt-1 text-xs text-zinc-500">Add your company logo and name to PDF reports.</p>
