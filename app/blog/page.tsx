@@ -34,6 +34,8 @@ const ARTICLES = [
   { slug: "roofing-overhead-and-profit-claims", title: "Overhead and Profit on Roofing Claims: When You Can Charge O&P", desc: "When O&P applies on roofing claims, how to document it and how carriers push back.", date: "2026-10-22" },
   { slug: "roofing-code-upgrades-ordinance-and-law", title: "Code Upgrades in Roofing Claims: Ordinance and Law Coverage Explained", desc: "How code upgrade items and Ordinance and Law coverage work on roofing claims.", date: "2026-10-22" },
   { slug: "companycam-alternative-roofing-supplements", title: "CompanyCam Alternative for Roofing Supplements: How to Choose", desc: "Photo apps versus supplement-focused tools, and how to choose for your crew.", date: "2026-10-22" },
+  { slug: "document-rotted-roof-decking-tear-off", title: "How to Document Rotted Roof Decking Found During Tear-Off", desc: "What to photograph, measure and write down when you find rotted decking, so the finding is clear to the adjuster.", date: "2026-10-23" },
+  { slug: "organize-roofing-supplement-photos-by-claim", title: "How to Organize Roofing Supplement Photos by Claim and Roof Area", desc: "A repeatable system for naming, grouping and labeling supplement photos so reports are fast to build.", date: "2026-10-23" },
 ]
 
 export default function BlogIndex() {

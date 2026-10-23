@@ -63,7 +63,7 @@ const FAQ = [
   },
   {
     q: "Is it worth the investment?",
-    a: "One approved supplement typically recovers $1,500–$3,200. Both plans pay for themselves on the first job.",
+    a: "Results vary by claim, policy and documentation. If a supplement is approved, even one recovered line item can offset the monthly cost, but approval is never guaranteed.",
   },
 ]
 
@@ -233,9 +233,9 @@ export default function PricingPage() {
       {/* ROI */}
       <section className="mx-auto max-w-2xl px-6 pb-16">
         <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-6 text-center sm:p-8">
-          <h2 className="text-lg font-bold text-zinc-900">One approved supplement pays for months of the platform.</h2>
+          <h2 className="text-lg font-bold text-zinc-900">Documenting hidden damage can help the platform pay for itself.</h2>
           <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-zinc-500">
-            Crews discover $1,500–$3,200 in hidden damage on a typical job. At $99/month with no setup fees, your first supplement covers the entire year.
+            Better documentation of hidden damage can help support a supplement. At $99/month with no setup fees, a single approved line item may offset the cost. Results vary by claim and are not guaranteed.
           </p>
         </div>
       </section>
