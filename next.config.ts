@@ -2,6 +2,13 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: { inlineCss: true },
+  async redirects() {
+    return [
+      { source: "/blog/roof-tear-off-costs-by-size-material-pitch", destination: "/blog/roof-tear-off-cost", permanent: true },
+      { source: "/blog/xactimate-codes-roofing-supplements", destination: "/blog/xactimate-codes-for-roofing-supplements", permanent: true },
+      { source: "/blog/xactimate-line-item-cheat-sheet", destination: "/blog/xactimate-codes-for-roofing-supplements", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {
