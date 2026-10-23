@@ -53,9 +53,6 @@ export function ProAnalytics({ userId, projectCount, captureCount, reportCount }
   const emailsOpened = emails.filter(e => e.opened_at).length
   const emailsSent = emails.length
 
-  // Estimate supplement value documented (avg $800 per capture)
-  const estimatedValue = captureCount * 800
-
   return (
     <div className="space-y-4">
       {/* Pro Stats Row */}
@@ -73,8 +70,8 @@ export function ProAnalytics({ userId, projectCount, captureCount, reportCount }
           <p className="mt-1 text-xs text-zinc-500">Reports Sent</p>
         </div>
         <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm text-center">
-          <p className="text-2xl font-bold text-green-700">${estimatedValue.toLocaleString()}</p>
-          <p className="mt-1 text-xs text-zinc-500">Est. value at $800 per finding</p>
+          <p className="text-2xl font-bold text-green-700">{emailsOpened}</p>
+          <p className="mt-1 text-xs text-zinc-500">Opened by adjusters</p>
         </div>
       </div>
 

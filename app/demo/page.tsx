@@ -89,9 +89,8 @@ export default function DemoPage() {
             </div>
 
             <div className="rounded-xl border border-green-200 bg-green-50 p-5">
-              <p className="text-xs font-semibold text-green-800">Average supplement recovered</p>
-              <p className="mt-1 text-2xl font-extrabold text-green-700">$2,400</p>
-              <p className="mt-1 text-xs text-green-700">One supplement pays for the platform.</p>
+              <p className="text-xs font-semibold text-green-800">Built for roofing contractors</p>
+              <p className="mt-1 text-sm font-medium text-green-700">Document concealed damage during tear-off, then turn it into a supplement narrative and PDF report.</p>
             </div>
           </div>
 

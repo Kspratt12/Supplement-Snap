@@ -65,16 +65,6 @@ const ROOF_AREAS = [
   "Eave",
 ] as const
 
-const SUPPLEMENT_ESTIMATES: Record<string, number> = {
-  "Decking": 450,
-  "Flashing": 550,
-  "Vent / Pipe Boot": 85,
-  "Drip Edge": 275,
-  "Ice & Water": 350,
-  "Multiple Layers": 650,
-  "Other": 200,
-}
-
 type Project = {
   id: string
   project_name: string
@@ -201,6 +191,8 @@ function Home() {
   const [translating, setTranslating] = useState(false)
   const [translated, setTranslated] = useState(false)
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
+  const pendingDeletes = useRef<Record<string, ReturnType<typeof setTimeout>>>({})
+  const [undoCapture, setUndoCapture] = useState<Capture | null>(null)
   const demoCreatedFor = useRef<string | null>(null) // stops two concurrent loads both creating the demo project
 
   // Captures + drafts
@@ -675,9 +667,30 @@ function Home() {
     setCreatingProject(false)
   }
 
-  async function deleteCapture(c: Capture) {
-    if (!confirm("Delete this capture? This cannot be undone.")) return
+  // Delete hides the capture right away and removes it for real after 8 seconds, unless undone.
+  // Closing the page inside that window keeps the capture, so nothing is lost by accident.
+  function deleteCapture(c: Capture) {
+    if (undoCapture && undoCapture.id !== c.id) {
+      clearTimeout(pendingDeletes.current[undoCapture.id])
+      void finalizeDelete(undoCapture)
+    }
+    setCaptures((prev) => prev.filter((cap) => cap.id !== c.id))
+    setUndoCapture(c)
+    pendingDeletes.current[c.id] = setTimeout(() => {
+      setUndoCapture((cur) => (cur && cur.id === c.id ? null : cur))
+      void finalizeDelete(c)
+    }, 8000)
+  }
 
+  function undoDelete() {
+    if (!undoCapture) return
+    clearTimeout(pendingDeletes.current[undoCapture.id])
+    const back = undoCapture
+    setCaptures((prev) => [...prev, back].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()))
+    setUndoCapture(null)
+  }
+
+  async function finalizeDelete(c: Capture) {
     // Delete all associated images from storage
     const urls = (c.image_urls && c.image_urls.length > 0 ? c.image_urls : [c.image_url]).filter(Boolean)
     const filePaths = urls
@@ -2549,6 +2562,7 @@ function Home() {
                   Auto-saved
                 </span>
               </div>
+              <p className="mt-3 text-xs text-zinc-500">Written by AI from your findings. Read it and edit anything before you send it to an adjuster.</p>
               </div>
               )}
             </div>
@@ -2629,20 +2643,10 @@ function Home() {
               <p>Generated: {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
             </div>
 
-            {/* Estimated Supplement Value */}
             {captures.length > 0 && (
-              <div className="mt-3 rounded-lg bg-green-50 border border-green-200 px-4 py-3 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-green-700">Estimated Supplement Value</p>
-                  <p className="text-2xl font-extrabold text-green-700">
-                    ${captures.reduce((sum, c) => sum + (SUPPLEMENT_ESTIMATES[c.damage_type] || 200) * (Number((c as Record<string, unknown>).quantity) || 1), 0).toLocaleString()}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-xs text-green-700">{captures.length} finding{captures.length !== 1 ? "s" : ""} documented</p>
-                  <p className="text-xs text-green-700">Based on avg supplement values</p>
-                </div>
-              </div>
+              <p className="mt-3 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                {captures.length} finding{captures.length !== 1 ? "s" : ""} documented
+              </p>
             )}
 
             <div className="mt-3 flex flex-wrap gap-2">
@@ -3098,9 +3102,6 @@ function Home() {
               Captures
             </h2>
             <div className="flex items-center gap-2">
-              <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                ${captures.reduce((sum, c) => sum + (SUPPLEMENT_ESTIMATES[c.damage_type] || 200), 0).toLocaleString()} est.
-              </span>
               <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
                 {captures.length}
               </span>
@@ -3214,9 +3215,6 @@ function Home() {
                       </span>
                       <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
                         {c.roof_area}
-                      </span>
-                      <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                        ${SUPPLEMENT_ESTIMATES[c.damage_type] || 200} est.
                       </span>
                     </div>
                     <span className="text-xs text-zinc-500">
@@ -3460,6 +3458,12 @@ function Home() {
             ))}
           </div>
         </section>
+      )}
+      {undoCapture && (
+        <div role="status" className="fixed bottom-4 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 items-center justify-between gap-3 rounded-xl bg-zinc-900 px-4 py-3 text-sm text-white shadow-lg">
+          <span>Capture deleted</span>
+          <button type="button" onClick={undoDelete} className="rounded-lg bg-white/15 px-3 py-1.5 text-xs font-semibold hover:bg-white/25">Undo</button>
+        </div>
       )}
       {/* Email Modal */}
       {showEmailModal && (
