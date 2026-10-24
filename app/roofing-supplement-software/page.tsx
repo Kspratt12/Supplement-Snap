@@ -5,9 +5,9 @@ import { SiteFooter } from "../../lib/site-footer"
 import { TrackedLink } from "../../lib/tracked-link"
 
 const URL = "https://supplementsnap.io/roofing-supplement-software"
-const TITLE = "Roofing Supplement Software for Roofers | Supplement Snap"
+const TITLE = "Roofing Supplement App: Features and Workflow"
 const DESCRIPTION =
-  "Roofing supplement software that helps crews capture hidden damage at tear-off, organize photos and notes, and send adjuster-ready PDF reports."
+  "How the Supplement Snap app works for roofing crews: field photos, voice notes, annotations, AI-drafted narratives and PDF reports, step by step."
 
 export const metadata: Metadata = {
   alternates: { canonical: URL },

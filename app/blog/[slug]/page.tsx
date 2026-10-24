@@ -20,6 +20,9 @@ type Article = {
   images?: Record<number, BlogImage>
   visuals?: Record<number, Visual>
   midCtaAfter?: number
+  midCtaTitle?: string
+  midCtaBody?: string
+  midCtaCodes?: boolean
   sections: Array<{ heading: string; content: string }>
   externalLinks?: Array<{ text: string; url: string }>
   updatedDate?: string
@@ -317,6 +320,9 @@ const ARTICLES: Article[] = [
       ]},
     },
     updatedDate: "2026-10-22",
+    midCtaAfter: 1,
+    midCtaTitle: "Capture this on the roof, not from memory.",
+    midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     related: ["roofing-supplement-template","roofing-supplement-denied-what-to-do","xactimate-codes-for-roofing-supplements","roofing-photo-documentation-checklist"],
     faq: [
       {
@@ -415,6 +421,9 @@ const ARTICLES: Article[] = [
       }},
     },
     updatedDate: "2026-10-22",
+    midCtaAfter: 1,
+    midCtaTitle: "Capture this on the roof, not from memory.",
+    midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     related: ["how-to-write-a-roofing-supplement","roofing-supplement-follow-up-log","roofing-photo-documentation-checklist","roofing-supplement-template"],
     faq: [
       {
@@ -608,6 +617,9 @@ const ARTICLES: Article[] = [
       6: {"type":"calculator","data":{"title":"Illustrative Supplement Example","rows":[{"label":"Decking replacement (96 SF at $2.50)","value":"$240"},{"label":"Step flashing (20 LF at $9.00)","value":"$180"},{"label":"Ice and water barrier (100 SF at $2.00)","value":"$200"},{"label":"Pipe jacks (3 at $90)","value":"$270"},{"label":"Drip edge (120 LF at $4.50)","value":"$540"}],"total":{"label":"Example supplement total","value":"$1,430","color":"text-green-700"}}},
     },
     updatedDate: "2026-10-22",
+    midCtaAfter: 1,
+    midCtaTitle: "Capture this on the roof, not from memory.",
+    midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     related: ["roofing-overhead-and-profit-claims","roof-replacement-estimate-vs-final-cost","how-to-write-a-roofing-supplement","roofing-supplement-process-explained"],
     faq: [
       {
@@ -697,6 +709,9 @@ const ARTICLES: Article[] = [
       6: {"type":"timeline","data":[{"time":"Day 1","title":"Tear-off and discovery","desc":"Hidden damage is found, photographed and measured before it is covered."},{"time":"Same day","title":"Write and send","desc":"The narrative, line items and photos go to the adjuster with a clear summary."},{"time":"Following days","title":"Carrier review","desc":"The adjuster verifies the package and may ask questions or request a visit."},{"time":"After review","title":"Approval or negotiation","desc":"Approved items are paid. Disputed items get a written response with evidence."}]},
     },
     updatedDate: "2026-10-22",
+    midCtaAfter: 1,
+    midCtaTitle: "Capture this on the roof, not from memory.",
+    midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     related: ["how-to-write-a-roofing-supplement","roofing-photo-documentation-checklist","roofing-supplement-denied-what-to-do","roofing-supplement-template"],
     faq: [
       {
@@ -1606,6 +1621,9 @@ const ARTICLES: Article[] = [
     "metaTitle": "Roofing Supplement Template and Checklist (Free Format)",
     "metaDescription": "A roofing supplement template you can copy: cover page, findings format, narrative wording, line items and a pre-submission checklist adjusters respond to.",
     "publishedDate": "2026-10-22",
+    "midCtaAfter": 1,
+    "midCtaTitle": "Capture this on the roof, not from memory.",
+    "midCtaBody": "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     "related": [
       "how-to-write-a-roofing-supplement",
       "roofing-photo-documentation-checklist",
@@ -1746,6 +1764,9 @@ const ARTICLES: Article[] = [
     "metaTitle": "Roofing Photo Documentation Checklist for Insurance Claims",
     "metaDescription": "What roofers should photograph at inspection and tear-off for insurance claims: required shots, hidden damage, labels and a checklist adjusters accept.",
     "publishedDate": "2026-10-22",
+    "midCtaAfter": 1,
+    "midCtaTitle": "Capture this on the roof, not from memory.",
+    "midCtaBody": "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     "related": [
       "roofing-supplement-template",
       "hail-damage-roof-inspection",
@@ -1864,6 +1885,9 @@ const ARTICLES: Article[] = [
     "metaTitle": "Overhead and Profit (O&P) on Roofing Insurance Claims",
     "metaDescription": "How overhead and profit works on roofing claims: when O&P applies, how to document multiple trades, what carriers push back on and how to respond.",
     "publishedDate": "2026-10-22",
+    "midCtaAfter": 1,
+    "midCtaTitle": "Capture this on the roof, not from memory.",
+    "midCtaBody": "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     "related": [
       "xactimate-roofing-estimate-approved",
       "how-much-do-roofing-supplements-pay",
@@ -1965,6 +1989,9 @@ const ARTICLES: Article[] = [
     "metaTitle": "Roofing Code Upgrades and Ordinance and Law Coverage",
     "metaDescription": "How code upgrades work in roofing claims: what Ordinance and Law coverage is, which roof items it can cover, and how to document them for adjusters.",
     "publishedDate": "2026-10-22",
+    "midCtaAfter": 1,
+    "midCtaTitle": "Capture this on the roof, not from memory.",
+    "midCtaBody": "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     "related": [
       "what-is-the-25-percent-rule-for-roofing",
       "xactimate-codes-for-roofing-supplements",
@@ -2235,6 +2262,9 @@ const ARTICLES: Article[] = [
         a: "No. Clear documentation helps you present the finding, but payment depends on the claim, policy and carrier.",
       },
     ],
+    midCtaAfter: 1,
+    midCtaTitle: "Capture this on the roof, not from memory.",
+    midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     related: ["roofing-photo-documentation-checklist", "roofing-supplement-template", "hail-damage-roof-inspection"],
   },
   {
@@ -2279,11 +2309,14 @@ const ARTICLES: Article[] = [
         a: "No. A consistent folder and naming system works. Software mainly saves the time spent matching photos to notes and building the report.",
       },
     ],
+    midCtaAfter: 1,
+    midCtaTitle: "Capture this on the roof, not from memory.",
+    midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     related: ["roofing-photo-documentation-checklist", "document-rotted-roof-decking-tear-off", "roofing-supplement-template"],
   },
   {
     slug: "supplemental-roofing-estimate-explained",
-    title: "What Is a Supplemental Roofing Estimate? How Roofing Supplements Work",
+    title: "What Is a Supplemental Roofing Estimate? When It Applies and What It Includes",
     metaTitle: "What Is a Supplemental Roofing Estimate? | Supplement Snap",
     metaDescription: "A supplemental roofing estimate asks the insurer to cover damage found after the first estimate. Learn when it applies, what it includes, and how to submit one.",
     publishedDate: "2026-10-23",
@@ -2327,6 +2360,9 @@ const ARTICLES: Article[] = [
         a: "It varies by carrier and claim. Complete, organized documentation helps avoid back-and-forth requests for more information.",
       },
     ],
+    midCtaAfter: 1,
+    midCtaTitle: "Capture this on the roof, not from memory.",
+    midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     related: ["how-to-write-a-roofing-supplement", "roofing-supplement-template", "roofing-supplement-denied-what-to-do"],
   },
   {
@@ -2688,6 +2724,9 @@ const ARTICLES: Article[] = [
         a: "Follow up in writing with the claim number, note the date in your log and keep a copy. If it continues, ask who else at the carrier can help.",
       },
     ],
+    midCtaAfter: 1,
+    midCtaTitle: "Capture this on the roof, not from memory.",
+    midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     related: ["roofing-supplement-denied-what-to-do", "roofing-supplement-template", "supplemental-roofing-estimate-explained", "roofing-photo-documentation-checklist"],
   },
   {
@@ -2954,6 +2993,9 @@ const ARTICLES: Article[] = [
         a: "No. A clear report helps the reviewer verify what you found, but approval depends on the claim, the policy and the carrier.",
       },
     ],
+    midCtaAfter: 1,
+    midCtaTitle: "Capture this on the roof, not from memory.",
+    midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     related: ["roofing-photo-documentation-checklist", "roof-inspection-report", "roofing-supplement-template", "document-rotted-roof-decking-tear-off"],
   },
   {
@@ -3129,6 +3171,9 @@ const ARTICLES: Article[] = [
         a: "Roof age and condition can affect how a claim is evaluated and paid, depending on the policy. Review the policy terms for details.",
       },
     ],
+    midCtaAfter: 1,
+    midCtaTitle: "Capture this on the roof, not from memory.",
+    midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     related: ["hail-damage-roof-inspection", "how-insurance-adjusters-determine-roof-damage", "roofing-photo-documentation-checklist", "roof-damage-report-template"],
   },
   {
@@ -3727,6 +3772,9 @@ const ARTICLES: Article[] = [
         a: "Yes. The free roofing supplement checklist on this site covers documentation for hidden damage and claim packages.",
       },
     ],
+    midCtaAfter: 1,
+    midCtaTitle: "Capture this on the roof, not from memory.",
+    midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     related: ["roof-inspection-report", "hail-damage-roof-inspection", "roof-damage-report-template", "document-rotted-roof-decking-tear-off"],
   },
 ]
@@ -4098,11 +4146,11 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
               {article.visuals?.[i] && <VisualBlock visual={article.visuals[i]} />}
               {article.midCtaAfter === i && (
                 <div className="mt-6 rounded-xl border border-indigo-200 bg-indigo-50 p-5">
-                  <p className="text-sm font-semibold text-zinc-900">Skip the lookup on your next tear-off.</p>
-                  <p className="mt-1 text-sm text-zinc-600">Supplement Snap suggests a matching code and quantity for each finding your crew captures. Review the suggestions before you send them.</p>
+                  <p className="text-sm font-semibold text-zinc-900">{article.midCtaTitle || "Skip the lookup on your next tear-off."}</p>
+                  <p className="mt-1 text-sm text-zinc-600">{article.midCtaBody || "Supplement Snap suggests a matching code and quantity for each finding your crew captures. Review the suggestions before you send them."}</p>
                   <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-                    <TrackedLink location="article-mid-start-trial" href="/pricing" className="rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-indigo-500">
-                      Start free trial
+                    <TrackedLink location="article-mid-start-trial" href="/signup?trial=1" className="rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-indigo-500">
+                      Start a free project
                     </TrackedLink>
                     <TrackedLink location="article-mid-sample-report" href="/roofing-supplement-report-example" className="rounded-lg border border-zinc-300 bg-white px-4 py-2 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
                       See a sample report
