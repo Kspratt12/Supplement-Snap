@@ -794,7 +794,7 @@ const ARTICLES: Article[] = [
       1: { src: "/blog/roof-tear-off-cost/tear-off-in-progress.jpg", width: 1024, height: 683, alt: "Roof mid-tear-off showing exposed decking and damaged shingles being removed" },
       3: { src: "/blog/roof-tear-off-cost/hidden-damage-found.jpg", width: 1400, height: 934, alt: "Rotted roof decking discovered during tear-off requiring supplement documentation" },
     },
-    related: ["roofing-overhead-and-profit-claims","how-much-do-roofing-supplements-pay","roof-replacement-estimate-vs-final-cost","roofing-code-upgrades-ordinance-and-law"],
+    related: ["roof-tear-off-vs-overlay", "roofing-overhead-and-profit-claims","how-much-do-roofing-supplements-pay","roof-replacement-estimate-vs-final-cost","roofing-code-upgrades-ordinance-and-law"],
     sections: [
       {
         heading: "What is a roof tear-off and why does cost matter?",
@@ -2270,7 +2270,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["roofing-photo-documentation-checklist", "roofing-supplement-template", "hail-damage-roof-inspection", "roofing-documentation-spanish-speaking-crews"],
+    related: ["roof-tear-off-vs-overlay", "roofing-photo-documentation-checklist", "roofing-supplement-template", "hail-damage-roof-inspection", "roofing-documentation-spanish-speaking-crews"],
   },
   {
     slug: "organize-roofing-supplement-photos-by-claim",
@@ -2740,7 +2740,7 @@ const ARTICLES: Article[] = [
     metaTitle: "How Adjusters Determine Roof Damage | Supplement Snap",
     metaDescription: "How insurance adjusters evaluate roof damage: the inspection, what they look for, how estimates are built and what documentation makes a claim easier to review.",
     publishedDate: "2026-10-23",
-    updatedDate: "2026-10-23",
+    updatedDate: "2026-10-24",
     externalLinks: [
       { text: "NRCA: National Roofing Contractors Association", url: "https://www.nrca.net" },
       { text: "IBHS: Insurance Institute for Business & Home Safety", url: "https://ibhs.org" },
@@ -2794,6 +2794,10 @@ const ARTICLES: Article[] = [
         content: "These approaches tend to slow claims or erode trust:\n\n• Overstating damage: Describing normal wear as storm damage invites a hard look at everything else you submit.\n• Guessing at cause or coverage: Stick to what you can see and measure. Coverage decisions belong to the carrier.\n• Missing proof: A line item with no photo or measurement gives the adjuster nothing to verify.\n• Slow responses: When a carrier asks for more information, answer promptly and keep a record.\n\nTracking each request helps. See the <a href='/blog/roofing-supplement-follow-up-log'>roofing supplement follow-up log</a> for a simple way to do it.",
       },
       {
+        heading: "Should the roofer be there for the adjuster's inspection?",
+        content: "Many contractors attend the inspection when the homeowner asks them to, because they can point out damage and answer questions about the roof. Whether and how that works is up to the homeowner, the policy and the carrier, so ask the adjuster in advance.\n\nTwo cautions. First, rules differ by state, and some restrict what a contractor may do on a homeowner's behalf, such as negotiating or advocating for the claim, because that can fall under public adjuster licensing. Check what is allowed where you work. Second, stick to facts you can show: what you saw, where it is, and photos. Do not guess at cause or promise the homeowner an outcome.\n\nThis is general guidance, not legal advice.",
+      },
+      {
         heading: "How Supplement Snap helps contractors present findings",
         content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps crews capture photos, roof areas, notes and measurements while they are on the roof, and organizes them into a report for the adjuster. It does not decide coverage or guarantee approval. It gives the adjuster a clearer package to review. You can preview the output in the <a href='/roofing-supplement-report-example'>sample report</a>.",
       },
@@ -2816,11 +2820,15 @@ const ARTICLES: Article[] = [
         a: "Conditions under the shingles, such as damaged decking or flashing, cannot be seen until tear-off. Contractors request those items through a supplement with supporting documentation.",
       },
       {
+        q: "Should a roofer be present with an insurance adjuster?",
+        a: "Many contractors attend when the homeowner asks them to, to point out damage and answer roof questions. Rules vary by state, and some limit what a contractor may do for the homeowner on the claim, so check what is allowed where you work.",
+      },
+      {
         q: "Does good documentation guarantee a claim is approved?",
         a: "No. Coverage and approval depend on the claim, the policy and the carrier. Good documentation helps the adjuster verify what was found.",
       },
     ],
-    related: ["supplemental-roofing-estimate-explained", "hail-damage-roof-inspection", "roofing-photo-documentation-checklist", "roofing-supplement-follow-up-log"],
+    related: ["supplemental-roofing-estimate-explained", "hail-damage-roof-inspection", "roofing-photo-documentation-checklist", "roof-tear-off-vs-overlay"],
   },
   {
     slug: "what-is-the-25-percent-rule-for-roofing",
@@ -4406,6 +4414,104 @@ const ARTICLES: Article[] = [
     related: ["xactimate-roofing-estimate-example", "roof-repair-estimate-template", "good-better-best-roofing-proposal-template", "roofing-supplement-template"],
   },
   {
+    slug: "roof-tear-off-vs-overlay",
+    title: "Roof Tear-Off vs Overlay: Which to Choose and What Gets Missed",
+    metaTitle: "Roof Tear-Off vs Overlay: Pros, Cons & What's Missed",
+    metaDescription: "Roof tear-off vs overlay compared: how each works, when an overlay may not be allowed, and the damage nobody sees when new shingles go over old ones.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+      { text: "IBHS: Insurance Institute for Business & Home Safety", url: "https://ibhs.org" },
+    ],
+    midCtaAfter: 2,
+    midCtaTitle: "Tearing off? Document the deck first.",
+    midCtaBody: "Once the old roof is off, the deck is visible for the first time. Supplement Snap helps your crew photograph and describe what they find. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Tear-off", "Overlay"],
+        rows: [
+          { feature: "What happens", values: ["Old roofing is removed to the deck, then a new roof is installed", "New shingles are installed over the existing layer"] },
+          { feature: "Can the deck be inspected?", values: ["Yes, once the old roof is off", "No, it stays covered"] },
+          { feature: "Labor and disposal", values: ["More labor, and the old material has to be hauled away", "Less labor, and no removal of the old roofing"] },
+          { feature: "Typical cost", values: ["Usually higher", "Usually lower"] },
+          { feature: "Hidden damage", values: ["Can be found, repaired and documented", "Stays hidden until it gets worse"] },
+          { feature: "Code and warranty", values: ["Generally allowed", "May be limited by layer count, warranty terms or roof condition"] },
+        ],
+      }},
+      5: { type: "checklist", data: { title: "Questions to answer before choosing an overlay", items: [
+        { text: "Does the roof have only one layer today?", checked: false },
+        { text: "Does local code allow another layer?", checked: false },
+        { text: "Does the shingle warranty allow installation over an existing layer?", checked: false },
+        { text: "Is the existing roof flat, dry and sound, with no curling, cupping or sagging?", checked: false },
+        { text: "Has anyone checked for leaks, stains or soft spots inside the house or attic?", checked: false },
+        { text: "Do you have written quotes and warranty terms for both options?", checked: false },
+      ]}},
+      3: { type: "tip", data: { type: "info", title: "Check your local rules", text: "Layer limits, permits and warranty conditions vary by city, state and product. This page is general guidance, not legal or building advice. Ask your local building department and read the manufacturer's warranty before you decide." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "A roof tear-off removes the old roofing down to the deck before the new roof goes on. An overlay, also called a layover or recover, puts new shingles over the existing layer. An overlay usually means less labor and no disposal of the old roofing, which is why it is often cheaper. A tear-off lets someone see and fix the deck, flashing and underlayment underneath. Whether an overlay is even allowed depends on your local code, the shingle manufacturer's warranty, and the condition of the roof you have.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document hidden damage found during tear-off. We have an interest in the tear-off side of this comparison, so we have kept this page to what is generally true and told you where it depends. We do not give prices here because they vary too much by area and roof.",
+      },
+      {
+        heading: "Tear-off vs overlay side by side",
+        content: "The table compares the two on the points that decide most jobs. It is general, and your roof, your code and your warranty can change the answer.",
+      },
+      {
+        heading: "What an overlay cannot show you: the deck",
+        content: "Once new shingles go over old ones, nobody sees what is underneath. That includes the roof deck, the underlayment, the flashing and any places where water has been getting in. Soft or rotted decking, failed flashing and missing ice and water protection are typically only found when the old roof comes off.\n\nThat matters for two reasons. If the deck is in poor shape, a new layer over it can hide a problem that gets worse. And on an insurance claim, damage that was never seen cannot be documented, so it cannot be requested later. A tear-off lets the crew inspect and photograph the deck before anything new goes on. See our guide to <a href='/blog/document-rotted-roof-decking-tear-off'>documenting rotted decking at tear-off</a>.",
+      },
+      {
+        heading: "When an overlay may not be an option",
+        content: "Several things can rule an overlay out, and you should check them before you decide:\n\n• Local building code. Many jurisdictions limit how many layers a roof can have, so a roof that already has the maximum must be torn off. Codes differ by place and by edition, so ask your local building department.\n• The manufacturer's warranty. Some shingle warranties have conditions about installation over an existing layer. Read the one for the product you plan to use.\n• The roof's condition. Curling, cupping, uneven surfaces, sagging or moisture problems usually mean the old layer is not a good base.\n• Matching and flashing. New shingles over old can raise the roofline at edges and flashings, which can make details harder to do properly.\n\nWhen in doubt, ask a licensed roofer to inspect, and get the answer in writing.",
+      },
+      {
+        heading: "Overlays and insurance claims",
+        content: "On an insurance claim, what the carrier pays for depends on the policy, the carrier and the damage. An estimate that assumes one approach does not stop a contractor from finding something different once the old roof is off. If tear-off reveals damage that was not in the carrier's estimate, such as rotted decking or failed flashing, contractors typically document it and request it through a supplement.\n\nThat is another reason tear-off matters for claims. The photos and notes you take of the deck are the evidence. Our guides on <a href='/blog/how-insurance-adjusters-determine-roof-damage'>how adjusters determine roof damage</a> and the <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a> explain what to capture. This is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "How to decide",
+        content: "Work through the checklist with whoever is quoting the job. If any answer is no or unknown, treat the overlay as unproven until you have confirmed it.",
+      },
+      {
+        heading: "What about cost?",
+        content: "Overlays generally cost less because they skip removal and disposal, and a tear-off costs more for that labor. How much less depends on your area, the roof size and pitch, the materials and what is found underneath, so we have not put numbers on this page. Our <a href='/blog/roof-tear-off-cost'>roof tear-off cost guide</a> explains what drives the price, including the hidden costs that only show up once the old roof is removed. Get written quotes for both options so you can compare like for like.",
+      },
+      {
+        heading: "If you tear off, document the deck",
+        content: "For roofing crews, the tear-off is the one chance to see the deck, so photograph it before anything is installed. Get wide shots of each slope, close-ups of each problem, a tape measure or marked area for scale, and short notes on where each finding is and what it affects.\n\n<a href='/roofing-supplement-software'>Supplement Snap</a> lets crews capture photos on the roof, tag each finding, add a typed or voice note, review the drafted description and export a PDF for the adjuster. It does not decide coverage or guarantee approval. Your first project is free. See a <a href='/roofing-supplement-report-example'>sample report</a>, the <a href='/blog/roofing-supplement-template'>supplement template</a> and the <a href='/pricing'>pricing page</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "Is a roof overlay worth it?",
+        a: "It can be, when the existing roof is in good condition, only one layer is present, local code and the shingle warranty allow it, and the lower cost matters. It is a poor choice when the deck may be damaged, because nobody can inspect it.",
+      },
+      {
+        q: "Is a roof tear-off better than an overlay?",
+        a: "A tear-off lets the crew inspect and repair the deck, flashing and underlayment, which an overlay cannot. An overlay is usually cheaper. Which is better depends on the roof's condition, your code, the warranty and your budget.",
+      },
+      {
+        q: "Can you put new shingles over old shingles?",
+        a: "Sometimes. Many places limit the number of layers, some warranties set conditions, and the existing roof must be flat and sound. Ask your local building department and check the manufacturer's warranty.",
+      },
+      {
+        q: "How long does a roof overlay last?",
+        a: "It depends on the materials, the condition of the layer underneath, ventilation and climate. Do not rely on a single number. Ask the contractor what warranty applies to an overlay and read its terms.",
+      },
+      {
+        q: "Is a roof overlay considered a new roof?",
+        a: "It depends on who is asking. Insurers, lenders, home inspectors and warranty providers may treat it differently. If it matters for your policy or a sale, ask them directly.",
+      },
+      {
+        q: "Does insurance pay for a tear-off or an overlay?",
+        a: "That depends on your policy and the carrier, not on a general rule. If damage is found at tear-off that was not in the carrier's estimate, contractors document it and request it through a supplement.",
+      },
+    ],
+    related: ["roof-tear-off-cost", "document-rotted-roof-decking-tear-off", "how-insurance-adjusters-determine-roof-damage", "roofing-photo-documentation-checklist"],
+  },
+  {
     slug: "roof-repair-estimate-template",
     title: "Roof Repair Estimate Template: Free PDF, Fillable PDF and Word",
     metaTitle: "Roof Repair Estimate Template: Free PDF & Word",
@@ -4559,85 +4665,6 @@ const ARTICLES: Article[] = [
     ],
     downloads: "good-better-best-roofing-proposal-template",
     related: ["roofing-estimate-template","roof-repair-estimate-template","roofing-supplement-template","roof-damage-report-template"],
-  },
-  {
-    slug: "overhead-and-profit-roofing-insurance-claim",
-    title: "Overhead and Profit on Roofing Claims: How to Document and Request It",
-    metaTitle: "Overhead and Profit on Roofing Claims Explained",
-    metaDescription: "What overhead and profit (O&P) means on a roofing claim, when contractors request it and how to document it. General guidance; rules vary by state.",
-    publishedDate: "2026-10-24",
-    updatedDate: "2026-10-24",
-    externalLinks: [
-      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
-      { text: "NRCA", url: "https://www.nrca.net" },
-    ],
-    midCtaAfter: 1,
-    midCtaTitle: "Found hidden damage after tear-off?",
-    midCtaBody: "O&P is about coordinating the job. Hidden damage is a separate request. Supplement Snap helps your crew document what turns up once the shingles are off. Your first project is free.",
-    visuals: {
-      1: { type: "matrix", data: {
-        headers: ["Hidden-damage supplement", "Overhead and profit"],
-        rows: [
-          { feature: "What it asks for", values: ["Payment for work the first estimate missed", "Recognition of the cost of coordinating the whole job"] },
-          { feature: "What backs it up", values: ["Photos, measurements and notes for each finding", "A list of trades, dates and who coordinated them"] },
-          { feature: "Where it appears", values: ["Line items in the supplement", "Its own line, usually as a percentage"] },
-        ],
-      }},
-      4: { type: "tip", data: { type: "info", title: "Rules differ by state and carrier", text: "Whether O&P is owed, and how it is calculated, depends on your policy, state and carrier. This is general guidance, not legal or claims advice. Ask a licensed professional about your situation." } },
-    },
-    sections: [
-      {
-        heading: "The short answer",
-        content: "Overhead and profit, usually written O&P, is a line on an insurance estimate that pays a general contractor for running the job, not just for materials and labor. Overhead covers the costs of managing and coordinating the work, such as supervision, scheduling, office costs and insurance. Profit is the contractor's margin. Whether a carrier owes it on a given claim depends on the policy, the state, the carrier and the facts of the job, so nothing here guarantees it.\n\nDisclosure: we make Supplement Snap, which documents damage found during tear-off. It does not calculate O&P or negotiate it for you. This page is general guidance, not legal or claims advice.",
-      },
-      {
-        heading: "What O&P is, and what it is not",
-        content: "O&P is separate from the line items for shingles, felt, drip edge and labor. It is added on top to reflect the work of running the project: ordering, scheduling, supervising, dealing with the homeowner and the adjuster, and carrying the risk.\n\nIn Xactimate estimates O&P is often shown as a percentage added to the line items. A common convention is 10 percent for overhead and 10 percent for profit, but carriers, policies and states differ, so treat that as a convention, not a rule. It is not a bonus, and it is not the same as a supplement for hidden damage. A supplement asks for the cost of work the first estimate missed. O&P asks the carrier to recognize the cost of coordinating the whole job.",
-      },
-      {
-        heading: "When contractors request it",
-        content: "Carriers often look at whether a general contractor is reasonably needed to coordinate the work. A simple roof replacement done by one roofing crew is often treated as a single trade, and many carriers resist adding O&P to it. When the job involves several trades that must be scheduled and coordinated, such as roofing plus gutters, siding, windows, interior drywall or paint, contractors often ask for it.\n\nSome carriers use an informal guideline that O&P applies when three or more trades are involved. That is a rule of thumb that some carriers use, not a universal law, and some states and policies take a different view. Ask your carrier or a licensed professional what applies where you work.",
-      },
-      {
-        heading: "How to document it",
-        content: "The aim is to show an adjuster, in plain facts, that coordination was needed and that you did it. Useful things to keep:\n\n• A list of every trade or subcontractor on the job, with dates\n• Who scheduled and supervised each one, and how\n• Your scope of work or contract showing you were responsible for the whole project\n• Messages and notes showing coordination with the homeowner, the adjuster and suppliers\n• Photos and notes that tie hidden damage to the extra work it required\n\nKeep it factual. Describe what happened and who did it, and do not argue about coverage in the documentation itself.",
-      },
-      {
-        heading: "Putting it in your request",
-        content: "Include O&P as its own line in your estimate or supplement package, not buried in a unit price. Add a short, neutral paragraph that says which trades were involved and that you coordinated them, and attach the supporting list. Reference the claim number on every page, as with any supplement.\n\nIf the carrier declines it, ask for the reason in writing. What happens next depends on your policy and your state, and may involve an appraisal or other process, so get advice from a licensed professional before escalating. Our guide on <a href='/blog/roofing-supplement-denied-what-to-do'>what to do when a supplement is denied</a> covers the general steps.",
-      },
-      {
-        heading: "Mistakes that weaken the request",
-        content: "• Asking for O&P on a single-trade job with no explanation of why coordination was needed\n• Vague notes, with no dates, names or scope of who did what\n• Mixing the O&P request into the hidden-damage supplement so neither is clear\n• Promising the homeowner the carrier will pay it, because that depends on the policy and carrier\n• Skipping the claim number or sending the documents as separate files",
-      },
-      {
-        heading: "Where Supplement Snap fits",
-        content: "Supplement Snap helps with the hidden-damage side. Your crew photographs damage on the roof, tags it, adds a note, reviews the drafted description and exports a PDF for the adjuster. That record can support the extra work that tear-off revealed. You add O&P in your own estimate.\n\nYour first project is free. See the <a href='/roofing-supplement-software'>feature walkthrough</a>, a <a href='/roofing-supplement-report-example'>sample report</a>, the <a href='/blog/xactimate-codes-for-roofing-supplements'>Xactimate codes guide</a> and the <a href='/pricing'>pricing page</a>.",
-      },
-    ],
-    faq: [
-      {
-        q: "What does O&P mean on a roofing claim?",
-        a: "Overhead and profit. It is a charge added to an insurance estimate to pay a general contractor for managing and coordinating the job, on top of the line items for materials and labor.",
-      },
-      {
-        q: "How much is overhead and profit?",
-        a: "In Xactimate estimates it is often shown as 10 percent overhead plus 10 percent profit, but that is a convention, not a rule. Carriers, policies and states differ.",
-      },
-      {
-        q: "Do roofers always get O&P?",
-        a: "No. It depends on the policy, the state, the carrier and the facts of the job. A single-trade roof replacement is often treated differently from a job that needs several trades coordinated.",
-      },
-      {
-        q: "What is the three-trade rule?",
-        a: "Some carriers informally apply O&P when three or more trades are involved. It is a rule of thumb that some carriers use, not a universal law, so check what applies where you work.",
-      },
-      {
-        q: "How do I document overhead and profit?",
-        a: "Keep a dated list of the trades and subcontractors, show who scheduled and supervised them, keep your scope or contract, and save messages showing coordination with the homeowner, adjuster and suppliers.",
-      },
-    ],
-    related: ["roofing-supplement-denied-what-to-do", "xactimate-codes-for-roofing-supplements", "roofing-supplement-template", "roof-damage-report-template"],
   },
   {
     slug: "supplement-snap-vs-roof-report-pro",
