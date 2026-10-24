@@ -96,7 +96,7 @@ export default function PricingPage() {
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/" className="hidden text-sm font-medium text-zinc-600 hover:text-zinc-900 sm:block">Home</Link>
-            <Link href="/demo" className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">Book a Demo</Link>
+            <Link href="/signup?trial=1" className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">Start Free Project</Link>
           </div>
         </div>
       </nav>
@@ -227,7 +227,7 @@ export default function PricingPage() {
         </div>
 
         <p className="mt-8 text-center text-sm text-zinc-500">
-          Need more than 5 users? <Link href="/demo" className="font-medium text-indigo-600 hover:text-indigo-500">Contact us</Link> for custom team pricing.
+          Need more than 5 users? <Link href="mailto:support@supplementsnap.io" className="font-medium text-indigo-600 hover:text-indigo-500">Contact us</Link> for custom team pricing.
         </p>
       </section>
 
@@ -317,8 +317,8 @@ export default function PricingPage() {
             Ready to stop leaving supplement money behind?
           </h2>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
-              Book a Demo
+            <Link href="/roofing-supplement-report-example" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
+              View a Sample Report
             </Link>
             <Link href="/signup" className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
               Get Started

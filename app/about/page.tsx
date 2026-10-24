@@ -90,9 +90,6 @@ export default function AboutPage() {
           <TrackedLink location="about-sample-report" href="/roofing-supplement-report-example" className="rounded-lg border border-zinc-300 px-6 py-2.5 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
             View a Sample Report
           </TrackedLink>
-          <TrackedLink location="about-demo" href="/demo" className="rounded-lg border border-zinc-300 px-6 py-2.5 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
-            Book a Demo
-          </TrackedLink>
         </div>
       </main>
       <SiteFooter />

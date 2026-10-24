@@ -200,8 +200,8 @@ export default function RoofingSupplementSoftwarePage() {
             <TrackedLink location="software-bottom-start-free" href="/signup" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
               Start Your Free Project
             </TrackedLink>
-            <TrackedLink location="software-bottom-demo" href="/demo" className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
-              Book a Demo
+            <TrackedLink location="software-bottom-sample-report" href="/roofing-supplement-report-example" className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
+              View a Sample Report
             </TrackedLink>
             <Link href="/pricing" className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
               View Pricing

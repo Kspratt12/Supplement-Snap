@@ -109,8 +109,8 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           {city.name} roofing crews find hidden damage on every tear-off. Supplement Snap helps you capture it, document it, and send adjuster-ready reports before you leave the job site.
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
-            Book a Demo
+          <Link href="/roofing-supplement-report-example" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
+            View a Sample Report
           </Link>
           <Link href="/pricing" className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
             See Pricing
@@ -244,8 +244,8 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             Book a free 15-minute walkthrough. I&apos;ll screen share and show you how Supplement Snap works on a real project. No pitch, just a demo.
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link href="/demo" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
-              Book a Demo
+            <Link href="/roofing-supplement-report-example" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
+              View a Sample Report
             </Link>
             <Link href="/pricing" className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto">
               See Pricing

@@ -46,10 +46,10 @@ export function NavLinks() {
         Log In
       </Link>
       <Link
-        href="/demo"
+        href="/signup"
         className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
       >
-        Book a Demo
+        Start Free
       </Link>
     </div>
   )

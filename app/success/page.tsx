@@ -66,10 +66,10 @@ export default function SuccessPage() {
                   Go to Dashboard
                 </Link>
                 <Link
-                  href="/demo"
+                  href="mailto:support@supplementsnap.io"
                   className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
                 >
-                  Book Onboarding Call
+                  Contact Support
                 </Link>
               </div>
             </>

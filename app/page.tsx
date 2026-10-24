@@ -90,12 +90,6 @@ export default function LandingPage() {
           >
             Get Started
           </TrackedLink>
-          <TrackedLink location="home-hero-demo"
-            href="/demo"
-            className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
-          >
-            Book a Demo
-          </TrackedLink>
         </div>
         <div className="mx-auto mt-6 flex items-center gap-2 justify-center">
           <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">New</span>
@@ -889,7 +883,7 @@ export default function LandingPage() {
             Ready to document what you find?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
-            Try your first project free, or book a demo to see how Supplement Snap helps your crew document damage and send clearer supplement reports.
+            Try your first project free, or view a sample report to see how Supplement Snap helps your crew document damage and send clearer supplement reports.
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <TrackedLink location="home-bottom-start-free"
@@ -898,11 +892,11 @@ export default function LandingPage() {
             >
               Start Free Project
             </TrackedLink>
-            <TrackedLink location="home-bottom-demo"
-              href="/demo"
+            <TrackedLink location="home-bottom-sample-report"
+              href="/roofing-supplement-report-example"
               className="w-full rounded-lg border border-zinc-300 bg-white px-7 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
             >
-              Book a Demo
+              View a Sample Report
             </TrackedLink>
           </div>
         </div>

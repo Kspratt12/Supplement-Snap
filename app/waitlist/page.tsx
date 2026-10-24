@@ -80,8 +80,8 @@ export default function WaitlistPage() {
         )}
 
         <p className="mt-8 text-sm text-zinc-500">
-          Want to talk now?{" "}
-          <Link href="/demo" className="font-semibold text-indigo-600 hover:text-indigo-500">Request a demo</Link>
+          Questions?{" "}
+          <a href="mailto:support@supplementsnap.io" className="font-semibold text-indigo-600 hover:text-indigo-500">Email support</a>
         </p>
       </main>
     </div>

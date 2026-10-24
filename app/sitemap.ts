@@ -8,7 +8,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: BASE_URL, lastModified: SITE_UPDATED, changeFrequency: "weekly", priority: 1 },
     { url: `${BASE_URL}/pricing`, lastModified: SITE_UPDATED, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE_URL}/demo`, lastModified: SITE_UPDATED, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/roofing-supplement-software`, lastModified: SITE_UPDATED, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/roofing-supplement-report-example`, lastModified: SITE_UPDATED, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/how-roofing-supplements-work`, lastModified: SITE_UPDATED, changeFrequency: "monthly", priority: 0.8 },

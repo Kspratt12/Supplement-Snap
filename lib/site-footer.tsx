@@ -24,7 +24,6 @@ export function SiteFooter() {
             <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Company</p>
             <div className="mt-3 flex flex-col gap-2">
               <Link href="/pricing" className="text-xs text-zinc-500 hover:text-zinc-700">Pricing</Link>
-              <Link href="/demo" className="text-xs text-zinc-500 hover:text-zinc-700">Book a Demo</Link>
               <Link href="/about" className="text-xs text-zinc-500 hover:text-zinc-700">About</Link>
               <Link href="/blog" className="text-xs text-zinc-500 hover:text-zinc-700">Blog</Link>
               <Link href="/terms" className="text-xs text-zinc-500 hover:text-zinc-700">Terms of Service</Link>
