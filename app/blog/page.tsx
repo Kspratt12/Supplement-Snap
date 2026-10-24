@@ -49,6 +49,7 @@ const ARTICLES = [
   { slug: "wind-damage-roof-insurance-claim-documentation", title: "Wind Damage Roof Insurance Claims: What to Document", desc: "Creased and missing shingles, lifted tabs, pattern and date of loss, with photos adjusters can verify.", date: "2026-10-23" },
   { slug: "roof-leak-insurance-claim-contractor-guide", title: "Roof Leak Insurance Claims: What Contractors Should Know", desc: "Finding the source, temporary protection and why coverage depends on the cause.", date: "2026-10-23" },
   { slug: "roofing-supplement-companies-vs-software", title: "Roofing Supplement Companies vs. Doing It In-House: How to Decide", desc: "What each option involves, how pricing models differ and the questions to ask before you choose.", date: "2026-10-23" },
+  { slug: "best-roofing-supplement-software", title: "Best Roofing Supplement Software (2026): Tools, Services and How to Choose", desc: "Compare estimating software, documentation tools, photo apps, CRMs and supplement services, with a fair way to test them.", date: "2026-10-23" },
 ]
 
 export default function BlogIndex() {

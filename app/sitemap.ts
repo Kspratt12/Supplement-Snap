@@ -23,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/blog/roofing-supplement-follow-up-log`, lastModified: new Date("2026-10-23"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/blog/roof-damage-report-template`, lastModified: new Date("2026-10-23"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/blog/roofing-supplement-companies-vs-software`, lastModified: new Date("2026-10-23"), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE_URL}/blog/best-roofing-supplement-software`, lastModified: new Date("2026-10-23"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/roof-leak-insurance-claim-contractor-guide`, lastModified: new Date("2026-10-23"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/blog/wind-damage-roof-insurance-claim-documentation`, lastModified: new Date("2026-10-23"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/blog/hail-damage-roof-insurance-claim-documentation`, lastModified: new Date("2026-10-23"), changeFrequency: "monthly", priority: 0.7 },

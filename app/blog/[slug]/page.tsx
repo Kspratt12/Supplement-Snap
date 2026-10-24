@@ -3379,6 +3379,99 @@ const ARTICLES: Article[] = [
     ],
     related: ["supplemental-roofing-estimate-explained", "roofing-supplement-follow-up-log", "xactimate-roofing-software-explained", "how-roofing-contractors-work-insurance-claims"],
   },
+  {
+    slug: "best-roofing-supplement-software",
+    title: "Best Roofing Supplement Software (2026): Tools, Services and How to Choose",
+    metaTitle: "Best Roofing Supplement Software (2026 Comparison)",
+    metaDescription: "Compare roofing supplement software, estimating tools, photo apps and supplement services. What each does, what it costs to run and how to choose.",
+    publishedDate: "2026-10-23",
+    updatedDate: "2026-10-23",
+    externalLinks: [
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+      { text: "CompanyCam", url: "https://companycam.com" },
+      { text: "NAIC: Consumer insurance resources", url: "https://content.naic.org" },
+    ],
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Main job", "Good fit when"],
+        rows: [
+          { feature: "Estimating software (for example Xactimate)", values: ["Price the work in the format adjusters use", "You already estimate in it or must match the carrier's estimate"] },
+          { feature: "Supplement documentation software", values: ["Capture proof on the roof and build the adjuster report", "Photos, notes and reports are where your supplements slow down"] },
+          { feature: "Job photo apps (for example CompanyCam)", values: ["Capture and share photos for any trade", "You need photos organized but write the supplement yourself"] },
+          { feature: "Roofing CRM and estimating platforms", values: ["Manage leads, jobs, proposals and customers", "You need a whole-business system, not just supplements"] },
+          { feature: "Supplement and estimating services", values: ["A third party writes the supplement for you", "You lack office capacity and accept sharing control"] },
+        ],
+      }},
+      3: { type: "checklist", data: { title: "Questions to ask before you choose", items: [
+        { text: "Can my crew use it on a phone with a weak signal?", checked: true },
+        { text: "Does each photo stay attached to its finding and note?", checked: true },
+        { text: "What does the finished report look like to an adjuster?", checked: true },
+        { text: "Can I export line items to use in my own estimate?", checked: true },
+        { text: "What is the real monthly cost at my volume?", checked: true },
+        { text: "Can I leave and take my data with me?", checked: true },
+      ]}},
+      4: { type: "steps", data: [
+        { num: "1", title: "Pick one real job", desc: "Choose a job with several hidden-damage findings." },
+        { num: "2", title: "Run it through each option", desc: "Use the same photos and notes in every tool you are testing." },
+        { num: "3", title: "Time the whole path", desc: "Measure from the first photo to a package you could send." },
+        { num: "4", title: "Compare the output", desc: "Show each result to someone who was not on the roof." },
+      ]},
+      5: { type: "tip", data: { type: "info", title: "Verify every vendor claim yourself", text: "Features and prices change often, and comparison pages (including this one) can be out of date. Confirm current details on each vendor's site and test on a real job before you commit." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "There is no single best roofing supplement software, because the phrase covers different jobs. Some tools price the work, some capture the proof, some manage your whole business and some are services where someone else writes the supplement. The right choice depends on where your supplements actually slow down.\n\nIf your problem is turning on-roof photos and notes into a clear report for the adjuster, a supplement documentation tool fits. If your problem is pricing in the adjuster's format, you need estimating software. If you have no office capacity, a service may fit.\n\nDisclosure: we make Supplement Snap, one of the tools discussed here. We describe other categories in general terms and ask you to verify details with each vendor.",
+      },
+      {
+        heading: "The five kinds of tools people mean",
+        content: "Searches for roofing supplement software return very different products. This table separates them by main job, so you can compare like with like. It describes categories, not specific feature lists, because those change.\n\nMany products blend two or more categories. A CRM may include estimating, and a photo app may add reports. Use the table to decide what you are shopping for first, then compare products inside that category.",
+      },
+      {
+        heading: "Estimating software: pricing the work",
+        content: "Xactimate, made by Verisk, is the estimating software most carriers and adjusters use. It organizes work into line items with quantities, units and regional prices, which is why supplements are easier to review when they follow that format.\n\nIt prices the work. It does not capture or organize the proof on the roof. Many contractors use it alongside a documentation tool. For how line items look in practice, see the <a href='/blog/xactimate-roofing-estimate-example'>Xactimate roofing estimate example</a> and the <a href='/blog/xactimate-roofing-software-explained'>explainer on what Xactimate does and does not do</a>.",
+      },
+      {
+        heading: "Documentation, photo apps and CRMs",
+        content: "Supplement documentation software focuses on the evidence: photos tagged to findings, notes, measurements and a report you can send. Supplement Snap is built for this job. Crews capture and label damage on the roof, drafts of the written descriptions are generated for you to review, and a PDF report can be emailed to the adjuster. Team plans add an Xactimate-ready CSV export, which is a starting list you review and price yourself.\n\nJob photo apps such as CompanyCam organize photos for many trades. They are a good fit if you write the supplement separately. Roofing CRMs and estimating platforms manage leads, jobs and proposals. They solve a wider problem and may cover supplements only lightly, so check how deep their supplement features go.\n\nSee how the two approaches compare in <a href='/blog/companycam-alternative-roofing-supplements'>photo apps vs. supplement tools</a> and in <a href='/blog/roofing-software-comparison'>roofing software for contractors compared</a>.",
+      },
+      {
+        heading: "Supplement services: when someone else writes it",
+        content: "Some companies write supplements for you from your photos and the adjuster's estimate. This can save office time. The trade-offs are cost, shared control of the file and communication with the carrier.\n\nPricing models differ. Some charge per supplement, some take a share of what is recovered and some use flat fees. Ask for the fee structure in writing, ask who talks to the adjuster and check what your state allows, since rules on who may negotiate a claim vary. The full comparison is in <a href='/blog/roofing-supplement-companies-vs-software'>supplement companies vs. doing it in-house</a>.",
+      },
+      {
+        heading: "How to choose and test fairly",
+        content: "Decide by testing, not by reading rankings. Rankings, including roundups from vendors, tend to favor the publisher's own product.\n\nUse the checklist above and run one real job through each option you are considering. The path from the first photo to a package you could send is the number that matters, along with how clear the result is to someone who was not on the roof.\n\nIf you are unsure what a complete package contains, start with the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a> and compare against the <a href='/roofing-supplement-report-example'>sample supplement report</a>.",
+      },
+      {
+        heading: "Where Supplement Snap fits, and where it does not",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> is built for roofing contractors who document hidden damage found at tear-off and prepare reports for insurance adjusters. Paid plans start at $99 a month with a 14-day free trial (a card is required), and you can start a free project first. See <a href='/pricing'>pricing</a> for current details.\n\nIt is not a CRM, it does not provide aerial measurements and it does not replace your estimating software. No tool can guarantee that a supplement is approved. Coverage and approval depend on the claim, the policy and the carrier.",
+      },
+    ],
+    faq: [
+      {
+        q: "What is the best roofing supplement software?",
+        a: "It depends on the job. Estimating software prices the work, documentation software captures and presents the proof, photo apps organize photos and services write supplements for you. Test your own job in each option before deciding.",
+      },
+      {
+        q: "How do you supplement a roof claim?",
+        a: "Document hidden damage found at tear-off with labeled photos, measurements and factual notes, tie each finding to the estimate line item it supports, and send the package to the adjuster. See what a supplemental roofing estimate is for the full process.",
+      },
+      {
+        q: "Do I need Xactimate to submit a supplement?",
+        a: "Not always. Many contractors submit a clear document that mirrors the line items. Requirements vary by carrier, so confirm with your adjuster.",
+      },
+      {
+        q: "Is roofing supplement software worth it?",
+        a: "It can be if supplement paperwork is slowing you down or photos and notes get separated. Test it on a real job and compare the time and the report against your current process.",
+      },
+      {
+        q: "Can software guarantee my supplement is approved?",
+        a: "No. Approval depends on the claim, the policy, the carrier and the documentation. Software can make your package clearer and more complete.",
+      },
+    ],
+    related: ["roofing-supplement-companies-vs-software", "xactimate-roofing-software-explained", "roofing-software-comparison", "supplemental-roofing-estimate-explained"],
+  },
 ]
 
 /* ── Inline link parser ── */
