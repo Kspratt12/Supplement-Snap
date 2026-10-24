@@ -19,7 +19,7 @@ const homepageFaqSchema = {
     { "@type": "Question", name: "Do I need special equipment?", acceptedAnswer: { "@type": "Answer", text: "No. Any smartphone with a camera works. Your crew is already carrying everything they need." } },
     { "@type": "Question", name: "Can my office staff see what the crew captures?", acceptedAnswer: { "@type": "Answer", text: "Yes. Everything is saved to the cloud by project. Office staff can log in from any device and see all captures, notes, and reports." } },
     { "@type": "Question", name: "What if my crew speaks Spanish?", acceptedAnswer: { "@type": "Answer", text: "Voice notes are automatically translated to English. Your crew speaks in their language, and the system converts it for the supplement report." } },
-    { "@type": "Question", name: "Is $99/month worth it for one crew?", acceptedAnswer: { "@type": "Answer", text: "One approved supplement can cover the monthly cost. At $99/month with no setup fees, recovering even one missed line item can pay for the platform. Results vary by claim." } },
+    { "@type": "Question", name: "Is $99/month worth it for one crew?", acceptedAnswer: { "@type": "Answer", text: "Depending on your claims, recovering one missed line item may offset the monthly cost. There are no setup fees. Results vary by claim and are not guaranteed." } },
   ],
 }
 
@@ -46,7 +46,7 @@ const orgSchema = {
   name: "Supplement Snap",
   url: "https://supplementsnap.io",
   logo: "https://supplementsnap.io/favicon.png",
-  description: "Roofing supplement software for contractors. Capture hidden damage, generate reports, recover more revenue.",
+  description: "Roofing supplement software for contractors. Capture hidden damage, generate adjuster-ready reports.",
   founder: { "@type": "Person", name: "Kelvin Spratt" },
 }
 
@@ -75,11 +75,11 @@ export default function LandingPage() {
         <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Roofing Supplement Software</p>
         <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
           <span className="block sm:inline">Roofing Supplement Software</span>
-          <span className="block sm:inline text-indigo-600"> That Helps You Recover More on Every Roof</span>
+          <span className="block sm:inline text-indigo-600"> That Helps You Document Hidden Damage on Every Roof</span>
         </h1>
         <p className="mx-auto mt-4 text-sm font-medium text-zinc-500">Built for roofing crews who document hidden damage during tear-off</p>
         <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl">
-          Stop leaving money on the table during tear-off. Supplement Snap helps roofing crews
+          Don't let hidden damage go undocumented during tear-off. Supplement Snap helps roofing crews
           capture hidden damage, generate supplement documentation, and email adjuster-ready
           PDF reports, all in minutes.
         </p>
@@ -328,7 +328,7 @@ export default function LandingPage() {
                   "Office spends hours writing supplement from memory",
                   "Documentation submitted days or weeks later",
                   "Adjuster denies supplement due to insufficient evidence",
-                  "You leave supplement money on the table",
+                  "Hidden damage never makes it into the claim file",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5">
                     <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -357,7 +357,7 @@ export default function LandingPage() {
                   "AI generates professional supplement narrative",
                   "PDF report emailed to adjuster the same day",
                   "Photos and notes go to the adjuster with every finding",
-                  "You can recover more supplement revenue on every job",
+                  "A clearer, more complete record on every job",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5">
                     <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -665,9 +665,9 @@ export default function LandingPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-base font-semibold">Recover more supplement revenue</h3>
+              <h3 className="text-base font-semibold">Document more of what you find</h3>
               <p className="mt-2 text-sm leading-relaxed text-zinc-500">
-                Every documented item is a line item you can recover. Stop leaving money behind because damage wasn&apos;t captured properly.
+                Every documented finding is something you can show the adjuster. Damage that is not captured properly is hard to support later.
               </p>
             </div>
             <div className="rounded-xl border border-zinc-200 bg-white p-6 text-center">
@@ -747,7 +747,7 @@ export default function LandingPage() {
               Simple pricing for roofing teams
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
-              One approved supplement can pay for the entire platform. Results vary by claim.
+              Depending on your claims, recovering one missed line item may offset the monthly cost. Results vary by claim.
             </p>
           </div>
 
@@ -870,7 +870,7 @@ export default function LandingPage() {
               },
               {
                 q: "Is $99/month worth it for one crew?",
-                a: "One approved supplement can cover the monthly cost. At $99/month with no setup fees, recovering even one missed line item can pay for the platform. Results vary by claim."
+                a: "Depending on your claims, recovering one missed line item may offset the monthly cost. There are no setup fees. Results vary by claim and are not guaranteed."
               },
             ].map((faq) => (
               <div key={faq.q} className="py-5">
@@ -886,10 +886,10 @@ export default function LandingPage() {
       <section className="border-t border-zinc-100 bg-zinc-50 py-20">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Ready to capture what you&apos;re owed?
+            Ready to document what you find?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
-            Try your first project free, or book a demo to see how Supplement Snap helps your crew document damage and recover more supplement revenue.
+            Try your first project free, or book a demo to see how Supplement Snap helps your crew document damage and send clearer supplement reports.
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <TrackedLink location="home-bottom-start-free"

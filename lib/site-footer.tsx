@@ -57,7 +57,7 @@ export function SiteFooter() {
               <Link href="/blog/hail-damage-roof-inspection" className="text-xs text-zinc-500 hover:text-zinc-700">Hail Damage Roof Inspection</Link>
               <Link href="/blog/xactimate-roofing-estimate-approved" className="text-xs text-zinc-500 hover:text-zinc-700">Xactimate Roofing Estimate Guide</Link>
               <Link href="/blog/roofing-software-comparison" className="text-xs text-zinc-500 hover:text-zinc-700">Roofing Software Comparison</Link>
-              <Link href="/blog/xactimate-roof-estimate-supplements" className="text-xs text-zinc-500 hover:text-zinc-700">Xactimate Roof Estimate Guide</Link>
+              <Link href="/blog/xactimate-roof-estimate-supplements" className="text-xs text-zinc-500 hover:text-zinc-700">Xactimate Supplements Guide</Link>
             </div>
           </div>
         </div>
