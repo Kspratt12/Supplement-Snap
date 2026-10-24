@@ -3424,7 +3424,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy and the carrier, not on who prepares the package.",
       },
     ],
-    related: ["supplemental-roofing-estimate-explained", "roofing-supplement-follow-up-log", "xactimate-roofing-software-explained", "how-roofing-contractors-work-insurance-claims"],
+    related: ["supplemental-roofing-estimate-explained", "roofing-supplement-follow-up-log", "xactimate-roofing-software-explained", "how-roofing-contractors-work-insurance-claims", "roofing-supplement-software-cost", "ai-roofing-supplement-tools-compared"],
   },
   {
     slug: "best-roofing-supplement-software",
@@ -3517,7 +3517,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy, the carrier and the documentation. Software can make your package clearer and more complete.",
       },
     ],
-    related: ["roofing-supplement-companies-vs-software", "xactimate-roofing-software-explained", "roofing-software-comparison", "supplemental-roofing-estimate-explained"],
+    related: ["roofing-supplement-companies-vs-software", "xactimate-roofing-software-explained", "roofing-software-comparison", "supplemental-roofing-estimate-explained", "supplement-snap-vs-roofgenius", "roofing-supplement-software-cost"],
   },
   {
     slug: "recoverable-depreciation-roof-claims",
@@ -3776,6 +3776,276 @@ const ARTICLES: Article[] = [
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     related: ["roof-inspection-report", "hail-damage-roof-inspection", "roof-damage-report-template", "document-rotted-roof-decking-tear-off"],
+  },
+  {
+    slug: "supplement-snap-vs-roofgenius",
+    title: "Supplement Snap vs RoofGenius: Which Fits a Small Roofing Company?",
+    metaTitle: "Supplement Snap vs RoofGenius for Small Roofing Companies",
+    metaDescription: "Supplement Snap vs RoofGenius compared on price, supplement limits, trial terms and what each does. We make Supplement Snap; verify details on each site.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "RoofGenius pricing (public page)", url: "https://roofgenius.ai/pricing" },
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Try the capture side on one real job.",
+    midCtaBody: "Your first Supplement Snap project is free. Judge the report it produces before you pay for anything.",
+    visuals: {
+      2: { type: "matrix", data: {
+        headers: ["Supplement Snap", "RoofGenius"],
+        rows: [
+          { feature: "Lowest plan with supplement features", values: ["Starter, $99 per month", "Growth, $597 per month"] },
+          { feature: "Supplement limit on that plan", values: ["Unlimited projects", "Up to 5 supplement claims per month"] },
+          { feature: "Users on that plan", values: ["1 (Team: 3, Pro: 5)", "Unlimited"] },
+          { feature: "Extra supplements", values: ["No per-project fee on paid plans", "Claim credits: $149 single, $139 each in a 5-pack, $130 each in a 10-pack"] },
+          { feature: "Free way to try it", values: ["First project free; 14-day trial on paid plans (card required)", "No free trial listed on the pricing page; a demo can be booked"] },
+          { feature: "Measurements and proposals", values: ["Not offered", "Offered (satellite reports, proposals)"] },
+        ],
+      }},
+      5: { type: "checklist", data: { title: "Questions to settle before you pick either", items: [
+        { text: "How many supplements do I file in a typical month?", checked: true },
+        { text: "Do I need measurements and proposals, or only supplement paperwork?", checked: true },
+        { text: "Does my crew need to capture proof on the roof?", checked: true },
+        { text: "How many people need a login?", checked: true },
+        { text: "Can I test it on one real job before paying?", checked: true },
+      ]}},
+      6: { type: "tip", data: { type: "info", title: "Check the vendor sites before you decide", text: "Prices and features come from each company's public pages as seen on October 24, 2026. They change. We have not run RoofGenius on a job, so this compares what each company publishes, not how either performs." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Supplement Snap and RoofGenius solve overlapping but different problems. RoofGenius describes itself as an AI platform for roofing claims, with satellite measurements, proposals and supplement tools. Supplement Snap does one job: it helps your crew capture hidden damage at tear-off and turn it into a report for the adjuster.\n\nFor a small company that mainly needs supplement documentation, the price difference is large. For a company that wants measurements, proposals and supplements in one system, RoofGenius covers more ground.\n\nDisclosure: we make Supplement Snap. We have not tested RoofGenius, and everything below about it comes from its public pages as seen on October 24, 2026. Confirm current details on its site.",
+      },
+      {
+        heading: "What each product is",
+        content: "RoofGenius's pricing page lists four plans: Retail, Growth, Concierge and Elite. Retail covers measurement reports, proposals and AI damage detection from photos. Growth adds what the page calls AI Supplements and storm canvassing. Higher plans add a done-for-you service where you forward a claim and the company prepares the supplement.\n\nSupplement Snap is a field tool. Your crew photographs damage on the roof, tags the roof area and damage type, adds a note by typing or by voice, and the app drafts a written description of each finding that you review and edit. You then export a PDF report and email it to the adjuster. See the <a href='/roofing-supplement-software'>feature walkthrough</a> and a <a href='/roofing-supplement-report-example'>sample report</a>.",
+      },
+      {
+        heading: "Price and limits side by side",
+        content: "The table lists what each company publishes. The tools are not identical, so a lower price does not mean the same work for less.\n\nOne detail matters for volume. RoofGenius's supplement plans are capped by claims per month, and extra claims are bought as credits or by contacting sales above 25 a month. Supplement Snap's paid plans allow unlimited projects, but a project is not the same thing as a claim, so count your own jobs.",
+      },
+      {
+        heading: "A worked example, using only the posted prices",
+        content: "This is arithmetic, not a savings claim. If you file four supplements in a month and use RoofGenius's Growth plan, you would pay $597 for the month, or $149.25 per claim for those four. If you used the five claims it allows, that is $119.40 per claim. A single claim credit is listed at $149.\n\nSupplement Snap's Starter plan is $99 for the month however many projects you run. That is $24.75 per project at four. The difference is real, but the tools do different work, so decide first what you need done.",
+      },
+      {
+        heading: "What RoofGenius does that Supplement Snap does not",
+        content: "• Measurements: satellite roof measurement reports, which its site lists at $10 each.\n• Proposals: branded retail proposals with digital sign-off.\n• Estimate audit: its AI Supplements feature is described as checking the carrier's estimate for missed line items, with code citations.\n• Done-for-you option: higher plans let you forward a claim and have the company prepare it.\n• Phone and chat support: its site lists a phone number and a live chat.\n\nSupplement Snap does none of these. It does not measure roofs, write proposals or audit a carrier's estimate. If those are your bottlenecks, it is not the right tool for them.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "Supplement Snap starts from the roof instead of from the carrier's estimate. It is built for the crew member on the roof who needs to capture proof quickly, including voice notes that are translated to English for the report when a crew member speaks Spanish.\n\nIt is a lower-cost option for a company with one to a few crews that wants clean, consistent documentation to send with supplements. The Starter plan is $99 per month, Team is $199 and adds an Xactimate-ready CSV export and email open tracking, and Pro is $299. Check the <a href='/pricing'>pricing page</a> for the current details.",
+      },
+      {
+        heading: "How to choose without guessing",
+        content: "Run the same real job through each option you are considering. Time the work from the first photo to a package you could send, then show each result to someone who was not on the roof.\n\nThen ask what the tool does if the adjuster pushes back. A report helps, but approval depends on the claim, the policy, the carrier and your documentation, and no software changes that. For a broader view of the category, read our <a href='/blog/best-roofing-supplement-software'>roofing supplement software comparison</a> and the guide to <a href='/blog/roofing-supplement-companies-vs-software'>companies versus software</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "Is Supplement Snap a RoofGenius alternative?",
+        a: "For supplement documentation, yes. For measurements, proposals and estimate audits, no. Supplement Snap does one job, capturing hidden damage and building the adjuster report, so it suits companies that do not need a full platform.",
+      },
+      {
+        q: "How much does RoofGenius cost?",
+        a: "Its public pricing page listed Retail at $297 per month, Growth at $597, Concierge at $997 and Elite at $1,997 as of October 24, 2026, with supplement claims capped per plan. Confirm current prices on its site.",
+      },
+      {
+        q: "How much does Supplement Snap cost?",
+        a: "The first project is free. Paid plans are Starter at $99 per month, Team at $199 and Pro at $299, each with a 14-day free trial that requires a card. See the pricing page for current details.",
+      },
+      {
+        q: "Does RoofGenius offer a free trial?",
+        a: "No free trial was listed on its pricing page when we looked, though a demo can be booked. Ask the company for current terms.",
+      },
+      {
+        q: "Will either tool get my supplement approved?",
+        a: "No. Approval depends on the claim, the policy, the carrier and your documentation. Software can make your package clearer and more complete.",
+      },
+    ],
+    related: ["best-roofing-supplement-software", "roofing-supplement-companies-vs-software", "ai-roofing-supplement-tools-compared", "roofing-supplement-software-cost"],
+  },
+  {
+    slug: "ai-roofing-supplement-tools-compared",
+    title: "AI Roofing Supplement Tools Compared: What Each One Actually Does",
+    metaTitle: "AI Roofing Supplement Tools Compared (2026)",
+    metaDescription: "AI roofing supplement tools compared by job: estimate audits, storm CRMs and field documentation, with listed prices and gaps marked. We make Supplement Snap.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "RoofGenius pricing (public page)", url: "https://roofgenius.ai/pricing" },
+      { text: "HailMate", url: "https://hailmate.ai" },
+      { text: "CapOut", url: "https://capout.ai" },
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Test one tool on a real job before you pay.",
+    midCtaBody: "Your first Supplement Snap project is free. Run the same job through any tool you are comparing and judge the output.",
+    visuals: {
+      2: { type: "matrix", data: {
+        headers: ["Main job", "Price listed", "Free trial listed"],
+        rows: [
+          { feature: "RoofGenius", values: ["Platform: measurements, proposals, supplement audit", "Growth $597 per month (up to 5 supplement claims)", "None listed; demo available"] },
+          { feature: "HailMate", values: ["Storm roofing CRM with a supplement engine", "Team $299 per month for up to 10 users; from $79 for hail maps only", "None listed; 15-minute demo offered"] },
+          { feature: "CapOut", values: ["Turns carrier estimate PDFs into structured data and Xactimate files", "Not listed", "Get started free, no card; length not listed"] },
+          { feature: "Roof Report Pro", values: ["AI tags damage types in photos, builds PDF reports", "Not checked here", "Not checked here"] },
+          { feature: "RAFTER AI", values: ["Markets automated Xactimate supplements and scope audits", "Not listed", "Not listed"] },
+          { feature: "Supplement Snap", values: ["Field capture and the adjuster report", "Starter $99, Team $199, Pro $299 per month", "First project free; 14-day trial, card required"] },
+        ],
+      }},
+      4: { type: "checklist", data: { title: "Ask any AI supplement tool these questions", items: [
+        { text: "Can I edit every line before it goes to the adjuster?", checked: true },
+        { text: "Does it show where each suggestion comes from?", checked: true },
+        { text: "What happens to my photos and claim documents?", checked: true },
+        { text: "What does it cost at my real monthly volume?", checked: true },
+        { text: "Can I test it on one real job first?", checked: true },
+      ]}},
+      5: { type: "tip", data: { type: "info", title: "Details change and some are not published", text: "This table reflects public pages as seen on October 24, 2026, and it marks what we could not confirm. Check each vendor's site, and do not send any AI output to an adjuster without reading it." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "AI roofing supplement tools fall into three groups, and comparing them as one list leads to bad choices. Some read the carrier's estimate and look for missing items. Some are whole-business systems for storm roofers. Some help your crew capture and present the proof from the roof.\n\nChoose by the job that slows you down. Disclosure: we make Supplement Snap, which is in the third group. We have not tested the other tools, so this compares what their public pages say.",
+      },
+      {
+        heading: "The three jobs these tools do",
+        content: "• Audit the estimate: read the adjuster's estimate and flag items to check. RoofGenius describes this for its supplement plans, and CapOut converts carrier PDFs into structured data and Xactimate files.\n• Run the business: manage storm leads, claims, estimating and invoicing, with supplement features inside. HailMate describes itself this way.\n• Document the damage: capture photos and notes on the roof and produce the report. Supplement Snap and Roof Report Pro are in this group.\n\nMany products blend these. Use the table to see where each one starts.",
+      },
+      {
+        heading: "Tool by tool, using what each company publishes",
+        content: "The table lists the main job, the price and the trial as each company shows them. Where a number was not published, it says so rather than guessing.\n\nRoofGenius lists Growth at $597 per month with up to five supplement claims, and bundles of claim credits from $149 each. HailMate lists a Team plan at $299 per month for up to ten users and a hail-maps-only start from $79. CapOut shows no prices on the page we read and offers to get started free without a card.",
+      },
+      {
+        heading: "What AI can and cannot do here",
+        content: "AI can read a long PDF quickly, organize photos and draft wording. It can also be wrong, and the cost of a wrong line in front of an adjuster falls on you.\n\nTreat every AI suggestion as a draft. A code citation needs checking against your local requirements. A missing item needs checking against your photos and the policy. A narrative needs to match what your crew actually saw. In Supplement Snap, the written descriptions are drafts you review and edit before anything is sent.",
+      },
+      {
+        heading: "How to compare them fairly",
+        content: "Pick one finished job and run it through each tool you are considering. Use the same photos and the same adjuster estimate. Time the work, then look at the output as the adjuster would.\n\nFor how this category fits with Xactimate and photo apps, see our <a href='/blog/best-roofing-supplement-software'>roofing supplement software overview</a>. For a head-to-head on price and limits, see <a href='/blog/supplement-snap-vs-roofgenius'>Supplement Snap vs RoofGenius</a>.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "Supplement Snap is for the documentation job. Your crew captures labeled photos and notes during tear-off, including voice notes translated from Spanish, and exports a PDF to email to the adjuster. It does not audit a carrier's estimate, measure roofs or run your business.\n\nIt is priced for smaller companies: the first project is free, then Starter is $99 per month, Team $199 and Pro $299. See the <a href='/roofing-supplement-software'>feature walkthrough</a> and a <a href='/roofing-supplement-report-example'>sample report</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "What is the best AI roofing supplement tool?",
+        a: "It depends on the job. Estimate audit tools, storm CRMs and field documentation tools solve different problems. Pick by where your supplements slow down, and test on a real job.",
+      },
+      {
+        q: "Can AI write a roofing supplement for me?",
+        a: "It can draft parts of one, but you are responsible for what is sent. Review every description, line item and code citation against your photos, the estimate and your local requirements.",
+      },
+      {
+        q: "Do these tools replace Xactimate?",
+        a: "No. Xactimate is the estimating software most carriers use. These tools work alongside it, by converting files, auditing estimates or documenting damage.",
+      },
+      {
+        q: "Are AI supplement tools worth it for a small roofing company?",
+        a: "It depends on your volume and where time is lost. If paperwork is slowing you down and photos and notes get separated, a documentation tool may help. Compare the real monthly cost at your volume.",
+      },
+      {
+        q: "Will an AI tool guarantee my supplement is approved?",
+        a: "No. Approval depends on the claim, the policy, the carrier and your documentation. No software can guarantee it.",
+      },
+    ],
+    related: ["supplement-snap-vs-roofgenius", "best-roofing-supplement-software", "xactimate-roofing-software-explained", "companycam-alternative-roofing-supplements"],
+  },
+  {
+    slug: "roofing-supplement-software-cost",
+    title: "How Much Does Roofing Supplement Software Cost? A 2026 Price Guide",
+    metaTitle: "Roofing Supplement Software Cost: 2026 Price Guide",
+    metaDescription: "What roofing supplement software costs: monthly plans, per-claim credits and outsourced services, using prices companies publish. We make Supplement Snap.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "RoofGenius pricing (public page)", url: "https://roofgenius.ai/pricing" },
+      { text: "HailMate", url: "https://hailmate.ai" },
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Find your own cost per supplement.",
+    midCtaBody: "Your first Supplement Snap project is free. Run one real job and see what the work takes before you commit to a plan.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Model", "Published price"],
+        rows: [
+          { feature: "Supplement Snap", values: ["Flat monthly plans", "First project free; Starter $99, Team $199, Pro $299 per month"] },
+          { feature: "RoofGenius", values: ["Monthly plan with a claim cap, plus credits", "Growth $597 per month (up to 5 claims); credits $149 single, $139 in a 5-pack, $130 in a 10-pack"] },
+          { feature: "HailMate", values: ["Monthly storm CRM", "Team $299 per month (up to 10 users); from $79 for hail maps only"] },
+          { feature: "Supplement writing service", values: ["Per supplement", "One company lists $150 per supplement; confirm on its site"] },
+          { feature: "Xactimate (estimating)", values: ["Monthly subscription", "A third-party listing shows about $350 per month as a baseline; confirm with Verisk"] },
+        ],
+      }},
+      3: { type: "matrix", data: {
+        headers: ["Monthly cost for 4 supplements", "Per supplement"],
+        rows: [
+          { feature: "Supplement Snap Starter ($99 per month)", values: ["$99", "$24.75"] },
+          { feature: "RoofGenius Growth ($597 per month, 4 of 5 claims)", values: ["$597", "$149.25"] },
+          { feature: "RoofGenius single claim credits ($149 each)", values: ["$596", "$149"] },
+          { feature: "Writing service at $150 each", values: ["$600", "$150"] },
+        ],
+      }},
+      5: { type: "checklist", data: { title: "Total cost checklist", items: [
+        { text: "Monthly price at the plan I would actually need", checked: true },
+        { text: "Limits: claims, projects, users or storage", checked: true },
+        { text: "Extra fees for going over a limit", checked: true },
+        { text: "Whether a card is needed to start a trial", checked: true },
+        { text: "Time my office spends reviewing the output", checked: true },
+        { text: "Whether I can cancel and export my data", checked: true },
+      ]}},
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Roofing supplement software costs anywhere from nothing to a few thousand dollars a month, because the phrase covers very different products. A documentation tool for one crew can cost under $100 a month. A full roofing platform with supplement features can cost several hundred. A service that writes the supplement for you charges per job.\n\nDisclosure: we make Supplement Snap. The prices below come from each company's public pages as seen on October 24, 2026, and they change, so confirm them on the vendor's site.",
+      },
+      {
+        heading: "The four ways these tools charge",
+        content: "• Flat monthly plans: a set price for a plan, often with limits on users or projects.\n• Monthly plans with a claim cap: a higher price that includes a number of supplement claims, with extra claims bought separately.\n• Whole-business software: a CRM or platform where supplements are one feature among many.\n• Per-supplement services: someone else writes the supplement for a fee per job.\n\nThe table lists what a few companies publish. It is not a ranking, and the products do different work.",
+      },
+      {
+        heading: "What drives the real cost",
+        content: "The monthly price is only part of it. Check the plan limits, since a cap on claims or users changes the cost at your volume. Check what happens beyond the limit, such as credits or a call to sales. Check whether a trial needs a card, and what happens to your data if you leave.\n\nThe largest cost is often your own time. A cheap tool that needs heavy editing can cost more than a pricier one that produces a clean report. That is why testing on a real job matters more than the sticker price.",
+      },
+      {
+        heading: "A worked example, using only the posted prices",
+        content: "Suppose you file four supplements in a month. This is plain arithmetic from posted prices, not a savings claim, and the tools do different work.\n\nOn Supplement Snap Starter, the month costs $99, or $24.75 per project. On RoofGenius Growth, the month costs $597, or $149.25 for each of four claims. Buying four single RoofGenius claim credits at $149 would cost $596. A service that lists $150 per supplement would cost $600.\n\nAt higher volume the gaps change. A capped plan gets cheaper per claim as you use more of the cap, and a flat plan gets cheaper per project as you run more jobs.",
+      },
+      {
+        heading: "Which cost model fits which company",
+        content: "• One or two crews, a handful of supplements a month: a flat, low-cost documentation tool usually fits.\n• A company that wants measurements, proposals and supplements in one system: a platform may justify a higher price.\n• A company with no office time at all: a per-supplement service trades money for time, and you share control of the file.\n\nFor how these options compare in practice, read the <a href='/blog/roofing-supplement-companies-vs-software'>guide to companies versus software</a> and the <a href='/blog/best-roofing-supplement-software'>software overview</a>.",
+      },
+      {
+        heading: "Supplement Snap pricing",
+        content: "Supplement Snap's first project is free. Paid plans are Starter at $99 per month with unlimited projects and one user, Team at $199 with up to three users, an Xactimate-ready CSV export and email open tracking, and Pro at $299 with up to five users and custom branding. Paid plans start with a 14-day free trial that requires a card, and you can cancel before it ends.\n\nSee the <a href='/pricing'>pricing page</a> for current details, and a <a href='/roofing-supplement-report-example'>sample report</a> to see what you would be paying for.",
+      },
+    ],
+    faq: [
+      {
+        q: "How much does roofing supplement software cost?",
+        a: "Prices range widely. Companies publish plans from under $100 per month for a documentation tool to several hundred for a platform, and some services charge per supplement. Compare at your real monthly volume.",
+      },
+      {
+        q: "Is there free roofing supplement software?",
+        a: "Some tools offer a free first project or a free trial, which lets you test before paying. A fully featured paid tool is rarely free for ongoing use. Supplement Snap's first project is free.",
+      },
+      {
+        q: "Is it cheaper to hire a supplement service?",
+        a: "It depends on volume. A per-supplement fee can cost less at very low volume and more as volume grows. You also share control of the file and depend on the service's turnaround.",
+      },
+      {
+        q: "Does Xactimate cost extra?",
+        a: "Xactimate is a separate subscription from Verisk, and many contractors use it alongside a documentation tool. Confirm current pricing with Verisk.",
+      },
+      {
+        q: "Will paying more get my supplement approved?",
+        a: "No. Approval depends on the claim, the policy, the carrier and your documentation, not on the price of the tool.",
+      },
+    ],
+    related: ["best-roofing-supplement-software", "roofing-supplement-companies-vs-software", "supplement-snap-vs-roofgenius", "ai-roofing-supplement-tools-compared"],
   },
 ]
 

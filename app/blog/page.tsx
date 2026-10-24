@@ -53,6 +53,9 @@ const ARTICLES = [
   { slug: "recoverable-depreciation-roof-claims", title: "Recoverable Depreciation on a Roof Claim: How It Works", desc: "ACV vs. RCV, when insurers release held-back depreciation and what paperwork helps.", date: "2026-10-23" },
   { slug: "does-insurance-cover-roof-replacement", title: "Does Insurance Cover Roof Replacement? A Contractor Guide", desc: "When insurance may pay for a roof, when it usually does not, and how to explain it without promising an outcome.", date: "2026-10-23" },
   { slug: "roof-inspection-checklist", title: "Roof Inspection Checklist for Roofing Contractors", desc: "Exterior, flashing, attic and decking checklist, plus how to document findings.", date: "2026-10-23" },
+  { slug: "supplement-snap-vs-roofgenius", title: "Supplement Snap vs RoofGenius: Which Fits a Small Roofing Company?", desc: "Price, supplement limits, trial terms and what each does, based on public pages.", date: "2026-10-24" },
+  { slug: "ai-roofing-supplement-tools-compared", title: "AI Roofing Supplement Tools Compared: What Each One Actually Does", desc: "Estimate audits, storm CRMs and field documentation compared by job, with gaps marked.", date: "2026-10-24" },
+  { slug: "roofing-supplement-software-cost", title: "How Much Does Roofing Supplement Software Cost? A 2026 Price Guide", desc: "Monthly plans, claim credits and per-supplement services, using prices companies publish.", date: "2026-10-24" },
 ]
 
 export default function BlogIndex() {
