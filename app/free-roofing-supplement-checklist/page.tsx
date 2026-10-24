@@ -6,7 +6,7 @@ import { SiteFooter } from "../../lib/site-footer"
 import { ChecklistClient } from "./checklist-client"
 
 const URL = "https://supplementsnap.io/free-roofing-supplement-checklist"
-const TITLE = "Free Roofing Supplement Checklist (Printable) | Supplement Snap"
+const TITLE = "Free Roofing Supplement Checklist (Printable)"
 const DESCRIPTION =
   "A free, printable roofing supplement checklist: photos, measurements, damage notes, documents and a final review before you submit to the adjuster."
 

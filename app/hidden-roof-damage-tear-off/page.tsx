@@ -13,6 +13,19 @@ export const metadata: Metadata = {
 export default function HiddenRoofDamagePage() {
   return (
     <div className="bg-white text-zinc-900">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://supplementsnap.io" },
+              { "@type": "ListItem", position: 2, name: "Hidden Roof Damage at Tear-Off", item: "https://supplementsnap.io/hidden-roof-damage-tear-off" },
+            ],
+          }),
+        }}
+      />
       <nav className="border-b border-zinc-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5">
