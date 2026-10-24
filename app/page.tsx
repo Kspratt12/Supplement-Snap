@@ -158,7 +158,7 @@ export default function LandingPage() {
                 <div className="p-3">
                   <div className="mb-2 flex items-center gap-1.5">
                     <div className="flex h-4 w-4 items-center justify-center rounded bg-indigo-600 text-[6px] font-bold text-white">S</div>
-                    <span className="text-[8px] font-bold text-zinc-700">Welcome back, Kelvin</span>
+                    <span className="text-[8px] font-bold text-zinc-700">Welcome back, Tanner</span>
                   </div>
                   <div className="mb-2 rounded border border-zinc-100 p-2">
                     <div className="flex items-center justify-between">
