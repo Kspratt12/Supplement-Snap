@@ -867,6 +867,8 @@ function Home() {
           const { draft: rawDraft } = await res.json()
       const draft = cleanAi(rawDraft)
           setDrafts((prev) => ({ ...prev, [c.id]: draft }))
+          // Persist the draft so the report reads the same next time it is generated
+          supabase.from("captures").update({ draft: draft }).eq("id", c.id).then(() => {})
         }
       } catch {
         // Continue generating remaining drafts even if one fails
