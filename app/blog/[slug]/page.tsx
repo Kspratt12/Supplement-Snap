@@ -869,7 +869,7 @@ const ARTICLES: Article[] = [
       1: { src: "/blog/hail-damage-roof-inspection/hail-damaged-shingles.jpg", width: 1200, height: 630, alt: "Close-up of hail-damaged roof shingles showing circular impact marks and granule loss" },
       3: { src: "/blog/hail-damage-roof-inspection/hidden-hail-damage.jpg", width: 1280, height: 720, alt: "Cracked pipe boot found during hail damage roof tear-off inspection" },
     },
-    related: ["how-insurance-adjusters-determine-roof-damage","storm-damage-roof-repair","roofing-photo-documentation-checklist","roof-inspection-report"],
+    related: ["how-insurance-adjusters-determine-roof-damage","hail-damage-roof-insurance-claim-documentation","roofing-photo-documentation-checklist","roof-inspection-report"],
     sections: [
       {
         heading: "Understanding hail damage on a roof",
@@ -2953,6 +2953,431 @@ const ARTICLES: Article[] = [
       },
     ],
     related: ["roofing-photo-documentation-checklist", "roof-inspection-report", "roofing-supplement-template", "document-rotted-roof-decking-tear-off"],
+  },
+  {
+    slug: "how-roofing-contractors-work-insurance-claims",
+    title: "How Roofing Contractors Work Insurance Claims: A Step-by-Step Guide",
+    metaTitle: "How Roofers Work Insurance Claims (Step by Step)",
+    metaDescription: "How roofing contractors work insurance claims from the first inspection to final payment: the steps, the contractor's role, documentation and supplements.",
+    publishedDate: "2026-10-23",
+    updatedDate: "2026-10-23",
+    externalLinks: [
+      { text: "NAIC: Consumer insurance resources", url: "https://content.naic.org" },
+      { text: "NRCA: National Roofing Contractors Association", url: "https://www.nrca.net" },
+    ],
+    visuals: {
+      1: { type: "steps", data: [
+        { num: "1", title: "Homeowner reports the claim", desc: "The policyholder contacts the insurer, who assigns an adjuster and a claim number." },
+        { num: "2", title: "Contractor inspects and documents", desc: "Photos, measurements and notes record the roof's condition before any work starts." },
+        { num: "3", title: "Adjuster inspects and estimates", desc: "The carrier's adjuster reviews the damage and writes an estimate under the policy." },
+        { num: "4", title: "Estimate is compared and discussed", desc: "Differences between the contractor's findings and the estimate are reviewed with the adjuster." },
+        { num: "5", title: "Work begins and hidden damage is documented", desc: "Concealed conditions found at tear-off are photographed and measured." },
+        { num: "6", title: "Supplement and final payment", desc: "Additional items are submitted, and remaining payments are released according to the policy." },
+      ]},
+      2: { type: "tip", data: { type: "warning", title: "Know your state's rules on contractors and claims", text: "In many states, contractors may not negotiate a claim on a homeowner's behalf unless they hold the right license, and other rules apply to fees and contracts. Check your state insurance department before you act beyond documenting and estimating." } },
+      4: { type: "checklist", data: { title: "Habits that keep claims moving", items: [
+        { text: "Record the claim number, carrier and adjuster on day one", checked: true },
+        { text: "Photograph the roof before any work starts", checked: true },
+        { text: "Keep the original adjuster estimate with the job file", checked: true },
+        { text: "Label photos by roof area and finding", checked: true },
+        { text: "Log every call and email with the adjuster", checked: true },
+        { text: "Document hidden damage before it is covered", checked: true },
+      ]}},
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Roofing contractors work insurance claims by documenting the roof's condition, providing an estimate, supporting the homeowner while the insurance adjuster reviews the damage, and then submitting a supplement if hidden damage turns up during the work. The insurer decides what is covered and how much it pays. The contractor's job is to make the roof's condition and the cost of repair clear and verifiable.\n\nThis guide walks through that workflow from the first inspection to the final payment. It is general information, not legal or insurance advice. Rules differ by state, carrier and policy, so confirm the specifics for your area.",
+      },
+      {
+        heading: "The claim workflow in six steps",
+        content: "Every claim is a little different, but most follow the same path. Understanding the sequence helps you know where your documentation matters and when to expect questions.\n\nThe homeowner starts the claim with their insurer. The adjuster reviews the damage and builds an estimate. If your findings differ from that estimate, you raise the differences with supporting evidence. When work begins, conditions that were hidden may surface, and a supplement addresses them. Payment timing depends on the policy, including whether it pays actual cash value first and releases the rest after the work is complete.",
+      },
+      {
+        heading: "What the contractor's role is, and where it stops",
+        content: "A contractor's role is practical and evidence-based:\n\n• Inspect and document: Photos, measurements and a factual description of the roof's condition.\n• Provide an estimate: Scope and price for the repair or replacement.\n• Support the homeowner: Explain what you found and be available when the adjuster inspects.\n• Document hidden damage: Record conditions found during tear-off and submit them as a supplement.\n\nWhere it stops matters just as much. Deciding coverage belongs to the insurer. Depending on the state, negotiating a claim on a homeowner's behalf may require a public adjuster license. Staying within what you can document and estimate protects you and the homeowner.",
+      },
+      {
+        heading: "The first inspection: what to record",
+        content: "Your first visit sets the baseline for everything that follows. Photograph every slope, then the specific areas of concern. Include flashing, vents and penetrations. Note the roof's approximate age, the number of layers if you can tell and any visible wear separate from the reported damage.\n\nBe honest in your notes. If you see old wear that is not related to the storm, record it as such. A balanced record is more credible, and credibility helps when you later ask the adjuster to consider additional items. The <a href='/blog/roof-damage-report-template'>roof damage report template</a> gives you a structure to follow.",
+      },
+      {
+        heading: "Working with the adjuster",
+        content: "Adjusters handle many claims and respond best to organized, specific information. Some practical habits:\n\n• Be present when you can: With the homeowner's permission, being on site during the adjuster's inspection lets you show what you found.\n• Compare estimates line by line: Note what is missing or different, not just the total.\n• Offer evidence, not arguments: Photos, measurements and references beat opinions.\n• Ask for reasons in writing: If something is denied, the stated reason tells you what to document next.\n• Keep a record: Dates, names and what was said.\n\nFor the evaluation side, read <a href='/blog/how-insurance-adjusters-determine-roof-damage'>how adjusters determine roof damage</a>.",
+      },
+      {
+        heading: "Hidden damage and supplements",
+        content: "The first estimate is based on what could be seen. Once the old roofing comes off, you may find damaged decking, failed flashing, missing underlayment or extra layers. A supplement is the documented request for those additional costs.\n\nThe strength of a supplement is its proof: labeled photos taken before the condition is covered, measurements that match your notes and a short factual explanation. For the full picture, see <a href='/blog/supplemental-roofing-estimate-explained'>what a supplemental roofing estimate is</a> and <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a>.",
+      },
+      {
+        heading: "Payment and closing the claim",
+        content: "Payments follow the policy. Many policies pay actual cash value first, then release recoverable depreciation when the work is finished and documented. Final invoices, completion photos and any supplement approvals feed into that last step.\n\nTrack every open claim so none stalls. A simple tracker such as the <a href='/blog/roofing-supplement-follow-up-log'>roofing supplement follow-up log</a> keeps submissions, responses and next steps in one place.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps crews capture photos, areas and notes on the roof, organize findings by claim and produce a report for the adjuster. It supports the documentation part of this workflow. It does not decide coverage or guarantee approval. See the <a href='/roofing-supplement-report-example'>sample report</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "How do roofing contractors work with insurance companies?",
+        a: "They document the roof's condition, provide an estimate, support the homeowner during the adjuster's review and submit supplements for hidden damage found during the work. The insurer decides coverage and payment.",
+      },
+      {
+        q: "Can a roofer negotiate with the insurance company for me?",
+        a: "It depends on the state. In many places, negotiating a claim for a homeowner requires a public adjuster license. Contractors can usually document and estimate but should check local rules.",
+      },
+      {
+        q: "What is the roofing insurance claim process?",
+        a: "The homeowner reports the claim, the adjuster inspects and estimates, the contractor documents and compares findings, work begins, hidden damage is supplemented, and payments are released under the policy terms.",
+      },
+      {
+        q: "Does the contractor or the insurer decide what is covered?",
+        a: "The insurer decides, based on the policy and the claim. The contractor provides evidence and an estimate.",
+      },
+      {
+        q: "What documentation do I need for a roof insurance claim?",
+        a: "Labeled photos, measurements, notes on each finding, the adjuster's estimate and a record of all communication.",
+      },
+    ],
+    related: ["supplemental-roofing-estimate-explained", "how-insurance-adjusters-determine-roof-damage", "roof-damage-report-template", "roofing-supplement-follow-up-log"],
+  },
+  {
+    slug: "hail-damage-roof-insurance-claim-documentation",
+    title: "Hail Damage Roof Insurance Claims: What Contractors Should Document",
+    metaTitle: "Hail Damage Roof Insurance Claims: What to Document",
+    metaDescription: "What roofing contractors should document on a hail damage insurance claim: signs of hail damage, test squares, date of loss and the photos adjusters need.",
+    publishedDate: "2026-10-23",
+    updatedDate: "2026-10-23",
+    externalLinks: [
+      { text: "NOAA National Weather Service", url: "https://www.weather.gov" },
+      { text: "NOAA Storm Events Database", url: "https://www.ncdc.noaa.gov/stormevents/" },
+      { text: "IBHS: Insurance Institute for Business & Home Safety", url: "https://ibhs.org" },
+    ],
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to record"],
+        rows: [
+          { feature: "Shingle impacts", values: ["Location, size and pattern of marks, compared across slopes"] },
+          { feature: "Granule loss", values: ["Exposed mat or bare spots, with a close-up and a wide shot"] },
+          { feature: "Soft metals", values: ["Dents on vents, flashing, drip edge and gutters"] },
+          { feature: "Collateral items", values: ["Damage to siding, fences, AC units or window screens, where present"] },
+          { feature: "Roof condition", values: ["Approximate age and general wear, recorded honestly"] },
+        ],
+      }},
+      2: { type: "tip", data: { type: "info", title: "Thresholds vary by carrier", text: "Some carriers evaluate hail with test squares and count impacts per square. The number that counts as damage differs between carriers and guidelines, so ask the adjuster what standard applies to your claim." } },
+      4: { type: "checklist", data: { title: "Hail claim photo checklist", items: [
+        { text: "Overview of every slope, labeled by direction", checked: true },
+        { text: "Close-ups of impacts with a scale in frame", checked: true },
+        { text: "Test square areas marked and photographed, if used", checked: true },
+        { text: "Soft metals and collateral damage", checked: true },
+        { text: "Date and time on photos, with the date of loss noted", checked: true },
+        { text: "Both damaged and undamaged slopes, for comparison", checked: true },
+      ]}},
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "On a hail damage claim, contractors should document what hail did to the roof and the property, where it did it, and when it happened. That means labeled photos of impacts on each slope, evidence on soft metals and nearby items, notes on the roof's age and condition, and a record of the date of loss.\n\nThe insurer decides whether the damage is covered and how it is measured. Your documentation helps the adjuster see what you saw. This guide is general information, and carrier standards vary.",
+      },
+      {
+        heading: "What hail damage looks like",
+        content: "Hail damage on asphalt shingles generally shows up as impact marks, bruising or loss of granules that exposes the mat. On metal components, it can appear as dents. Hail also damages items around the roof, which can help show that a storm reached the property.\n\nNot every mark is hail. Wear, blistering, foot traffic, manufacturing issues and other events can leave similar-looking marks. A careful record separates what you can tie to hail from what you cannot.",
+      },
+      {
+        heading: "Test squares and thresholds",
+        content: "Some carriers evaluate hail damage by choosing a representative area of each slope, often called a test square, and counting impacts within it. The count that triggers repair or replacement varies by carrier and guideline.\n\nIf a test square is used, photograph its boundaries and the impacts inside it. If the adjuster used one, ask what standard applies. Knowing the method lets you document in a way that matches how the claim is being evaluated.",
+      },
+      {
+        heading: "Verify the date of loss",
+        content: "Insurance coverage ties to a date of loss, so it helps to know when the storm happened. Public weather resources can help you confirm that hail occurred in the area on a given date. The National Weather Service and NOAA's Storm Events Database are common references.\n\nRecord the date you are working from and where you found it. This is supporting context. The carrier and policy determine how the date of loss is used.",
+      },
+      {
+        heading: "Photo and notes checklist",
+        content: "The checklist covers the shots that make a hail report easy to follow. Take wide photos first, then close-ups, and label each one with the slope or component. Compare damaged slopes with less affected ones so the pattern is clear.\n\nFor more detail on what to capture, see the <a href='/blog/hail-damage-roof-inspection'>hail damage roof inspection guide</a> and the <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a>.",
+      },
+      {
+        heading: "Common mistakes on hail claims",
+        content: "These slow claims or weaken credibility:\n\n• Treating all wear as hail: Record old wear separately.\n• Missing the wide shot: A close-up with no location is hard to place.\n• No scale: Without one, size is a guess.\n• Vague notes: Say how many, where and how large.\n• Ignoring soft metals: They are quick to photograph and can support the overall picture.\n• Guessing at coverage: That decision belongs to the carrier.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> lets a crew capture labeled photos, roof areas and notes as they work, then builds a report you can send to the adjuster. It does not decide coverage or guarantee approval. See the <a href='/roofing-supplement-report-example'>sample report</a> and the <a href='/free-roofing-supplement-checklist'>free checklist</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "What should a contractor document on a hail damage claim?",
+        a: "Impacts on each slope, soft-metal dents, collateral damage, the roof's age and condition, and the date of loss, all with labeled photos and notes.",
+      },
+      {
+        q: "What is a test square in a hail inspection?",
+        a: "A representative area of a slope used by some carriers. Impacts within it are counted, and the threshold varies by carrier and guideline.",
+      },
+      {
+        q: "How do I confirm when hail happened?",
+        a: "Public weather resources such as the National Weather Service and NOAA's Storm Events Database can help confirm hail in an area on a given date. Record the source.",
+      },
+      {
+        q: "Does documenting hail damage guarantee the claim is approved?",
+        a: "No. Coverage and approval depend on the policy, the carrier and the claim.",
+      },
+      {
+        q: "Can an adjuster deny a hail claim because the roof is old?",
+        a: "Roof age and condition can affect how a claim is evaluated and paid, depending on the policy. Review the policy terms for details.",
+      },
+    ],
+    related: ["hail-damage-roof-inspection", "how-insurance-adjusters-determine-roof-damage", "roofing-photo-documentation-checklist", "roof-damage-report-template"],
+  },
+  {
+    slug: "wind-damage-roof-insurance-claim-documentation",
+    title: "Wind Damage Roof Insurance Claims: What to Document",
+    metaTitle: "Wind Damage Roof Insurance Claims: What to Document",
+    metaDescription: "How to document wind damage on a roof for an insurance claim: creased and missing shingles, lifted tabs, debris impact, photos and notes adjusters can verify.",
+    publishedDate: "2026-10-23",
+    updatedDate: "2026-10-23",
+    externalLinks: [
+      { text: "NOAA National Weather Service", url: "https://www.weather.gov" },
+      { text: "IBHS: Insurance Institute for Business & Home Safety", url: "https://ibhs.org" },
+      { text: "NRCA: National Roofing Contractors Association", url: "https://www.nrca.net" },
+    ],
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to record"],
+        rows: [
+          { feature: "Missing shingles", values: ["Where they are and how many, with the exposed underlayment or deck"] },
+          { feature: "Creased shingles", values: ["A horizontal fold or crease line across the tab, close-up with a scale"] },
+          { feature: "Lifted or unsealed tabs", values: ["Location and whether the seal strip has released"] },
+          { feature: "Torn or displaced pieces", values: ["Edges, ridges and hips, which often show wind effects first"] },
+          { feature: "Debris impact", values: ["Dents, punctures or marks from branches or other objects"] },
+        ],
+      }},
+      2: { type: "steps", data: [
+        { num: "1", title: "Photograph the whole roof", desc: "Every slope, labeled by direction, before focusing on details." },
+        { num: "2", title: "Map the pattern", desc: "Note which slopes and edges are affected and which are not." },
+        { num: "3", title: "Document each finding", desc: "Close-up, wide shot, scale and a short note for each." },
+        { num: "4", title: "Record the storm date", desc: "Note the date of loss and the source of any weather confirmation." },
+      ]},
+      3: { type: "tip", data: { type: "tip", title: "Record what is not damaged too", text: "Showing that some slopes are intact while others are damaged makes the pattern clearer, and it shows you are describing the roof honestly." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "To document wind damage on a roof, photograph the whole roof, then record each finding: missing shingles, creased shingles, lifted or unsealed tabs and torn or displaced pieces. Note where each one is, how many there are and where the pattern is concentrated, and record the date of loss.\n\nThe adjuster and the policy decide what is covered. Your job is to make what you saw clear and verifiable. This is general guidance, and carrier standards differ.",
+      },
+      {
+        heading: "What wind damage looks like on a roof",
+        content: "Wind damage often appears at edges, ridges, hips and rakes first, because those areas see the most uplift. Shingles may be missing, creased or lifted, and the sealing strip may have released. In stronger events, debris can add impact damage.\n\nAs with any storm damage, separate wind effects from age, wear and installation issues. Shingles that lifted because the adhesive had failed long before the storm are a different story from shingles that lifted in a recent event. An honest record helps the adjuster sort that out.",
+      },
+      {
+        heading: "How to document it, step by step",
+        content: "A repeatable routine keeps the record complete. Start with overview photos, then map the pattern, then document each finding in detail.\n\nFor each finding, take a wide shot that shows where it is, then a close-up with a scale. Add a short note: what you saw, where and how many. Label the photo with the slope or component so it can be matched to your notes later.",
+      },
+      {
+        heading: "Pattern and direction matter",
+        content: "Where wind damage sits on a roof can tell a story. Damage concentrated on slopes facing the storm's direction, or along edges and ridges, is consistent with wind. Damage scattered evenly across every slope may point to other causes.\n\nRecord the pattern, but describe it neutrally. Say which slopes and edges are affected and which are not, and let the adjuster interpret it.",
+      },
+      {
+        heading: "Date of loss and weather confirmation",
+        content: "Policies tie to a date of loss. Public sources such as the National Weather Service can help you confirm that high winds occurred in the area on a given date. Note the date and the source in your record.\n\nThis is supporting information. How the carrier uses it depends on the claim and the policy.",
+      },
+      {
+        heading: "Mistakes to avoid",
+        content: "• Over-attributing: Do not call everything wind damage. Record wear separately.\n• Skipping the wide shot: Close-ups alone do not show location.\n• No count: Say how many, not just some.\n• Missing the undamaged areas: Context makes the pattern clear.\n• Leaving out the date: Always note the date of loss and your source.\n\nBefore you send the package, check it against the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a> and the <a href='/blog/roof-damage-report-template'>roof damage report template</a>.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps crews capture labeled photos, areas and notes on the roof and assemble a report for the adjuster. It supports documentation and does not decide coverage. For the broader process, read <a href='/blog/how-roofing-contractors-work-insurance-claims'>how roofing contractors work insurance claims</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "How do you document wind damage to a roof?",
+        a: "Photograph the whole roof, then each finding with a wide shot, a close-up and a scale, label each one and note how many and where. Record the date of loss.",
+      },
+      {
+        q: "What does wind damage to shingles look like?",
+        a: "Missing shingles, creased shingles, lifted or unsealed tabs and torn pieces, often starting at edges, ridges and hips.",
+      },
+      {
+        q: "How can I tell wind damage from normal wear?",
+        a: "Look at the pattern, the condition of the exposed surfaces and the age of the roof, and record wear separately. The adjuster makes the final determination.",
+      },
+      {
+        q: "Does wind damage need to be reported right away?",
+        a: "Policies often have notice requirements. Check the policy and your state's rules for timing.",
+      },
+      {
+        q: "Will good documentation guarantee the claim is paid?",
+        a: "No. It helps the adjuster verify what you found, but coverage depends on the policy, the carrier and the claim.",
+      },
+    ],
+    related: ["how-roofing-contractors-work-insurance-claims", "hail-damage-roof-insurance-claim-documentation", "roof-damage-report-template", "storm-damage-roof-repair"],
+  },
+  {
+    slug: "roof-leak-insurance-claim-contractor-guide",
+    title: "Roof Leak Insurance Claims: What Contractors Should Know",
+    metaTitle: "Roof Leak Insurance Claims: A Contractor Guide",
+    metaDescription: "What contractors should know about roof leak insurance claims: finding the source, documenting damage, temporary protection and why coverage depends on the cause.",
+    publishedDate: "2026-10-23",
+    updatedDate: "2026-10-23",
+    externalLinks: [
+      { text: "NAIC: Consumer insurance resources", url: "https://content.naic.org" },
+      { text: "NRCA: National Roofing Contractors Association", url: "https://www.nrca.net" },
+    ],
+    visuals: {
+      1: { type: "compare", data: {
+        before: { label: "Signs pointing to a sudden event", items: ["Recent storm with matching date", "Fresh damage such as a missing or torn shingle", "Interior stain that appeared recently", "Damage localized near the opening"] },
+        after: { label: "Signs pointing to long-term conditions", items: ["Widespread wear or granule loss", "Old, dried or repeated stains", "Rust, rot or mold suggesting a long history", "Failed sealant or aged flashing"] },
+      }},
+      2: { type: "tip", data: { type: "warning", title: "Describe the cause, do not decide coverage", text: "Whether a leak is covered depends on the policy and the cause of loss. Record what you see and let the carrier make the coverage decision. Avoid telling a homeowner a leak is or is not covered." } },
+      3: { type: "steps", data: [
+        { num: "1", title: "Stop further damage", desc: "Tarp or temporarily protect the opening when it is safe to do so." },
+        { num: "2", title: "Photograph before and after", desc: "Capture the condition before any temporary repair, then the repair itself." },
+        { num: "3", title: "Keep receipts", desc: "Save invoices and material receipts for temporary protection." },
+        { num: "4", title: "Notify the insurer", desc: "The policyholder reports the loss and follows the policy's instructions." },
+      ]},
+      5: { type: "checklist", data: { title: "Leak documentation checklist", items: [
+        { text: "Interior photos of stains, drips or damage, with dates", checked: true },
+        { text: "Exterior photos of the suspected source and surrounding area", checked: true },
+        { text: "Moisture readings if you have a meter, with locations", checked: true },
+        { text: "Photos of any temporary protection installed", checked: true },
+        { text: "Notes on roof age, material and condition", checked: true },
+        { text: "Receipts and a written description of work done", checked: true },
+      ]}},
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "A roof leak insurance claim usually turns on the cause. Many policies respond to sudden, accidental damage, such as a storm opening a path for water, and may not respond to damage from long-term wear, poor maintenance or repeated seepage. Contractors help by finding and documenting the source, protecting the property from further damage and keeping clear records.\n\nThe insurer decides coverage. This guide is general information, and policies differ, so read the actual policy language.",
+      },
+      {
+        heading: "Why the cause matters so much",
+        content: "Two leaks that look the same can be treated differently. A leak from storm damage, for example a section of shingles torn off, is often evaluated as a sudden event. A leak from aged flashing, failed sealant or worn roofing may be evaluated as wear or maintenance.\n\nYour role is not to rule on that. It is to record what you observe: the condition of the roof, the location of the opening, the state of the surrounding materials and the interior damage. The comparison shows the kinds of evidence that tend to point one way or the other, and it is for orientation, not a coverage test.",
+      },
+      {
+        heading: "Stay in your lane on coverage",
+        content: "It is tempting to reassure a homeowner by saying a leak will be covered, or to warn them it will not. Avoid both. You do not know the policy terms, and the carrier decides. Stick to factual statements about what you found and what repair is needed.\n\nThat approach also protects you. If a claim is denied after you promised coverage, the trust that cost you is hard to rebuild.",
+      },
+      {
+        heading: "Protect the property first",
+        content: "Policies commonly expect the policyholder to take reasonable steps to prevent further damage. Temporary protection, such as tarping an opening or stopping active water entry, is usually part of that. Do it safely.\n\nDocument the condition before you cover anything, then photograph the temporary repair. Keep invoices and receipts. A clear record shows what was done and why. Check the policy and the carrier's instructions on whether and how temporary repair costs are handled.",
+      },
+      {
+        heading: "Finding and recording the source",
+        content: "Water often travels along rafters, decking or insulation before it appears inside, so the stain may not sit directly under the opening. Trace carefully. Common sources include flashing at chimneys and walls, pipe boots, valleys, damaged shingles and penetrations.\n\nRecord your reasoning in plain terms: where the water was entering, what evidence you saw and what you could not confirm. Saying that you could not determine something is better than guessing.",
+      },
+      {
+        heading: "Documentation checklist",
+        content: "A complete leak file includes interior and exterior photos, notes on the roof's age and condition, any moisture readings, photos of temporary protection and every receipt. Date everything.\n\nIf the repair leads to a bigger scope of work, or hidden damage appears when the roof is opened, the same habits support a supplement. See <a href='/blog/document-rotted-roof-decking-tear-off'>how to document rotted roof decking</a> and the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a>.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps crews capture photos, notes and areas on site and organize them into a report for the adjuster. It does not decide coverage. For the wider process, see <a href='/blog/how-roofing-contractors-work-insurance-claims'>how roofing contractors work insurance claims</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "Does homeowners insurance cover a roof leak?",
+        a: "It depends on the policy and the cause. Policies often respond to sudden, accidental damage and may not cover damage from long-term wear or maintenance issues. Read the policy language.",
+      },
+      {
+        q: "What should a contractor do first on a roof leak claim?",
+        a: "Protect the property from further damage when it is safe, and document the condition before and after any temporary repair, keeping receipts.",
+      },
+      {
+        q: "Should I tell the homeowner the leak will be covered?",
+        a: "No. Coverage is decided by the insurer. Describe what you found and let the carrier decide.",
+      },
+      {
+        q: "How do you find where a roof leak is coming from?",
+        a: "Trace the water from the interior stain along the likely path to the exterior, checking flashing, penetrations, valleys and damaged roofing. Record what you can and cannot confirm.",
+      },
+      {
+        q: "Are temporary repair costs reimbursed?",
+        a: "It depends on the policy. Keep receipts and check the policy and the carrier's guidance.",
+      },
+    ],
+    related: ["how-roofing-contractors-work-insurance-claims", "document-rotted-roof-decking-tear-off", "roof-damage-report-template", "storm-damage-roof-repair"],
+  },
+  {
+    slug: "roofing-supplement-companies-vs-software",
+    title: "Roofing Supplement Companies vs. Doing It In-House: How to Decide",
+    metaTitle: "Roofing Supplement Companies vs. In-House Software",
+    metaDescription: "Roofing supplement companies, in-house work or software? What each option involves, how pricing models differ, and the questions to ask before you choose.",
+    publishedDate: "2026-10-23",
+    updatedDate: "2026-10-23",
+    externalLinks: [
+      { text: "NAIC: Consumer insurance resources", url: "https://content.naic.org" },
+    ],
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["In-house, by hand", "In-house with software", "Outsourced company"],
+        rows: [
+          { feature: "Who writes the supplement", values: ["Your office", "Your office, with a drafting tool", "The company's staff"] },
+          { feature: "Typical cost model", values: ["Staff time", "Software subscription plus staff time", "Varies: per supplement or a share of what is recovered"] },
+          { feature: "Control over the file", values: ["Full", "Full", "Shared"] },
+          { feature: "Learning curve", values: ["Builds with experience", "Short, mostly the workflow", "Minimal for you"] },
+          { feature: "Best when", values: ["Low volume", "Steady volume and a small team", "High volume or little office capacity"] },
+        ],
+      }},
+      3: { type: "steps", data: [
+        { num: "1", title: "Ask how they are paid", desc: "Get the fee structure in writing: per supplement, a percentage or a flat fee." },
+        { num: "2", title: "Ask who talks to the adjuster", desc: "Understand who communicates with the carrier and what rules apply in your state." },
+        { num: "3", title: "Ask for a sample package", desc: "Review what they would actually send, with photos and narrative." },
+        { num: "4", title: "Ask for references", desc: "Speak with contractors who have used them, and check reviews independently." },
+      ]},
+      2: { type: "tip", data: { type: "info", title: "Check the rules in your state", text: "Who may communicate with insurers about a claim, and under what license, varies by state. Confirm that any outside service operates within your state's rules." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "You have three realistic ways to handle roofing supplements: do them by hand in-house, use software to speed up the in-house work, or hire a supplement company to do it for you. The right choice depends on your volume, your office capacity, how much control you want and how a company would be paid.\n\nThere is no single best answer. A small crew handling a few claims a month may do fine by hand. A busy company may value outsourcing. Software sits between them. This guide compares them neutrally so you can decide.",
+      },
+      {
+        heading: "The three options at a glance",
+        content: "The table summarizes how the options differ. It describes common patterns, not any specific company, because pricing and service vary widely. Always check a provider's own terms.\n\nThe key trade-off is control against effort. The more of the work you keep, the more control you have over the package and the relationship with the adjuster, and the more time it takes. Outsourcing saves time but shares control.",
+      },
+      {
+        heading: "What a supplement company typically does",
+        content: "Supplement companies generally review your photos, notes and the adjuster's estimate, identify items that may be missing and prepare a supplement package. Some also handle follow-up communication.\n\nHow they charge varies. Some charge per supplement, some take a percentage of what is recovered and others use a flat fee. Because models differ, compare total cost on your own claims, not the headline rate. Also consider that a percentage model means the company's income rises with the amount recovered, so ask how they decide what is worth including.",
+      },
+      {
+        heading: "Questions to ask before you outsource",
+        content: "Use the same list with every company you consider. Get answers in writing, and read the contract before you sign.\n\nPay particular attention to who communicates with the insurer and what your state allows. Rules about who may negotiate a claim, and what licenses are required, differ across states. If a company says it does everything for you, make sure that is permitted where you work.",
+      },
+      {
+        heading: "When in-house with software makes sense",
+        content: "Doing it in-house with software suits companies that want to keep control and speed up the writing. The software handles capture, organization and report building. Your team still reviews every finding and decides what goes out.\n\nCompare it honestly against the other two options: what does a month of software cost against your staff time, and against a company's fees on your actual claims? <a href='/roofing-supplement-software'>Supplement Snap</a> is one tool built for that in-house workflow. See <a href='/roofing-supplement-software-vs-spreadsheets'>software vs. spreadsheets</a> for the by-hand comparison, and the <a href='/roofing-supplement-report-example'>sample report</a> for the output.",
+      },
+      {
+        heading: "How to decide",
+        content: "Run the numbers on your last ten claims. How much time did each supplement take, what did it cost in staff hours and what would a company's fee have been? Then consider control and risk: how comfortable are you with someone else representing your documentation?\n\nIf you are unsure, start small. Try one option on a handful of claims and compare the results. No option can guarantee approval, because coverage depends on the claim, the policy and the carrier.",
+      },
+    ],
+    faq: [
+      {
+        q: "What does a roofing supplement company do?",
+        a: "It reviews your documentation and the adjuster's estimate, identifies items that may be missing and prepares a supplement package. Services and fees vary by company.",
+      },
+      {
+        q: "How much do roofing supplement companies charge?",
+        a: "It varies. Some charge per supplement, some take a percentage of what is recovered and some use a flat fee. Compare the total cost on your own claims.",
+      },
+      {
+        q: "Is it better to do supplements in-house?",
+        a: "It depends on your volume, office capacity and how much control you want. Low volume often works by hand, while software helps steady volume and outsourcing helps when capacity is limited.",
+      },
+      {
+        q: "Is it legal for a supplement company to talk to my insurer?",
+        a: "Rules vary by state. In many places, negotiating a claim for someone requires a specific license. Confirm what is allowed where you work.",
+      },
+      {
+        q: "Will any option guarantee supplements are approved?",
+        a: "No. Approval depends on the claim, the policy and the carrier, not on who prepares the package.",
+      },
+    ],
+    related: ["supplemental-roofing-estimate-explained", "roofing-supplement-follow-up-log", "xactimate-roofing-software-explained", "how-roofing-contractors-work-insurance-claims"],
   },
 ]
 
