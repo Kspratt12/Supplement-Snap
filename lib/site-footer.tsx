@@ -43,6 +43,7 @@ export function SiteFooter() {
               <Link href="/roofing-supplement-documentation" className="text-xs text-zinc-500 hover:text-zinc-700">Supplement Documentation</Link>
               <Link href="/roofing-supplement-report-example" className="text-xs text-zinc-500 hover:text-zinc-700">Supplement Report Example</Link>
               <Link href="/free-roofing-supplement-checklist" className="text-xs text-zinc-500 hover:text-zinc-700">Free Supplement Checklist</Link>
+              <Link href="/free-roofing-templates" className="text-xs text-zinc-500 hover:text-zinc-700">Free Roofing Templates</Link>
               <Link href="/roofing-supplement-software-vs-spreadsheets" className="text-xs text-zinc-500 hover:text-zinc-700">Software vs. Spreadsheets</Link>
             </div>
           </div>

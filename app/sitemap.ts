@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/how-roofing-supplements-work`, lastModified: SITE_UPDATED, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/hidden-roof-damage-tear-off`, lastModified: SITE_UPDATED, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/roofing-supplement-documentation`, lastModified: SITE_UPDATED, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/free-roofing-templates`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/free-roofing-supplement-checklist`, lastModified: SITE_UPDATED, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/roofing-supplement-software-vs-spreadsheets`, lastModified: SITE_UPDATED, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/about`, lastModified: SITE_UPDATED, changeFrequency: "yearly", priority: 0.5 },
