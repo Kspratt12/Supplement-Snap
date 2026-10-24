@@ -6,6 +6,8 @@ import { SiteFooter } from "../../../lib/site-footer"
 import { NavLinks } from "../../../lib/nav-links"
 import { ScrollToTop } from "../../../lib/scroll-to-top"
 import { TrackedLink } from "../../../lib/tracked-link"
+import { DownloadBox } from "./download-box"
+import { getTemplate } from "../../../lib/templates"
 
 type BlogImage = { src: string; alt: string; width?: number; height?: number }
 type Visual = { type: "stats" | "steps" | "codes" | "compare" | "checklist" | "timeline" | "calculator" | "tip" | "damage-cards" | "matrix"; data: any }
@@ -20,6 +22,8 @@ type Article = {
   images?: Record<number, BlogImage>
   visuals?: Record<number, Visual>
   midCtaAfter?: number
+  /** id from lib/templates.ts: shows a free download box after the first section */
+  downloads?: string
   midCtaTitle?: string
   midCtaBody?: string
   midCtaCodes?: boolean
@@ -1624,6 +1628,7 @@ const ARTICLES: Article[] = [
     "midCtaAfter": 1,
     "midCtaTitle": "Capture this on the roof, not from memory.",
     "midCtaBody": "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
+    "downloads": "roofing-supplement-template",
     "related": [
       "how-to-write-a-roofing-supplement",
       "roofing-photo-documentation-checklist",
@@ -2996,6 +3001,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
+    downloads: "roof-damage-report-template",
     related: ["roofing-photo-documentation-checklist", "roof-inspection-report", "roofing-supplement-template", "document-rotted-roof-decking-tear-off"],
   },
   {
@@ -4308,9 +4314,9 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-estimate-template",
-    title: "Roofing Estimate Template: What to Include and a Layout to Copy",
-    metaTitle: "Roofing Estimate Template: What to Include (Free Layout)",
-    metaDescription: "A roofing estimate template you can copy: the sections to include, a layout with blanks to fill in, and how it differs from an insurance supplement.",
+    title: "Roofing Estimate Template: Free PDF, Word and Excel Download",
+    metaTitle: "Roofing Estimate Template: Free PDF, Word & Excel",
+    metaDescription: "Free roofing estimate template as PDF, Word and Excel, plus what every estimate should include and how it differs from an insurance supplement.",
     publishedDate: "2026-10-24",
     updatedDate: "2026-10-24",
     externalLinks: [
@@ -4347,7 +4353,7 @@ const ARTICLES: Article[] = [
     sections: [
       {
         heading: "The short answer",
-        content: "A roofing estimate needs seven things: your company details, the customer and property, a clear scope of work, materials, labor and other charges, a total price with an expiry date, and terms with a place for the customer to sign. The layout below puts them in that order, with blanks you can fill in.\n\nDisclosure: we make Supplement Snap, which is not an estimating tool. It helps crews document hidden damage after tear-off. This page is about the estimate you give a customer before work starts. If you are writing an insurance supplement instead, see our <a href='/blog/roofing-supplement-template'>supplement template</a>.",
+        content: "A roofing estimate needs seven things: your company details, the customer and property, a clear scope of work, materials, labor and other charges, a total price with an expiry date, and terms with a place for the customer to sign. The layout below puts them in that order, with blanks you can fill in, and you can download it as a PDF, Word or Excel file just under this section.\n\nDisclosure: we make Supplement Snap, which is not an estimating tool. It helps crews document hidden damage after tear-off. This page is about the estimate you give a customer before work starts. If you are writing an insurance supplement instead, see our <a href='/blog/roofing-supplement-template'>supplement template</a>.",
       },
       {
         heading: "What every roofing estimate should include",
@@ -4396,6 +4402,7 @@ const ARTICLES: Article[] = [
         a: "A signature line is good practice because it turns the estimate into an agreement. Some states have specific contract requirements, so confirm what yours requires.",
       },
     ],
+    downloads: "roofing-estimate-template",
     related: ["xactimate-roofing-estimate-example", "roofing-supplement-template", "xactimate-roofing-estimate-approved", "best-roof-estimating-software"],
   },
   {
@@ -5103,6 +5110,9 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
                 </div>
               )}
               {article.visuals?.[i] && <VisualBlock visual={article.visuals[i]} />}
+              {i === 0 && article.downloads && getTemplate(article.downloads) && (
+                <DownloadBox template={getTemplate(article.downloads)!} showHubLink />
+              )}
               {article.midCtaAfter === i && (
                 <div className="mt-6 rounded-xl border border-indigo-200 bg-indigo-50 p-5">
                   <p className="text-sm font-semibold text-zinc-900">{article.midCtaTitle || "Skip the lookup on your next tear-off."}</p>

@@ -186,6 +186,7 @@ export default function FreeChecklistPage() {
             {[
               { href: "/blog/roofing-photo-documentation-checklist", title: "Roofing Photo Documentation Checklist" },
               { href: "/blog/roofing-supplement-template", title: "Roofing Supplement Template" },
+              { href: "/free-roofing-templates", title: "Free Roofing Templates (PDF, Word, Excel)" },
               { href: "/roofing-supplement-documentation", title: "Roofing Supplement Documentation" },
               { href: "/roofing-supplement-software", title: "Roofing Supplement Software" },
             ].map((r) => (
