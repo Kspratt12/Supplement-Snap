@@ -29,7 +29,7 @@ const FEATURES = [
   { title: "Photo annotations", text: "Circles, arrows and labels point the adjuster to exactly what you want them to see." },
   { title: "AI-drafted narratives", text: "Get a first draft of the written description for each finding. You review and edit every one." },
   { title: "PDF reports", text: "Photos, findings and notes in one consistent document, ready to attach or email." },
-  { title: "Xactimate-ready CSV export", text: "On the Team plan, export a starting list of line items to review and bring into your estimate." },
+  { title: "Xactimate-style CSV export", text: "On the Team plan, export a starting list of line items to review and bring into your estimate." },
 ]
 
 const FAQ = [

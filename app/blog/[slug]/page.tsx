@@ -3494,7 +3494,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Documentation, photo apps and CRMs",
-        content: "Supplement documentation software focuses on the evidence: photos tagged to findings, notes, measurements and a report you can send. Supplement Snap is built for this job. Crews capture and label damage on the roof, drafts of the written descriptions are generated for you to review, and a PDF report can be emailed to the adjuster. Team plans add an Xactimate-ready CSV export, which is a starting list you review and price yourself.\n\nJob photo apps such as CompanyCam organize photos for many trades. They are a good fit if you write the supplement separately. Roofing CRMs and estimating platforms manage leads, jobs and proposals. They solve a wider problem and may cover supplements only lightly, so check how deep their supplement features go.\n\nSee how the two approaches compare in <a href='/blog/companycam-alternative-roofing-supplements'>photo apps vs. supplement tools</a> and in <a href='/blog/roofing-software-comparison'>roofing software for contractors compared</a>.",
+        content: "Supplement documentation software focuses on the evidence: photos tagged to findings, notes, measurements and a report you can send. Supplement Snap is built for this job. Crews capture and label damage on the roof, drafts of the written descriptions are generated for you to review, and a PDF report can be emailed to the adjuster. Team plans add an Xactimate-style CSV export, which is a starting list you review and price yourself.\n\nJob photo apps such as CompanyCam organize photos for many trades. They are a good fit if you write the supplement separately. Roofing CRMs and estimating platforms manage leads, jobs and proposals. They solve a wider problem and may cover supplements only lightly, so check how deep their supplement features go.\n\nSee how the two approaches compare in <a href='/blog/companycam-alternative-roofing-supplements'>photo apps vs. supplement tools</a> and in <a href='/blog/roofing-software-comparison'>roofing software for contractors compared</a>.",
       },
       {
         heading: "Supplement services: when someone else writes it",
@@ -3849,7 +3849,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Where Supplement Snap fits",
-        content: "Supplement Snap starts from the roof instead of from the carrier's estimate. It is built for the crew member on the roof who needs to capture proof quickly, including voice notes that are translated to English for the report when a crew member speaks Spanish.\n\nIt is a lower-cost option for a company with one to a few crews that wants clean, consistent documentation to send with supplements. The Starter plan is $99 per month, Team is $199 and adds an Xactimate-ready CSV export and email open tracking, and Pro is $299. Check the <a href='/pricing'>pricing page</a> for the current details.",
+        content: "Supplement Snap starts from the roof instead of from the carrier's estimate. It is built for the crew member on the roof who needs to capture proof quickly, including voice notes that are translated to English for the report when a crew member speaks Spanish.\n\nIt is a lower-cost option for a company with one to a few crews that wants clean, consistent documentation to send with supplements. The Starter plan is $99 per month, Team is $199 and adds an Xactimate-style CSV export and email open tracking, and Pro is $299. Check the <a href='/pricing'>pricing page</a> for the current details.",
       },
       {
         heading: "How to choose without guessing",
@@ -4034,7 +4034,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Supplement Snap pricing",
-        content: "Supplement Snap's first project is free. Paid plans are Starter at $99 per month with unlimited projects and one user, Team at $199 with up to three users, an Xactimate-ready CSV export and email open tracking, and Pro at $299 with up to five users and custom branding. Paid plans start with a 14-day free trial that requires a card, and you can cancel before it ends.\n\nSee the <a href='/pricing'>pricing page</a> for current details, and a <a href='/roofing-supplement-report-example'>sample report</a> to see what you would be paying for.",
+        content: "Supplement Snap's first project is free. Paid plans are Starter at $99 per month with unlimited projects and one user, Team at $199 with up to three users, an Xactimate-style CSV export and email open tracking, and Pro at $299 with up to five users and custom branding. Paid plans start with a 14-day free trial that requires a card, and you can cancel before it ends.\n\nSee the <a href='/pricing'>pricing page</a> for current details, and a <a href='/roofing-supplement-report-example'>sample report</a> to see what you would be paying for.",
       },
     ],
     faq: [
@@ -4121,7 +4121,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Where Supplement Snap fits, and where it does not",
-        content: "Supplement Snap is built for one job: documenting hidden damage found at tear-off and producing the report for the adjuster. It is not a general job photo app for every trade, a CRM or an estimating tool. The first project is free. Paid plans are Starter at $99 per month, Team at $199 with up to three users, an Xactimate-ready CSV export and email open tracking, and Pro at $299. Check the <a href='/pricing'>pricing page</a> for current details.",
+        content: "Supplement Snap is built for one job: documenting hidden damage found at tear-off and producing the report for the adjuster. It is not a general job photo app for every trade, a CRM or an estimating tool. The first project is free. Paid plans are Starter at $99 per month, Team at $199 with up to three users, an Xactimate-style CSV export and email open tracking, and Pro at $299. Check the <a href='/pricing'>pricing page</a> for current details.",
       },
     ],
     faq: [
@@ -4688,7 +4688,7 @@ const ARTICLES: Article[] = [
           { feature: "How the report starts", values: ["Crew photographs a finding and adds a typed or voice note", "Inspector follows a 46-point checklist and adds photos"] },
           { feature: "Role of AI", values: ["Drafts the written description from the crew's note; does not analyze photos", "Tags and counts damage in photos; inspector can override findings"] },
           { feature: "Report output", values: ["PDF of findings, notes and photos for the adjuster", "Standard report and a Forensic report for carriers, per its site"] },
-          { feature: "Integrations listed", values: ["Xactimate-ready CSV on Team and Pro plans", "JobNimbus and CompanyCam, per its site"] },
+          { feature: "Integrations listed", values: ["Xactimate-style CSV on Team and Pro plans", "JobNimbus and CompanyCam, per its site"] },
           { feature: "Price", values: ["Starter $99, Team $199, Pro $299 per month", "Not shown on the page we read; seat-based plus report packs"] },
           { feature: "Free way to try it", values: ["First project free; 14-day trial on paid plans, card required", "5 free reports over 14 days, no card, per its site"] },
         ],

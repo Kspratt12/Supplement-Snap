@@ -179,7 +179,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               "AI-generated professional supplement narratives",
               "PDF reports with photos embedded inline",
               "Email reports directly to insurance adjusters",
-              "Xactimate-ready CSV export with real line codes and pricing",
+              "Xactimate-style CSV export with suggested line items to review",
               "Insurance claim tracking (carrier, claim #, adjuster, date of loss)",
               "Claim pipeline: track from tear-off to approval",
               "Team access for crew, foreman, and office staff",

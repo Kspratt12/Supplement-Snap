@@ -69,7 +69,7 @@ export default function DemoPage() {
                   "Voice notes auto-transcribed (works in Spanish)",
                   "AI generates professional supplement narrative",
                   "PDF report emailed to adjuster in one click",
-                  "Xactimate CSV export with real line codes",
+                  "Xactimate-style CSV export of suggested line items",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2">
                     <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

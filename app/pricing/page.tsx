@@ -27,7 +27,7 @@ const TEAM_FEATURES = [
   "Up to 3 team members",
   "Team access for crew and office",
   "Adjuster email open tracking",
-  "Xactimate-ready CSV export",
+  "Xactimate-style CSV export (starting line items)",
   "PDF reports & email",
 ]
 
@@ -37,7 +37,6 @@ const PRO_FEATURES = [
   "Priority support",
   "Dedicated onboarding",
   "Custom branding",
-  "Project search & templates",
 ]
 
 const FAQ = [
