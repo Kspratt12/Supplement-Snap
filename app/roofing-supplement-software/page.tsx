@@ -173,6 +173,7 @@ export default function RoofingSupplementSoftwarePage() {
             { href: "/hidden-roof-damage-tear-off", title: "Hidden roof damage at tear-off" },
             { href: "/roofing-supplement-documentation", title: "Supplement documentation guide" },
             { href: "/blog/xactimate-roofing-estimate-example", title: "Xactimate roofing estimate example" },
+            { href: "/blog/best-roofing-supplement-software", title: "Best roofing supplement software compared" },
           ].map((r) => (
             <Link key={r.href} href={r.href} className="rounded-lg border border-zinc-200 px-4 py-3 text-sm font-medium text-zinc-700 hover:border-indigo-200 hover:text-indigo-600">
               {r.title} &rarr;
