@@ -56,6 +56,9 @@ const ARTICLES = [
   { slug: "supplement-snap-vs-roofgenius", title: "Supplement Snap vs RoofGenius: Which Fits a Small Roofing Company?", desc: "Price, supplement limits, trial terms and what each does, based on public pages.", date: "2026-10-24" },
   { slug: "ai-roofing-supplement-tools-compared", title: "AI Roofing Supplement Tools Compared: What Each One Actually Does", desc: "Estimate audits, storm CRMs and field documentation compared by job, with gaps marked.", date: "2026-10-24" },
   { slug: "roofing-supplement-software-cost", title: "How Much Does Roofing Supplement Software Cost? A 2026 Price Guide", desc: "Monthly plans, claim credits and per-supplement services, using prices companies publish.", date: "2026-10-24" },
+  { slug: "best-app-to-document-roof-damage-for-insurance", title: "Best App to Document Roof Damage for Insurance Claims (2026)", desc: "Photo and documentation apps compared by price, trial and what each is built for.", date: "2026-10-24" },
+  { slug: "claimtrax-vs-suppx-vs-supplement-snap", title: "ClaimTrax vs SuppX vs Supplement Snap: Which Supplement Tool Fits?", desc: "Tracking, outsourcing or documenting your supplements, compared on public information.", date: "2026-10-24" },
+  { slug: "roofing-supplement-software-for-small-roofing-companies", title: "Roofing Supplement Software for Small Roofing Companies: Do You Need It?", desc: "Spreadsheets, software and services compared by claim volume and cost.", date: "2026-10-24" },
 ]
 
 export default function BlogIndex() {
