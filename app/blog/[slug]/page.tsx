@@ -1629,7 +1629,7 @@ const ARTICLES: Article[] = [
       "roofing-photo-documentation-checklist",
       "xactimate-codes-for-roofing-supplements",
       "roofing-supplement-denied-what-to-do"
-    , "best-roofing-supplement-software"],
+    , "best-roofing-supplement-software", "roofing-estimate-template"],
     "externalLinks": [
       {
         "text": "Verisk Xactimate Product Page",
@@ -2265,7 +2265,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["roofing-photo-documentation-checklist", "roofing-supplement-template", "hail-damage-roof-inspection"],
+    related: ["roofing-photo-documentation-checklist", "roofing-supplement-template", "hail-damage-roof-inspection", "roofing-documentation-spanish-speaking-crews"],
   },
   {
     slug: "organize-roofing-supplement-photos-by-claim",
@@ -2448,7 +2448,7 @@ const ARTICLES: Article[] = [
         a: "No. They are fictional and only show structure. Use your own measurements and the price list from your claim.",
       },
     ],
-    related: ["xactimate-codes-for-roofing-supplements", "xactimate-roofing-software-explained", "roofing-supplement-template", "xactimate-roofing-estimate-approved"],
+    related: ["xactimate-codes-for-roofing-supplements", "xactimate-roofing-software-explained", "roofing-supplement-template", "xactimate-roofing-estimate-approved", "roofing-estimate-template"],
   },
   {
     slug: "xactimate-roofing-software-explained",
@@ -2632,7 +2632,7 @@ const ARTICLES: Article[] = [
         a: "No. A CRM manages leads, jobs and customers. Inspection and documentation tools focus on capturing findings and producing reports.",
       },
     ],
-    related: ["roof-inspection-report", "roofing-photo-documentation-checklist", "roofing-software-comparison", "xactimate-roofing-software-explained"],
+    related: ["roof-inspection-report", "roofing-photo-documentation-checklist", "roofing-software-comparison", "xactimate-roofing-software-explained", "supplement-snap-vs-roof-report-pro"],
   },
   {
     slug: "roofing-supplement-follow-up-log",
@@ -3517,7 +3517,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy, the carrier and the documentation. Software can make your package clearer and more complete.",
       },
     ],
-    related: ["roofing-supplement-companies-vs-software", "xactimate-roofing-software-explained", "roofing-software-comparison", "supplemental-roofing-estimate-explained", "supplement-snap-vs-roofgenius", "roofing-supplement-software-cost", "claimtrax-vs-suppx-vs-supplement-snap", "roofing-supplement-software-for-small-roofing-companies"],
+    related: ["roofing-supplement-companies-vs-software", "xactimate-roofing-software-explained", "roofing-software-comparison", "supplemental-roofing-estimate-explained", "supplement-snap-vs-roofgenius", "roofing-supplement-software-cost", "claimtrax-vs-suppx-vs-supplement-snap", "roofing-supplement-software-for-small-roofing-companies", "supplement-snap-vs-acculynx-supplements", "free-roofing-supplement-software"],
   },
   {
     slug: "recoverable-depreciation-roof-claims",
@@ -4045,7 +4045,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy, the carrier and your documentation, not on the price of the tool.",
       },
     ],
-    related: ["best-roofing-supplement-software", "roofing-supplement-companies-vs-software", "supplement-snap-vs-roofgenius", "ai-roofing-supplement-tools-compared"],
+    related: ["best-roofing-supplement-software", "roofing-supplement-companies-vs-software", "supplement-snap-vs-roofgenius", "ai-roofing-supplement-tools-compared", "free-roofing-supplement-software"],
   },
   {
     slug: "best-app-to-document-roof-damage-for-insurance",
@@ -4132,7 +4132,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy, the carrier and your documentation. An app can make your package clearer and more complete.",
       },
     ],
-    related: ["companycam-alternative-roofing-supplements", "roofing-photo-documentation-checklist", "best-roofing-supplement-software", "ai-roofing-supplement-tools-compared"],
+    related: ["companycam-alternative-roofing-supplements", "roofing-photo-documentation-checklist", "best-roofing-supplement-software", "ai-roofing-supplement-tools-compared", "supplement-snap-vs-roof-report-pro", "roofing-documentation-spanish-speaking-crews"],
   },
   {
     slug: "claimtrax-vs-suppx-vs-supplement-snap",
@@ -4211,7 +4211,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy, the carrier and your documentation. No software can guarantee it.",
       },
     ],
-    related: ["roofing-supplement-companies-vs-software", "roofing-supplement-software-cost", "best-roofing-supplement-software", "roofing-supplement-follow-up-log"],
+    related: ["roofing-supplement-companies-vs-software", "roofing-supplement-software-cost", "best-roofing-supplement-software", "roofing-supplement-follow-up-log", "supplement-snap-vs-acculynx-supplements", "free-roofing-supplement-software"],
   },
   {
     slug: "roofing-supplement-software-for-small-roofing-companies",
@@ -4305,6 +4305,436 @@ const ARTICLES: Article[] = [
       },
     ],
     related: ["roofing-supplement-software-cost", "best-roofing-supplement-software", "roofing-supplement-companies-vs-software", "supplement-snap-vs-roofgenius"],
+  },
+  {
+    slug: "roofing-estimate-template",
+    title: "Roofing Estimate Template: What to Include and a Layout to Copy",
+    metaTitle: "Roofing Estimate Template: What to Include (Free Layout)",
+    metaDescription: "A roofing estimate template you can copy: the sections to include, a layout with blanks to fill in, and how it differs from an insurance supplement.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Found hidden damage after tear-off?",
+    midCtaBody: "An estimate covers the work you can see before you start. Supplement Snap helps your crew document what turns up once the shingles are off. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to put in it", "Why it matters"],
+        rows: [
+          { feature: "Your company details", values: ["Name, address, phone, email and license number if your state requires one", "The customer knows who is responsible, and it keeps you compliant"] },
+          { feature: "Customer and property", values: ["Name, job address, contact details, date and an estimate number", "You can find and refer to the estimate later"] },
+          { feature: "Scope of work", values: ["What you will tear off, repair or replace, area by area", "Prevents arguments about what was included"] },
+          { feature: "Materials", values: ["Product, color, quantity and unit for each item", "Shows what the price covers"] },
+          { feature: "Labor and other charges", values: ["Labor, disposal, permits, delivery or other fees, listed separately", "Makes the total easy to follow"] },
+          { feature: "Price and how long it is good for", values: ["Total, the date it expires and what could change it", "Protects you if material costs move"] },
+          { feature: "Terms and signature", values: ["Payment terms, warranty terms, and a line for the customer to accept", "Turns an estimate into an agreement"] },
+        ],
+      }},
+      3: { type: "matrix", data: {
+        headers: ["Retail estimate", "Insurance supplement"],
+        rows: [
+          { feature: "Who it goes to", values: ["The property owner paying you directly", "The insurance adjuster"] },
+          { feature: "What it covers", values: ["The planned work, priced before you start", "Damage found after tear-off that was not in the carrier's estimate"] },
+          { feature: "What backs it up", values: ["Your measurements and your price list", "Photos, measurements and notes tied to each finding"] },
+          { feature: "Format", values: ["Your own layout", "Often follows the carrier's line-item format"] },
+        ],
+      }},
+      5: { type: "tip", data: { type: "info", title: "Rules differ by state", text: "Licensing, written-contract requirements, cancellation rights and permitted payment terms vary by state and sometimes by city. This template is a starting layout, not legal advice. Have it reviewed against your local rules before you use it with customers." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "A roofing estimate needs seven things: your company details, the customer and property, a clear scope of work, materials, labor and other charges, a total price with an expiry date, and terms with a place for the customer to sign. The layout below puts them in that order, with blanks you can fill in.\n\nDisclosure: we make Supplement Snap, which is not an estimating tool. It helps crews document hidden damage after tear-off. This page is about the estimate you give a customer before work starts. If you are writing an insurance supplement instead, see our <a href='/blog/roofing-supplement-template'>supplement template</a>.",
+      },
+      {
+        heading: "What every roofing estimate should include",
+        content: "The table lists each section and why it is there. A customer who can follow the estimate is less likely to dispute it later, and you are less likely to be asked to do work you did not price.\n\nKeep the language plain. If a customer cannot tell what is included, they will assume everything is.",
+      },
+      {
+        heading: "A layout to copy",
+        content: "Copy this into a document or spreadsheet and replace the blanks. The numbers are placeholders, not prices, so fill in your own.\n\n• Header: [Company name] [Address] [Phone] [Email] [License number if required]\n• Estimate: No. [____] Date: [____] Valid until: [____]\n• Customer: [Name] [Job address] [Phone] [Email]\n• Scope of work: Tear off [existing layers] on [roof areas]. Install [underlayment]. Install [shingle brand and color]. Replace [flashing, vents, drip edge as needed]. Clean up and haul away debris.\n• Line items: [Description] [Quantity] [Unit] [Unit price] [Amount]\n• Other charges: [Disposal] [Permit] [Delivery] [Other]\n• Total: [$____]\n• What could change the price: [for example, hidden decking damage found after tear-off, charged at the agreed unit price]\n• Terms: [Payment schedule] [Warranty terms] [Start date window]\n• Acceptance: Customer signature [____] Date [____]\n\nWriting in the line about hidden damage matters. Tear-off often reveals rotted decking or extra layers, and an estimate that says how those will be handled avoids an awkward conversation later.",
+      },
+      {
+        heading: "Retail estimates and insurance supplements are different documents",
+        content: "A retail estimate is written before the job and goes to the property owner. An insurance supplement is written after tear-off and goes to the adjuster, asking for money the carrier's estimate left out. The table shows the main differences.\n\nIf the owner is paying through an insurance claim, the carrier's estimate sets the starting scope. Your own estimate and the carrier's can differ, and the difference is where supplements come from. Our guides on <a href='/blog/xactimate-roofing-estimate-example'>how an Xactimate estimate looks</a> and <a href='/blog/xactimate-roofing-estimate-approved'>how to write one adjusters approve</a> cover the insurance format.",
+      },
+      {
+        heading: "Mistakes that cause disputes",
+        content: "• A vague scope. Write what is included roof area by roof area.\n• Lumping everything into one price. Separate materials, labor and extra charges so the customer can follow it.\n• No expiry date. Material prices change, and an estimate with no end date can be held against you for months.\n• Nothing about hidden damage. Say how rotted decking or extra layers will be handled.\n• No signature line. An unsigned estimate is a suggestion.\n• Promising an insurance outcome. Never tell a customer that the carrier will pay, because that depends on the policy, the claim and the carrier.",
+      },
+      {
+        heading: "Check your local rules before you use it",
+        content: "Many states require specific language in home improvement contracts, a license number, a right-to-cancel notice, or limits on deposits. Some require a written contract above a certain amount. This template does not include state-specific wording.\n\nAsk your state licensing board, your insurance agent or an attorney what must appear in your estimates and contracts. Do not rely on a template alone.",
+      },
+      {
+        heading: "Where Supplement Snap fits, and where it does not",
+        content: "Supplement Snap does not write retail estimates, measure roofs or send invoices. It is for the step after tear-off, when your crew finds damage that was not in the estimate. They photograph it on the roof, tag the damage type and roof area, add a typed or voice note, and the app drafts a written description of each finding for you to review and edit. You then export a PDF and email it to the adjuster.\n\nYour first project is free. See the <a href='/roofing-supplement-software'>feature walkthrough</a>, a <a href='/roofing-supplement-report-example'>sample report</a> and the <a href='/pricing'>pricing page</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "What should a roofing estimate include?",
+        a: "Your company details, the customer and property, a clear scope of work, materials, labor and other charges, a total with an expiry date, and terms with a signature line. Add a note on how hidden damage will be handled.",
+      },
+      {
+        q: "Is there a free roofing estimate template?",
+        a: "The layout on this page is free to copy and has blanks for your own prices. Many invoicing tools also publish free roofing estimate templates in PDF, Word and Excel. Check any template against your state's requirements.",
+      },
+      {
+        q: "What is the difference between a roofing estimate and a quote?",
+        a: "Usage varies. An estimate is generally an approximate price and a quote a firm one, but some contractors use the words interchangeably. State on the document whether the price is fixed and how long it is valid.",
+      },
+      {
+        q: "How is a roofing estimate different from an insurance supplement?",
+        a: "An estimate is priced before the job and goes to the property owner. A supplement is prepared after tear-off and goes to the adjuster to request money for damage the carrier's estimate did not include.",
+      },
+      {
+        q: "Does a roofing estimate need a signature?",
+        a: "A signature line is good practice because it turns the estimate into an agreement. Some states have specific contract requirements, so confirm what yours requires.",
+      },
+    ],
+    related: ["xactimate-roofing-estimate-example", "roofing-supplement-template", "xactimate-roofing-estimate-approved", "best-roof-estimating-software"],
+  },
+  {
+    slug: "supplement-snap-vs-roof-report-pro",
+    title: "Supplement Snap vs Roof Report Pro: Which Documentation Tool Fits?",
+    metaTitle: "Supplement Snap vs Roof Report Pro Compared",
+    metaDescription: "Supplement Snap vs Roof Report Pro compared on how reports are built, trial terms and what each is for. We make Supplement Snap; verify details on each site.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "Roof Report Pro", url: "https://www.roofreportpro.ai" },
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "See the supplement report before you choose.",
+    midCtaBody: "Your first Supplement Snap project is free. Photograph one real tear-off and judge the PDF it produces.",
+    visuals: {
+      2: { type: "matrix", data: {
+        headers: ["Supplement Snap", "Roof Report Pro"],
+        rows: [
+          { feature: "Built for", values: ["Documenting hidden damage found at tear-off for a supplement", "Roof inspection reports for homeowners and insurance carriers"] },
+          { feature: "How the report starts", values: ["Crew photographs a finding and adds a typed or voice note", "Inspector follows a 46-point checklist and adds photos"] },
+          { feature: "Role of AI", values: ["Drafts the written description from the crew's note; does not analyze photos", "Tags and counts damage in photos; inspector can override findings"] },
+          { feature: "Report output", values: ["PDF of findings, notes and photos for the adjuster", "Standard report and a Forensic report for carriers, per its site"] },
+          { feature: "Integrations listed", values: ["Xactimate-ready CSV on Team and Pro plans", "JobNimbus and CompanyCam, per its site"] },
+          { feature: "Price", values: ["Starter $99, Team $199, Pro $299 per month", "Not shown on the page we read; seat-based plus report packs"] },
+          { feature: "Free way to try it", values: ["First project free; 14-day trial on paid plans, card required", "5 free reports over 14 days, no card, per its site"] },
+        ],
+      }},
+      4: { type: "checklist", data: { title: "Questions to settle before you choose", items: [
+        { text: "Am I documenting an inspection, or hidden damage found at tear-off?", checked: true },
+        { text: "Do I want AI to analyze my photos, or only help with the wording?", checked: true },
+        { text: "Who will read the report: a homeowner, an adjuster or both?", checked: true },
+        { text: "What does it cost at my real monthly volume?", checked: true },
+        { text: "Can I test it on one real job first?", checked: true },
+      ]}},
+      5: { type: "tip", data: { type: "info", title: "Compare on a real job", text: "Details here come from each company's public pages as seen on October 24, 2026, and Roof Report Pro's pricing page was not part of what we read. We have not tested Roof Report Pro. Confirm current terms with each vendor and run the same job through both." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Both tools turn roof photos into a report, but they start from different jobs. Roof Report Pro is built around inspections: an inspector works through a checklist, and AI tags damage in the photos. Supplement Snap is built around the tear-off: a crew documents hidden damage as they find it, and the app helps draft the explanation for the adjuster.\n\nDisclosure: we make Supplement Snap. We have not tested Roof Report Pro, and everything below about it comes from its public pages as seen on October 24, 2026. Confirm current details on its site.",
+      },
+      {
+        heading: "What each tool is for",
+        content: "Roof Report Pro describes AI-assisted software for roof inspection reports. A checklist guides the inspector, the AI checks photos and tags damage markers, and the inspector can override any finding. It lists a Standard report for homeowners and a Forensic report for insurance carriers, and integrations with JobNimbus and CompanyCam.\n\nSupplement Snap starts later in the job. When a crew pulls shingles and finds rotted decking, failed flashing or extra layers, they photograph it on the roof, tag the damage type and roof area and add a note. The app drafts a description for each finding that you review and edit, and you email a PDF to the adjuster. See the <a href='/roofing-supplement-software'>feature walkthrough</a> and a <a href='/roofing-supplement-report-example'>sample report</a>.",
+      },
+      {
+        heading: "Side by side",
+        content: "The table lists what each company publishes. The tools overlap on photos and PDF reports, so the difference is in the job each is built for.\n\nOne point is worth stating plainly. Supplement Snap's AI does not look at your photos. It drafts the written description from the damage type, roof area and note your crew entered, so the quality of the note matters. Roof Report Pro describes AI that analyzes photos, which is a different approach with its own tradeoffs.",
+      },
+      {
+        heading: "How AI is used in each",
+        content: "AI that reads photos can speed up an inspection and help an inspector count and classify damage. It can also be wrong, and Roof Report Pro's own page says nothing ships without the inspector's approval.\n\nAI that drafts wording from a crew's note speeds up the paperwork but only knows what the crew told it. If the note is thin, the draft is thin. Supplement Snap flags a note with no real detail instead of inventing a story, and asks you to review every draft before sending. In either tool, the contractor is responsible for what the adjuster receives.",
+      },
+      {
+        heading: "How to choose",
+        content: "Choose by the job. If you need inspection reports for homeowners or carriers with AI help tagging photos, Roof Report Pro is built for that. If you need to document hidden damage at tear-off and build a supplement package, Supplement Snap is built for that. Some contractors might use both for different stages, but we have not tested that.\n\nRun the same real job through each and compare the time and the finished report. For the wider category, read our <a href='/blog/best-roofing-supplement-software'>roofing supplement software overview</a> and the guide to <a href='/blog/best-app-to-document-roof-damage-for-insurance'>apps that document roof damage</a>.",
+      },
+      {
+        heading: "Where Supplement Snap fits, and where it does not",
+        content: "Supplement Snap does not analyze photos, run a 46-point inspection checklist or integrate with JobNimbus. It does capture field proof, draft explanations for you to review, and produce a PDF for the adjuster, and Team and Pro plans add an Xactimate-ready CSV and email open tracking.\n\nThe first project is free. Paid plans are Starter at $99 per month, Team at $199 and Pro at $299. See the <a href='/pricing'>pricing page</a> for current details.",
+      },
+    ],
+    faq: [
+      {
+        q: "Is Supplement Snap an alternative to Roof Report Pro?",
+        a: "They overlap on photos and PDF reports but start from different jobs. Roof Report Pro is built for inspection reports, and Supplement Snap for documenting hidden damage at tear-off for a supplement.",
+      },
+      {
+        q: "Does Supplement Snap use AI to analyze photos?",
+        a: "No. Its AI drafts the written description from the damage type, roof area and note your crew enters. You review and edit every draft.",
+      },
+      {
+        q: "How much does Roof Report Pro cost?",
+        a: "The page we read did not show prices. It describes seat-based access with report packs and a free start of 5 reports over 14 days. Confirm current pricing with the vendor.",
+      },
+      {
+        q: "Can I try both for free?",
+        a: "Roof Report Pro describes 5 free reports over 14 days with no card. Supplement Snap's first project is free, and paid plans start with a 14-day trial that requires a card.",
+      },
+      {
+        q: "Will either tool get my claim approved?",
+        a: "No. Approval depends on the claim, the policy, the carrier and your documentation. A report can make your package clearer and more complete.",
+      },
+    ],
+    related: ["best-app-to-document-roof-damage-for-insurance", "ai-roofing-supplement-tools-compared", "roof-inspection-report-software", "supplement-snap-vs-roofgenius"],
+  },
+  {
+    slug: "supplement-snap-vs-acculynx-supplements",
+    title: "Supplement Snap vs AccuLynx for Supplements: Do You Need Both?",
+    metaTitle: "Supplement Snap vs AccuLynx for Supplements",
+    metaDescription: "Supplement Snap vs AccuLynx for roofing supplements: documenting damage versus tracking claims in a roofing CRM. We make Supplement Snap; confirm details.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "AccuLynx: roofing insurance supplements", url: "https://acculynx.com/roofing-insurance-supplements-tips-tools/" },
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Test the documentation side on one job.",
+    midCtaBody: "Your first Supplement Snap project is free. Judge the report it builds before you decide what else you need.",
+    visuals: {
+      2: { type: "matrix", data: {
+        headers: ["Supplement Snap", "AccuLynx"],
+        rows: [
+          { feature: "What it is", values: ["A field tool for documenting hidden damage and building the adjuster report", "A roofing business management platform with a supplements feature"] },
+          { feature: "Supplement tracking", values: ["Not offered", "Tracker with requested, approved and added amounts, tasks and reminders, per its article"] },
+          { feature: "Contacting the adjuster", values: ["Email the PDF report; Team plans see when it is opened", "Send supplements to adjusters or carriers using templates, per its article"] },
+          { feature: "Capturing proof on the roof", values: ["Photos, tags and voice notes in the project", "Photos and documents can be attached to the claim, per its article"] },
+          { feature: "Price", values: ["Starter $99, Team $199, Pro $299 per month", "Not shown on the page we read; a Get Pricing button"] },
+          { feature: "Free way to try it", values: ["First project free; 14-day trial on paid plans, card required", "Not shown on the page we read"] },
+        ],
+      }},
+      4: { type: "checklist", data: { title: "Questions to settle first", items: [
+        { text: "Do I need a system to run my whole roofing business, or only supplement paperwork?", checked: true },
+        { text: "Is my problem tracking claims, or capturing the proof?", checked: true },
+        { text: "How many people need a login, and what does that cost?", checked: true },
+        { text: "Can I see pricing before I talk to sales?", checked: true },
+        { text: "Can I test it on one real job?", checked: true },
+      ]}},
+      5: { type: "tip", data: { type: "info", title: "We have not tested AccuLynx", text: "Everything about AccuLynx here comes from its own published article and pages as seen on October 24, 2026, which is marketing material. A third-party guide has suggested using Supplement Snap, Xactimate and AccuLynx together, but we have not tested that combination. Ask AccuLynx for current pricing and terms." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "AccuLynx and Supplement Snap are not direct substitutes. AccuLynx is a roofing business platform, and its article describes a supplements feature for tracking claim amounts, assigning follow-ups and sending supplements to adjusters. Supplement Snap is a small field tool for capturing hidden damage at tear-off and building the report.\n\nA roofing company could reasonably want one, the other or both. Disclosure: we make Supplement Snap. We have not tested AccuLynx, and what follows about it comes from its public pages as seen on October 24, 2026.",
+      },
+      {
+        heading: "What AccuLynx describes",
+        content: "AccuLynx's supplements article describes a tracker that shows requested, approved and added amounts, with tasks and reminders for outstanding items. It says you can send supplements to adjusters, carriers or homeowners using templates, attach photos and documents, and tie supplement amounts to a financial worksheet. It also describes assigning team members as supplementers.\n\nThat is claim management. It helps a company with many open supplements keep track of who is chasing what. The article is published by AccuLynx, so treat it as a vendor's description. It shows no prices, only a Get Pricing button.",
+      },
+      {
+        heading: "What Supplement Snap does instead",
+        content: "Supplement Snap helps with the step before the paperwork goes out: gathering proof. Your crew photographs damage on the roof, tags the roof area and damage type, adds a typed or voice note, and the app drafts a written description of each finding for you to review. You export a PDF and email it to the adjuster.\n\nIt does not track supplement status, assign owners or send reminders. See the <a href='/roofing-supplement-software'>feature walkthrough</a> and a <a href='/roofing-supplement-report-example'>sample report</a>.",
+      },
+      {
+        heading: "Side by side",
+        content: "The table lists what each company publishes. A platform and a field tool cost different amounts and solve different problems, so a lower price is not the same work for less.\n\nIf you already use AccuLynx for jobs and want your crew to capture proof more consistently, a documentation tool could fill that gap. If you do not run a CRM and only need supplement paperwork, AccuLynx may be more than you need. We have not tested how the two would work together, and we do not list an integration.",
+      },
+      {
+        heading: "How to decide",
+        content: "Start with where your supplements actually slow down. If photos and notes are scattered and the reports look inconsistent, the problem is documentation. If supplements get lost between people and nobody knows their status, the problem is tracking.\n\nRun one real job through whatever you are considering and compare the time and the output. For how supplement tools compare with services and spreadsheets, read our <a href='/blog/roofing-supplement-companies-vs-software'>guide to companies versus software</a> and <a href='/blog/best-roofing-supplement-software'>the software overview</a>. For tracking without a CRM, our <a href='/blog/roofing-supplement-follow-up-log'>follow-up log</a> is a simple starting point.",
+      },
+      {
+        heading: "Where Supplement Snap fits, and where it does not",
+        content: "Supplement Snap is for small crews that want clean, consistent documentation without a full platform. It is not a CRM, a scheduler or a claim tracker. The first project is free, then Starter is $99 per month, Team $199 and Pro $299. See the <a href='/pricing'>pricing page</a> for current details.",
+      },
+    ],
+    faq: [
+      {
+        q: "Is Supplement Snap an AccuLynx alternative?",
+        a: "Not a full one. AccuLynx is a roofing business platform with a supplements feature, and Supplement Snap documents hidden damage and builds the adjuster report. Some companies might use one or both.",
+      },
+      {
+        q: "Does AccuLynx handle roofing supplements?",
+        a: "Its published article describes a supplements tracker with tasks, reminders, templates for sending supplements and document attachments. We have not tested it.",
+      },
+      {
+        q: "How much does AccuLynx cost?",
+        a: "The page we read showed no prices, only a Get Pricing button. Ask the company for current pricing.",
+      },
+      {
+        q: "Can I use Supplement Snap with AccuLynx?",
+        a: "Supplement Snap lists no AccuLynx integration. You could create reports in one and attach the PDF in the other, but we have not tested that workflow.",
+      },
+      {
+        q: "Will either tool get my supplement approved?",
+        a: "No. Approval depends on the claim, the policy, the carrier and your documentation. No software can guarantee it.",
+      },
+    ],
+    related: ["best-roofing-supplement-software", "roofing-supplement-companies-vs-software", "claimtrax-vs-suppx-vs-supplement-snap", "roofing-supplement-follow-up-log"],
+  },
+  {
+    slug: "roofing-documentation-spanish-speaking-crews",
+    title: "Roofing Damage Documentation for Spanish-Speaking Crews",
+    metaTitle: "Roof Damage Documentation for Spanish-Speaking Crews",
+    metaDescription: "How Spanish-speaking roofing crews can document tear-off damage for insurance supplements in their own language, and what to check in the English text.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Let the crew speak the way they work.",
+    midCtaBody: "Supplement Snap lets crew members record notes in Spanish and translates them to English for the report. Your first project is free.",
+    visuals: {
+      2: { type: "steps", data: [
+        { num: "1", title: "Photograph the damage", desc: "Take the photo on the roof and tag the damage type and roof area." },
+        { num: "2", title: "Speak the note", desc: "Choose the language in the app and record the note out loud." },
+        { num: "3", title: "Review the English", desc: "Read the translated text, fix anything that is wrong, and add detail if it is thin." },
+        { num: "4", title: "Generate and review the draft", desc: "The app drafts the explanation from the note. Read it before it goes anywhere." },
+      ]},
+      4: { type: "checklist", data: { title: "Check the English before it goes to the adjuster", items: [
+        { text: "Does every term match what the crew actually saw?", checked: true },
+        { text: "Are measurements and quantities correct after translation?", checked: true },
+        { text: "Are roofing words translated correctly (decking, flashing, drip edge)?", checked: true },
+        { text: "Does the note say what and where, not only 'damaged'?", checked: true },
+        { text: "Did someone who speaks both languages review it when it matters?", checked: true },
+      ]}},
+      5: { type: "tip", data: { type: "info", title: "Translation is a draft", text: "Speech recognition and AI translation can both make mistakes, especially with trade terms, accents and background noise. Treat the English text as a draft that a person reviews. The contractor is responsible for what the adjuster receives." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Many roofing crews speak Spanish, and the person who sees the damage best is often the one on the roof. If that crew member has to write the note in English, the detail gets lost. A better approach is to let them describe the damage in Spanish and have the app translate it, then have someone review the English before it goes in a supplement.\n\nDisclosure: we make Supplement Snap, which works this way. We describe how it works, not how accurate it is.",
+      },
+      {
+        heading: "Why the language of the note matters",
+        content: "The adjuster reads English, but the person who found the rotted decking may think and speak Spanish. When they type a short English note to be quick, it often says only 'bad decking'. That is not enough proof for a supplement.\n\nA spoken note in their own language is usually longer and more specific. It can say where the damage is, how far it runs, what it looks like and why it was not visible before tear-off. That detail is what makes a finding clear to the adjuster. Our guide to <a href='/blog/document-rotted-roof-decking-tear-off'>documenting rotted decking</a> lists what to say.",
+      },
+      {
+        heading: "How it works in Supplement Snap",
+        content: "In the app, a crew member photographs a finding, tags the damage type and roof area, and records a note by voice. The language picker lists Spanish along with Portuguese, French, Polish, Russian, Ukrainian, Vietnamese, Chinese and English. Voice recognition uses the phone or browser's speech recognition, so how well it works depends on the device.\n\nIf the note is not in English, the app sends the text to an AI translation step that returns an English version. You see the English text and can edit it. The draft explanation is then written from that note.\n\nThe steps below show the flow. We have not published accuracy figures for the voice recognition or the translation, and we do not claim any.",
+      },
+      {
+        heading: "What to check in the English text",
+        content: "Translation can slip on trade terms. Check that decking, flashing, drip edge, ice and water shield and pipe boot come out as the words your adjuster uses. Check numbers and units. Check that the note says what and where and not only 'damaged'.\n\nIf the supplement is large or contested, have someone who speaks both languages read the English against the original. It takes a minute and protects the contractor's credibility.",
+      },
+      {
+        heading: "Tips for better voice notes",
+        content: "• Say what you see, then where it is, then how big. For example: what the damage looks like, which slope or area, and roughly how far it runs.\n• Say why it was not visible before tear-off when that is true.\n• Speak slowly and clearly, and move away from saws and nail guns if you can.\n• Include numbers and units out loud, such as how many sheets or how many linear feet.\n• Avoid guessing at causes you did not see.",
+      },
+      {
+        heading: "Where Supplement Snap fits, and where it does not",
+        content: "Supplement Snap helps your crew capture notes in their own language and drafts the explanation for you to review. It does not guarantee a correct translation, replace a bilingual reviewer or decide what your carrier will accept.\n\nYour first project is free, so you can test the voice and translation flow on one real job. Paid plans are Starter at $99 per month, Team at $199 and Pro at $299. See the <a href='/roofing-supplement-software'>feature walkthrough</a>, a <a href='/roofing-supplement-report-example'>sample report</a> and the <a href='/pricing'>pricing page</a>. For what to photograph, use the <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "Can roofing crews dictate damage notes in Spanish?",
+        a: "In Supplement Snap, yes. The language picker includes Spanish, and a non-English note is translated to English for the report. Accuracy depends on the device's speech recognition and the translation, so review the English.",
+      },
+      {
+        q: "Is the translation accurate?",
+        a: "We do not publish accuracy figures. Speech recognition and AI translation can both make mistakes, especially with trade terms and background noise. Treat the English as a draft and have it reviewed.",
+      },
+      {
+        q: "Which other languages are supported?",
+        a: "The app's language list includes English, Spanish, Portuguese, French, Polish, Russian, Ukrainian, Vietnamese and Chinese. Check the app for the current list.",
+      },
+      {
+        q: "Do adjusters accept notes that were translated?",
+        a: "Adjusters read the English text in your report. What matters is that it is accurate and specific. Ask your adjuster if they have requirements for documentation.",
+      },
+      {
+        q: "Does using voice notes make a supplement more likely to be approved?",
+        a: "No tool can promise that. Approval depends on the claim, the policy, the carrier and your documentation. Clear, detailed notes help the adjuster understand the finding.",
+      },
+    ],
+    related: ["document-rotted-roof-decking-tear-off", "roofing-photo-documentation-checklist", "organize-roofing-supplement-photos-by-claim", "best-app-to-document-roof-damage-for-insurance"],
+  },
+  {
+    slug: "free-roofing-supplement-software",
+    title: "Free Roofing Supplement Software: What Is Actually Free?",
+    metaTitle: "Free Roofing Supplement Software: What's Really Free",
+    metaDescription: "Free roofing supplement software compared: free trials, free apps and free plans, with what each includes and what to check. We make Supplement Snap.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "LibreCam", url: "https://librecam.com" },
+      { text: "Manifold for roofing contractors", url: "https://www.scanmanifold.com/roofing-contractors" },
+      { text: "ClaimTrax for contractors", url: "https://myclaimtrax.com/contractors" },
+      { text: "Roof Report Pro", url: "https://www.roofreportpro.ai" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Start with a free project.",
+    midCtaBody: "Your first Supplement Snap project is free. See the report before you decide on anything.",
+    visuals: {
+      2: { type: "matrix", data: {
+        headers: ["What is free", "What to check"],
+        rows: [
+          { feature: "Supplement Snap", values: ["First project free; 14-day trial on paid plans (card required)", "What happens after the first project and the trial"] },
+          { feature: "Roof Report Pro", values: ["5 free reports over 14 days, no card, per its site", "Built for inspection reports, not supplements specifically"] },
+          { feature: "ClaimTrax", values: ["Free for 14 days, no card, no call, per its site", "Tracks claims; price after the trial was not shown"] },
+          { feature: "Manifold", values: ["14-day trial, no card, per its site", "Photo documentation, not supplement writing"] },
+          { feature: "LibreCam", values: ["Free tier for unlimited users, per its own page", "Photo capture; check reports and support"] },
+          { feature: "SuppX", values: ["App listed as free on the App Store", "The fee for its claim service was not shown"] },
+          { feature: "CompanyCam", values: ["Free trial, length not shown on the pricing page", "General job photos; no insurance workflow described on that page"] },
+        ],
+      }},
+      4: { type: "checklist", data: { title: "Before you rely on anything free", items: [
+        { text: "What happens to my projects and photos when the trial or free plan ends?", checked: true },
+        { text: "Does the free version produce a report I could send to an adjuster?", checked: true },
+        { text: "Is a card required to start, and how do I cancel?", checked: true },
+        { text: "Are there limits on projects, users or photos?", checked: true },
+        { text: "Can I export my data?", checked: true },
+      ]}},
+      5: { type: "tip", data: { type: "info", title: "Free offers change", text: "These details come from each company's public pages as seen on October 24, 2026, and several are the company's own claims. We have not tested the other tools. Confirm current terms before you rely on any of them." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Almost no full roofing supplement tool is free forever. What you can get for free is a trial, a free first project, a free photo app or a free app that sends your claims to a service. Each is useful for a different thing, and none replaces testing on a real job.\n\nDisclosure: we make Supplement Snap, whose first project is free. We have not tested the other tools, and their details come from their public pages as seen on October 24, 2026.",
+      },
+      {
+        heading: "Four kinds of free",
+        content: "• A free first project or trial of a paid tool: you get the real product for a limited time or amount. Supplement Snap, ClaimTrax, Manifold and Roof Report Pro describe offers like this.\n• A free photo app: it organizes your photos but does not write the supplement. LibreCam describes itself this way.\n• A free app with a paid service behind it: SuppX is listed as a free app, and its listing says a team handles the follow-up. The listing does not show what the service costs.\n• A free plan with limits: common in general roofing software, and usually limited by features or time.\n\nThe table lists what each company publishes.",
+      },
+      {
+        heading: "What to look for in a free trial",
+        content: "A good trial lets you finish a real piece of work, not just click around. For supplements, that means going from photos to a report you could actually send to an adjuster.\n\nCheck whether a card is required, how long the trial runs, and what happens to your data afterward. Some tools keep your projects but lock them. Some delete them. Ask before you build a real job inside one.",
+      },
+      {
+        heading: "What free usually will not do",
+        content: "Free photo apps rarely write the supplement narrative or build a claim package. Free trials end. A free app that hands your claims to a service may charge a share or a fee that is not on its listing page, so ask what it costs before you submit anything.\n\nNone of these things is wrong. They are just the tradeoffs. For prices of paid options, see our <a href='/blog/roofing-supplement-software-cost'>cost guide</a>.",
+      },
+      {
+        heading: "How to test a free option properly",
+        content: "Use one finished job. Photograph the same roof and write the same notes in each tool you try. Time the work from the first photo to a package you could send, then show each result to someone who was not on the roof.\n\nOur guide to <a href='/blog/best-app-to-document-roof-damage-for-insurance'>documentation apps</a> and the <a href='/blog/roofing-supplement-software-for-small-roofing-companies'>small-company guide</a> cover what to compare, and the <a href='/blog/roofing-supplement-companies-vs-software'>companies versus software</a> article covers services.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "Supplement Snap's first project is free, so you can photograph a real tear-off, add notes, review the drafted explanations and download the PDF report before paying anything. Paid plans are Starter at $99 per month, Team at $199 and Pro at $299, each with a 14-day trial that requires a card.\n\nSee the <a href='/roofing-supplement-report-example'>sample report</a>, the <a href='/roofing-supplement-software'>feature walkthrough</a> and the <a href='/pricing'>pricing page</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "Is there free roofing supplement software?",
+        a: "Some tools offer a free first project or trial, and some photo apps are free. A fully featured supplement tool is rarely free for ongoing use. Supplement Snap's first project is free.",
+      },
+      {
+        q: "Do I need a credit card for a free trial?",
+        a: "It depends on the tool. ClaimTrax, Manifold and Roof Report Pro describe no card on their sites. Supplement Snap's paid plans require a card for the trial. Confirm on each site.",
+      },
+      {
+        q: "Is LibreCam good for supplements?",
+        a: "Its own page describes free photo capture for crews. It is a photo tool, so check whether its output includes the report an adjuster needs.",
+      },
+      {
+        q: "Is SuppX really free?",
+        a: "The app is listed as free on the App Store. The listing does not explain what its claim service costs, so ask the company before you submit a claim.",
+      },
+      {
+        q: "Will a free tool get my supplement approved?",
+        a: "No. Approval depends on the claim, the policy, the carrier and your documentation, not on what you paid for the tool.",
+      },
+    ],
+    related: ["roofing-supplement-software-cost", "best-app-to-document-roof-damage-for-insurance", "roofing-supplement-software-for-small-roofing-companies", "claimtrax-vs-suppx-vs-supplement-snap"],
   },
 ]
 
