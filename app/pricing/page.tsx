@@ -7,7 +7,7 @@ import { SiteFooter } from "../../lib/site-footer"
 export const metadata: Metadata = {
   alternates: { canonical: "https://supplementsnap.io/pricing" },
   title: "Roofing Supplement Software Pricing | Supplement Snap",
-  description: "Simple pricing for roofing teams: start with a free project, then Starter at , Team at  or Pro at  a month, with a 14-day free trial.",
+  description: "Simple pricing for roofing teams: start with a free project, then Starter at $99, Team at $199 or Pro at $299 a month, with a 14-day free trial.",
 }
 
 const STARTER_FEATURES = [

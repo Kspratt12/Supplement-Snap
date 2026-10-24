@@ -36,7 +36,7 @@ const ARTICLES = [
   { slug: "companycam-alternative-roofing-supplements", title: "CompanyCam Alternative for Roofing Supplements: How to Choose", desc: "Photo apps versus supplement-focused tools, and how to choose for your crew.", date: "2026-10-22" },
   { slug: "document-rotted-roof-decking-tear-off", title: "How to Document Rotted Roof Decking Found During Tear-Off", desc: "What to photograph, measure and write down when you find rotted decking, so the finding is clear to the adjuster.", date: "2026-10-23" },
   { slug: "organize-roofing-supplement-photos-by-claim", title: "How to Organize Roofing Supplement Photos by Claim and Roof Area", desc: "A repeatable system for naming, grouping and labeling supplement photos so reports are fast to build.", date: "2026-10-23" },
-  { slug: "supplemental-roofing-estimate-explained", title: "What Is a Supplemental Roofing Estimate? How Roofing Supplements Work", desc: "A supplemental roofing estimate asks the insurer to cover damage found after the first estimate. When it applies and how to submit one.", date: "2026-10-23" },
+  { slug: "supplemental-roofing-estimate-explained", title: "What Is a Supplemental Roofing Estimate? When It Applies and What It Includes", desc: "A supplemental roofing estimate asks the insurer to cover damage found after the first estimate. When it applies and how to submit one.", date: "2026-10-23" },
   { slug: "xactimate-roofing-estimate-example", title: "Xactimate Roofing Estimate Example: How a Supplement Line-Item List Looks", desc: "A sample Xactimate-style layout: sections to include, how to list supplement items, and how to attach photo proof.", date: "2026-10-23" },
   { slug: "xactimate-roofing-software-explained", title: "Xactimate Roofing Software Explained: What It Does and What It Does Not", desc: "What Xactimate does for roofing estimates, what it does not do, and how supplement documentation tools fit alongside it.", date: "2026-10-23" },
   { slug: "roof-inspection-report-software", title: "Roof Inspection Report Software: What to Look For", desc: "What roof inspection report software should do, and how to compare options fairly.", date: "2026-10-23" },
@@ -53,6 +53,9 @@ const ARTICLES = [
   { slug: "recoverable-depreciation-roof-claims", title: "Recoverable Depreciation on a Roof Claim: How It Works", desc: "ACV vs. RCV, when insurers release held-back depreciation and what paperwork helps.", date: "2026-10-23" },
   { slug: "does-insurance-cover-roof-replacement", title: "Does Insurance Cover Roof Replacement? A Contractor Guide", desc: "When insurance may pay for a roof, when it usually does not, and how to explain it without promising an outcome.", date: "2026-10-23" },
   { slug: "roof-inspection-checklist", title: "Roof Inspection Checklist for Roofing Contractors", desc: "Exterior, flashing, attic and decking checklist, plus how to document findings.", date: "2026-10-23" },
+  { slug: "supplement-snap-vs-roofgenius", title: "Supplement Snap vs RoofGenius: Which Fits a Small Roofing Company?", desc: "Price, supplement limits, trial terms and what each does, based on public pages.", date: "2026-10-24" },
+  { slug: "ai-roofing-supplement-tools-compared", title: "AI Roofing Supplement Tools Compared: What Each One Actually Does", desc: "Estimate audits, storm CRMs and field documentation compared by job, with gaps marked.", date: "2026-10-24" },
+  { slug: "roofing-supplement-software-cost", title: "How Much Does Roofing Supplement Software Cost? A 2026 Price Guide", desc: "Monthly plans, claim credits and per-supplement services, using prices companies publish.", date: "2026-10-24" },
 ]
 
 export default function BlogIndex() {
