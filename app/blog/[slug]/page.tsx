@@ -19,6 +19,7 @@ type Article = {
   highlight?: { label: string; value: string; subtext: string }
   images?: Record<number, BlogImage>
   visuals?: Record<number, Visual>
+  midCtaAfter?: number
   sections: Array<{ heading: string; content: string }>
   externalLinks?: Array<{ text: string; url: string }>
   updatedDate?: string
@@ -59,7 +60,7 @@ function StepsFlow({ items }: { items: Array<{ num: string; title: string; desc:
   )
 }
 
-function CodesTable({ items }: { items: Array<{ code: string; desc: string; unit: string; price: string }> }) {
+function CodesTable({ items }: { items: Array<{ code: string; desc: string; unit: string; price: string; href?: string }> }) {
   return (
     <div className="my-8 overflow-x-auto rounded-xl border border-zinc-200 shadow-sm">
       <table className="w-full text-sm">
@@ -74,7 +75,7 @@ function CodesTable({ items }: { items: Array<{ code: string; desc: string; unit
         <tbody className="divide-y divide-zinc-100">
           {items.map((item, i) => (
             <tr key={i} className="bg-white">
-              <td className="px-4 py-3 font-mono text-xs font-semibold text-indigo-600">{item.code}</td>
+              <td className="px-4 py-3 font-mono text-xs font-semibold text-indigo-600">{item.href ? <a href={item.href} className="underline decoration-dotted underline-offset-2 hover:text-indigo-500">{item.code}</a> : item.code}</td>
               <td className="px-4 py-3 text-zinc-600">{item.desc}</td>
               <td className="px-4 py-3 text-center text-zinc-500">{item.unit}</td>
               <td className="px-4 py-3 text-right font-semibold text-zinc-900">{item.price}</td>
@@ -386,7 +387,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How Supplement Snap automates this process",
-        content: "Supplement Snap was built to solve this exact workflow. Your crew captures damage photos during tear-off, tags the damage type and roof area, and adds a voice note describing what they found (works in any language; Spanish voice notes are auto-translated to English).\n\nThe system uses AI to generate a professional supplement narrative from the field data. You can export an Xactimate-ready CSV with the correct line codes and pricing, and email a complete PDF report to the adjuster, all from the field, the same day.\n\nOne tap from the roof to a professional supplement submission. No more lost photos, forgotten details, or supplements that sit in the office for weeks.\n\nFor a complete list of Xactimate codes to use in your supplements, see our <a href='/blog/xactimate-codes-for-roofing-supplements'>Xactimate codes reference guide</a>."
+        content: "Supplement Snap was built to solve this exact workflow. Your crew captures damage photos during tear-off, tags the damage type and roof area, and adds a voice note describing what they found (works in any language; Spanish voice notes are auto-translated to English).\n\nThe system uses AI to generate a professional supplement narrative from the field data. You can export an Xactimate-formatted CSV with suggested line codes and pricing, and email a complete PDF report to the adjuster, all from the field, the same day.\n\nOne tap from the roof to a professional supplement submission. No more lost photos, forgotten details, or supplements that sit in the office for weeks.\n\nFor a complete list of Xactimate codes to use in your supplements, see our <a href='/blog/xactimate-codes-for-roofing-supplements'>Xactimate codes reference guide</a>."
       },
     ],
   },
@@ -482,7 +483,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "xactimate-codes-for-roofing-supplements",
-    title: "Xactimate Codes for Roofing Supplements: Complete Reference",
+    title: "Xactimate Codes for Roofing Supplements: Quick Reference",
     metaTitle: "Xactimate Roofing Supplement List: Codes and Units",
     metaDescription: "Quick-reference Xactimate roofing supplement codes for decking, flashing, ice & water shield, pipe boots and drip edge, with units and proof tips.",
     publishedDate: "2026-01-20",
@@ -491,16 +492,17 @@ const ARTICLES: Article[] = [
       { text: "NRCA Roofing Standards", url: "https://www.nrca.net" },
     ],
     highlight: { label: "Most Used Code", value: "RFG SHTHN", subtext: "Sheathing replacement. One of the most common supplement line items on tear-offs." },
+    midCtaAfter: 0,
     visuals: {
       0: { type: "codes", data: [
-        { code: "RFG SHTHN", desc: "Sheathing, plywood/OSB, R&R", unit: "SF", price: "$2.18" },
-        { code: "RFG RFLT30", desc: "Roofing felt, 30#", unit: "SF", price: "$0.52" },
-        { code: "RFG FLSH", desc: "Step/counter flashing, aluminum", unit: "LF", price: "$8.75" },
-        { code: "RFG I&WS", desc: "Ice & water shield membrane", unit: "SF", price: "$1.85" },
-        { code: "RFG VENT", desc: "Pipe jack/boot, R&R", unit: "EA", price: "$85.00" },
-        { code: "RFG DRIP", desc: "Drip edge, aluminum, R&R", unit: "LF", price: "$4.25" },
-        { code: "RFG TEAR", desc: "Remove additional layer", unit: "SQ", price: "$45.00" },
-        { code: "RFG HAUL", desc: "Haul debris, additional layer", unit: "SQ", price: "$22.50" },
+        { code: "RFG SHTHN", href: "#decking-and-sheathing-codes", desc: "Sheathing, plywood/OSB, R&R", unit: "SF", price: "$2.18" },
+        { code: "RFG RFLT30", href: "#decking-and-sheathing-codes", desc: "Roofing felt, 30#", unit: "SF", price: "$0.52" },
+        { code: "RFG FLSH", href: "#flashing-codes", desc: "Step/counter flashing, aluminum", unit: "LF", price: "$8.75" },
+        { code: "RFG I&WS", href: "#ice-and-water-shield-codes", desc: "Ice & water shield membrane", unit: "SF", price: "$1.85" },
+        { code: "RFG VENT", href: "#vent-and-pipe-boot-codes", desc: "Pipe jack/boot, R&R", unit: "EA", price: "$85.00" },
+        { code: "RFG DRIP", href: "#drip-edge-codes", desc: "Drip edge, aluminum, R&R", unit: "LF", price: "$4.25" },
+        { code: "RFG TEAR", href: "#additional-layer-removal-codes", desc: "Remove additional layer", unit: "SQ", price: "$45.00" },
+        { code: "RFG HAUL", href: "#additional-layer-removal-codes", desc: "Haul debris, additional layer", unit: "SQ", price: "$22.50" },
       ]},
     },
     updatedDate: "2026-10-23",
@@ -574,7 +576,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How Supplement Snap handles Xactimate codes",
-        content: "Supplement Snap automatically maps each damage type to the correct Xactimate line codes with sub-items and unit pricing. When you export the Xactimate CSV, each capture generates the appropriate line items with quantities and national average pricing.\n\nFor example, a 'Decking' capture automatically generates both the sheathing replacement line (RFG SHTHN) and the felt underlayment line (RFG RFLT30). A 'Multiple Layers' capture generates both the tear-off line (RFG TEAR) and the haul debris line (RFG HAUL).\n\nThis saves your office staff from manually looking up codes and pricing, and ensures nothing gets missed in the export.\n\nFor a complete walkthrough of building an Xactimate estimate, see our <a href='/blog/xactimate-roof-estimate-supplements'>Xactimate roof estimate guide</a>."
+        content: "Supplement Snap suggests a matching Xactimate line code, with sub-items and a unit price, for each damage type your crew captures. When you export the Xactimate CSV, each capture produces suggested line items with quantities and national average pricing. Review them against your price list before you send.\n\nFor example, a 'Decking' capture suggests both the sheathing replacement line (RFG SHTHN) and the felt underlayment line (RFG RFLT30). A 'Multiple Layers' capture suggests both the tear-off line (RFG TEAR) and the haul debris line (RFG HAUL).\n\nThis saves your office staff from manually looking up codes and pricing, and helps keep items from being missed in the export.\n\nFor a complete walkthrough of building an Xactimate estimate, see our <a href='/blog/xactimate-roof-estimate-supplements'>Xactimate roof estimate guide</a>."
       },
     ],
   },
@@ -801,7 +803,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Recovering hidden tear-off costs with supplements",
-        content: "The single biggest financial opportunity during a roof tear-off is capturing and recovering the cost of concealed damage through supplements. On an average insurance reroof, contractors who document hidden damage properly recover an additional $1,500–$3,200 per job.\n\nThe challenge has always been the documentation workflow. Your crew is on the roof, moving fast, focused on getting the tear-off done and new materials installed. Stopping to take detailed photos, write notes, and measure damaged areas slows down production. And if documentation happens after the fact, back at the office from memory, it is usually incomplete.\n\nThis is exactly the problem Supplement Snap was built to solve. During tear-off, your crew captures damage photos directly in the app, tags the damage type and roof location, and adds a quick voice note describing what they found. The system generates a professional supplement narrative using AI, maps each finding to the correct Xactimate line codes, and produces a PDF report you can email to the adjuster the same day.\n\nThe result: hidden tear-off costs that used to eat into your margin become documented, submitted, and recovered. Instead of absorbing $2,000 in rotted decking and missing flashing, you turn it into a supplement that gets approved and paid. For contractors doing 10 or more insurance jobs per month, proper tear-off documentation can mean the difference between a tight year and a highly profitable one.\n\nFor more on why the initial estimate rarely matches the final cost, read <a href='/blog/roof-replacement-estimate-vs-final-cost'>roof replacement estimate vs final cost</a>."
+        content: "The single biggest financial opportunity during a roof tear-off is capturing and recovering the cost of concealed damage through supplements. On an average insurance reroof, contractors who document hidden damage properly recover an additional $1,500–$3,200 per job.\n\nThe challenge has always been the documentation workflow. Your crew is on the roof, moving fast, focused on getting the tear-off done and new materials installed. Stopping to take detailed photos, write notes, and measure damaged areas slows down production. And if documentation happens after the fact, back at the office from memory, it is usually incomplete.\n\nThis is exactly the problem Supplement Snap was built to solve. During tear-off, your crew captures damage photos directly in the app, tags the damage type and roof location, and adds a quick voice note describing what they found. The system generates a professional supplement narrative using AI, suggests matching Xactimate line codes for each finding, and produces a PDF report you can email to the adjuster the same day.\n\nThe result: hidden tear-off costs that used to eat into your margin become documented, submitted, and recovered. Instead of absorbing $2,000 in rotted decking and missing flashing, you turn it into a supplement that gets approved and paid. For contractors doing 10 or more insurance jobs per month, proper tear-off documentation can mean the difference between a tight year and a highly profitable one.\n\nFor more on why the initial estimate rarely matches the final cost, read <a href='/blog/roof-replacement-estimate-vs-final-cost'>roof replacement estimate vs final cost</a>."
       },
     ],
   },
@@ -889,7 +891,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How to document hail damage for supplements",
-        content: "Documentation quality is the single biggest factor in whether a hail damage supplement gets approved or denied. Adjusters need to see clear evidence that the damage exists, that it was concealed, and that the repair is necessary. Here is how to document hail damage findings effectively:\n\nBefore tear-off, document the visible damage:\n\n• Photograph hail hits on shingles with chalk circles marking each impact (the industry standard technique). Include both wide shots showing the pattern across the slope and close-ups of individual hits.\n• Photograph all collateral damage (gutters, vents, flashing, skylights, siding) to establish the severity and direction of the hail event.\n• Note the slope direction (north, south, east, west) for each set of photos. Hail damage patterns correlate with storm direction, and adjusters check for this consistency.\n• Document the size of hail impacts by placing a coin, ruler, or hail gauge next to damage for scale.\n\nDuring tear-off, document the concealed damage:\n\n• Photograph each finding immediately when discovered, before new materials cover it.\n• Take context shots showing where the damage sits on the roof (wide angle) and detail shots showing the damage itself (close-up).\n• Tag each finding by type (decking, flashing, underlayment, pipe boot, ice and water shield) so the supplement can be organized by category.\n• Record measurements: how many sheets of decking, how many linear feet of flashing, how many square feet of underlayment.\n• Add voice notes or written descriptions explaining what was found and why it was not visible before tear-off.\n\nAfter documentation, build the supplement package:\n\n• Write a professional narrative for each finding explaining the damage, its location, how it was discovered, and why repair is necessary.\n• Map each finding to the correct Xactimate line codes with accurate quantities.\n• Compile everything into a clean PDF report with labeled photos, narratives, and a findings summary.\n• Submit to the adjuster the same day, while the documentation is fresh and the evidence is current."
+        content: "Documentation quality is the single biggest factor in whether a hail damage supplement gets approved or denied. Adjusters need to see clear evidence that the damage exists, that it was concealed, and that the repair is necessary. Here is how to document hail damage findings effectively:\n\nBefore tear-off, document the visible damage:\n\n• Photograph hail hits on shingles with chalk circles marking each impact (the industry standard technique). Include both wide shots showing the pattern across the slope and close-ups of individual hits.\n• Photograph all collateral damage (gutters, vents, flashing, skylights, siding) to establish the severity and direction of the hail event.\n• Note the slope direction (north, south, east, west) for each set of photos. Hail damage patterns correlate with storm direction, and adjusters check for this consistency.\n• Document the size of hail impacts by placing a coin, ruler, or hail gauge next to damage for scale.\n\nDuring tear-off, document the concealed damage:\n\n• Photograph each finding immediately when discovered, before new materials cover it.\n• Take context shots showing where the damage sits on the roof (wide angle) and detail shots showing the damage itself (close-up).\n• Tag each finding by type (decking, flashing, underlayment, pipe boot, ice and water shield) so the supplement can be organized by category.\n• Record measurements: how many sheets of decking, how many linear feet of flashing, how many square feet of underlayment.\n• Add voice notes or written descriptions explaining what was found and why it was not visible before tear-off.\n\nAfter documentation, build the supplement package:\n\n• Write a professional narrative for each finding explaining the damage, its location, how it was discovered, and why repair is necessary.\n• Match each finding to a suitable Xactimate line code with measured quantities.\n• Compile everything into a clean PDF report with labeled photos, narratives, and a findings summary.\n• Submit to the adjuster the same day, while the documentation is fresh and the evidence is current."
       },
       {
         heading: "Preparing for storm season: systems that scale",
@@ -991,7 +993,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How Supplement Snap generates Xactimate-ready exports",
-        content: "Building an Xactimate-formatted supplement manually for every job takes time: looking up line codes, checking pricing, formatting the estimate, writing the narrative, organizing photos. It's the kind of work that either falls on your office staff or doesn't get done at all.\n\nSupplement Snap automates this process. Your crew captures damage findings during tear-off: photos tagged by damage type, roof area selected, and a voice note describing what they found. Voice notes work in any language, so Spanish-speaking crews describe findings naturally and the system auto-translates to English.\n\nFrom that field data, Supplement Snap automatically maps each finding to the correct Xactimate line codes with sub-items. A 'Decking' finding generates RFG SHTHN with the measured square footage. A 'Flashing' finding generates RFG FLSH with the linear footage. Each line item includes current unit pricing.\n\nYou can export the complete supplement as an Xactimate-compatible CSV that the adjuster can import directly into their system. You also get a professional PDF report with photos, AI-generated narratives, a findings summary, and the complete line item breakdown, ready to email to the adjuster the same day.\n\nThe result is a supplement that speaks the adjuster's language, includes the evidence they need, and arrives the same day the damage was found. That combination (correct format, strong documentation, fast submission) is what gets supplements approved.\n\nNeed the full code list? See our <a href='/blog/xactimate-codes-for-roofing-supplements'>complete Xactimate codes reference</a>."
+        content: "Building an Xactimate-formatted supplement manually for every job takes time: looking up line codes, checking pricing, formatting the estimate, writing the narrative, organizing photos. It's the kind of work that either falls on your office staff or doesn't get done at all.\n\nSupplement Snap automates this process. Your crew captures damage findings during tear-off: photos tagged by damage type, roof area selected, and a voice note describing what they found. Voice notes work in any language, so Spanish-speaking crews describe findings naturally and the system auto-translates to English.\n\nFrom that field data, Supplement Snap suggests a matching Xactimate line code, with sub-items, for each finding. A 'Decking' finding generates RFG SHTHN with the measured square footage. A 'Flashing' finding generates RFG FLSH with the linear footage. Each line item includes current unit pricing.\n\nYou can export the complete supplement as an Xactimate-compatible CSV that the adjuster can import directly into their system. You also get a professional PDF report with photos, AI-generated narratives, a findings summary, and the complete line item breakdown, ready to email to the adjuster the same day.\n\nThe result is a supplement that speaks the adjuster's language, includes the evidence they need, and arrives the same day the damage was found. That combination (correct format, strong documentation, fast submission) is what gets supplements approved.\n\nNeed the full code list? See our <a href='/blog/xactimate-codes-for-roofing-supplements'>complete Xactimate codes reference</a>."
       },
     ],
   },
@@ -4079,7 +4081,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
         <div className="space-y-10">
           {article.sections.map((section, i) => (
             <section key={i}>
-              <h2 className="text-xl font-bold tracking-tight text-zinc-900">{section.heading}</h2>
+              <h2 id={section.heading.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")} className="scroll-mt-24 text-xl font-bold tracking-tight text-zinc-900">{section.heading}</h2>
               <RichContent text={section.content} />
               {article.images?.[i] && (
                 <div className="mt-6 overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
@@ -4094,6 +4096,20 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
                 </div>
               )}
               {article.visuals?.[i] && <VisualBlock visual={article.visuals[i]} />}
+              {article.midCtaAfter === i && (
+                <div className="mt-6 rounded-xl border border-indigo-200 bg-indigo-50 p-5">
+                  <p className="text-sm font-semibold text-zinc-900">Skip the lookup on your next tear-off.</p>
+                  <p className="mt-1 text-sm text-zinc-600">Supplement Snap suggests a matching code and quantity for each finding your crew captures. Review the suggestions before you send them.</p>
+                  <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                    <TrackedLink location="article-mid-start-trial" href="/pricing" className="rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-indigo-500">
+                      Start free trial
+                    </TrackedLink>
+                    <TrackedLink location="article-mid-sample-report" href="/roofing-supplement-report-example" className="rounded-lg border border-zinc-300 bg-white px-4 py-2 text-center text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
+                      See a sample report
+                    </TrackedLink>
+                  </div>
+                </div>
+              )}
             </section>
           ))}
         </div>
