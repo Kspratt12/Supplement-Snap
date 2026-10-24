@@ -44,6 +44,11 @@ const ARTICLES = [
   { slug: "how-insurance-adjusters-determine-roof-damage", title: "How Insurance Adjusters Determine Roof Damage (and What Documentation Helps)", desc: "How adjusters inspect roofs, build estimates and apply policy terms, and what documentation makes a claim easier to review.", date: "2026-10-23" },
   { slug: "what-is-the-25-percent-rule-for-roofing", title: "What Is the 25% Rule for Roofing? It Depends on Where You Are", desc: "What the 25% rule generally means, why it varies by jurisdiction, and how contractors should handle it on insurance claims.", date: "2026-10-23" },
   { slug: "roof-damage-report-template", title: "Roof Damage Report Template: Sections, Example and Checklist", desc: "A copyable roof damage report template with sections, a sample finding and a photo checklist.", date: "2026-10-23" },
+  { slug: "how-roofing-contractors-work-insurance-claims", title: "How Roofing Contractors Work Insurance Claims: A Step-by-Step Guide", desc: "From the first inspection to final payment: the workflow, the contractor's role and where documentation matters.", date: "2026-10-23" },
+  { slug: "hail-damage-roof-insurance-claim-documentation", title: "Hail Damage Roof Insurance Claims: What Contractors Should Document", desc: "Signs of hail damage, test squares, date of loss and the photos adjusters need.", date: "2026-10-23" },
+  { slug: "wind-damage-roof-insurance-claim-documentation", title: "Wind Damage Roof Insurance Claims: What to Document", desc: "Creased and missing shingles, lifted tabs, pattern and date of loss, with photos adjusters can verify.", date: "2026-10-23" },
+  { slug: "roof-leak-insurance-claim-contractor-guide", title: "Roof Leak Insurance Claims: What Contractors Should Know", desc: "Finding the source, temporary protection and why coverage depends on the cause.", date: "2026-10-23" },
+  { slug: "roofing-supplement-companies-vs-software", title: "Roofing Supplement Companies vs. Doing It In-House: How to Decide", desc: "What each option involves, how pricing models differ and the questions to ask before you choose.", date: "2026-10-23" },
 ]
 
 export default function BlogIndex() {
