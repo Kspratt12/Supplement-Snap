@@ -16,7 +16,7 @@ export function DownloadBox({ template, showHubLink = false }: { template: Templ
             key={f.href}
             href={f.href}
             download
-            onClick={() => trackEvent("cta_click", { location: `template-download-${template.id}-${f.format.toLowerCase()}`, target: f.href })}
+            onClick={() => trackEvent("cta_click", { location: `template-download-${template.id}-${f.format.toLowerCase().replace(/\s+/g, "-")}`, target: f.href })}
             className="rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-500"
           >
             Download {f.format}
@@ -24,6 +24,9 @@ export function DownloadBox({ template, showHubLink = false }: { template: Templ
           </a>
         ))}
       </div>
+      {template.files.some((f) => f.format === "Fillable PDF") && (
+        <p className="mt-3 text-xs text-zinc-500">Fillable PDF: open it in a PDF reader such as Adobe Acrobat Reader to type into the blanks. Some phone and browser previews cannot.</p>
+      )}
       {showHubLink && (
         <p className="mt-3 text-sm">
           <a href="/free-roofing-templates" className="font-medium text-indigo-600 underline hover:text-indigo-800">See all free roofing templates &rarr;</a>

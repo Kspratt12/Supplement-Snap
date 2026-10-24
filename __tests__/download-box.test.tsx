@@ -51,6 +51,16 @@ describe("DownloadBox", () => {
     expect(() => fireEvent.click(screen.getByRole("link", { name: /Download PDF/ }))).not.toThrow()
   })
 
+  it("shows a fillable PDF button with a reader tip, and tracks it with a clean label", () => {
+    const t = getTemplate("roof-repair-estimate-template")!
+    render(<DownloadBox template={t} />)
+    const a = screen.getByRole("link", { name: /Download Fillable PDF/ })
+    expect(a.getAttribute("href")).toBe("/downloads/roof-repair-estimate-template-fillable.pdf")
+    expect(screen.getByText(/Adobe Acrobat Reader/)).toBeTruthy()
+    fireEvent.click(a)
+    expect(plausible).toHaveBeenCalledWith("cta_click", { props: { location: "template-download-roof-repair-estimate-template-fillable-pdf", target: "/downloads/roof-repair-estimate-template-fillable.pdf" } })
+  })
+
   it("renders every registered template", () => {
     for (const t of TEMPLATES) {
       const { unmount } = render(<DownloadBox template={t} />)

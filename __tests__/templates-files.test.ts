@@ -35,11 +35,13 @@ const SENTINELS: Record<string, string[]> = {
   "roofing-estimate-template": ["ROOFING ESTIMATE", "Scope of work", "Line items", "Customer signature", "Warranty terms"],
   "roofing-supplement-template": ["ROOFING SUPPLEMENT REQUEST", "Claim number", "Adjuster email", "Findings summary", "Before you send"],
   "roof-damage-report-template": ["ROOF DAMAGE REPORT", "Job details", "Roof summary", "Photo index", "Recommendations"],
+  "roof-repair-estimate-template": ["ROOF REPAIR ESTIMATE", "The problem", "Repair scope", "What could change the price", "Workmanship warranty"],
+  "good-better-best-roofing-proposal-template": ["ROOFING PROPOSAL: THREE OPTIONS", "Option 1: Good", "Option 2: Better", "Option 3: Best", "Customer choice"],
 }
 
 describe("template registry", () => {
   it("lists every file that is linked, and every linked file exists and is a sensible size", () => {
-    expect(TEMPLATES.length).toBeGreaterThanOrEqual(3)
+    expect(TEMPLATES.length).toBeGreaterThanOrEqual(5)
     for (const { f } of ALL_FILES) {
       const p = abs(f.href)
       expect(fs.existsSync(p), `${f.href} is missing`).toBe(true)
@@ -54,7 +56,7 @@ describe("template registry", () => {
     expect(new Set(ids).size).toBe(ids.length)
     const hrefs = ALL_FILES.map(({ f }) => f.href)
     expect(new Set(hrefs).size).toBe(hrefs.length)
-    const ext = { PDF: ".pdf", Word: ".docx", Excel: ".xlsx" } as const
+    const ext = { PDF: ".pdf", "Fillable PDF": "-fillable.pdf", Word: ".docx", Excel: ".xlsx" } as const
     for (const { f } of ALL_FILES) expect(f.href.endsWith(ext[f.format])).toBe(true)
   })
 
@@ -75,7 +77,7 @@ describe("template registry", () => {
 })
 
 describe("PDF files", () => {
-  const pdfs = ALL_FILES.filter(({ f }) => f.format === "PDF")
+  const pdfs = ALL_FILES.filter(({ f }) => f.format === "PDF" || f.format === "Fillable PDF")
   it.each(pdfs.map(({ t, f }) => [t.id, f.href]))("%s: valid US Letter PDF with the expected text", (id, href) => {
     const buf = fs.readFileSync(abs(href))
     expect(buf.subarray(0, 5).toString()).toBe("%PDF-")
@@ -88,6 +90,39 @@ describe("PDF files", () => {
     const pages = (text.match(/\/Type\s*\/Page[^s]/g) || []).length
     expect(pages).toBeGreaterThanOrEqual(1)
     expect(pages).toBeLessThanOrEqual(4)
+  })
+})
+
+describe("Fillable PDFs", () => {
+  const fillable = ALL_FILES.filter(({ f }) => f.format === "Fillable PDF")
+  const plain = ALL_FILES.filter(({ f }) => f.format === "PDF")
+  const widgets = (text: string) => (text.match(/\/Subtype\s*\/Widget/g) || []).length
+
+  it("offers a fillable version of every template that has a plain PDF, and only those", () => {
+    expect(fillable.length).toBe(plain.length)
+    for (const { t } of plain) expect(fillable.some((x) => x.t.id === t.id), `${t.id} has no fillable PDF`).toBe(true)
+  })
+
+  it.each(fillable.map(({ t, f }) => [t.id, f.href]))("%s: has a form with many unique text fields inside the page", (_id, href) => {
+    const text = fs.readFileSync(abs(href)).toString("latin1")
+    expect(text).toContain("/AcroForm")
+    expect(widgets(text)).toBeGreaterThan(40)
+    // every widget is a text box or a checkbox
+    expect((text.match(/\/FT\s*\/(?:Tx|Btn)/g) || []).length).toBe(widgets(text))
+    expect((text.match(/\/FT\s*\/Tx/g) || []).length).toBeGreaterThan(40)
+    const names = [...text.matchAll(/\/T\s*\(([^)]*)\)/g)].map((m) => m[1])
+    expect(names.length).toBeGreaterThanOrEqual(widgets(text))
+    expect(new Set(names).size, "duplicate field names").toBe(names.length)
+    for (const m of text.matchAll(/\/Rect\s*\[\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\]/g)) {
+      const [x1, y1, x2, y2] = m.slice(1).map(Number)
+      expect(x1).toBeGreaterThanOrEqual(0); expect(y1).toBeGreaterThanOrEqual(0)
+      expect(x2).toBeLessThanOrEqual(612); expect(y2).toBeLessThanOrEqual(792)
+      expect(x2).toBeGreaterThan(x1); expect(y2).toBeGreaterThan(y1)
+    }
+  })
+
+  it("keeps the plain PDFs free of form fields", () => {
+    for (const { f } of plain) expect(widgets(fs.readFileSync(abs(f.href)).toString("latin1")), f.href).toBe(0)
   })
 })
 
