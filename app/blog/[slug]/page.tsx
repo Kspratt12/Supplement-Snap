@@ -323,7 +323,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["roofing-supplement-template","roofing-supplement-denied-what-to-do","xactimate-codes-for-roofing-supplements","roofing-photo-documentation-checklist"],
+    related: ["roofing-supplement-template","roofing-supplement-denied-what-to-do","xactimate-codes-for-roofing-supplements","roofing-photo-documentation-checklist", "best-roofing-supplement-software"],
     faq: [
       {
         "q": "Do I need Xactimate to submit a roofing supplement?",
@@ -424,7 +424,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["how-to-write-a-roofing-supplement","roofing-supplement-follow-up-log","roofing-photo-documentation-checklist","roofing-supplement-template"],
+    related: ["how-to-write-a-roofing-supplement","roofing-supplement-follow-up-log","roofing-photo-documentation-checklist","roofing-supplement-template", "roofing-supplement-companies-vs-software"],
     faq: [
       {
         "q": "Can I resubmit a denied roofing supplement?",
@@ -515,7 +515,7 @@ const ARTICLES: Article[] = [
       ]},
     },
     updatedDate: "2026-10-23",
-    related: ["xactimate-roofing-estimate-example","xactimate-roofing-software-explained","xactimate-roofing-estimate-approved","roofing-supplement-template"],
+    related: ["xactimate-roofing-estimate-example","xactimate-roofing-software-explained","xactimate-roofing-estimate-approved","roofing-supplement-template", "best-roofing-supplement-software"],
     faq: [
       {
         "q": "Do I need an Xactimate license to use these codes?",
@@ -712,7 +712,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["how-to-write-a-roofing-supplement","roofing-photo-documentation-checklist","roofing-supplement-denied-what-to-do","roofing-supplement-template"],
+    related: ["how-to-write-a-roofing-supplement","roofing-photo-documentation-checklist","roofing-supplement-denied-what-to-do","roofing-supplement-template", "roofing-supplement-companies-vs-software"],
     faq: [
       {
         "q": "How long does the roofing supplement process take?",
@@ -1629,7 +1629,7 @@ const ARTICLES: Article[] = [
       "roofing-photo-documentation-checklist",
       "xactimate-codes-for-roofing-supplements",
       "roofing-supplement-denied-what-to-do"
-    ],
+    , "best-roofing-supplement-software"],
     "externalLinks": [
       {
         "text": "Verisk Xactimate Product Page",
