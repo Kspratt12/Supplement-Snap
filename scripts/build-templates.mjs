@@ -341,6 +341,7 @@ function buildPdf(model, { fillable = false } = {}) {
         doc.setFillColor(238, 240, 246); doc.setDrawColor(190, 190, 200); doc.setLineWidth(0.25)
         let x = M
         b.cols.forEach((c, i) => {
+          doc.setFillColor(238, 240, 246) // jsPDF shares one colour between text and fills, so reset it for every cell
           doc.rect(x, y, widths[i], 7, "FD")
           doc.setFont("helvetica", "bold"); doc.setFontSize(8); dark(); doc.text(c[0], x + 1.8, y + 4.7)
           x += widths[i]
