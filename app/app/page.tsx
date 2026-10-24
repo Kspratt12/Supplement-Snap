@@ -9,6 +9,7 @@ import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { PhotoAnnotator } from "../dashboard/photo-annotator"
 import { FeedbackBox } from "../dashboard/feedback-box"
+import { ensureSpace, drawLabeledText, drawSectionLabel } from "../../lib/pdf-layout"
 import { extractAllExifData, type PhotoMetadata } from "../../lib/exif-utils"
 import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang, fetchAccountSpeechLang } from "../../lib/speech-langs"
 import { uploadPhotosWithRetry, cleanupOrphanedUploads } from "../../lib/upload-utils"
@@ -1004,15 +1005,7 @@ function Home() {
     let y = margin
 
     function checkPage(needed: number) {
-      if (y + needed > pageHeight - 15) {
-        // Add page number footer before new page
-        doc.setFontSize(7)
-        doc.setFont("helvetica", "normal")
-        doc.setTextColor(180, 180, 180)
-        doc.text(`Page ${doc.getNumberOfPages()}`, pageWidth / 2, pageHeight - 8, { align: "center" })
-        doc.addPage()
-        y = margin
-      }
+      y = ensureSpace(doc, y, needed, { pageHeight, margin })
     }
 
     // ── HEADER BAR ──
@@ -1150,54 +1143,26 @@ function Home() {
       doc.text(`Documented: ${new Date(c.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`, margin + 10, y)
       y += 6
 
-      // Field note
+      // Field note (label stays on the same page as its text)
       if (c.field_note) {
-        checkPage(15)
-        doc.setFontSize(7.5)
-        doc.setFont("helvetica", "bold")
-        doc.setTextColor(130, 130, 140)
-        doc.text("FIELD NOTE", margin, y)
-        y += 3.5
-        doc.setFontSize(9)
-        doc.setFont("helvetica", "normal")
-        doc.setTextColor(60, 60, 70)
-        const noteLines = doc.splitTextToSize(c.field_note, contentWidth)
-        checkPage(noteLines.length * 4 + 2)
-        doc.text(noteLines, margin, y)
-        y += noteLines.length * 4 + 3
+        y = drawLabeledText(doc, y, { label: "FIELD NOTE", text: c.field_note, margin, contentWidth, geometry: { pageHeight, margin } })
       }
 
-      // Supplement explanation in bordered box
+      // Supplement explanation in bordered box (label stays with the box)
       if (drafts[c.id]) {
-        checkPage(15)
-        doc.setFontSize(7.5)
-        doc.setFont("helvetica", "bold")
-        doc.setTextColor(130, 130, 140)
-        doc.text("SUPPLEMENT EXPLANATION", margin, y)
-        y += 3.5
-        doc.setFontSize(9)
-        doc.setFont("helvetica", "normal")
-        doc.setTextColor(50, 50, 60)
-        const draftLines = doc.splitTextToSize(drafts[c.id], contentWidth - 8)
-        const boxHeight = draftLines.length * 4 + 6
-        checkPage(boxHeight + 2)
-        doc.setFillColor(248, 248, 252)
-        doc.setDrawColor(220, 220, 230)
-        doc.setLineWidth(0.3)
-        doc.roundedRect(margin, y - 2, contentWidth, boxHeight, 2, 2, "FD")
-        doc.text(draftLines, margin + 4, y + 2)
-        y += boxHeight + 3
+        y = drawLabeledText(doc, y, { label: "SUPPLEMENT EXPLANATION", text: drafts[c.id], margin, contentWidth, geometry: { pageHeight, margin }, boxed: true })
       }
 
       // Photos (compressed for PDF to prevent memory crashes on large reports)
       if (includePhotos && urls.length > 0 && urls[0] !== "") {
         let photosLoaded = 0
-        checkPage(10)
-        doc.setFontSize(7.5)
-        doc.setFont("helvetica", "bold")
-        doc.setTextColor(130, 130, 140)
-        doc.text(`SUPPORTING PHOTOS (${urls.length})`, margin, y)
-        y += 4
+        let photosLabelDrawn = false
+        const drawPhotosLabel = () => {
+          if (photosLabelDrawn) return
+          checkPage(10)
+          y = drawSectionLabel(doc, y, `SUPPORTING PHOTOS (${urls.length})`, margin, 4)
+          photosLabelDrawn = true
+        }
 
         for (let pi = 0; pi < urls.length; pi++) {
           const url = urls[pi]
@@ -1211,7 +1176,9 @@ function Home() {
             const imgW = Math.min(contentWidth, 140)
             const imgH = imgW * ratio
             const cappedH = Math.min(imgH, 100)
-            checkPage(cappedH + 12)
+            // Keep the label with the first photo: reserve room for both before drawing either
+            checkPage((photosLabelDrawn ? 0 : 4) + cappedH + 12)
+            drawPhotosLabel()
             // Photo border
             doc.setDrawColor(220, 220, 230)
             doc.setLineWidth(0.3)
@@ -1249,6 +1216,7 @@ function Home() {
 
         // If no photos loaded (CORS or fetch failure), show note
         if (photosLoaded === 0) {
+          drawPhotosLabel()
           doc.setFontSize(8)
           doc.setFont("helvetica", "italic")
           doc.setTextColor(150, 150, 160)
