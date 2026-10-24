@@ -4353,7 +4353,7 @@ const ARTICLES: Article[] = [
     sections: [
       {
         heading: "The short answer",
-        content: "A roofing estimate needs seven things: your company details, the customer and property, a clear scope of work, materials, labor and other charges, a total price with an expiry date, and terms with a place for the customer to sign. The layout below puts them in that order, with blanks you can fill in, and you can download it as a PDF, Word or Excel file just under this section.\n\nDisclosure: we make Supplement Snap, which is not an estimating tool. It helps crews document hidden damage after tear-off. This page is about the estimate you give a customer before work starts. If you are writing an insurance supplement instead, see our <a href='/blog/roofing-supplement-template'>supplement template</a>.",
+        content: "A roofing estimate needs seven things: your company details, the customer and property, a clear scope of work, materials, labor and other charges, a total price with an expiry date, and terms with a place for the customer to sign. The layout below puts them in that order, with blanks you can fill in, and you can download it as a PDF, fillable PDF, Word or Excel file just under this section. For a smaller job or a choice of options, see the <a href='/blog/roof-repair-estimate-template'>roof repair estimate template</a> and the <a href='/blog/good-better-best-roofing-proposal-template'>good, better, best proposal template</a>.\n\nDisclosure: we make Supplement Snap, which is not an estimating tool. It helps crews document hidden damage after tear-off. This page is about the estimate you give a customer before work starts. If you are writing an insurance supplement instead, see our <a href='/blog/roofing-supplement-template'>supplement template</a>.",
       },
       {
         heading: "What every roofing estimate should include",
@@ -4403,7 +4403,162 @@ const ARTICLES: Article[] = [
       },
     ],
     downloads: "roofing-estimate-template",
-    related: ["xactimate-roofing-estimate-example", "roofing-supplement-template", "xactimate-roofing-estimate-approved", "best-roof-estimating-software"],
+    related: ["xactimate-roofing-estimate-example", "roof-repair-estimate-template", "good-better-best-roofing-proposal-template", "roofing-supplement-template"],
+  },
+  {
+    slug: "roof-repair-estimate-template",
+    title: "Roof Repair Estimate Template: Free PDF, Fillable PDF and Word",
+    metaTitle: "Roof Repair Estimate Template: Free PDF & Word",
+    metaDescription: "Free roof repair estimate template as a printable PDF, fillable PDF and Word file, plus what a repair estimate should say that a full replacement estimate does not.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Found hidden damage after tear-off?",
+    midCtaBody: "An estimate covers the work you can see before you start. Supplement Snap helps your crew document what turns up once the shingles are off. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to put in it","Why it matters"],
+        rows: [
+          { feature: "The problem", values: ["Where it is on the roof, what you found and the cause if you know it", "The customer sees you understood the issue, and the record shows what you were asked to fix"] },
+          { feature: "Repair scope", values: ["Exactly what you will do, and what is not included", "Stops a small repair turning into an argument about the rest of the roof"] },
+          { feature: "Line items", values: ["Materials, labor and any trip or disposal charge, listed separately", "Makes a short job easy to follow"] },
+          { feature: "What could change the price", values: ["How extra damage found once the area is opened up will be handled", "Avoids a surprise bill"] },
+          { feature: "Workmanship warranty", values: ["How long you stand behind this repair and what it covers", "Sets expectations about the repaired area, not the whole roof"] },
+          { feature: "Terms and signature", values: ["Payment terms, planned date window and a line for the customer to accept", "Turns the estimate into an agreement"] },
+        ],
+      }},
+      4: { type: "tip", data: { type: "info", title: "Rules differ by state", text: "Licensing, written-contract requirements, cancellation rights and permitted payment terms vary by state and sometimes by city. This template is a starting layout, not legal advice. Have it reviewed against your local rules before you use it with customers." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "A roof repair estimate is shorter than a full replacement estimate, but it still needs the problem, a clear repair scope, line items, a total, what could change the price, terms and a signature. You can download the template below as a printable PDF, a fillable PDF you type into on screen, or a Word file.\n\nDisclosure: we make Supplement Snap, which is not an estimating tool. It helps crews document hidden damage after tear-off. This page is about the estimate you give a customer for a repair. If you are quoting a full replacement, use our <a href='/blog/roofing-estimate-template'>roofing estimate template</a> instead.",
+      },
+      {
+        heading: "What a repair estimate needs to say",
+        content: "The table lists the sections and why each one is there. A repair is often a small job, so the temptation is to write one line and a price. That is where disputes start, because the customer may assume the repair covers more than you meant.\n\nKeep the language plain, and say what is included and what is not.",
+      },
+      {
+        heading: "How to fill it in",
+        content: "Start with the problem. Write where it is and what you saw, for example a leak around a chimney where the flashing has pulled away. If you know the cause, say so, and if you do not, leave it blank rather than guessing.\n\nThen write the repair scope as a short list of actions, with a limit where one is needed. For example: remove and replace the chimney flashing, reseal, and replace up to a stated number of damaged shingles. Add a sentence on what is not included, such as interior ceiling repair.\n\nPut materials, labor and any trip or disposal charge on separate lines with your own prices. The template has blanks only, not prices.",
+      },
+      {
+        heading: "Say what a repair does not do",
+        content: "A repair fixes the problem you describe. It does not make the rest of the roof new, and it cannot promise that nothing else will fail. If you noticed other worn areas while you were up there, write them in the terms section so the customer knows. It protects you, and it is the honest thing to tell them.\n\nIf a repair is likely to be followed by a larger job, or the roof is near the end of its life, say that plainly and point to the <a href='/blog/good-better-best-roofing-proposal-template'>good, better, best proposal template</a> for offering a replacement choice.",
+      },
+      {
+        heading: "Check your local rules before you use it",
+        content: "Many states require specific language in home improvement contracts, a license number, a right-to-cancel notice, or limits on deposits. Some apply a written-contract rule above a certain dollar amount, and repairs can fall under it. This template does not include state-specific wording.\n\nAsk your state licensing board, your insurance agent or an attorney what must appear in your estimates and contracts.",
+      },
+      {
+        heading: "If the repair is part of an insurance claim",
+        content: "When a carrier is paying, the carrier's estimate sets the starting scope, and damage found after the work begins is handled through a supplement, not through your repair estimate. See our <a href='/blog/roofing-supplement-template'>roofing supplement template</a> and the <a href='/blog/roof-damage-report-template'>roof damage report template</a> for documenting it.\n\nSupplement Snap is for that second step: your crew photographs the damage on the roof, adds a note, reviews the drafted description and exports a PDF for the adjuster. Your first project is free. See the <a href='/roofing-supplement-software'>feature walkthrough</a> and the <a href='/pricing'>pricing page</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "What should a roof repair estimate include?",
+        a: "The problem and where it is, a clear repair scope with what is not included, line items for materials and labor, a total, how extra damage will be handled, terms such as payment and a workmanship warranty, and a signature line.",
+      },
+      {
+        q: "Is there a free roof repair estimate template?",
+        a: "Yes. This page offers one as a printable PDF, a fillable PDF and a Word file, with blanks for your own prices. Check it against your state's requirements before using it.",
+      },
+      {
+        q: "How is a repair estimate different from a roof replacement estimate?",
+        a: "A repair estimate describes a limited fix for a specific problem and should say what the rest of the roof still needs. A replacement estimate covers the whole roof area by area, with materials and a larger set of terms.",
+      },
+      {
+        q: "Does a small roof repair need a written estimate?",
+        a: "It is good practice to write one so the scope and price are clear. Some states also require a written contract above a set amount, so confirm what yours requires.",
+      },
+      {
+        q: "What if more damage is found during the repair?",
+        a: "Say in the estimate how that will be handled, for example that extra damage is priced at an agreed unit rate and approved by the customer first. If an insurance claim is involved, additional damage goes through a supplement.",
+      },
+    ],
+    downloads: "roof-repair-estimate-template",
+    related: ["roofing-estimate-template","good-better-best-roofing-proposal-template","roofing-supplement-template","roof-damage-report-template"],
+  },
+  {
+    slug: "good-better-best-roofing-proposal-template",
+    title: "Good Better Best Roofing Proposal Template: Free PDF and Word",
+    metaTitle: "Good Better Best Roofing Proposal Template (Free)",
+    metaDescription: "Free good, better, best roofing proposal template as a printable PDF, fillable PDF and Word file, with how to build three honest options and a comparison table.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Found hidden damage after tear-off?",
+    midCtaBody: "An estimate covers the work you can see before you start. Supplement Snap helps your crew document what turns up once the shingles are off. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to put in it","Why it matters"],
+        rows: [
+          { feature: "Work common to all options", values: ["The scope that is the same in every option", "You do not repeat it three times, and the customer sees what is not a choice"] },
+          { feature: "Each option", values: ["Material and color, underlayment and flashing, what is included, warranties and the price", "The customer compares real products, not labels"] },
+          { feature: "A side-by-side table", values: ["The differences that matter to this customer", "Lets them compare at a glance"] },
+          { feature: "What could change the price", values: ["How hidden damage is handled in any option", "Applies to all three, so it only needs saying once"] },
+          { feature: "Customer choice", values: ["A box for the option they pick and a signature", "Records exactly what they agreed to"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Rules differ by state", text: "Licensing, written-contract requirements, cancellation rights and permitted payment terms vary by state and sometimes by city. This template is a starting layout, not legal advice. Have it reviewed against your local rules before you use it with customers." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "A good, better, best proposal offers the customer three priced options for the same job, so they choose instead of deciding whether to hire you at all. The template below has a shared-scope section, three option blocks, a side-by-side table, terms and a place for the customer to choose and sign. Download it as a printable PDF, a fillable PDF you type into on screen, or a Word file.\n\nDisclosure: we make Supplement Snap, which is not an estimating or proposal tool. It helps crews document hidden damage after tear-off. This page is about the proposal you give a customer before work starts.",
+      },
+      {
+        heading: "What goes in each option",
+        content: "The table lists the sections and why each is there. The template leaves every price, product and warranty blank for you to fill in, because the right options depend on what you install, what your suppliers offer and what the customer needs.\n\nWhatever you put in the three options should be true and specific: the actual product line, the actual warranty terms, the actual price.",
+      },
+      {
+        heading: "How to build three honest options",
+        content: "Start with the work that is the same in every option, such as tear-off, decking inspection, cleanup and haul-away, and write it once.\n\nThen make each option a real alternative. A common approach is a standard shingle, a higher-grade shingle, and a premium product or a more complete system, but use whatever you actually offer. For each, fill in the material and color, the underlayment and flashing, what is included, the manufacturer warranty, your workmanship warranty and the price.\n\nIn the side-by-side table, list only the differences the customer will care about, such as warranty length, material grade or included extras. Do not pad it with features that are the same in all three, and do not describe a difference that is not real.",
+      },
+      {
+        heading: "Keep the choice fair",
+        content: "The point of three options is to help the customer choose well. Describe the lower option accurately, without running it down to push the higher one. State what each price includes, and do not promise results such as energy savings, insurance discounts or resale value unless you can back them up and they are allowed where you work.\n\nIf you are not sure a claim is true, leave it out.",
+      },
+      {
+        heading: "Check your local rules before you use it",
+        content: "Many states require specific language in home improvement contracts, a license number, a right-to-cancel notice, or limits on deposits. A signed proposal may count as a contract where you work. This template does not include state-specific wording.\n\nAsk your state licensing board, your insurance agent or an attorney what must appear in your proposals and contracts.",
+      },
+      {
+        heading: "Related templates and where Supplement Snap fits",
+        content: "For a single-price replacement estimate, use the <a href='/blog/roofing-estimate-template'>roofing estimate template</a>. For a limited fix, use the <a href='/blog/roof-repair-estimate-template'>roof repair estimate template</a>.\n\nSupplement Snap is for the step after tear-off: your crew photographs hidden damage on the roof, adds a note, reviews the drafted description and exports a PDF for the adjuster. Your first project is free. See the <a href='/roofing-supplement-software'>feature walkthrough</a> and the <a href='/pricing'>pricing page</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "What is a good, better, best roofing proposal?",
+        a: "A proposal that gives the customer three priced options for the same job, usually in rising levels of material, warranty or scope, so they choose between options instead of deciding whether to hire you.",
+      },
+      {
+        q: "Is there a free good, better, best roofing proposal template?",
+        a: "Yes. This page offers one as a printable PDF, a fillable PDF and a Word file, with blanks for your own products, warranties and prices.",
+      },
+      {
+        q: "How many options should a roofing proposal have?",
+        a: "Three is common because it is easy to compare, but offer as many as you can describe clearly and honestly. Fewer is fine if you only have two real alternatives.",
+      },
+      {
+        q: "What should go in the comparison table?",
+        a: "Only the differences that matter to the customer, such as material grade, warranty terms and what is included. Leave out anything that is the same in every option.",
+      },
+      {
+        q: "Does a signed proposal count as a contract?",
+        a: "It can, depending on where you work and what it says. Some states require specific contract wording, so confirm your local requirements.",
+      },
+    ],
+    downloads: "good-better-best-roofing-proposal-template",
+    related: ["roofing-estimate-template","roof-repair-estimate-template","roofing-supplement-template","roof-damage-report-template"],
   },
   {
     slug: "supplement-snap-vs-roof-report-pro",

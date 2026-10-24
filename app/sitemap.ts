@@ -30,6 +30,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/blog/best-app-to-document-roof-damage-for-insurance`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/claimtrax-vs-suppx-vs-supplement-snap`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/roofing-supplement-software-for-small-roofing-companies`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/roof-repair-estimate-template`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/good-better-best-roofing-proposal-template`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/roofing-estimate-template`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/supplement-snap-vs-roof-report-pro`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/supplement-snap-vs-acculynx-supplements`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },

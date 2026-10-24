@@ -9,7 +9,7 @@ import { DownloadBox } from "../blog/[slug]/download-box"
 const URL = "https://supplementsnap.io/free-roofing-templates"
 const TITLE = "Free Roofing Templates: Estimate, Supplement, Report"
 const DESCRIPTION =
-  "Free roofing templates for contractors: an estimate, an insurance supplement and a roof damage report, as PDF, Word and Excel. No sign-up needed."
+  "Free roofing templates: estimate, repair estimate, three-option proposal, supplement and damage report as PDF, fillable PDF, Word or Excel. No sign-up."
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: "Which format should I pick?",
-    a: "PDF is for printing and filling in by hand. Word is for editing on a computer and adding your logo. The Excel version of the estimate calculates amounts and totals for you.",
+    a: "PDF is for printing and filling in by hand. Fillable PDF lets you type into the blanks on screen and then save or print it; open it in a PDF reader such as Adobe Acrobat Reader, because some phone and browser previews do not support typing into forms. Word is for editing on a computer and adding your logo. The Excel version of the estimate calculates amounts and totals for you.",
   },
   {
     q: "Do I need to change anything before I use them?",
@@ -80,7 +80,7 @@ export default function FreeRoofingTemplatesPage() {
         <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Free tools</p>
         <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Free Roofing Templates for Contractors</h1>
         <p className="mt-5 text-base leading-relaxed text-zinc-600">
-          Three templates roofers ask for most: an estimate for the customer, a supplement package for the adjuster, and a damage report that backs up both. Download them as PDF, Word or Excel. No email or account needed.
+          The templates roofers ask for most: estimates and proposals for the customer, a supplement package for the adjuster, and a damage report that backs up both. Download them as a printable PDF, a fillable PDF, Word or Excel. No email or account needed.
         </p>
         <p className="mt-3 text-sm text-zinc-500">
           These are starting points. Fill in your own details and prices, and adjust them to your carrier&apos;s, client&apos;s and state&apos;s requirements. They are general guidance, not legal advice.

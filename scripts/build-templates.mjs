@@ -10,11 +10,13 @@
 //   /blog/roofing-estimate-template
 //   /blog/roofing-supplement-template
 //   /blog/roof-damage-report-template
+//   /blog/roof-repair-estimate-template
+//   /blog/good-better-best-roofing-proposal-template
 
 import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import { jsPDF } from "jspdf"
+import { jsPDF, AcroFormTextField, AcroFormCheckBox } from "jspdf"
 import JSZip from "jszip"
 import {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, BorderStyle,
@@ -149,10 +151,101 @@ const damageReport = {
   ],
 }
 
+const repairEstimate = {
+  file: "roof-repair-estimate-template",
+  title: "Roof Repair Estimate",
+  subtitle: "For a limited repair, not a full replacement. Describe the problem, the fix and the price in plain words. Prices are yours to enter.",
+  blocks: [
+    { t: "h2", text: "Your company" },
+    { t: "fields", rows: [["Company name", "License no. (if required)"], ["Address", "Phone"], ["Email"]] },
+    { t: "h2", text: "Estimate details" },
+    { t: "fields", rows: [["Estimate no.", "Date"], ["Valid until"]] },
+    { t: "h2", text: "Customer" },
+    { t: "fields", rows: [["Customer name", "Phone"], ["Job address", "Email"]] },
+    { t: "h2", text: "The problem" },
+    { t: "note", text: "Say where it is and what you found. Example: Leak at the chimney. Flashing along the uphill side has pulled away and the sealant has failed. Water stains on the ceiling below." },
+    { t: "fields", rows: [["Roof area or slope"], ["Cause, if known"]] },
+    { t: "lines", n: 3 },
+    { t: "h2", text: "Repair scope" },
+    { t: "note", text: "List exactly what you will do, and what is not included. Example: Remove and replace chimney flashing. Reseal. Replace up to [number] damaged shingles. Does not include interior ceiling repair." },
+    { t: "lines", n: 4 },
+    { t: "h2", text: "Line items" },
+    { t: "table", cols: [["Description", 46], ["Quantity", 12], ["Unit", 12], ["Unit price", 15], ["Amount", 15]], rows: 8 },
+    { t: "h2", text: "Total" },
+    { t: "fields", rows: [["Trip or service charge", "Disposal"], ["Total price"]] },
+    { t: "h2", text: "What could change the price" },
+    { t: "note", text: "Example: if rotted decking is found once the damaged area is opened up, it is charged at the agreed unit price after the customer approves." },
+    { t: "lines", n: 2 },
+    { t: "h2", text: "Terms" },
+    { t: "fields", rows: [["Payment terms"], ["Workmanship warranty on this repair"], ["Planned date window"]] },
+    { t: "note", text: "A repair does not make the rest of the roof new. Note anything else you saw that the customer should know about, such as other worn areas, so there are no surprises later." },
+    { t: "lines", n: 2 },
+    { t: "h2", text: "Acceptance" },
+    { t: "para", text: "By signing, the customer accepts this repair estimate and its terms." },
+    { t: "fields", rows: [["Customer signature", "Date"]] },
+    { t: "note", text: "Check your state's licensing, written-contract and cancellation requirements before using this with customers." },
+  ],
+}
+
+const optionBlock = (n, name) => [
+  { t: "h2", text: `Option ${n}: ${name}` },
+  { t: "fields", rows: [["Material and color"], ["Underlayment and flashing"], ["What is included"], ["Manufacturer warranty"], ["Workmanship warranty", "Price"]] },
+]
+
+const goodBetterBest = {
+  file: "good-better-best-roofing-proposal-template",
+  title: "Roofing Proposal: Three Options",
+  subtitle: "Offer the customer a choice. Fill in each option honestly, with the real differences and the real prices, then let them pick.",
+  blocks: [
+    { t: "h2", text: "Your company" },
+    { t: "fields", rows: [["Company name", "License no. (if required)"], ["Address", "Phone"], ["Email"]] },
+    { t: "h2", text: "Proposal details" },
+    { t: "fields", rows: [["Proposal no.", "Date"], ["Valid until"]] },
+    { t: "h2", text: "Customer" },
+    { t: "fields", rows: [["Customer name", "Phone"], ["Job address", "Email"]] },
+    { t: "h2", text: "Work common to all options" },
+    { t: "note", text: "Write what is the same in every option so it is not repeated. Example: Tear off existing shingles. Inspect decking. Haul away debris. Clean up the property." },
+    { t: "lines", n: 3 },
+    ...optionBlock(1, "Good"),
+    ...optionBlock(2, "Better"),
+    ...optionBlock(3, "Best"),
+    { t: "h2", text: "Side by side" },
+    { t: "note", text: "Fill in the differences that matter to this customer so they can compare at a glance." },
+    { t: "table", cols: [["What you get", 34], ["Good", 22], ["Better", 22], ["Best", 22]], rows: 7 },
+    { t: "h2", text: "What could change the price" },
+    { t: "note", text: "Example: hidden decking damage or extra layers found after tear-off, charged at the agreed unit price in any option." },
+    { t: "lines", n: 2 },
+    { t: "h2", text: "Terms" },
+    { t: "fields", rows: [["Payment schedule"], ["Start date window"]] },
+    { t: "h2", text: "Customer choice" },
+    { t: "para", text: "Mark the option the customer chooses, then sign. By signing, the customer accepts that option and its terms." },
+    { t: "checks", items: ["Option 1: Good", "Option 2: Better", "Option 3: Best"] },
+    { t: "fields", rows: [["Customer signature", "Date"]] },
+    { t: "note", text: "Check your state's licensing, written-contract and cancellation requirements before using this with customers." },
+  ],
+}
+
 // ───────────────────────── PDF ─────────────────────────
 
-function buildPdf(model) {
+function buildPdf(model, { fillable = false } = {}) {
   const doc = new jsPDF({ unit: "mm", format: "letter" })
+  let fieldCount = 0
+  // Fillable version: a typeable text box laid over each blank line or cell, with a unique name.
+  const addCheck = (x, fy, size, name) => {
+    if (!fillable) return
+    const c = new AcroFormCheckBox()
+    c.fieldName = `check_${++fieldCount}_${name.replace(/[^A-Za-z0-9]+/g, "_").slice(0, 20)}`
+    c.Rect = [x, fy, size, size]
+    doc.addField(c)
+  }
+  const addField = (x, fy, w, h, name) => {
+    if (!fillable) return
+    const f = new AcroFormTextField()
+    f.fieldName = `${name}_${++fieldCount}`
+    f.Rect = [x, fy, w, h]
+    f.fontSize = 10
+    doc.addField(f)
+  }
   const W = doc.internal.pageSize.getWidth()
   const H = doc.internal.pageSize.getHeight()
   const M = 16
@@ -220,13 +313,14 @@ function buildPdf(model) {
           doc.text(shown, x, y)
           doc.setDrawColor(150, 150, 160); doc.setLineWidth(0.25)
           doc.line(x + lw, y + 1, x + colW, y + 1)
+          addField(x + lw + 0.5, y - 4.2, colW - lw - 0.5, 5.4, label.replace(/[^A-Za-z0-9]+/g, "_").slice(0, 24))
         })
         y += 8.5
       }
       y += 1
     } else if (b.t === "lines") {
       for (let i = 0; i < b.n; i++) {
-        ensure(8); doc.setDrawColor(150, 150, 160); doc.setLineWidth(0.25); doc.line(M, y + 1, W - M, y + 1); y += 7.5
+        ensure(8); doc.setDrawColor(150, 150, 160); doc.setLineWidth(0.25); doc.line(M, y + 1, W - M, y + 1); addField(M, y - 4.2, CW, 5.4, "notes"); y += 7.5
       }
       y += 1
     } else if (b.t === "bullets" || b.t === "checks") {
@@ -235,7 +329,7 @@ function buildPdf(model) {
       for (const item of b.items) {
         const lines = doc.splitTextToSize(item, CW - 7)
         ensure(lines.length * 4.2 + 1.5)
-        if (b.t === "checks") { doc.setDrawColor(90, 90, 100); doc.setLineWidth(0.3); doc.rect(M, y - 2.8, 3.2, 3.2) }
+        if (b.t === "checks") { doc.setDrawColor(90, 90, 100); doc.setLineWidth(0.3); doc.rect(M, y - 2.8, 3.2, 3.2); addCheck(M, y - 2.8, 3.2, item) }
         else doc.text("•", M + 0.5, y)
         doc.text(lines, M + 6, y); y += lines.length * 4.2 + 1.5
       }
@@ -258,7 +352,7 @@ function buildPdf(model) {
         if (y + 8 > H - FOOT) { doc.addPage(); y = M; header() }
         let x = M
         doc.setDrawColor(190, 190, 200); doc.setLineWidth(0.25)
-        widths.forEach((w) => { doc.rect(x, y, w, 8); x += w })
+        widths.forEach((w, ci) => { doc.rect(x, y, w, 8); addField(x + 0.4, y + 0.4, w - 0.8, 7.2, `r${r + 1}_${b.cols[ci][0].replace(/[^A-Za-z0-9]+/g, "_").slice(0, 16)}`); x += w })
         y += 8
       }
       y += 3
@@ -432,8 +526,9 @@ async function buildXlsx() {
 
 const write = (name, buf) => { fs.writeFileSync(path.join(OUT, name), buf); console.log(name.padEnd(46), (buf.length / 1024).toFixed(1) + " KB") }
 
-for (const model of [estimate, supplement, damageReport]) {
+for (const model of [estimate, supplement, damageReport, repairEstimate, goodBetterBest]) {
   write(`${model.file}.pdf`, buildPdf(model))
+  write(`${model.file}-fillable.pdf`, buildPdf(model, { fillable: true }))
   write(`${model.file}.docx`, await buildDocx(model))
 }
 write(`${estimate.file}.xlsx`, await buildXlsx())

@@ -6,7 +6,7 @@
  */
 
 export interface TemplateFile {
-  format: "PDF" | "Word" | "Excel"
+  format: "PDF" | "Fillable PDF" | "Word" | "Excel"
   href: string
   /** What the visitor gets, in a few words. */
   note: string
@@ -31,6 +31,7 @@ export const TEMPLATES: Template[] = [
     guideLabel: "How to fill it in",
     files: [
       { format: "PDF", href: "/downloads/roofing-estimate-template.pdf", note: "Print and fill in by hand" },
+      { format: "Fillable PDF", href: "/downloads/roofing-estimate-template-fillable.pdf", note: "Type into it on screen, then save or print" },
       { format: "Word", href: "/downloads/roofing-estimate-template.docx", note: "Edit on your computer" },
       { format: "Excel", href: "/downloads/roofing-estimate-template.xlsx", note: "Amounts and totals calculate for you" },
     ],
@@ -43,6 +44,7 @@ export const TEMPLATES: Template[] = [
     guideLabel: "How to use it",
     files: [
       { format: "PDF", href: "/downloads/roofing-supplement-template.pdf", note: "Print and fill in by hand" },
+      { format: "Fillable PDF", href: "/downloads/roofing-supplement-template-fillable.pdf", note: "Type into it on screen, then save or print" },
       { format: "Word", href: "/downloads/roofing-supplement-template.docx", note: "Edit on your computer" },
     ],
   },
@@ -54,7 +56,32 @@ export const TEMPLATES: Template[] = [
     guideLabel: "How to write each section",
     files: [
       { format: "PDF", href: "/downloads/roof-damage-report-template.pdf", note: "Print and fill in by hand" },
+      { format: "Fillable PDF", href: "/downloads/roof-damage-report-template-fillable.pdf", note: "Type into it on screen, then save or print" },
       { format: "Word", href: "/downloads/roof-damage-report-template.docx", note: "Edit on your computer" },
+    ],
+  },
+  {
+    id: "roof-repair-estimate-template",
+    title: "Roof repair estimate template",
+    description: "For a limited repair rather than a full replacement: the problem, the repair scope, line items, what could change the price, terms and a signature line.",
+    guideHref: "/blog/roof-repair-estimate-template",
+    guideLabel: "How to fill it in",
+    files: [
+      { format: "PDF", href: "/downloads/roof-repair-estimate-template.pdf", note: "Print and fill in by hand" },
+      { format: "Fillable PDF", href: "/downloads/roof-repair-estimate-template-fillable.pdf", note: "Type into it on screen, then save or print" },
+      { format: "Word", href: "/downloads/roof-repair-estimate-template.docx", note: "Edit on your computer" },
+    ],
+  },
+  {
+    id: "good-better-best-roofing-proposal-template",
+    title: "Good, better, best roofing proposal template",
+    description: "Three options side by side with a comparison table, shared scope, terms and a place for the customer to choose and sign.",
+    guideHref: "/blog/good-better-best-roofing-proposal-template",
+    guideLabel: "How to build the three options",
+    files: [
+      { format: "PDF", href: "/downloads/good-better-best-roofing-proposal-template.pdf", note: "Print and fill in by hand" },
+      { format: "Fillable PDF", href: "/downloads/good-better-best-roofing-proposal-template-fillable.pdf", note: "Type into it on screen, then save or print" },
+      { format: "Word", href: "/downloads/good-better-best-roofing-proposal-template.docx", note: "Edit on your computer" },
     ],
   },
 ]
