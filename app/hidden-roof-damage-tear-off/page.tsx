@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://supplementsnap.io/hidden-roof-damage-tear-off" },
   title: "Hidden Roof Damage Found During Tear-Off | Supplement Snap",
   description:
-    "Common hidden roof damage discovered during tear-off including rotten decking, flashing failure, and missing ice and water shield. Learn why documentation matters.",
+    "Common hidden roof damage found during tear-off, including rotten decking, flashing failure and missing ice and water shield, and why documentation matters.",
 }
 
 export default function HiddenRoofDamagePage() {

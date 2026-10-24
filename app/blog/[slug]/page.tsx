@@ -292,7 +292,7 @@ const ARTICLES: Article[] = [
   {
     slug: "how-to-write-a-roofing-supplement",
     title: "How to Write a Roofing Supplement That Gets Approved",
-    metaTitle: "How to Write a Roofing Supplement for Insurance | Step-by-Step Guide",
+    metaTitle: "How to Write a Roofing Supplement (Step-by-Step Guide)",
     metaDescription: "Learn how to write a roofing supplement adjusters approve. Step-by-step guide with documentation tips, Xactimate codes and common mistakes to avoid.",
     publishedDate: "2026-01-06",
     externalLinks: [
@@ -393,8 +393,8 @@ const ARTICLES: Article[] = [
   {
     slug: "roofing-supplement-denied-what-to-do",
     title: "Roofing Supplement Denied? Here's What to Do Next",
-    metaTitle: "Roofing Supplement Denied? What to Do Next | Contractor Guide",
-    metaDescription: "Your roofing supplement was denied by the insurance company. Here's what to do next, from re-documenting damage to filing appeals and preventing future denials.",
+    metaTitle: "Roofing Supplement Denied? What to Do Next",
+    metaDescription: "Your roofing supplement was denied. Here's what to do next, from re-documenting damage to appeals and preventing future denials.",
     publishedDate: "2026-01-13",
     externalLinks: [
       { text: "National Association of Insurance Commissioners (NAIC)", url: "https://www.naic.org" },
@@ -484,7 +484,7 @@ const ARTICLES: Article[] = [
     slug: "xactimate-codes-for-roofing-supplements",
     title: "Xactimate Codes for Roofing Supplements: Complete Reference",
     metaTitle: "Xactimate Roofing Supplement List: Codes and Units",
-    metaDescription: "Xactimate roofing supplement list: quick-reference line codes for decking, flashing, ice & water shield, pipe boots, drip edge and tear-off, with units and proof tips.",
+    metaDescription: "Quick-reference Xactimate roofing supplement codes for decking, flashing, ice & water shield, pipe boots and drip edge, with units and proof tips.",
     publishedDate: "2026-01-20",
     externalLinks: [
       { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
@@ -671,7 +671,7 @@ const ARTICLES: Article[] = [
   {
     slug: "roofing-supplement-process-explained",
     title: "The Roofing Supplement Process Explained: From Tear-Off to Approval",
-    metaTitle: "Roofing Supplement Process Explained | From Tear-Off to Approval",
+    metaTitle: "Roofing Supplement Process: Tear-Off to Approval",
     metaDescription: "Complete guide to the roofing supplement process, from discovering hidden damage during tear-off to getting insurance approval. Written for contractors.",
     publishedDate: "2026-02-03",
     externalLinks: [
@@ -760,7 +760,7 @@ const ARTICLES: Article[] = [
   {
     slug: "roof-tear-off-cost",
     title: "Roof Tear-Off Cost in 2026: What Contractors and Homeowners Should Know",
-    metaTitle: "Roof Tear-Off Cost in 2026 | Pricing by Size, Material & Pitch",
+    metaTitle: "Roof Tear-Off Cost in 2026: By Size, Material and Pitch",
     metaDescription: "What does a roof tear-off cost in 2026? Costs by roof size, material, pitch and layers, plus hidden costs found at tear-off and how supplements recover them.",
     publishedDate: "2026-02-10",
     externalLinks: [
@@ -1860,7 +1860,7 @@ const ARTICLES: Article[] = [
     "slug": "roofing-overhead-and-profit-claims",
     "title": "Overhead and Profit on Roofing Claims: When You Can Charge O&P",
     "metaTitle": "Overhead and Profit (O&P) on Roofing Insurance Claims",
-    "metaDescription": "How overhead and profit works on roofing insurance claims: when O&P applies, how to document multiple trades, what carriers push back on, and how to respond.",
+    "metaDescription": "How overhead and profit works on roofing claims: when O&P applies, how to document multiple trades, what carriers push back on and how to respond.",
     "publishedDate": "2026-10-22",
     "related": [
       "xactimate-roofing-estimate-approved",
@@ -2504,7 +2504,7 @@ const ARTICLES: Article[] = [
     slug: "roof-inspection-report-software",
     title: "Roof Inspection Report Software: What to Look For",
     metaTitle: "Roof Inspection Report Software: What to Look For",
-    metaDescription: "What roof inspection report software should do: capture labeled photos, attach notes and produce a clear report. Features, types of tools and how to compare them.",
+    metaDescription: "What roof inspection report software should do: capture labeled photos, attach notes and produce a clear report. Features and how to compare tools.",
     publishedDate: "2026-10-23",
     updatedDate: "2026-10-23",
     visuals: {
@@ -3218,7 +3218,7 @@ const ARTICLES: Article[] = [
     slug: "roof-leak-insurance-claim-contractor-guide",
     title: "Roof Leak Insurance Claims: What Contractors Should Know",
     metaTitle: "Roof Leak Insurance Claims: A Contractor Guide",
-    metaDescription: "What contractors should know about roof leak insurance claims: finding the source, documenting damage, temporary protection and why coverage depends on the cause.",
+    metaDescription: "What contractors should know about roof leak insurance claims: finding the source, documenting damage, temporary protection and why cause decides coverage.",
     publishedDate: "2026-10-23",
     updatedDate: "2026-10-23",
     externalLinks: [
@@ -3642,7 +3642,7 @@ const ARTICLES: Article[] = [
     slug: "roof-inspection-checklist",
     title: "Roof Inspection Checklist for Roofing Contractors (Printable)",
     metaTitle: "Roof Inspection Checklist for Contractors (Printable)",
-    metaDescription: "A practical roof inspection checklist covering exterior, flashing, penetrations, attic and decking, plus how to document findings for a client or an insurance claim.",
+    metaDescription: "A practical roof inspection checklist covering exterior, flashing, attic and decking, plus how to document findings for a client or insurance claim.",
     publishedDate: "2026-10-23",
     updatedDate: "2026-10-23",
     externalLinks: [
