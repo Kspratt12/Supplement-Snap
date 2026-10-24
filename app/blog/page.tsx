@@ -59,6 +59,11 @@ const ARTICLES = [
   { slug: "best-app-to-document-roof-damage-for-insurance", title: "Best App to Document Roof Damage for Insurance Claims (2026)", desc: "Photo and documentation apps compared by price, trial and what each is built for.", date: "2026-10-24" },
   { slug: "claimtrax-vs-suppx-vs-supplement-snap", title: "ClaimTrax vs SuppX vs Supplement Snap: Which Supplement Tool Fits?", desc: "Tracking, outsourcing or documenting your supplements, compared on public information.", date: "2026-10-24" },
   { slug: "roofing-supplement-software-for-small-roofing-companies", title: "Roofing Supplement Software for Small Roofing Companies: Do You Need It?", desc: "Spreadsheets, software and services compared by claim volume and cost.", date: "2026-10-24" },
+  { slug: "roofing-estimate-template", title: "Roofing Estimate Template: What to Include and a Layout to Copy", desc: "A copyable layout with blanks, the sections every estimate needs, and how it differs from an insurance supplement.", date: "2026-10-24" },
+  { slug: "supplement-snap-vs-roof-report-pro", title: "Supplement Snap vs Roof Report Pro: Which Documentation Tool Fits?", desc: "Tear-off supplement documentation versus AI-assisted inspection reports, compared on public information.", date: "2026-10-24" },
+  { slug: "supplement-snap-vs-acculynx-supplements", title: "Supplement Snap vs AccuLynx for Supplements: Do You Need Both?", desc: "Documenting hidden damage versus tracking claims in a roofing CRM.", date: "2026-10-24" },
+  { slug: "roofing-documentation-spanish-speaking-crews", title: "Roofing Damage Documentation for Spanish-Speaking Crews", desc: "Let the crew describe damage in their own language, and what to check in the English text.", date: "2026-10-24" },
+  { slug: "free-roofing-supplement-software", title: "Free Roofing Supplement Software: What Is Actually Free?", desc: "Free trials, free apps and free plans compared, with what each includes and what to check.", date: "2026-10-24" },
 ]
 
 export default function BlogIndex() {
