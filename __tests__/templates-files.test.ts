@@ -87,6 +87,11 @@ describe("PDF files", () => {
     expect(text).toContain("Supplement Snap")
     expect(text).toMatch(/not legal advice/)
     for (const s of SENTINELS[id]) expect(text, `${s} missing from ${href}`).toContain(s)
+    // Table header cells are the only filled rectangles; each must be filled light grey, never the dark
+    // text colour (jsPDF shares one colour between text and fills, which once made headers solid black).
+    const fills = [...text.matchAll(/([\d.]+ [\d.]+ [\d.]+) rg\n[^\n]* re\nB\n/g)].map((m) => m[1])
+    expect(fills.length, "table header cells").toBeGreaterThan(0)
+    for (const c of fills) expect(c).toBe("0.93 0.94 0.96")
     const pages = (text.match(/\/Type\s*\/Page[^s]/g) || []).length
     expect(pages).toBeGreaterThanOrEqual(1)
     expect(pages).toBeLessThanOrEqual(4)
