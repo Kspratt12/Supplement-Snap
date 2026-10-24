@@ -50,6 +50,9 @@ const ARTICLES = [
   { slug: "roof-leak-insurance-claim-contractor-guide", title: "Roof Leak Insurance Claims: What Contractors Should Know", desc: "Finding the source, temporary protection and why coverage depends on the cause.", date: "2026-10-23" },
   { slug: "roofing-supplement-companies-vs-software", title: "Roofing Supplement Companies vs. Doing It In-House: How to Decide", desc: "What each option involves, how pricing models differ and the questions to ask before you choose.", date: "2026-10-23" },
   { slug: "best-roofing-supplement-software", title: "Best Roofing Supplement Software (2026): Tools, Services and How to Choose", desc: "Compare estimating software, documentation tools, photo apps, CRMs and supplement services, with a fair way to test them.", date: "2026-10-23" },
+  { slug: "recoverable-depreciation-roof-claims", title: "Recoverable Depreciation on a Roof Claim: How It Works", desc: "ACV vs. RCV, when insurers release held-back depreciation and what paperwork helps.", date: "2026-10-23" },
+  { slug: "does-insurance-cover-roof-replacement", title: "Does Insurance Cover Roof Replacement? A Contractor Guide", desc: "When insurance may pay for a roof, when it usually does not, and how to explain it without promising an outcome.", date: "2026-10-23" },
+  { slug: "roof-inspection-checklist", title: "Roof Inspection Checklist for Roofing Contractors", desc: "Exterior, flashing, attic and decking checklist, plus how to document findings.", date: "2026-10-23" },
 ]
 
 export default function BlogIndex() {

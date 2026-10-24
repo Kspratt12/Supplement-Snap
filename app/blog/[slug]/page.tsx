@@ -3472,6 +3472,261 @@ const ARTICLES: Article[] = [
     ],
     related: ["roofing-supplement-companies-vs-software", "xactimate-roofing-software-explained", "roofing-software-comparison", "supplemental-roofing-estimate-explained"],
   },
+  {
+    slug: "recoverable-depreciation-roof-claims",
+    title: "Recoverable Depreciation on a Roof Claim: How It Works and How Contractors Help Get It Paid",
+    metaTitle: "Recoverable Depreciation on Roof Claims Explained",
+    metaDescription: "ACV vs. RCV, what recoverable depreciation is, when insurers release it and what paperwork a roofing contractor needs to help the homeowner collect it.",
+    publishedDate: "2026-10-23",
+    updatedDate: "2026-10-23",
+    externalLinks: [
+      { text: "NAIC: Consumer insurance resources", url: "https://content.naic.org" },
+      { text: "Insurance Information Institute: Homeowners insurance", url: "https://www.iii.org/article/what-covered-under-standard-homeowners-insurance-policy" },
+    ],
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Actual cash value (ACV)", "Replacement cost value (RCV)"],
+        rows: [
+          { feature: "What it means", values: ["Replacement cost minus depreciation", "Full cost to repair or replace with similar materials"] },
+          { feature: "Usually paid", values: ["First, after the claim is approved", "After the work is done, if the policy allows"] },
+          { feature: "Who feels the gap", values: ["The homeowner, until depreciation is released", "Nobody, if all conditions are met"] },
+        ],
+      }},
+      3: { type: "steps", data: [
+        { num: "1", title: "Claim approved", desc: "The carrier issues an estimate showing RCV, depreciation and ACV." },
+        { num: "2", title: "First payment", desc: "The carrier pays ACV, minus the deductible." },
+        { num: "3", title: "Work is completed", desc: "The roof is repaired or replaced and documented." },
+        { num: "4", title: "Proof is sent", desc: "The final invoice and photos go to the carrier." },
+        { num: "5", title: "Depreciation released", desc: "If the policy allows it, the held-back amount is paid." },
+      ]},
+      5: { type: "tip", data: { type: "info", title: "Read the policy, not the summary", text: "Whether depreciation is recoverable, how long you have to claim it and what proof is required are set by the policy and your state. Send homeowners to their policy and carrier for their own claim." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Recoverable depreciation is the part of a roof claim the insurance company holds back at first and may pay later, after the work is finished. It is the gap between the replacement cost of the roof and its actual cash value.\n\nThe usual sequence is that the carrier pays the actual cash value first, the contractor completes the work, and the carrier then releases the held-back amount once it sees proof. Whether this applies depends on the homeowner's policy, so treat this page as a general explanation and not as advice on a specific claim.",
+      },
+      {
+        heading: "ACV vs. RCV in plain terms",
+        content: "Replacement cost value (RCV) is what it costs to replace the damaged roofing with similar materials. Actual cash value (ACV) is that figure reduced by depreciation, which reflects the age and wear of what was damaged.\n\nA simple example with round numbers: if replacement cost is $15,000 and the carrier applies $5,000 of depreciation, ACV is $10,000. On a policy with replacement cost coverage, the carrier may pay $10,000 up front (less the deductible) and hold $5,000 as recoverable depreciation. These numbers are illustrative only and are not typical of any particular claim.",
+      },
+      {
+        heading: "When recoverable depreciation gets paid",
+        content: "Carriers generally release recoverable depreciation after the repair or replacement is complete and they receive proof, such as the final invoice or a completion certificate. Some policies set a deadline to claim it, so the homeowner should check the time limit in the policy.\n\nSome roof schedules and older roofs are handled differently. Certain policies pay roofs at actual cash value only, and in that case nothing is held back to be recovered later. The estimate from the carrier usually shows whether depreciation is marked recoverable or non-recoverable, so that is the first place to look.",
+      },
+      {
+        heading: "How insurers decide the depreciation amount",
+        content: "Carriers typically consider the roof's age, material, condition and remaining useful life. An older roof tends to carry more depreciation than a newer one. How depreciation is calculated, and whether labor is depreciated, varies by carrier and by state, so two similar claims can differ.\n\nIf the depreciation looks wrong, the homeowner can ask the adjuster how it was calculated. Documented roof condition from before the loss, such as dated photos or an inspection, can support a conversation. For how adjusters judge damage in general, see <a href='/blog/how-insurance-adjusters-determine-roof-damage'>how insurance adjusters determine roof damage</a>.",
+      },
+      {
+        heading: "What a contractor can do to help",
+        content: "A contractor cannot promise the carrier will release depreciation, but good paperwork removes common reasons for delay. Keep the final invoice itemized, make sure it matches the scope the carrier approved, and send photos that show the completed work.\n\nIf hidden damage was found at tear-off, the supplement and its documentation belong in the same file, so the carrier sees one consistent record. A complete package is easier to review. See <a href='/blog/supplemental-roofing-estimate-explained'>what a supplemental roofing estimate is</a> and the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a> for what to include.",
+      },
+      {
+        heading: "Common reasons depreciation is delayed",
+        content: "The most common causes are simple: the final invoice does not match the approved estimate, proof of completion is missing, the work is not finished, or the claim deadline passed. Mortgage companies can also be named on the check, which adds a step for the homeowner.\n\nIf a payment is slow or denied, ask the carrier for the reason in writing, then fix the documentation gap. For disputes more broadly, see <a href='/blog/roofing-supplement-denied-what-to-do'>what to do when a supplement is denied</a>.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "Supplement Snap helps roofing contractors capture hidden damage and build a clear photo report during the job, so the file is ready when the carrier asks for proof. It does not decide depreciation, and it cannot guarantee that any amount is paid. <a href='/roofing-supplement-software'>See how it works</a> or look at the <a href='/roofing-supplement-report-example'>sample report</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "What is recoverable depreciation on a roof?",
+        a: "It is the portion of a roof claim the insurer withholds at first and may pay after the repair or replacement is completed, if the policy provides replacement cost coverage.",
+      },
+      {
+        q: "Is recoverable depreciation the same as the deductible?",
+        a: "No. The deductible is the amount the homeowner pays out of pocket. Recoverable depreciation is money the carrier holds back and may release later.",
+      },
+      {
+        q: "How long does it take to get recoverable depreciation?",
+        a: "It varies. It is usually requested after the work is done and proof is sent, then reviewed by the carrier. Check the policy for any deadline.",
+      },
+      {
+        q: "What if my policy only pays actual cash value?",
+        a: "Then the carrier typically pays the depreciated amount and nothing is held back to be recovered later. The policy and the carrier's estimate show which applies.",
+      },
+      {
+        q: "Can a contractor guarantee the depreciation will be paid?",
+        a: "No. Payment depends on the policy, the claim and the carrier. A contractor can provide complete documentation that supports the request.",
+      },
+    ],
+    related: ["how-insurance-adjusters-determine-roof-damage", "supplemental-roofing-estimate-explained", "roofing-supplement-denied-what-to-do", "how-roofing-contractors-work-insurance-claims"],
+  },
+  {
+    slug: "does-insurance-cover-roof-replacement",
+    title: "Does Insurance Cover Roof Replacement? What Contractors Should Tell Homeowners",
+    metaTitle: "Does Insurance Cover Roof Replacement? A Contractor Guide",
+    metaDescription: "When homeowners insurance may pay for a new roof, when it usually does not, and how contractors can explain coverage without promising an outcome.",
+    publishedDate: "2026-10-23",
+    updatedDate: "2026-10-23",
+    externalLinks: [
+      { text: "Insurance Information Institute: What homeowners insurance covers", url: "https://www.iii.org/article/what-covered-under-standard-homeowners-insurance-policy" },
+      { text: "NAIC: Consumer insurance resources", url: "https://content.naic.org" },
+    ],
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Often considered", "Often not covered"],
+        rows: [
+          { feature: "Cause of damage", values: ["Sudden events such as hail, wind or a fallen tree", "Age, wear and tear, and neglected maintenance"] },
+          { feature: "Typical payout", values: ["Repair or replacement, minus the deductible", "Usually no payment for the worn roof"] },
+          { feature: "What helps", values: ["Dated photos, an inspection and a clear report", "Maintenance records that show upkeep"] },
+        ],
+      }},
+      3: { type: "checklist", data: { title: "What to check in the policy", items: [
+        { text: "Is the roof paid at replacement cost or actual cash value?", checked: true },
+        { text: "Is there a separate wind or hail deductible?", checked: true },
+        { text: "Is there a roof age schedule or cosmetic damage exclusion?", checked: true },
+        { text: "What is the deadline to report a loss?", checked: true },
+        { text: "Is depreciation recoverable after the work?", checked: true },
+      ]}},
+      5: { type: "tip", data: { type: "info", title: "Do not promise coverage", text: "Coverage is decided by the carrier under the policy. Contractors can document damage and explain the process, but telling a homeowner their roof will be covered can create problems for everyone." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Homeowners insurance may pay for a roof replacement when the roof was damaged by a covered event, such as hail, wind or a falling tree. It generally does not pay to replace a roof that is simply old or worn out.\n\nWhether a particular roof is covered depends on the policy, the cause of the damage and the carrier's decision. This guide is a general explanation for contractors who talk to homeowners every day, not advice on any one claim.",
+      },
+      {
+        heading: "Covered events vs. wear and tear",
+        content: "Policies commonly cover sudden and accidental damage and exclude gradual deterioration. A hailstorm that bruises shingles is a different kind of loss than shingles that have reached the end of their life.\n\nThe line is not always obvious. A roof can be both old and storm-damaged, and the adjuster has to separate the two. That is why clear evidence of the damage matters. See <a href='/blog/how-insurance-adjusters-determine-roof-damage'>how adjusters determine roof damage</a> and <a href='/blog/hail-damage-roof-inspection'>how a hail damage inspection works</a>.",
+      },
+      {
+        heading: "Repair or full replacement",
+        content: "Having covered damage does not always mean a full replacement. The carrier may approve a repair for a limited area, or a replacement when damage is widespread. Matching issues, such as discontinued shingles or code requirements, can influence the scope, and the rules vary by state and by carrier.\n\nBecause scope is a common point of disagreement, contractors often document each slope and the specific findings. For the topic of repair thresholds, see <a href='/blog/what-is-the-25-percent-rule-for-roofing'>the 25 percent rule for roofing</a>.",
+      },
+      {
+        heading: "Policy details that change the outcome",
+        content: "Several policy details change what a homeowner receives. Replacement cost coverage and actual cash value coverage pay differently. Some policies include a separate wind or hail deductible, often a percentage of the home's insured value. Some limit coverage for older roofs through a schedule, and some exclude cosmetic damage.\n\nA homeowner should read their own policy or ask their agent. A contractor should avoid interpreting policy language for them. The checklist above is a good list of questions to hand over.",
+      },
+      {
+        heading: "How contractors can help without overpromising",
+        content: "The most useful thing a contractor can do is document the roof well: dated photos, labeled findings and a written report. That helps the homeowner and the adjuster look at the same facts.\n\nIf the carrier approves the claim and the work reveals more damage, a supplement can request the additional items. See <a href='/blog/how-roofing-contractors-work-insurance-claims'>how contractors work insurance claims</a> and <a href='/blog/roof-inspection-report'>what goes into a roof inspection report</a>. Some states regulate what a contractor may say or do on a claim, so check your local rules.",
+      },
+      {
+        heading: "What to say to a homeowner",
+        content: "A fair, honest script: \"I can document what I see and give you a report. Whether your policy covers it is up to your insurance company. If they approve the claim and we find more damage during the work, we can submit a supplement.\"\n\nIt sets expectations and keeps you from guaranteeing an outcome you do not control.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "Supplement Snap helps roofing contractors capture and organize damage evidence during inspection and tear-off and send a clear report to the adjuster. It does not determine coverage or promise approval. <a href='/roofing-supplement-software'>Learn more</a> or see the <a href='/roofing-supplement-report-example'>sample report</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "Does homeowners insurance cover a new roof?",
+        a: "It may when the roof is damaged by a covered event like hail or wind. It generally does not cover replacement due to age or wear. The policy and the carrier decide.",
+      },
+      {
+        q: "Will insurance replace a roof that is 15 or 20 years old?",
+        a: "Possibly, if a covered event damaged it, but some policies pay older roofs at actual cash value or limit coverage by age. Check the policy.",
+      },
+      {
+        q: "Does insurance pay for a roof leak?",
+        a: "It depends on the cause. A leak from storm damage may be covered, while a leak from wear or lack of maintenance often is not.",
+      },
+      {
+        q: "Can a roofing contractor tell me if my claim will be approved?",
+        a: "No. A contractor can document damage and explain the process, but the insurance company decides coverage.",
+      },
+      {
+        q: "What if the insurance estimate is too low?",
+        a: "A contractor can submit a supplement with documentation for missed items, and the homeowner can ask the carrier to review. Results depend on the claim.",
+      },
+    ],
+    related: ["how-insurance-adjusters-determine-roof-damage", "hail-damage-roof-insurance-claim-documentation", "roof-leak-insurance-claim-contractor-guide", "what-is-the-25-percent-rule-for-roofing"],
+  },
+  {
+    slug: "roof-inspection-checklist",
+    title: "Roof Inspection Checklist for Roofing Contractors (Printable)",
+    metaTitle: "Roof Inspection Checklist for Contractors (Printable)",
+    metaDescription: "A practical roof inspection checklist covering exterior, flashing, penetrations, attic and decking, plus how to document findings for a client or an insurance claim.",
+    publishedDate: "2026-10-23",
+    updatedDate: "2026-10-23",
+    externalLinks: [
+      { text: "NRCA: Roofing resources", url: "https://www.nrca.net" },
+      { text: "OSHA: Fall protection", url: "https://www.osha.gov/fall-protection" },
+    ],
+    visuals: {
+      1: { type: "checklist", data: { title: "Exterior checklist", items: [
+        { text: "Missing, cracked, curled or lifted shingles", checked: true },
+        { text: "Granule loss and exposed mat", checked: true },
+        { text: "Hail bruising or wind creasing", checked: true },
+        { text: "Ridge and hip caps", checked: true },
+        { text: "Gutters and downspouts", checked: true },
+      ]}},
+      2: { type: "checklist", data: { title: "Flashing and penetrations", items: [
+        { text: "Pipe boots cracked or dried out", checked: true },
+        { text: "Chimney and wall flashing", checked: true },
+        { text: "Valleys and debris buildup", checked: true },
+        { text: "Skylights and vents sealed", checked: true },
+        { text: "Exposed or backed-out fasteners", checked: true },
+      ]}},
+      3: { type: "checklist", data: { title: "Attic and structure", items: [
+        { text: "Water stains or dampness on the decking", checked: true },
+        { text: "Soft or sagging decking", checked: true },
+        { text: "Rafters and trusses for cracks or rot", checked: true },
+        { text: "Ventilation and insulation", checked: true },
+        { text: "Mold or musty odor", checked: true },
+      ]}},
+      5: { type: "tip", data: { type: "info", title: "Safety comes first", text: "Use proper fall protection and follow your company and OSHA rules. If a roof is wet, steep or looks unsafe to walk, document from the ground or by drone instead." } },
+    },
+    sections: [
+      {
+        heading: "Why use a roof inspection checklist",
+        content: "A checklist keeps every inspection consistent, so you do not skip the same detail on a busy day. It also gives you a record you can show a homeowner or attach to an insurance claim.\n\nThis list is a general starting point. Adapt it to your roof types, local building codes and manufacturer requirements. For the report that follows the inspection, see <a href='/blog/roof-inspection-report'>how to write a roof inspection report</a>.",
+      },
+      {
+        heading: "Exterior roof surface",
+        content: "Walk or view the roof in a consistent order, such as slope by slope. Look for missing, cracked, curled or lifted shingles, granule loss, exposed fasteners and signs of hail bruising or wind creasing. Check ridge and hip caps, and look at gutters and downspouts for clogs, granules and damage.\n\nPhotograph each finding with a wide shot for location and a close shot for detail. For storm work, <a href='/blog/hail-damage-roof-inspection'>the hail damage inspection guide</a> goes deeper on what to look for.",
+      },
+      {
+        heading: "Flashing, valleys and penetrations",
+        content: "Most leaks start at the details, not in the middle of a shingle field. Check pipe boots, chimney and wall flashing, valleys, skylights and vents. Look for cracked or dried sealant, lifted flashing, rust, gaps and debris that holds water.\n\nNote the exact location of each finding so someone else can find it later. Labeling photos by slope or roof area keeps the report clear.",
+      },
+      {
+        heading: "Attic, decking and structure",
+        content: "From the attic, check the underside of the decking for water stains, dampness, daylight and mold. Look at rafters and trusses for cracks, bowing or rot, and check ventilation and insulation. From the roof, feel for soft spots or sagging.\n\nRotted decking is often found only at tear-off. If you discover it then, document it with photos and measurements. See <a href='/blog/document-rotted-roof-decking-tear-off'>how to document rotted decking at tear-off</a>.",
+      },
+      {
+        heading: "Documenting findings",
+        content: "Good documentation records what you saw, where, and the photo that shows it. Avoid guessing at cause in the field notes unless you can support it. Date the inspection, name the address and keep the photos with the notes.\n\nFor an insurance claim, a clear package makes it easier for the adjuster to follow your findings. The <a href='/blog/roof-damage-report-template'>roof damage report template</a> and the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a> show what to include.",
+      },
+      {
+        heading: "After the inspection",
+        content: "Give the homeowner a written summary with the findings, the recommended work and the reasons. Be factual about what is storm damage, what is wear and what is unclear. If the roof is part of an insurance claim, tell them the carrier decides coverage and that you can supply documentation.\n\nKeep your photos organized by address and date so you can find them if the claim reopens or the carrier asks questions.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "Supplement Snap lets a crew capture photos, label the roof area and add notes by typing or voice, then builds a report for the adjuster. It is built for insurance restoration documentation, not as a full inspection or measurement platform. <a href='/roofing-supplement-software'>See how it works</a> or view the <a href='/roofing-supplement-report-example'>sample report</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "What should be on a roof inspection checklist?",
+        a: "Exterior surface condition, flashing and penetrations, valleys and gutters, attic and decking condition, structural members and ventilation, plus photos and notes for each finding.",
+      },
+      {
+        q: "How long does a roof inspection take?",
+        a: "It varies with roof size, pitch and complexity. A thorough inspection with photos and attic access usually takes longer than a quick visual check.",
+      },
+      {
+        q: "Do I need to go on the roof?",
+        a: "Often, but safety comes first. Use fall protection, and if conditions are unsafe, document from the ground or with a drone.",
+      },
+      {
+        q: "What photos should I take for an insurance claim?",
+        a: "Wide shots to show location, close-ups to show detail, and labeled photos by slope, with the date and address recorded.",
+      },
+      {
+        q: "Is there a free printable checklist?",
+        a: "Yes. The free roofing supplement checklist on this site covers documentation for hidden damage and claim packages.",
+      },
+    ],
+    related: ["roof-inspection-report", "hail-damage-roof-inspection", "roof-damage-report-template", "document-rotted-roof-decking-tear-off"],
+  },
 ]
 
 /* ── Inline link parser ── */
