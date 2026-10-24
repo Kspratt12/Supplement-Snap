@@ -21,7 +21,7 @@ const CITIES = [
 ]
 
 // Only the cities with distinct local detail are indexed; the rest stay reachable but noindex until they have unique content
-const INDEXED_CITIES = ["raleigh-nc", "durham-nc", "cary-nc", "apex-nc", "wake-forest-nc"]
+const INDEXED_CITIES = ["raleigh-nc", "apex-nc"]
 
 export function generateStaticParams() {
   return CITIES.map((city) => ({ city: city.slug }))

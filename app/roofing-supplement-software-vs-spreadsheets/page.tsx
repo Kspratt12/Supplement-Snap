@@ -5,7 +5,7 @@ import { NavLinks } from "../../lib/nav-links"
 import { SiteFooter } from "../../lib/site-footer"
 
 const URL = "https://supplementsnap.io/roofing-supplement-software-vs-spreadsheets"
-const TITLE = "Roofing Supplement Software vs. Spreadsheets | Supplement Snap"
+const TITLE = "Roofing Supplement Software vs. Spreadsheets"
 const DESCRIPTION =
   "Compare roofing supplement software with spreadsheets and folders: time, organization, reports and recordkeeping, plus when a spreadsheet is enough."
 

@@ -483,7 +483,7 @@ const ARTICLES: Article[] = [
   {
     slug: "xactimate-codes-for-roofing-supplements",
     title: "Xactimate Codes for Roofing Supplements: Complete Reference",
-    metaTitle: "Xactimate Roofing Supplement List: Codes for Decking, Flashing & More",
+    metaTitle: "Xactimate Roofing Supplement List: Codes and Units",
     metaDescription: "Xactimate roofing supplement list: quick-reference line codes for decking, flashing, ice & water shield, pipe boots, drip edge and tear-off, with units and proof tips.",
     publishedDate: "2026-01-20",
     externalLinks: [

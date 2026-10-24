@@ -68,6 +68,14 @@ export default function AboutPage() {
           </div>
         </div>
 
+        <h2 className="mt-12 text-xl font-bold">What Supplement Snap does</h2>
+        <p className="mt-4 text-base leading-relaxed text-zinc-600">
+          Crews photograph hidden damage during tear-off, tag the roof area, and add a note by typing or by voice. Supplement Snap keeps each photo and note together by finding, drafts the written description for you to review, and builds a PDF report that can be emailed to the adjuster from the project. Team plans add shared access, adjuster email open tracking and an Xactimate-ready CSV export.
+        </p>
+        <p className="mt-3 text-base leading-relaxed text-zinc-600">
+          It is a web app that works from a phone browser, so a crew does not need special equipment. It is built for insurance restoration roofing, not as a replacement for a CRM, aerial measurements or estimating software. You can read how the process works in <Link href="/how-roofing-supplements-work" className="text-indigo-600 underline hover:text-indigo-800">how roofing supplements work</Link>, or see the output in the <Link href="/roofing-supplement-report-example" className="text-indigo-600 underline hover:text-indigo-800">sample supplement report</Link>.
+        </p>
+
         <h2 className="mt-12 text-xl font-bold">What we believe</h2>
         <ul className="mt-4 list-disc space-y-2 pl-6 text-sm leading-relaxed text-zinc-600">
           <li>Good documentation is factual: what was found, where, and the photos that show it.</li>
