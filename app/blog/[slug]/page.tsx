@@ -1772,7 +1772,7 @@ const ARTICLES: Article[] = [
       "hail-damage-roof-inspection",
       "how-to-write-a-roofing-supplement",
       "roof-inspection-report"
-    ],
+    , "best-app-to-document-roof-damage-for-insurance"],
     "externalLinks": [
       {
         "text": "NRCA Roofing Manual and Standards",
@@ -2100,7 +2100,7 @@ const ARTICLES: Article[] = [
       "best-roof-estimating-software",
       "roofing-photo-documentation-checklist",
       "best-roofing-crm"
-    ],
+    , "best-app-to-document-roof-damage-for-insurance"],
     "externalLinks": [
       {
         "text": "CompanyCam",
@@ -3424,7 +3424,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy and the carrier, not on who prepares the package.",
       },
     ],
-    related: ["supplemental-roofing-estimate-explained", "roofing-supplement-follow-up-log", "xactimate-roofing-software-explained", "how-roofing-contractors-work-insurance-claims", "roofing-supplement-software-cost", "ai-roofing-supplement-tools-compared"],
+    related: ["supplemental-roofing-estimate-explained", "roofing-supplement-follow-up-log", "xactimate-roofing-software-explained", "how-roofing-contractors-work-insurance-claims", "roofing-supplement-software-cost", "ai-roofing-supplement-tools-compared", "roofing-supplement-software-for-small-roofing-companies"],
   },
   {
     slug: "best-roofing-supplement-software",
@@ -3517,7 +3517,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy, the carrier and the documentation. Software can make your package clearer and more complete.",
       },
     ],
-    related: ["roofing-supplement-companies-vs-software", "xactimate-roofing-software-explained", "roofing-software-comparison", "supplemental-roofing-estimate-explained", "supplement-snap-vs-roofgenius", "roofing-supplement-software-cost"],
+    related: ["roofing-supplement-companies-vs-software", "xactimate-roofing-software-explained", "roofing-software-comparison", "supplemental-roofing-estimate-explained", "supplement-snap-vs-roofgenius", "roofing-supplement-software-cost", "claimtrax-vs-suppx-vs-supplement-snap", "roofing-supplement-software-for-small-roofing-companies"],
   },
   {
     slug: "recoverable-depreciation-roof-claims",
@@ -4046,6 +4046,265 @@ const ARTICLES: Article[] = [
       },
     ],
     related: ["best-roofing-supplement-software", "roofing-supplement-companies-vs-software", "supplement-snap-vs-roofgenius", "ai-roofing-supplement-tools-compared"],
+  },
+  {
+    slug: "best-app-to-document-roof-damage-for-insurance",
+    title: "Best App to Document Roof Damage for Insurance Claims (2026)",
+    metaTitle: "Best App to Document Roof Damage for Insurance (2026)",
+    metaDescription: "Roof damage documentation apps compared: CompanyCam, Manifold, LibreCam, Roof Report Pro and Supplement Snap, with listed prices. We make Supplement Snap.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "CompanyCam pricing (public page)", url: "https://www.companycam.com/pricing" },
+      { text: "Manifold for roofing contractors", url: "https://www.scanmanifold.com/roofing-contractors" },
+      { text: "LibreCam", url: "https://librecam.com" },
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "See the report before you pick an app.",
+    midCtaBody: "Your first Supplement Snap project is free. Photograph one real job and judge the PDF it produces.",
+    visuals: {
+      2: { type: "matrix", data: {
+        headers: ["Built for", "Price as listed", "Trial as listed"],
+        rows: [
+          { feature: "CompanyCam", values: ["General job photos and reports for many trades", "Core $63, Crew $129, Scale $199 per month; extra users $29 (page does not say which billing cycle)", "Free trial; length not shown"] },
+          { feature: "Manifold", values: ["Photo documentation with PDF export and share links", "Photo $16 per user per month; Photo + Scan $24; no seat minimum per its page", "14 days, no card"] },
+          { feature: "LibreCam", values: ["Free photo capture for crews, with offline mode", "$0 for unlimited users, per its own page", "Not applicable"] },
+          { feature: "Roof Report Pro", values: ["AI damage tagging and PDF inspection reports", "Not checked here", "Not checked here"] },
+          { feature: "Supplement Snap", values: ["Damage capture tied to supplement findings and the adjuster report", "Starter $99, Team $199, Pro $299 per month", "First project free; 14-day trial, card required"] },
+        ],
+      }},
+      4: { type: "checklist", data: { title: "Test any documentation app on one real job", items: [
+        { text: "Does every photo stay attached to a finding and a note?", checked: true },
+        { text: "Are time and location recorded on each photo?", checked: true },
+        { text: "Can I share or export one clear report an adjuster can open?", checked: true },
+        { text: "Does it work with a weak signal on the roof?", checked: true },
+        { text: "What is the cost for my real crew size?", checked: true },
+        { text: "Can I take my photos and reports with me if I leave?", checked: true },
+      ]}},
+      5: { type: "tip", data: { type: "info", title: "Ask your adjuster what they accept", text: "None of the companies' pages we read confirmed which carriers accept their reports. Prices and features come from public pages seen on October 24, 2026 and change. Confirm the format with the adjuster on your claim and with each vendor." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "The best app to document roof damage depends on what you do with the photos. A general photo app is enough if you only need organized, time-stamped pictures. A documentation tool built for supplements fits better if you need findings, notes and a report to send to the adjuster.\n\nDisclosure: we make Supplement Snap. We have not tested the other apps, so this compares what their public pages say as seen on October 24, 2026. Confirm current details on each site. For the broader picture, see our <a href='/blog/companycam-alternative-roofing-supplements'>CompanyCam alternative guide</a>.",
+      },
+      {
+        heading: "What a claim package needs from your photos",
+        content: "An adjuster has to be able to tell what a photo shows, where on the roof it was taken and which line item it supports. A pile of unlabeled pictures forces them to guess.\n\nSo look for these things in any app: a label or note on each photo, a record of when and where it was taken, a way to group photos by roof area, and a report that puts them in one document. Our <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a> lists what to photograph at tear-off, and the guide to <a href='/blog/organize-roofing-supplement-photos-by-claim'>organizing photos by claim</a> covers naming.",
+      },
+      {
+        heading: "The apps side by side",
+        content: "The table lists what each company publishes. These tools do different jobs, so a lower price is not the same work for less. A few notes on the numbers:\n\nCompanyCam's pricing page shows $63, $129 and $199 per month but does not say which billing cycle those figures use, and it notes annual billing saves 20 percent. Manifold's page lists $16 per user per month with no seat minimum, while one third-party roundup reported a minimum, so confirm with Manifold. LibreCam's figures are its own claims on a page it wrote.",
+      },
+      {
+        heading: "Photo apps and documentation tools are different things",
+        content: "CompanyCam is a general job photo app. Its pricing page describes timestamped photos, auto-organized project history and job reports, and it does not mention insurance claims on that page. Many contractors use it well for before-and-after records.\n\nManifold's page describes GPS-tagged photos, exports to a branded PDF and share links that adjusters can open without an account. LibreCam describes free capture with voice captions and offline use. Those are vendor claims. Roof Report Pro, per its Capterra listing, uses AI to tag damage types in photos and produce PDF reports, and it lists integrations with JobNimbus and CompanyCam.\n\nSupplement Snap sits closer to the supplement itself. Your crew photographs damage on the roof, tags the roof area and damage type, adds a typed or voice note, and the app drafts a written description of each finding that you review and edit. You then email a PDF to the adjuster. See the <a href='/roofing-supplement-software'>feature walkthrough</a> and a <a href='/roofing-supplement-report-example'>sample report</a>.",
+      },
+      {
+        heading: "How to choose and test",
+        content: "Run the same real job through two or three apps. Photograph the same roof, add the same notes, and time how long it takes to get from the first photo to a package you could send. Then show each result to someone who was not on the roof.\n\nIf photos are your only problem, a lower-cost photo app may be enough. If your bottleneck is turning photos and notes into a clear supplement package, test a documentation tool. For how these fit with estimating software, read our <a href='/blog/best-roofing-supplement-software'>roofing supplement software overview</a>.",
+      },
+      {
+        heading: "Where Supplement Snap fits, and where it does not",
+        content: "Supplement Snap is built for one job: documenting hidden damage found at tear-off and producing the report for the adjuster. It is not a general job photo app for every trade, a CRM or an estimating tool. The first project is free. Paid plans are Starter at $99 per month, Team at $199 with up to three users, an Xactimate-ready CSV export and email open tracking, and Pro at $299. Check the <a href='/pricing'>pricing page</a> for current details.",
+      },
+    ],
+    faq: [
+      {
+        q: "What is the best app to document roof damage?",
+        a: "It depends on whether you need organized photos or a full supplement package. Photo apps cover the first, and documentation tools built for supplements cover the second. Test on one real job and compare the report.",
+      },
+      {
+        q: "Do adjusters accept photos from these apps?",
+        a: "None of the vendor pages we read confirmed carrier acceptance. Ask the adjuster on your claim what format and detail they need, and send clear, labeled photos with a short factual note.",
+      },
+      {
+        q: "Is there a free app for documenting roof damage?",
+        a: "Some apps offer free plans or free trials, and LibreCam says its free tier covers unlimited users. A free tool may lack reports or support, so check what you need. Supplement Snap's first project is free.",
+      },
+      {
+        q: "Is CompanyCam good for insurance claims?",
+        a: "Many contractors use it for time-stamped photos and job records. Its pricing page does not describe insurance workflows, so confirm that its reports meet what your adjuster needs.",
+      },
+      {
+        q: "Will a documentation app get my claim approved?",
+        a: "No. Approval depends on the claim, the policy, the carrier and your documentation. An app can make your package clearer and more complete.",
+      },
+    ],
+    related: ["companycam-alternative-roofing-supplements", "roofing-photo-documentation-checklist", "best-roofing-supplement-software", "ai-roofing-supplement-tools-compared"],
+  },
+  {
+    slug: "claimtrax-vs-suppx-vs-supplement-snap",
+    title: "ClaimTrax vs SuppX vs Supplement Snap: Which Supplement Tool Fits?",
+    metaTitle: "ClaimTrax vs SuppX vs Supplement Snap Compared",
+    metaDescription: "ClaimTrax, SuppX and Supplement Snap compared: tracking, outsourcing or documenting supplements, with listed prices and gaps marked. We make Supplement Snap.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "ClaimTrax for contractors", url: "https://myclaimtrax.com/contractors" },
+      { text: "SuppX on the App Store", url: "https://apps.apple.com/us/app/suppx/id6642710466" },
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Try the documentation side on one job.",
+    midCtaBody: "Your first Supplement Snap project is free. Judge the report it builds before you decide what else you need.",
+    visuals: {
+      2: { type: "matrix", data: {
+        headers: ["What it is", "Price shown", "Trial shown"],
+        rows: [
+          { feature: "ClaimTrax", values: ["Supplement management software: claims with owners and deadlines, follow-up reminders, optional outside supplementers", "Not shown on the page we read", "Free for 14 days; no card, no call"] },
+          { feature: "SuppX", values: ["Free iPhone and iPad app; per its listing, a team handles negotiating and follow-ups", "App listed as free; fees for the claim service not shown", "Not shown"] },
+          { feature: "Supplement Snap", values: ["Field damage capture and the adjuster report", "Starter $99, Team $199, Pro $299 per month", "First project free; 14-day trial, card required"] },
+        ],
+      }},
+      3: { type: "checklist", data: { title: "Questions to settle before you pick", items: [
+        { text: "Is my problem tracking claims, doing the follow-up, or building the documentation?", checked: true },
+        { text: "Do I have someone in the office to chase adjusters?", checked: true },
+        { text: "What does the service cost, and is the price shown before I commit?", checked: true },
+        { text: "Who controls the claim file and my photos?", checked: true },
+        { text: "Can I test it on one real job first?", checked: true },
+      ]}},
+      4: { type: "tip", data: { type: "info", title: "Details are limited and change", text: "ClaimTrax shows no prices on the page we read, and SuppX's listing does not explain its pricing or process. This comparison reflects public pages seen on October 24, 2026. Ask each company for current terms." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "These three tools solve different parts of the supplement problem. ClaimTrax tracks supplements so none stall. SuppX describes itself as an app where a team handles the insurance follow-up for you. Supplement Snap helps your crew capture hidden damage on the roof and build the report the adjuster sees.\n\nThe right one depends on whether your bottleneck is tracking, follow-up or documentation. Disclosure: we make Supplement Snap. We have not tested ClaimTrax or SuppX, and everything about them comes from their public pages as seen on October 24, 2026.",
+      },
+      {
+        heading: "Three different jobs",
+        content: "• Track: keep every open supplement in one place with an owner, a deadline and a reminder. ClaimTrax is described this way.\n• Outsource the chasing: send the claim to someone else who handles the back-and-forth. SuppX's listing describes this, and ClaimTrax offers outside supplementers through what it calls ClaimXchange.\n• Document: capture the proof on the roof and produce the package. Supplement Snap does this.\n\nThey can work together. A company might document in one tool and track in another. We have not tested any pairing, and we do not list an integration with either.",
+      },
+      {
+        heading: "What each company publishes",
+        content: "ClaimTrax describes software for roofing and restoration contractors. Each claim has an assigned owner and a deadline, and follow-up reminders fire at 48 hours. You can run your own supplement team in it or bring in outside supplementers while you keep the file. It lists an integration with the ProLine CRM and shows free for 14 days with no card and no call. The page we read showed no prices.\n\nSuppX is listed on the App Store as a free iPhone and iPad app from The Simple App Inc. Its description says you can submit supplements from the job site and track progress while the company's team handles negotiating, follow-ups and insurer communication. The listing does not explain how that service is priced or how it works, and it showed two ratings.\n\nSupplement Snap has plans at $99, $199 and $299 per month and a free first project. Paid plans start with a 14-day trial that requires a card.",
+      },
+      {
+        heading: "Who each fits",
+        content: "• A company with a pile of open supplements and no system: tracking software like ClaimTrax addresses that.\n• A company with no office time at all: a done-for-you model like the one SuppX describes trades cost and control for time. Ask what it charges before you submit a claim.\n• A company whose supplements are weak because proof is scattered across phones: a documentation tool like Supplement Snap addresses that.\n\nFor how outsourcing compares with doing the work yourself, read <a href='/blog/roofing-supplement-companies-vs-software'>supplement companies versus software</a>. For prices across the category, see the <a href='/blog/roofing-supplement-software-cost'>cost guide</a>.",
+      },
+      {
+        heading: "Where Supplement Snap fits, and where it does not",
+        content: "Supplement Snap does not track claim status or deadlines, and it does not chase adjusters. It captures labeled photos and notes on the roof, including voice notes that are translated to English when a crew member speaks Spanish, drafts a written description of each finding for you to review, and produces a PDF to email. Team plans can see when the adjuster opens the email.\n\nSee the <a href='/roofing-supplement-software'>feature walkthrough</a>, a <a href='/roofing-supplement-report-example'>sample report</a> and the <a href='/pricing'>pricing page</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "Is Supplement Snap a ClaimTrax alternative?",
+        a: "They do different jobs. ClaimTrax tracks supplements, while Supplement Snap captures the damage and builds the report. Some companies could use both. Choose by where your supplements slow down.",
+      },
+      {
+        q: "What is SuppX?",
+        a: "Per its App Store listing, SuppX is a free iPhone and iPad app where roofers submit supplements and a team handles insurer follow-ups. The listing does not explain pricing, so ask the company before you submit a claim.",
+      },
+      {
+        q: "Does ClaimTrax have a free trial?",
+        a: "Its page says free for 14 days with no card and no call. It did not show what happens afterward or what it costs.",
+      },
+      {
+        q: "Can Supplement Snap track my open supplements?",
+        a: "Not as claim-management software. It stores your projects, photos and reports, but it does not assign owners, set deadlines or send follow-up reminders.",
+      },
+      {
+        q: "Will any of these get my supplement approved?",
+        a: "No. Approval depends on the claim, the policy, the carrier and your documentation. No software can guarantee it.",
+      },
+    ],
+    related: ["roofing-supplement-companies-vs-software", "roofing-supplement-software-cost", "best-roofing-supplement-software", "roofing-supplement-follow-up-log"],
+  },
+  {
+    slug: "roofing-supplement-software-for-small-roofing-companies",
+    title: "Roofing Supplement Software for Small Roofing Companies: Do You Need It?",
+    metaTitle: "Roofing Supplement Software for Small Companies",
+    metaDescription: "Do small roofing companies need supplement software? Compare spreadsheets, software and services by claim volume and cost. We make Supplement Snap.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "Roof Sales Mastery: outsourcing supplements", url: "https://roofsalesmastery.com/outsourcing-supplements-for-roofers-insurance-claims/" },
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Find out on one real job.",
+    midCtaBody: "Your first Supplement Snap project is free. Run one tear-off through it and see whether it saves you time.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Good fit when", "Main limit"],
+        rows: [
+          { feature: "Spreadsheet and folders", values: ["Few active claims and someone organized", "Photos and notes drift apart; no report"] },
+          { feature: "Supplement documentation software", values: ["Paperwork is slow or proof is scattered", "Does not track claims or chase adjusters"] },
+          { feature: "Claim tracking software", values: ["Many open supplements stalling", "Does not capture the proof for you"] },
+          { feature: "Supplement service", values: ["No office time at all", "Cost per claim; you share control of the file"] },
+        ],
+      }},
+      3: { type: "matrix", data: {
+        headers: ["Example cost for one $3,000 supplement"],
+        rows: [
+          { feature: "Service at 15 percent of recovery (one vendor's stated range)", values: ["$450"] },
+          { feature: "Service at 25 percent of recovery (same range)", values: ["$750"] },
+          { feature: "Supplement Snap Starter for the whole month", values: ["$99"] },
+        ],
+      }},
+      5: { type: "steps", data: [
+        { num: "1", title: "Count your claims", desc: "Note how many supplements you file in a typical month." },
+        { num: "2", title: "Time one", desc: "Track hours from first photo to a sendable package." },
+        { num: "3", title: "Test a tool on one job", desc: "Use a free project or trial and compare the time and the report." },
+        { num: "4", title: "Decide on your numbers", desc: "Compare the monthly cost with the hours it saved." },
+      ]},
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "A small roofing company may not need supplement software. If you file only a few supplements a year and keep your photos organized, a spreadsheet and a folder system can work. Software starts to help when paperwork is slowing you down or your photos and notes keep getting separated.\n\nOne roofing-sales training site says a small roofer handling about 10 to 15 claims a year may be able to manage supplements internally. That is a vendor's view, not a rule, so count your own claims. Disclosure: we make Supplement Snap, which is one of the options below.",
+      },
+      {
+        heading: "Four ways small companies handle supplements",
+        content: "The table compares the main options by when each fits and what limits it. Many companies combine two of them.\n\nThere is no single right answer. The right one depends on your claim volume, how much office time you have and what is actually slowing you down.",
+      },
+      {
+        heading: "What each option costs",
+        content: "A spreadsheet is free apart from your time. Software for a small company is typically a flat monthly fee. Supplement Snap's plans are $99, $199 and $299 per month, with a free first project. Prices elsewhere vary widely, and our <a href='/blog/roofing-supplement-software-cost'>cost guide</a> lists what several companies publish.\n\nSupplement services charge either a flat fee per supplement or a share of what they recover. One vendor-written comparison says third-party services typically charge 15 to 25 percent of the amount recovered, and its example is $450 to $750 on a $3,000 supplement. That is one vendor's claim, not a verified market rate, so ask any service for its terms in writing.",
+      },
+      {
+        heading: "A worked example",
+        content: "This is arithmetic from the figures above, not a savings claim. On a single $3,000 supplement, a service at 15 percent would cost $450 and at 25 percent $750. A software plan costs the same monthly price however many projects you run, so Supplement Snap's Starter plan is $99 for the month.\n\nThe comparison is not like for like. A service writes and chases the supplement. Software helps your crew document it and you do the rest. Pick based on whether you have the time to do the work yourself.",
+      },
+      {
+        heading: "Signs software would help",
+        content: "• Photos and notes live in different places, and you rebuild the story from memory.\n• Your reports look different every time.\n• You spend your evenings turning phone photos into a document.\n• Crew members describe damage inconsistently.\n• You file more supplements than you can comfortably track by hand.\n\nIf none of these sound like you, a spreadsheet may be enough for now. See our <a href='/roofing-supplement-software-vs-spreadsheets'>comparison of supplement software and spreadsheets</a>.",
+      },
+      {
+        heading: "How to decide without guessing",
+        content: "Count your claims, time one supplement from the first photo to a package you could send, and test a tool on one real job. Then compare the monthly cost with the hours it saved.\n\nFor how the whole category compares, read our <a href='/blog/best-roofing-supplement-software'>roofing supplement software overview</a> and the guide to <a href='/blog/roofing-supplement-companies-vs-software'>companies versus software</a>.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "Supplement Snap is built for small crews that want consistent documentation. Your crew photographs damage on the roof, tags it, adds a typed or voice note, and the app drafts a description of each finding that you review. You export a PDF and email it to the adjuster. It does not track claims, chase adjusters or measure roofs. See the <a href='/roofing-supplement-software'>feature walkthrough</a>, a <a href='/roofing-supplement-report-example'>sample report</a> and the <a href='/pricing'>pricing page</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "Do small roofing companies need supplement software?",
+        a: "Not always. With few claims and organized files, a spreadsheet can work. Software helps when paperwork is slow or proof is scattered. Count your own claims and test on one job.",
+      },
+      {
+        q: "How much does supplement software cost for a small company?",
+        a: "Companies publish a wide range. Supplement Snap's plans are $99, $199 and $299 per month. Others cost more. Compare at your real monthly volume.",
+      },
+      {
+        q: "Is it cheaper to hire a supplement service?",
+        a: "It depends on volume and the fee model. Some charge per supplement and some take a share of the recovery. Ask for the terms in writing and compare at your volume.",
+      },
+      {
+        q: "Can I try supplement software for free?",
+        a: "Some tools offer a free first project or a free trial. Supplement Snap's first project is free, and paid plans start with a 14-day trial that requires a card.",
+      },
+      {
+        q: "Will software get my supplements approved?",
+        a: "No. Approval depends on the claim, the policy, the carrier and your documentation. Software can make your package clearer and more complete.",
+      },
+    ],
+    related: ["roofing-supplement-software-cost", "best-roofing-supplement-software", "roofing-supplement-companies-vs-software", "supplement-snap-vs-roofgenius"],
   },
 ]
 
