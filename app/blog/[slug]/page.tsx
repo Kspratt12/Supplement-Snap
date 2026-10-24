@@ -4561,6 +4561,85 @@ const ARTICLES: Article[] = [
     related: ["roofing-estimate-template","roof-repair-estimate-template","roofing-supplement-template","roof-damage-report-template"],
   },
   {
+    slug: "overhead-and-profit-roofing-insurance-claim",
+    title: "Overhead and Profit on Roofing Claims: How to Document and Request It",
+    metaTitle: "Overhead and Profit on Roofing Claims Explained",
+    metaDescription: "What overhead and profit (O&P) means on a roofing claim, when contractors request it and how to document it. General guidance; rules vary by state.",
+    publishedDate: "2026-10-24",
+    updatedDate: "2026-10-24",
+    externalLinks: [
+      { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Found hidden damage after tear-off?",
+    midCtaBody: "O&P is about coordinating the job. Hidden damage is a separate request. Supplement Snap helps your crew document what turns up once the shingles are off. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Hidden-damage supplement", "Overhead and profit"],
+        rows: [
+          { feature: "What it asks for", values: ["Payment for work the first estimate missed", "Recognition of the cost of coordinating the whole job"] },
+          { feature: "What backs it up", values: ["Photos, measurements and notes for each finding", "A list of trades, dates and who coordinated them"] },
+          { feature: "Where it appears", values: ["Line items in the supplement", "Its own line, usually as a percentage"] },
+        ],
+      }},
+      4: { type: "tip", data: { type: "info", title: "Rules differ by state and carrier", text: "Whether O&P is owed, and how it is calculated, depends on your policy, state and carrier. This is general guidance, not legal or claims advice. Ask a licensed professional about your situation." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Overhead and profit, usually written O&P, is a line on an insurance estimate that pays a general contractor for running the job, not just for materials and labor. Overhead covers the costs of managing and coordinating the work, such as supervision, scheduling, office costs and insurance. Profit is the contractor's margin. Whether a carrier owes it on a given claim depends on the policy, the state, the carrier and the facts of the job, so nothing here guarantees it.\n\nDisclosure: we make Supplement Snap, which documents damage found during tear-off. It does not calculate O&P or negotiate it for you. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "What O&P is, and what it is not",
+        content: "O&P is separate from the line items for shingles, felt, drip edge and labor. It is added on top to reflect the work of running the project: ordering, scheduling, supervising, dealing with the homeowner and the adjuster, and carrying the risk.\n\nIn Xactimate estimates O&P is often shown as a percentage added to the line items. A common convention is 10 percent for overhead and 10 percent for profit, but carriers, policies and states differ, so treat that as a convention, not a rule. It is not a bonus, and it is not the same as a supplement for hidden damage. A supplement asks for the cost of work the first estimate missed. O&P asks the carrier to recognize the cost of coordinating the whole job.",
+      },
+      {
+        heading: "When contractors request it",
+        content: "Carriers often look at whether a general contractor is reasonably needed to coordinate the work. A simple roof replacement done by one roofing crew is often treated as a single trade, and many carriers resist adding O&P to it. When the job involves several trades that must be scheduled and coordinated, such as roofing plus gutters, siding, windows, interior drywall or paint, contractors often ask for it.\n\nSome carriers use an informal guideline that O&P applies when three or more trades are involved. That is a rule of thumb that some carriers use, not a universal law, and some states and policies take a different view. Ask your carrier or a licensed professional what applies where you work.",
+      },
+      {
+        heading: "How to document it",
+        content: "The aim is to show an adjuster, in plain facts, that coordination was needed and that you did it. Useful things to keep:\n\n• A list of every trade or subcontractor on the job, with dates\n• Who scheduled and supervised each one, and how\n• Your scope of work or contract showing you were responsible for the whole project\n• Messages and notes showing coordination with the homeowner, the adjuster and suppliers\n• Photos and notes that tie hidden damage to the extra work it required\n\nKeep it factual. Describe what happened and who did it, and do not argue about coverage in the documentation itself.",
+      },
+      {
+        heading: "Putting it in your request",
+        content: "Include O&P as its own line in your estimate or supplement package, not buried in a unit price. Add a short, neutral paragraph that says which trades were involved and that you coordinated them, and attach the supporting list. Reference the claim number on every page, as with any supplement.\n\nIf the carrier declines it, ask for the reason in writing. What happens next depends on your policy and your state, and may involve an appraisal or other process, so get advice from a licensed professional before escalating. Our guide on <a href='/blog/roofing-supplement-denied-what-to-do'>what to do when a supplement is denied</a> covers the general steps.",
+      },
+      {
+        heading: "Mistakes that weaken the request",
+        content: "• Asking for O&P on a single-trade job with no explanation of why coordination was needed\n• Vague notes, with no dates, names or scope of who did what\n• Mixing the O&P request into the hidden-damage supplement so neither is clear\n• Promising the homeowner the carrier will pay it, because that depends on the policy and carrier\n• Skipping the claim number or sending the documents as separate files",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "Supplement Snap helps with the hidden-damage side. Your crew photographs damage on the roof, tags it, adds a note, reviews the drafted description and exports a PDF for the adjuster. That record can support the extra work that tear-off revealed. You add O&P in your own estimate.\n\nYour first project is free. See the <a href='/roofing-supplement-software'>feature walkthrough</a>, a <a href='/roofing-supplement-report-example'>sample report</a>, the <a href='/blog/xactimate-codes-for-roofing-supplements'>Xactimate codes guide</a> and the <a href='/pricing'>pricing page</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "What does O&P mean on a roofing claim?",
+        a: "Overhead and profit. It is a charge added to an insurance estimate to pay a general contractor for managing and coordinating the job, on top of the line items for materials and labor.",
+      },
+      {
+        q: "How much is overhead and profit?",
+        a: "In Xactimate estimates it is often shown as 10 percent overhead plus 10 percent profit, but that is a convention, not a rule. Carriers, policies and states differ.",
+      },
+      {
+        q: "Do roofers always get O&P?",
+        a: "No. It depends on the policy, the state, the carrier and the facts of the job. A single-trade roof replacement is often treated differently from a job that needs several trades coordinated.",
+      },
+      {
+        q: "What is the three-trade rule?",
+        a: "Some carriers informally apply O&P when three or more trades are involved. It is a rule of thumb that some carriers use, not a universal law, so check what applies where you work.",
+      },
+      {
+        q: "How do I document overhead and profit?",
+        a: "Keep a dated list of the trades and subcontractors, show who scheduled and supervised them, keep your scope or contract, and save messages showing coordination with the homeowner, adjuster and suppliers.",
+      },
+    ],
+    related: ["roofing-supplement-denied-what-to-do", "xactimate-codes-for-roofing-supplements", "roofing-supplement-template", "roof-damage-report-template"],
+  },
+  {
     slug: "supplement-snap-vs-roof-report-pro",
     title: "Supplement Snap vs Roof Report Pro: Which Documentation Tool Fits?",
     metaTitle: "Supplement Snap vs Roof Report Pro Compared",

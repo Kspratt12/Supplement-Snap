@@ -83,6 +83,9 @@ export default function LandingPage() {
           capture hidden damage, generate supplement documentation, and email adjuster-ready
           PDF reports, all in minutes.
         </p>
+        <p className="mx-auto mt-3 max-w-2xl text-sm text-zinc-500">
+          It doesn&apos;t replace your CRM. Your crew documents the damage here, and you attach the PDF to the job wherever you already keep it.
+        </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <TrackedLink location="home-hero-get-started"
             href="/pricing"
