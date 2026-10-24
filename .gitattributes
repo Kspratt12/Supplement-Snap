@@ -1,0 +1,2 @@
+# Generated downloads are binary: never convert their line endings
+public/downloads/* binary
