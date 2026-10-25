@@ -46,6 +46,7 @@ vi.mock("../lib/supabase", () => {
 
 // The real auth hook keeps one user object between renders; a new object each time would reload the projects constantly.
 const authUser = vi.hoisted(() => ({ id: "u1", email: "roofer@example.com" }))
+const plan = vi.hoisted(() => ({ paid: true }))
 
 vi.mock("../lib/auth-context", () => ({
   useAuth: () => ({
@@ -56,8 +57,24 @@ vi.mock("../lib/auth-context", () => ({
     subscriptionPlan: "starter",
     subscriptionLoading: false,
   }),
-  hasActiveSubscription: () => true,
+  hasActiveSubscription: () => plan.paid,
 }))
+
+// Build the real PDF but record the file name instead of triggering a browser download.
+const saved = vi.hoisted(() => [] as string[])
+vi.mock("jspdf", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("jspdf")>()
+  class RecordingPdf extends mod.jsPDF {
+    constructor(...args: ConstructorParameters<typeof mod.jsPDF>) {
+      super(...args)
+      this.save = ((name?: string) => {
+        saved.push(String(name))
+        return this
+      }) as unknown as typeof this.save
+    }
+  }
+  return { ...mod, jsPDF: RecordingPdf }
+})
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
@@ -89,6 +106,7 @@ describe("dashboard smoke test (stand-in database)", () => {
     db.rows = { projects: [], captures: [], team_members: [] }
     db.failWrites = false
     db.writes = []
+    plan.paid = true
     window.localStorage.clear()
   })
   afterEach(() => cleanup())
@@ -166,5 +184,45 @@ describe("dashboard smoke test (stand-in database)", () => {
     }
     expect(await screen.findByText(/could not be deleted, so it was put back/)).toBeTruthy()
     expect(await screen.findByRole("button", { name: "Delete Capture" })).toBeTruthy()
+  })
+
+  it("asks free-plan users to upgrade instead of sending a report, and does not email anything", async () => {
+    plan.paid = false
+    db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
+    db.rows.captures = [{ id: "c1", project_id: "p1", image_url: "", damage_type: "Decking", roof_area: "Front", field_note: "Soft decking", status: "Captured", created_at: "2026-10-02T00:00:00Z" }]
+    render(<AppPage />)
+    fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
+    fireEvent.click(await screen.findByRole("button", { name: /Generate Project Report/ }))
+    fireEvent.click(await screen.findByRole("button", { name: /Send Report/ }))
+    expect(await screen.findByText("Upgrade to unlock")).toBeTruthy()
+    expect(screen.queryByText(/Send report to adjuster/i)).toBeNull()
+  })
+
+  it("lets a paid user open the send-report window", async () => {
+    db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
+    db.rows.captures = [{ id: "c1", project_id: "p1", image_url: "", damage_type: "Decking", roof_area: "Front", field_note: "Soft decking", status: "Captured", created_at: "2026-10-02T00:00:00Z" }]
+    render(<AppPage />)
+    fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
+    fireEvent.click(await screen.findByRole("button", { name: /Generate Project Report/ }))
+    fireEvent.click(await screen.findByRole("button", { name: /Send Report/ }))
+    await waitFor(() => expect(screen.queryByText("Upgrade to unlock")).toBeNull())
+  })
+
+  it("builds the PDF for a paid user without errors", async () => {
+    db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
+    db.rows.captures = [
+      { id: "c1", project_id: "p1", image_url: "", damage_type: "Decking", roof_area: "Front", field_note: "Soft decking along the eave", status: "Captured", created_at: "2026-10-02T00:00:00Z" },
+      { id: "c2", project_id: "p1", image_url: "", damage_type: "Flashing", roof_area: "Chimney", field_note: "Corroded step flashing", status: "Captured", created_at: "2026-10-02T01:00:00Z" },
+    ]
+    const errors = vi.spyOn(console, "error").mockImplementation(() => {})
+    saved.length = 0
+    render(<AppPage />)
+    fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
+    fireEvent.click(await screen.findByRole("button", { name: /Generate Project Report/ }))
+    fireEvent.click(await screen.findByRole("button", { name: /Download PDF/ }))
+    await waitFor(() => expect(saved.length).toBeGreaterThan(0), { timeout: 8000 })
+    expect(saved[0]).toMatch(/Report.pdf$/)
+    expect(errors.mock.calls.filter((c) => String(c[0]).includes("PDF generation failed"))).toHaveLength(0)
+    errors.mockRestore()
   })
 })

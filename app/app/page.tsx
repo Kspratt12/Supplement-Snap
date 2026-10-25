@@ -629,7 +629,7 @@ function Home() {
     // Restore saved drafts from capture records
     if (data) {
       const savedDrafts: Record<string, string> = {}
-      data.forEach((c: any) => {
+      data.forEach((c: Capture & { draft?: string }) => {
         if (c.draft) savedDrafts[c.id] = cleanAi(c.draft)
       })
       if (Object.keys(savedDrafts).length > 0) {
@@ -1417,8 +1417,8 @@ function Home() {
             damage_type: c.damage_type,
             roof_area: c.roof_area,
             field_note: c.field_note,
-            quantity: (c as any).quantity || 1,
-            unit: (c as any).unit || "",
+            quantity: c.quantity || 1,
+            unit: c.unit || "",
           })),
         }),
       })
@@ -2041,19 +2041,19 @@ function Home() {
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard"
-            className="text-xs font-medium text-zinc-500 hover:text-zinc-600"
+            className="inline-flex min-h-10 items-center px-1 text-xs font-medium text-zinc-600 hover:text-zinc-800"
           >
             Dashboard
           </Link>
           <Link
             href="/account"
-            className="text-xs font-medium text-zinc-500 hover:text-zinc-600"
+            className="inline-flex min-h-10 items-center px-1 text-xs font-medium text-zinc-600 hover:text-zinc-800"
           >
             Account
           </Link>
           <button
             onClick={async () => { await signOut(); router.push("/") }}
-            className="text-xs font-medium text-zinc-500 hover:text-zinc-600"
+            className="inline-flex min-h-10 items-center px-1 text-xs font-medium text-zinc-600 hover:text-zinc-800"
           >
             Log Out
           </button>
@@ -2228,7 +2228,7 @@ function Home() {
               <button
                 type="button"
                 onClick={() => setShowMap(!showMap)}
-                className="text-left hover:text-indigo-600 transition-colors"
+                className="py-2 text-left hover:text-indigo-600 transition-colors"
                 title="View on map"
               >
                 {selectedProject.property_address || "No address"}
@@ -2366,7 +2366,7 @@ function Home() {
                     type="button"
                     onClick={() => document.getElementById("diagram-input")?.click()}
                     disabled={diagramUploading}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-indigo-600 disabled:opacity-50"
+                    className="inline-flex min-h-10 items-center gap-1.5 text-xs font-medium text-zinc-600 hover:text-indigo-600 disabled:opacity-50"
                   >
                     <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
@@ -2387,7 +2387,7 @@ function Home() {
                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedProject.property_address)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs font-medium text-indigo-600 hover:text-indigo-500"
+                        className="inline-flex min-h-10 items-center px-2 text-xs font-medium text-indigo-600 hover:text-indigo-500"
                       >
                         Open in Google Maps
                       </a>
@@ -2408,6 +2408,7 @@ function Home() {
                   <div className="flex gap-2">
                     <input
                       type="text"
+                      aria-label="Property address"
                       value={addressEditing ? addressSearch : (selectedProject.property_address || "")}
                       onChange={(e) => { setAddressEditing(true); searchAddress(e.target.value) }}
                       onKeyDown={async (e) => {
@@ -2424,7 +2425,7 @@ function Home() {
                     <button
                       type="button"
                       onClick={() => { if (addressSearch.trim()) selectAddress(addressSearch.trim()) }}
-                      className="rounded bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                      className="rounded bg-indigo-600 px-3 py-2.5 text-xs font-medium text-white hover:bg-indigo-500"
                     >
                       Update
                     </button>
@@ -2573,7 +2574,7 @@ function Home() {
                     setProjectDraftCopied(true)
                     setTimeout(() => setProjectDraftCopied(false), 2000)
                   }}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-2.5 text-xs font-medium text-white hover:bg-indigo-500"
                 >
                   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -2583,7 +2584,7 @@ function Home() {
                 <button
                   type="button"
                   onClick={generateProjectDraft}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750"
                 >
                   Regenerate
                 </button>
@@ -2591,7 +2592,7 @@ function Home() {
                   <button
                     type="button"
                     onClick={() => { setEditingDraftId("project"); setEditingDraftText(projectDraft) }}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                   >
                     Edit
                   </button>
@@ -2599,14 +2600,14 @@ function Home() {
                 <button
                   type="button"
                   onClick={() => { void downloadProjectDraftWord() }}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                 >
                   Word (.docx)
                 </button>
                 <button
                   type="button"
                   onClick={() => openEmailModal(true)}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                 >
                   Email to adjuster
                 </button>
@@ -2712,7 +2713,7 @@ function Home() {
                   setReportCopied(true)
                   setTimeout(() => setReportCopied(false), 2000)
                 }}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-2.5 text-xs font-medium text-white hover:bg-indigo-500"
               >
                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -2723,7 +2724,7 @@ function Home() {
                 type="button"
                 onClick={downloadPdf}
                 disabled={pdfGenerating}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-2.5 text-xs font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
               >
                 {pdfGenerating ? (
                   <>
@@ -2743,14 +2744,14 @@ function Home() {
                 type="button"
                 onClick={generateReport}
                 disabled={reportLoading}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750"
               >
                 {reportLoading ? "Regenerating..." : "Regenerate"}
               </button>
               <button
                 type="button"
                 onClick={() => openEmailModal()}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
               >
                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -2760,7 +2761,7 @@ function Home() {
               <button
                 type="button"
                 onClick={exportXactimate}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
               >
                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -2834,7 +2835,7 @@ function Home() {
                         />
                         <button
                           onClick={() => { if (isFreeUser) { setShowUpgradeModal(true); return }; setAnnotateUrl(url); setAnnotateOpen(true) }}
-                          className="absolute bottom-1 right-1 rounded-md bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute bottom-1 right-1 rounded-md bg-black/60 px-1.5 py-2 text-[10px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           Annotate
                         </button>
@@ -3172,7 +3173,7 @@ function Home() {
                   key={s}
                   type="button"
                   onClick={() => setStatusFilter(s)}
-                  className={`inline-flex flex-shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
+                  className={`inline-flex flex-shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium ${
                     statusFilter === s
                       ? "bg-indigo-600 text-white"
                       : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
@@ -3352,14 +3353,14 @@ function Home() {
                           type="button"
                           disabled={!!cardBusy[c.id]}
                           onClick={() => saveEditCapture(c)}
-                          className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+                          className="rounded-lg bg-indigo-600 px-3.5 py-2.5 text-xs font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
                         >
                           {cardBusy[c.id] ? "Saving..." : "Save changes"}
                         </button>
                         <button
                           type="button"
                           onClick={() => setEditingCaptureId(null)}
-                          className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                          className="rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                         >
                           Cancel
                         </button>
@@ -3380,7 +3381,7 @@ function Home() {
                     <button
                       type="button"
                       onClick={() => generateDraft(c)}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-100 dark:border-indigo-900 dark:bg-indigo-950/50 dark:text-indigo-400 dark:hover:bg-indigo-950"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2.5 text-xs font-medium text-indigo-700 hover:bg-indigo-100 dark:border-indigo-900 dark:bg-indigo-950/50 dark:text-indigo-400 dark:hover:bg-indigo-950"
                     >
                       <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -3455,7 +3456,7 @@ function Home() {
                             2000
                           )
                         }}
-                        className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                        className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2.5 text-xs font-medium text-white hover:bg-indigo-500"
                       >
                         <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -3466,7 +3467,7 @@ function Home() {
                         <button
                           type="button"
                           onClick={() => { setEditingDraftId(c.id); setEditingDraftText(drafts[c.id]) }}
-                          className="mt-3 ml-2 inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                          className="mt-3 ml-2 inline-flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
                         >
                           Edit
                         </button>
@@ -3480,7 +3481,7 @@ function Home() {
                       <button
                         type="button"
                         onClick={() => startEditCapture(c)}
-                        className="text-xs font-medium text-indigo-600 hover:text-indigo-500"
+                        className="inline-flex min-h-10 items-center px-2 text-xs font-medium text-indigo-600 hover:text-indigo-500"
                       >
                         Edit Capture
                       </button>
