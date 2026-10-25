@@ -112,6 +112,9 @@ describe("Fillable PDFs", () => {
     const text = fs.readFileSync(abs(href)).toString("latin1")
     expect(text).toContain("/AcroForm")
     expect(widgets(text)).toBeGreaterThan(40)
+    // checkboxes must start unticked (jsPDF defaults them to ticked)
+    expect(text).not.toMatch(/\/AS\s*\/On/)
+    expect((text.match(/\/FT\s*\/Btn/g) || []).length).toBe((text.match(/\/AS\s*\/Off/g) || []).length)
     // every widget is a text box or a checkbox
     expect((text.match(/\/FT\s*\/(?:Tx|Btn)/g) || []).length).toBe(widgets(text))
     expect((text.match(/\/FT\s*\/Tx/g) || []).length).toBeGreaterThan(40)

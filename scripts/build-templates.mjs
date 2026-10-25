@@ -236,6 +236,8 @@ function buildPdf(model, { fillable = false } = {}) {
     const c = new AcroFormCheckBox()
     c.fieldName = `check_${++fieldCount}_${name.replace(/[^A-Za-z0-9]+/g, "_").slice(0, 20)}`
     c.Rect = [x, fy, size, size]
+    c.appearanceState = "Off" // jsPDF creates boxes already ticked; start them empty
+    c.value = "Off"
     doc.addField(c)
   }
   const addField = (x, fy, w, h, name) => {
