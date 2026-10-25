@@ -84,6 +84,42 @@ export const TEMPLATES: Template[] = [
       { format: "Word", href: "/downloads/good-better-best-roofing-proposal-template.docx", note: "Edit on your computer" },
     ],
   },
+  {
+    id: "roofing-supplement-tracker",
+    title: "Roofing supplement tracker",
+    description: "One line per supplement: claim, carrier, date sent, follow-up date, status and amount asked, with a weekly checklist.",
+    guideHref: "/blog/roofing-supplement-tracker-template",
+    guideLabel: "How to keep it up to date",
+    files: [
+      { format: "PDF", href: "/downloads/roofing-supplement-tracker.pdf", note: "Print and fill in by hand" },
+      { format: "Fillable PDF", href: "/downloads/roofing-supplement-tracker-fillable.pdf", note: "Type into it on screen, then save or print" },
+      { format: "Word", href: "/downloads/roofing-supplement-tracker.docx", note: "Edit on your computer" },
+    ],
+  },
+  {
+    id: "roof-tear-off-findings-log",
+    title: "Roof tear-off findings log",
+    description: "A log for the roof: where each finding is, what it is, how much, and which photos show it, with a checklist before you leave.",
+    guideHref: "/blog/roof-tear-off-findings-log-template",
+    guideLabel: "How to use it on a job",
+    files: [
+      { format: "PDF", href: "/downloads/roof-tear-off-findings-log.pdf", note: "Print and fill in by hand" },
+      { format: "Fillable PDF", href: "/downloads/roof-tear-off-findings-log-fillable.pdf", note: "Type into it on screen, then save or print" },
+      { format: "Word", href: "/downloads/roof-tear-off-findings-log.docx", note: "Edit on your computer" },
+    ],
+  },
+  {
+    id: "roofing-crew-documentation-checklist",
+    title: "Roofing crew documentation checklist",
+    description: "A one-page routine for before tear-off, during tear-off and before the crew leaves.",
+    guideHref: "/blog/roofing-crew-supplement-documentation-sop",
+    guideLabel: "How to roll it out to your crew",
+    files: [
+      { format: "PDF", href: "/downloads/roofing-crew-documentation-checklist.pdf", note: "Print and fill in by hand" },
+      { format: "Fillable PDF", href: "/downloads/roofing-crew-documentation-checklist-fillable.pdf", note: "Type into it on screen, then save or print" },
+      { format: "Word", href: "/downloads/roofing-crew-documentation-checklist.docx", note: "Edit on your computer" },
+    ],
+  },
 ]
 
 export function getTemplate(id: string): Template | undefined {

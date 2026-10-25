@@ -37,6 +37,9 @@ const SENTINELS: Record<string, string[]> = {
   "roof-damage-report-template": ["ROOF DAMAGE REPORT", "Job details", "Roof summary", "Photo index", "Recommendations"],
   "roof-repair-estimate-template": ["ROOF REPAIR ESTIMATE", "The problem", "Repair scope", "What could change the price", "Workmanship warranty"],
   "good-better-best-roofing-proposal-template": ["ROOFING PROPOSAL: THREE OPTIONS", "Option 1: Good", "Option 2: Better", "Option 3: Best", "Customer choice"],
+  "roofing-supplement-tracker": ["SUPPLEMENT TRACKER", "Open supplements", "Status words to use", "Each week", "Tracked by"],
+  "roof-tear-off-findings-log": ["ROOF TEAR-OFF FINDINGS LOG", "Findings", "Before you leave the roof", "Crew lead", "Logged by"],
+  "roofing-crew-documentation-checklist": ["CREW DOCUMENTATION CHECKLIST", "Before tear-off", "During tear-off", "Before the crew leaves", "Crew lead signature"],
 }
 
 describe("template registry", () => {
