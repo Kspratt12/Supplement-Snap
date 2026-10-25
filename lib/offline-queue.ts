@@ -42,12 +42,17 @@ export async function queueCapture(capture: Omit<PendingCapture, "status" | "ret
   await db.put("pending-captures", { ...capture, status: "pending", retryCount: 0 })
 }
 
-/** Get all pending + failed (retryable) captures */
-export async function getPendingCaptures(): Promise<PendingCapture[]> {
+/**
+ * Get all pending + failed (retryable) captures.
+ * Pass includeStuck from the sync routine to also pick up captures left in "uploading" when the page was
+ * closed or the phone lost power mid-upload; without that they would sit in the queue forever.
+ */
+export async function getPendingCaptures(includeStuck = false): Promise<PendingCapture[]> {
   const db = await getDB()
   const pending = await db.getAllFromIndex("pending-captures", "by-status", "pending")
   const failed = await db.getAllFromIndex("pending-captures", "by-status", "failed")
-  return [...pending, ...failed.filter((c) => c.retryCount < 5)]
+  const stuck = includeStuck ? await db.getAllFromIndex("pending-captures", "by-status", "uploading") : []
+  return [...pending, ...stuck, ...failed.filter((c) => c.retryCount < 5)]
 }
 
 /** Get count of queued captures */
@@ -55,7 +60,8 @@ export async function getPendingCount(): Promise<number> {
   const db = await getDB()
   const pending = await db.countFromIndex("pending-captures", "by-status", "pending")
   const failed = await db.countFromIndex("pending-captures", "by-status", "failed")
-  return pending + failed
+  const uploading = await db.countFromIndex("pending-captures", "by-status", "uploading")
+  return pending + failed + uploading
 }
 
 /** Remove a capture after successful upload */
@@ -89,10 +95,23 @@ export async function markUploading(id: string) {
  * Process the offline queue: upload each pending capture using the provided function.
  * Returns the number of successfully synced captures.
  */
+let syncing = false
+
 export async function syncPendingCaptures(
   uploadFn: (capture: PendingCapture) => Promise<boolean>
 ): Promise<number> {
-  const captures = await getPendingCaptures()
+  // Two syncs at once (for example two "back online" events) would upload the same capture twice.
+  if (syncing) return 0
+  syncing = true
+  try {
+    return await runSync(uploadFn)
+  } finally {
+    syncing = false
+  }
+}
+
+async function runSync(uploadFn: (capture: PendingCapture) => Promise<boolean>): Promise<number> {
+  const captures = await getPendingCaptures(true)
   let synced = 0
 
   for (const capture of captures) {
