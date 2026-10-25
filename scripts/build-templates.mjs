@@ -525,11 +525,97 @@ async function buildXlsx() {
   return zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE" })
 }
 
+
+const supplementTracker = {
+  file: "roofing-supplement-tracker",
+  title: "Supplement Tracker",
+  subtitle: "One line per supplement so nothing sits unanswered. Print it, or type into the fillable version.",
+  blocks: [
+    { t: "h2", text: "Your company" },
+    { t: "fields", rows: [["Company name", "Tracked by"], ["Month or period"]] },
+    { t: "h2", text: "Open supplements" },
+    { t: "note", text: "Write the date you sent each one and the date you plan to follow up. Update the status each time you hear back, and note who you spoke to in the last column." },
+    { t: "table", cols: [["Claim no. and property", 26], ["Carrier", 14], ["Sent on", 11], ["Follow up on", 12], ["Status", 14], ["Amount asked", 12], ["Notes", 11]], rows: 14 },
+    { t: "h2", text: "Status words to use" },
+    { t: "bullets", items: ["Sent: the package went to the adjuster", "In review: the carrier has confirmed it has the package", "Questions: the carrier asked for more information", "Paid in full, paid in part, or denied", "Closed: nothing more to do on this one"] },
+    { t: "h2", text: "Each week" },
+    { t: "checks", items: [
+      "Every supplement sent more than a few days ago has a follow-up date",
+      "Every carrier question has a reply date written next to it",
+      "Paid and denied supplements are marked, with the amount received",
+      "Any denial has a next step written down",
+    ] },
+    { t: "note", text: "A tracking sheet is a memory aid, not legal advice. Keep the carrier's replies in the claim file as well." },
+  ],
+}
+
+const tearOffLog = {
+  file: "roof-tear-off-findings-log",
+  title: "Roof Tear-Off Findings Log",
+  subtitle: "Fill it in on the roof as you uncover conditions that were not visible before. One line per finding, matched to photo numbers.",
+  blocks: [
+    { t: "h2", text: "Job details" },
+    { t: "fields", rows: [["Property address"], ["Claim number", "Carrier"], ["Date of tear-off", "Crew lead"], ["Weather at tear-off"]] },
+    { t: "h2", text: "Findings" },
+    { t: "note", text: "Write what you see, where it is, and how much. Keep it factual. Example (fictional): Rear slope along the eave, decking soft and deteriorated, 4 sheets, photos 14 to 17." },
+    { t: "table", cols: [["#", 6], ["Where on the roof", 24], ["What was found", 34], ["Quantity", 14], ["Photo nos.", 12], ["Found at", 10]], rows: 12 },
+    { t: "h2", text: "Before you leave the roof" },
+    { t: "checks", items: [
+      "Each finding has at least one close photo and one wider photo showing where it is",
+      "A tape measure or a marked object is in the photo where size matters",
+      "Photo numbers are written in the table above",
+      "Quantities are measured, not guessed",
+      "The office has the log or a picture of it today",
+    ] },
+    { t: "h2", text: "Signed off" },
+    { t: "fields", rows: [["Logged by", "Date"]] },
+    { t: "note", text: "This log supports your own documentation. It does not decide coverage, and it is not legal advice." },
+  ],
+}
+
+const crewChecklist = {
+  file: "roofing-crew-documentation-checklist",
+  title: "Crew Documentation Checklist",
+  subtitle: "A one-page routine for every insurance job: before tear-off, during tear-off and before the crew leaves.",
+  blocks: [
+    { t: "h2", text: "Job" },
+    { t: "fields", rows: [["Property address"], ["Claim number", "Crew lead"], ["Date"]] },
+    { t: "h2", text: "Before tear-off" },
+    { t: "checks", items: [
+      "Photos of every slope and of the whole house from each side",
+      "Photos of existing damage the carrier already documented",
+      "Photos of drip edge, flashing, vents and the ridge before they are removed",
+      "Photos of the number of layers at an edge",
+      "Notes on anything that already looks wrong, such as sagging or stains",
+    ] },
+    { t: "h2", text: "During tear-off" },
+    { t: "checks", items: [
+      "Stop and photograph any soft, rotted or damaged decking before it is replaced",
+      "Measure the area and write down the quantity",
+      "Take a close photo and a wide photo of each finding",
+      "Note what slope and where along the slope each finding is",
+      "Send the findings log to the office the same day",
+    ] },
+    { t: "h2", text: "Quick list of findings today" },
+    { t: "note", text: "Write each one down as you find it, with the photo numbers, then send the list to the office." },
+    { t: "table", cols: [["What and where", 56], ["Quantity", 20], ["Photo nos.", 24]], rows: 14 },
+    { t: "h2", text: "Before the crew leaves" },
+    { t: "checks", items: [
+      "New materials are photographed where they are installed",
+      "Receipts or delivery tickets for added materials are saved",
+      "Any change from the original scope is written down and signed by the lead",
+      "The log and the photos are in one place for the office",
+    ] },
+    { t: "fields", rows: [["Crew lead signature", "Date"]] },
+    { t: "note", text: "Tape this to the truck dash or keep a photo on your phone. It is a routine, not legal advice, and your carrier or state may have additional requirements." },
+  ],
+}
+
 // ───────────────────────── write ─────────────────────────
 
 const write = (name, buf) => { fs.writeFileSync(path.join(OUT, name), buf); console.log(name.padEnd(46), (buf.length / 1024).toFixed(1) + " KB") }
 
-for (const model of [estimate, supplement, damageReport, repairEstimate, goodBetterBest]) {
+for (const model of [estimate, supplement, damageReport, repairEstimate, goodBetterBest, supplementTracker, tearOffLog, crewChecklist]) {
   write(`${model.file}.pdf`, buildPdf(model))
   write(`${model.file}-fillable.pdf`, buildPdf(model, { fillable: true }))
   write(`${model.file}.docx`, await buildDocx(model))

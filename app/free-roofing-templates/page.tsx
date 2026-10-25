@@ -23,6 +23,7 @@ const CHECKLISTS = [
   { href: "/blog/roof-inspection-checklist", title: "Roof inspection checklist", text: "Exterior, flashing, attic and decking, plus how to document findings." },
   { href: "/blog/roofing-photo-documentation-checklist", title: "Photo documentation checklist", text: "What to photograph before and during tear-off." },
   { href: "/blog/roofing-supplement-follow-up-log", title: "Supplement follow-up log", text: "A simple way to track what you sent and when to follow up." },
+  { href: "/roofing-supplement-roi-calculator", title: "Software ROI calculator", text: "Check whether supplement software would pay for itself, using your own numbers." },
 ]
 
 const FAQ = [

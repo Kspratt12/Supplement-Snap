@@ -327,7 +327,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["roofing-supplement-email-to-adjuster", "what-can-you-supplement-on-a-roof-claim", "roofing-supplement-template","roofing-supplement-denied-what-to-do","xactimate-codes-for-roofing-supplements","roofing-photo-documentation-checklist", "best-roofing-supplement-software"],
+    related: ["roofing-supplement-mistakes-that-delay-payment", "roofing-supplement-email-to-adjuster", "what-can-you-supplement-on-a-roof-claim", "roofing-supplement-template","roofing-supplement-denied-what-to-do","xactimate-codes-for-roofing-supplements","roofing-photo-documentation-checklist", "best-roofing-supplement-software"],
     faq: [
       {
         "q": "Do I need Xactimate to submit a roofing supplement?",
@@ -428,7 +428,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["roof-claim-reinspection-request", "how-to-write-a-roofing-supplement","roofing-supplement-follow-up-log","roofing-photo-documentation-checklist","roofing-supplement-template", "roofing-supplement-companies-vs-software"],
+    related: ["ice-and-water-shield-roofing-supplement", "insurance-lowball-roof-estimate-what-to-do", "roof-claim-appraisal-process", "roofing-supplement-mistakes-that-delay-payment", "roof-claim-reinspection-request", "how-to-write-a-roofing-supplement","roofing-supplement-follow-up-log","roofing-photo-documentation-checklist","roofing-supplement-template", "roofing-supplement-companies-vs-software"],
     faq: [
       {
         "q": "Can I resubmit a denied roofing supplement?",
@@ -519,7 +519,7 @@ const ARTICLES: Article[] = [
       ]},
     },
     updatedDate: "2026-10-23",
-    related: ["what-can-you-supplement-on-a-roof-claim", "xactimate-roofing-estimate-example","xactimate-roofing-software-explained","xactimate-roofing-estimate-approved","roofing-supplement-template", "best-roofing-supplement-software"],
+    related: ["drip-edge-roofing-supplement", "steep-roof-charge-roofing-supplement", "what-can-you-supplement-on-a-roof-claim", "xactimate-roofing-estimate-example","xactimate-roofing-software-explained","xactimate-roofing-estimate-approved","roofing-supplement-template", "best-roofing-supplement-software"],
     faq: [
       {
         "q": "Do I need an Xactimate license to use these codes?",
@@ -794,7 +794,7 @@ const ARTICLES: Article[] = [
       1: { src: "/blog/roof-tear-off-cost/tear-off-in-progress.jpg", width: 1024, height: 683, alt: "Roof mid-tear-off showing exposed decking and damaged shingles being removed" },
       3: { src: "/blog/roof-tear-off-cost/hidden-damage-found.jpg", width: 1400, height: 934, alt: "Rotted roof decking discovered during tear-off requiring supplement documentation" },
     },
-    related: ["roof-tear-off-vs-overlay", "roofing-overhead-and-profit-claims","how-much-do-roofing-supplements-pay","roof-replacement-estimate-vs-final-cost","roofing-code-upgrades-ordinance-and-law"],
+    related: ["roof-debris-removal-dumpster-insurance-claim", "roof-tear-off-findings-log-template", "roof-tear-off-vs-overlay", "roofing-overhead-and-profit-claims","how-much-do-roofing-supplements-pay","roof-replacement-estimate-vs-final-cost","roofing-code-upgrades-ordinance-and-law"],
     sections: [
       {
         heading: "What is a roof tear-off and why does cost matter?",
@@ -1031,7 +1031,7 @@ const ARTICLES: Article[] = [
     images: {
       5: { src: "/blog/roof-replacement-estimate-vs-final-cost/supplement-snap-project-value.png", width: 2533, height: 812, alt: "Supplement Snap app showing project with $1,300 estimated supplement value and damage capture workflow" },
     },
-    related: ["roof-tear-off-cost","roofing-code-upgrades-ordinance-and-law","roofing-overhead-and-profit-claims","how-to-write-a-roofing-supplement"],
+    related: ["roofing-permit-fees-insurance-claim", "insurance-lowball-roof-estimate-what-to-do", "roof-tear-off-cost","roofing-code-upgrades-ordinance-and-law","roofing-overhead-and-profit-claims","how-to-write-a-roofing-supplement"],
     sections: [
       {
         heading: "Why the initial estimate is always lower than the final cost",
@@ -2298,7 +2298,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["roof-tear-off-vs-overlay", "roofing-photo-documentation-checklist", "roofing-supplement-template", "hail-damage-roof-inspection", "roofing-documentation-spanish-speaking-crews"],
+    related: ["roof-tear-off-findings-log-template", "roof-tear-off-vs-overlay", "roofing-photo-documentation-checklist", "roofing-supplement-template", "hail-damage-roof-inspection", "roofing-documentation-spanish-speaking-crews"],
   },
   {
     slug: "organize-roofing-supplement-photos-by-claim",
@@ -2799,7 +2799,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["roofing-supplement-email-to-adjuster", "how-long-does-a-roofing-supplement-take", "roofing-supplement-denied-what-to-do", "roofing-supplement-template", "supplemental-roofing-estimate-explained", "roofing-photo-documentation-checklist"],
+    related: ["roofing-supplement-tracker-template", "roofing-supplement-email-to-adjuster", "how-long-does-a-roofing-supplement-take", "roofing-supplement-denied-what-to-do", "roofing-supplement-template", "supplemental-roofing-estimate-explained", "roofing-photo-documentation-checklist"],
   },
   {
     slug: "how-insurance-adjusters-determine-roof-damage",
@@ -2895,7 +2895,7 @@ const ARTICLES: Article[] = [
         a: "No. Coverage and approval depend on the claim, the policy and the carrier. Good documentation helps the adjuster verify what was found.",
       },
     ],
-    related: ["roof-claim-reinspection-request", "supplemental-roofing-estimate-explained", "hail-damage-roof-inspection", "roofing-photo-documentation-checklist", "roof-tear-off-vs-overlay"],
+    related: ["roofing-adjuster-inspection-what-to-bring", "roof-claim-reinspection-request", "supplemental-roofing-estimate-explained", "hail-damage-roof-inspection", "roofing-photo-documentation-checklist", "roof-tear-off-vs-overlay"],
   },
   {
     slug: "what-is-the-25-percent-rule-for-roofing",
@@ -3165,7 +3165,7 @@ const ARTICLES: Article[] = [
         a: "Labeled photos, measurements, notes on each finding, the adjuster's estimate and a record of all communication.",
       },
     ],
-    related: ["can-a-roofer-talk-to-the-insurance-company", "supplemental-roofing-estimate-explained", "how-insurance-adjusters-determine-roof-damage", "roof-damage-report-template", "roofing-supplement-follow-up-log"],
+    related: ["roofing-crew-supplement-documentation-sop", "can-a-roofer-talk-to-the-insurance-company", "supplemental-roofing-estimate-explained", "how-insurance-adjusters-determine-roof-damage", "roof-damage-report-template", "roofing-supplement-follow-up-log"],
   },
   {
     slug: "hail-damage-roof-insurance-claim-documentation",
@@ -3255,7 +3255,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["hail-damage-roof-inspection", "how-insurance-adjusters-determine-roof-damage", "roofing-photo-documentation-checklist", "roof-damage-report-template"],
+    related: ["roof-shingle-matching-insurance-claim", "hail-damage-roof-inspection", "how-insurance-adjusters-determine-roof-damage", "roofing-photo-documentation-checklist", "roof-damage-report-template"],
   },
   {
     slug: "wind-damage-roof-insurance-claim-documentation",
@@ -3598,7 +3598,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy, the carrier and the documentation. Software can make your package clearer and more complete.",
       },
     ],
-    related: ["roofing-supplement-companies-vs-software", "xactimate-roofing-software-explained", "roofing-software-comparison", "supplemental-roofing-estimate-explained", "supplement-snap-vs-roofgenius", "roofing-supplement-software-cost", "claimtrax-vs-suppx-vs-supplement-snap", "roofing-supplement-software-for-small-roofing-companies", "supplement-snap-vs-acculynx-supplements", "free-roofing-supplement-software"],
+    related: ["is-roofing-supplement-software-worth-it", "roofing-supplement-companies-vs-software", "xactimate-roofing-software-explained", "roofing-software-comparison", "supplemental-roofing-estimate-explained", "supplement-snap-vs-roofgenius", "roofing-supplement-software-cost", "claimtrax-vs-suppx-vs-supplement-snap", "roofing-supplement-software-for-small-roofing-companies", "supplement-snap-vs-acculynx-supplements", "free-roofing-supplement-software"],
   },
   {
     slug: "recoverable-depreciation-roof-claims",
@@ -3764,7 +3764,7 @@ const ARTICLES: Article[] = [
         a: "A contractor can submit a supplement with documentation for missed items, and the homeowner can ask the carrier to review. Results depend on the claim.",
       },
     ],
-    related: ["how-insurance-adjusters-determine-roof-damage", "hail-damage-roof-insurance-claim-documentation", "roof-leak-insurance-claim-contractor-guide", "what-is-the-25-percent-rule-for-roofing"],
+    related: ["roof-shingle-matching-insurance-claim", "how-insurance-adjusters-determine-roof-damage", "hail-damage-roof-insurance-claim-documentation", "roof-leak-insurance-claim-contractor-guide", "what-is-the-25-percent-rule-for-roofing"],
   },
   {
     slug: "roof-inspection-checklist",
@@ -3856,7 +3856,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["roof-inspection-report", "hail-damage-roof-inspection", "roof-damage-report-template", "document-rotted-roof-decking-tear-off"],
+    related: ["steep-roof-charge-roofing-supplement", "roof-flashing-vents-pipe-jacks-insurance-supplement", "roof-inspection-report", "hail-damage-roof-inspection", "roof-damage-report-template", "document-rotted-roof-decking-tear-off"],
   },
   {
     slug: "supplement-snap-vs-roofgenius",
@@ -4126,7 +4126,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy, the carrier and your documentation, not on the price of the tool.",
       },
     ],
-    related: ["best-roofing-supplement-software", "roofing-supplement-companies-vs-software", "supplement-snap-vs-roofgenius", "ai-roofing-supplement-tools-compared", "free-roofing-supplement-software"],
+    related: ["is-roofing-supplement-software-worth-it", "best-roofing-supplement-software", "roofing-supplement-companies-vs-software", "supplement-snap-vs-roofgenius", "ai-roofing-supplement-tools-compared", "free-roofing-supplement-software"],
   },
   {
     slug: "best-app-to-document-roof-damage-for-insurance",
@@ -4478,7 +4478,7 @@ const ARTICLES: Article[] = [
       },
     ],
     downloads: "roofing-estimate-template",
-    related: ["xactimate-roofing-estimate-example", "roof-repair-estimate-template", "good-better-best-roofing-proposal-template", "roofing-supplement-template"],
+    related: ["starter-strip-ridge-cap-roofing-supplement", "xactimate-roofing-estimate-example", "roof-repair-estimate-template", "good-better-best-roofing-proposal-template", "roofing-supplement-template"],
   },
   {
     slug: "roofing-supplement-email-to-adjuster",
@@ -4645,7 +4645,7 @@ const ARTICLES: Article[] = [
         a: "See our guide to Xactimate codes for roofing supplements. Codes and pricing vary by carrier and region, so match the format the adjuster uses.",
       },
     ],
-    related: ["xactimate-codes-for-roofing-supplements","document-rotted-roof-decking-tear-off","roofing-code-upgrades-ordinance-and-law","roofing-photo-documentation-checklist"],
+    related: ["drip-edge-roofing-supplement", "ice-and-water-shield-roofing-supplement", "roofing-permit-fees-insurance-claim", "starter-strip-ridge-cap-roofing-supplement", "roof-flashing-vents-pipe-jacks-insurance-supplement", "xactimate-codes-for-roofing-supplements","document-rotted-roof-decking-tear-off","roofing-code-upgrades-ordinance-and-law","roofing-photo-documentation-checklist"],
   },
   {
     slug: "roof-claim-reinspection-request",
@@ -4725,7 +4725,7 @@ const ARTICLES: Article[] = [
         a: "A reinspection may no longer be useful, so documentation taken before and during tear-off matters. A supplement may fit better for hidden items.",
       },
     ],
-    related: ["roofing-supplement-denied-what-to-do","how-insurance-adjusters-determine-roof-damage","hail-damage-roof-insurance-claim-documentation","roofing-supplement-process-explained"],
+    related: ["roof-claim-appraisal-process", "roofing-supplement-denied-what-to-do","how-insurance-adjusters-determine-roof-damage","hail-damage-roof-insurance-claim-documentation","roofing-supplement-process-explained"],
   },
   {
     slug: "can-a-roofer-talk-to-the-insurance-company",
@@ -4805,7 +4805,7 @@ const ARTICLES: Article[] = [
         a: "Start with your state department of insurance, using the NAIC's list of state insurance departments, and ask a licensed attorney if it is unclear.",
       },
     ],
-    related: ["how-roofing-contractors-work-insurance-claims","roofing-supplement-companies-vs-software","how-insurance-adjusters-determine-roof-damage","roofing-supplement-process-explained"],
+    related: ["roofing-adjuster-inspection-what-to-bring", "how-roofing-contractors-work-insurance-claims","roofing-supplement-companies-vs-software","how-insurance-adjusters-determine-roof-damage","roofing-supplement-process-explained"],
   },
   {
     slug: "how-long-does-a-roofing-supplement-take",
@@ -4886,7 +4886,1228 @@ const ARTICLES: Article[] = [
         a: "Send a polite follow-up in the same thread, ask who else can review the file, such as a claims supervisor, and keep a record of every attempt.",
       },
     ],
-    related: ["roofing-supplement-process-explained","roofing-supplement-follow-up-log","roofing-supplement-denied-what-to-do","how-to-write-a-roofing-supplement"],
+    related: ["roofing-supplement-tracker-template", "roofing-supplement-process-explained","roofing-supplement-follow-up-log","roofing-supplement-denied-what-to-do","how-to-write-a-roofing-supplement"],
+  },
+  {
+    slug: "drip-edge-roofing-supplement",
+    title: "Drip Edge on a Roof Claim: How Roofers Document and Request It",
+    metaTitle: "Drip Edge Roofing Supplement: How to Request It",
+    metaDescription: "Drip edge is a common line item roofers ask carriers to include. Learn how to check local code, document it with photos, and request it in a supplement.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "ICC: International Code Council", url: "https://www.iccsafe.org" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Prove the drip edge, not just ask for it.",
+    midCtaBody: "Supplement Snap helps your crew photograph edges before and after tear-off and export a report tied to each finding. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Why it matters on a claim"],
+        rows: [
+          { feature: "Is there existing drip edge?", values: ["Photos of the eave and rake before tear-off show whether metal edging is already there or missing"] },
+          { feature: "Does local code call for it?", values: ["Many places have adopted a version of the International Residential Code that calls for it on asphalt shingle roofs; the building department can confirm"] },
+          { feature: "Is it in the carrier estimate?", values: ["Compare the estimate to your measured eave and rake lengths and note any difference"] },
+          { feature: "What do you measure?", values: ["Linear feet of eave and rake, written next to the photos"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Check your local code first", text: "The model residential code has required drip edge at eaves and rakes under asphalt shingles since the 2012 edition, with the wording changing in later editions. Many local governments have adopted a different edition or amended it. Ask your building department which edition applies before you cite it." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Drip edge is the metal flashing installed along the eaves and rakes of a roof so water drips clear of the fascia and decking. On an insurance job, roofers often ask the carrier to include it when the estimate leaves it out or counts too little of it. Whether the carrier pays depends on the policy, local code and what you can show.\n\nThe practical approach is the same for any supplement item: check what code requires locally, measure the linear feet, photograph what is there before it comes off, and put the request in writing with the evidence attached.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "What the carrier needs to see",
+        content: "The table lists the questions an adjuster is likely to ask. Answer them in your documentation before they are asked. A request that says add drip edge is easy to set aside. A request that shows the edges, the measurements and the local requirement is easier to review.",
+      },
+      {
+        heading: "How to document it on the roof",
+        content: "Take wide photos of each eave and rake before tear-off so the existing edge, or the lack of one, is visible. Take a close photo where the shingles meet the edge. After tear-off, photograph the bare decking edge so it is clear what is being installed.\n\nWrite down the linear feet for each edge and add them up. Show your arithmetic, for example 42 ft + 42 ft for two eaves and 30 ft + 30 ft for two rakes. Keep photo numbers beside each measurement.",
+      },
+      {
+        heading: "Where code fits in",
+        content: "Carriers commonly pay for work required to bring a repair up to code only if the policy says so, so a code requirement does not always mean payment. The model residential code is published by the International Code Council, and local governments adopt it on their own schedules and often change it. Building codes, policy wording and carrier practice vary by state, county and policy. Confirm the details for your job with the local building department and the claim documents.\n\nIf the requirement matters to your request, say which edition your jurisdiction uses and quote or attach what the building department told you. Do not state a code section from memory.",
+      },
+      {
+        heading: "How to word the request",
+        content: "Keep it factual: the location, the measured length, what was found, and what you are asking to be included. For example: Drip edge, all eaves and rakes, 144 linear feet measured at tear-off. Photos 3 to 9 show the edges before removal. Local code reference attached.\n\nAvoid arguing about what the adjuster should have done. Put the evidence on the page and make the next step easy to take.",
+      },
+      {
+        heading: "Mistakes that slow it down",
+        content: "• Asking for drip edge with no photos of the edges\n• Giving a total length with no way to check it\n• Quoting a code edition your jurisdiction has not adopted\n• Mixing it into a long email instead of listing it as a numbered finding\n• Not saying whether the edge was missing, damaged or only being replaced as part of the job",
+      },
+    ],
+    faq: [
+      {
+        q: "Does insurance pay for drip edge?",
+        a: "Sometimes. It depends on the policy, the local code and the carrier's review. Many carriers include it in a replacement estimate, and others leave it out and wait for a request with documentation.",
+      },
+      {
+        q: "Is drip edge required by code?",
+        a: "The model residential code has called for it at eaves and rakes under asphalt shingles since the 2012 edition, but local adoption varies. Ask your building department which edition and amendments apply.",
+      },
+      {
+        q: "How do I measure drip edge?",
+        a: "Measure the linear feet along each eave and rake with a tape or a measuring tool, write each length down, and add them. Keep the numbers next to the photos.",
+      },
+      {
+        q: "Should I photograph the old drip edge?",
+        a: "Yes, before it is removed. Photos show whether it existed, what shape it was in and where it sat.",
+      },
+      {
+        q: "Can I request it in a supplement after the first estimate?",
+        a: "Many contractors do when the estimate leaves it out. Send it with your photos and measurements and follow the carrier's process.",
+      },
+    ],
+    related: ["what-can-you-supplement-on-a-roof-claim","xactimate-codes-for-roofing-supplements","how-to-write-a-roofing-supplement","roofing-supplement-email-to-adjuster"],
+  },
+  {
+    slug: "ice-and-water-shield-roofing-supplement",
+    title: "Ice and Water Shield on a Roof Claim: Documenting and Requesting It",
+    metaTitle: "Ice and Water Shield Supplement: Document and Request",
+    metaDescription: "Ice and water barrier is often left out or undercounted in roof estimates. Learn what to check, how to measure it, and how to request it with proof.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "ICC: International Code Council", url: "https://www.iccsafe.org" },
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Measure it, photograph it, send it.",
+    midCtaBody: "Supplement Snap helps your crew capture each area and quantity as it is exposed. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to record"],
+        rows: [
+          { feature: "Where it goes", values: ["Eaves, valleys and low slopes are the usual places; the shingle maker's instructions and local code decide the rest"] },
+          { feature: "How much", values: ["Square feet by area, with the width of each strip and the length written down"] },
+          { feature: "What was there", values: ["A photo of the underlayment under the old shingles shows what was installed before"] },
+          { feature: "Local requirement", values: ["Whether your area calls for an ice barrier at the eaves, and how far up the roof it must go"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Do not copy a rule from another state", text: "The model residential code asks for an ice barrier in places with a history of ice forming along the eaves, extending a set distance inside the exterior wall line. Whether your area is covered, and how it is worded, depends on local adoption. Ask your building department rather than assuming." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Ice and water shield, also called an ice barrier or self-adhering underlayment, is a waterproof membrane installed along eaves, in valleys and in other leak-prone areas under the shingles. On a claim it is a common line item because estimates differ in how much they include. The way to ask for it is to show where it goes, how much of it, and why, with photos and measurements.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "What to check before you ask",
+        content: "The table shows what to record. Start with the shingle manufacturer's installation instructions, which often say where a membrane is needed for the warranty, and with the local building department. Then check the carrier's estimate for what is already included and compare it with your own measurements.",
+      },
+      {
+        heading: "How to measure it",
+        content: "Break the job into areas: each eave, each valley, each low slope or other spot. For a strip along an eave, multiply length by the strip width. For a valley, multiply the valley length by the width you install.\n\nWrite the arithmetic, not only the total. Example: Eave, front: 42 ft x 3 ft = 126 sq ft. Add the areas, then add any overlap you must include. Keep the roll width and overlap you actually use, because they change the result.",
+      },
+      {
+        heading: "How to document it",
+        content: "Photograph the eaves and valleys before tear-off, then the bare deck after tear-off, then the membrane going on. Close photos show the material and wide photos show where it sits. Number the photos and match them to your list.\n\nIf the existing roof had no membrane, a photo of the bare underlayment at the eave shows that. If it had some, show how far up it went.",
+      },
+      {
+        heading: "Code, the warranty and the policy",
+        content: "Three different things can support the request: local code, the manufacturer's instructions and the policy. They do not always agree and the carrier is not bound by your warranty or the manufacturer. Building codes, policy wording and carrier practice vary by state, county and policy. Confirm the details for your job with the local building department and the claim documents.\n\nPut each source in the request separately and label it. Do not mix them together as if one proved the other.",
+      },
+      {
+        heading: "How to word the request",
+        content: "Keep it short and checkable. Example: Self-adhering ice barrier, front and rear eaves and two valleys, 410 sq ft by the attached measurements. Photos 12 to 21. Manufacturer instructions and local code reference attached.\n\nList it as its own numbered finding with its own quantity so the adjuster can answer yes or no to it by itself.",
+      },
+    ],
+    faq: [
+      {
+        q: "Does insurance cover ice and water shield?",
+        a: "It can. Some estimates include it, some include part, and some leave it out. Coverage depends on the policy and local code, and the carrier decides.",
+      },
+      {
+        q: "Is ice and water shield required by code?",
+        a: "The model residential code calls for an ice barrier in areas where ice historically forms along eaves, but each local government adopts and amends the code. Check with your building department.",
+      },
+      {
+        q: "How far up the roof does it go?",
+        a: "The model code uses a distance measured from the exterior wall line, and manufacturers give their own instructions. Use the local requirement and the manufacturer's sheet for the product you install.",
+      },
+      {
+        q: "Do I need a photo of it being installed?",
+        a: "Yes, it helps. A photo of the membrane on the deck, with a tape or marker showing width, backs up the quantity.",
+      },
+      {
+        q: "What if the adjuster says the old roof did not have it?",
+        a: "Show what you found at tear-off and explain the requirement that applies now. The carrier may still decide differently, so keep your records of the exchange.",
+      },
+    ],
+    related: ["what-can-you-supplement-on-a-roof-claim","drip-edge-roofing-supplement","xactimate-codes-for-roofing-supplements","how-to-write-a-roofing-supplement"],
+  },
+  {
+    slug: "roof-shingle-matching-insurance-claim",
+    title: "Shingle Matching on Roof Claims: What Roofers Should Know",
+    metaTitle: "Roof Shingle Matching Insurance Claims Explained",
+    metaDescription: "When shingles are discontinued or colors no longer match, who pays? How matching works on roof claims, what varies by state, and how to document it.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NAIC: State Insurance Departments", url: "https://content.naic.org/state-insurance-departments" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Show the mismatch with evidence.",
+    midCtaBody: "Supplement Snap helps your crew document the existing roof and what was found so your report shows the whole picture. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What can differ"],
+        rows: [
+          { feature: "State rules", values: ["Some states have rules or guidance about matching, written in different words; others have none"] },
+          { feature: "The policy", values: ["Wording and endorsements can add to or limit matching coverage"] },
+          { feature: "Carrier practice", values: ["Two carriers in the same state can treat the same situation differently"] },
+          { feature: "The roof itself", values: ["Age, weathering, discontinued products and slope layout affect what a fair match looks like"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Do not promise a full replacement", text: "A homeowner who hears that matching means a whole new roof may be told something different by the carrier. Say what you can show, what the policy and your state say, and that the carrier decides." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Matching is the question of whether a repaired roof should look like the rest of it. If only part of a roof is replaced and the new shingles do not match the old ones, the homeowner may ask the carrier to pay for more. What the carrier owes depends on the state, the policy and the facts, so there is no single rule. Your job is to document the facts well.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "Why the answer changes",
+        content: "The table shows what varies. Some states say the repair should leave a reasonably uniform appearance. Others look at whether the mismatch can be seen from a normal viewing point. Some policies have endorsements that change the result. Do not assume the rule from the last state you worked in applies here.",
+      },
+      {
+        heading: "What to document",
+        content: "Photograph the whole roof from several angles, including from the street, and every slope that would be affected. Take close photos of the shingles that show color, wear and any maker's markings on a loose piece.\n\nIf the product is discontinued, record the maker, the line and the color, and keep any written confirmation from the manufacturer or a supplier that it is no longer available. A supplier's printout of available colors, dated, is stronger than a verbal note.",
+      },
+      {
+        heading: "Repairability and brittle shingles",
+        content: "On older roofs, a shingle may crack when lifted, which is relevant to whether a spot repair is practical. If you test a few shingles to see whether they can be lifted without breaking, document it with photos and notes. Present it as what you observed on this roof, not as a general rule.",
+      },
+      {
+        heading: "How to present it",
+        content: "Put the matching question in its own section of the report: the existing product, what is available, the photos from each angle and the slopes involved. State what you observed and what you are asking for. Building codes, policy wording and carrier practice vary by state, county and policy. Confirm the details for your job with the local building department and the claim documents.\n\nIf your state publishes guidance on matching, link it. Your state's insurance department is a good source, and the NAIC lists them.",
+      },
+      {
+        heading: "Talking with the homeowner",
+        content: "Be clear about what you cannot promise. You can explain what you see and how you will document it, and you can tell the homeowner to ask their carrier about matching coverage under their policy. In many states a contractor should not advise on coverage or negotiate the claim, so keep to your own scope of work.",
+      },
+    ],
+    faq: [
+      {
+        q: "Does insurance have to replace the whole roof to match?",
+        a: "Not necessarily. It depends on the state, the policy and the facts. Some situations lead to a full replacement and some to a repair of the damaged slopes only.",
+      },
+      {
+        q: "What if the shingles are discontinued?",
+        a: "Document the product and keep proof it is no longer available. That is evidence for the carrier to consider, not a guarantee of payment.",
+      },
+      {
+        q: "Is there a federal rule on matching?",
+        a: "No. Matching is mostly handled by state rules, policy wording and carrier practice.",
+      },
+      {
+        q: "Where can I find my state's rules?",
+        a: "Start with your state insurance department. The NAIC keeps a list of them.",
+      },
+      {
+        q: "Should a contractor argue matching with the carrier?",
+        a: "Document the facts and give them to the homeowner and carrier. Whether a contractor can discuss coverage or negotiate depends on state licensing rules.",
+      },
+    ],
+    related: ["does-insurance-cover-roof-replacement","can-a-roofer-talk-to-the-insurance-company","roofing-supplement-denied-what-to-do","hail-damage-roof-insurance-claim-documentation"],
+  },
+  {
+    slug: "steep-roof-charge-roofing-supplement",
+    title: "Steep Roof and High Roof Charges: How to Document Them",
+    metaTitle: "Steep Roof Charge Supplement: How to Document It",
+    metaDescription: "Steep-pitch and multi-story roofs take more labor and safety gear. Learn how to measure pitch, photograph it, and request steep and high charges.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Pitch and height, proven on site.",
+    midCtaBody: "Supplement Snap helps your crew record roof details with photos and notes for the report. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to record"],
+        rows: [
+          { feature: "Pitch", values: ["Rise over run for each slope, with a photo of the measurement"] },
+          { feature: "Area at each pitch", values: ["Square footage of each slope so charges apply to the right area"] },
+          { feature: "Height", values: ["Number of stories and eave height at each side of the house"] },
+          { feature: "Safety and access", values: ["Anything that needs added setup, such as roof jacks or fall protection, written down"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Measure each slope, not the house", text: "Different slopes often have different pitches. A single pitch for the whole roof can undercount or overcount the charge." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Steeper roofs take more time and more safety setup, and so do roofs that are high above the ground. Many pricing systems include charges for steep pitch and for roof height. The carrier's estimate may include them, partly include them or leave them out. A contractor documents the pitch and height of each area so the right charge can be checked.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "What carriers usually check",
+        content: "The table lists what to record. Estimating software groups pitch into ranges, and the ranges and names depend on the price list in use. Check the price list on your claim for the categories rather than assuming.",
+      },
+      {
+        heading: "How to measure pitch",
+        content: "Use a level and a tape, a pitch gauge or an app on a phone, and take a photo that shows the reading. Do it for each slope that differs. Write the pitch beside the slope and the square feet of that slope.\n\nIf the carrier's report used drone or satellite measurements, compare them with what you measured and note any difference without guessing why.",
+      },
+      {
+        heading: "Documenting height",
+        content: "Photograph each side of the house from the ground showing the eave height, and note the number of stories. If a section is above two stories, say so and show it. A wide photo with a person or a ladder for scale is more convincing than a number alone.",
+      },
+      {
+        heading: "Safety setup and what to claim",
+        content: "Roof jacks, harnesses and anchors are part of working on steep roofs. Whether they are separately payable depends on the price list and the carrier. Record what your crew actually used and why, and do not add items to the request that you cannot show.",
+      },
+      {
+        heading: "How to word the request",
+        content: "Example: Steep charge, rear slope, 9/12 pitch measured, 760 sq ft. Photo 4 shows the reading. High roof charge, rear section above two stories, 480 sq ft, photo 5.\n\nList each area as its own line with its own pitch or height. That makes it simple for the adjuster to check one against the estimate.",
+      },
+    ],
+    faq: [
+      {
+        q: "What is a steep roof charge?",
+        a: "It is an added charge in many pricing systems for the extra labor and safety work on roofs above a certain pitch.",
+      },
+      {
+        q: "How steep is steep?",
+        a: "The ranges depend on the price list. Check the one in use on the claim.",
+      },
+      {
+        q: "What is a high roof charge?",
+        a: "It is an added charge for roofs high off the ground, such as above one or two stories. The thresholds depend on the price list.",
+      },
+      {
+        q: "How do I prove the pitch?",
+        a: "Photograph a level and tape or gauge showing the reading on each slope, and write it down next to the square footage.",
+      },
+      {
+        q: "Will the carrier always pay it?",
+        a: "No. The carrier reviews each request under the policy and its own process.",
+      },
+    ],
+    related: ["xactimate-codes-for-roofing-supplements","what-can-you-supplement-on-a-roof-claim","roof-inspection-checklist","how-to-write-a-roofing-supplement"],
+  },
+  {
+    slug: "roofing-permit-fees-insurance-claim",
+    title: "Roofing Permit Fees on an Insurance Claim: How to Request Them",
+    metaTitle: "Roofing Permit Fees on Insurance Claims: How to Ask",
+    metaDescription: "Permit costs are a normal part of a roof replacement. Learn how to document them, when to submit, and how to keep the paper trail carriers expect.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NAIC: State Insurance Departments", url: "https://content.naic.org/state-insurance-departments" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Keep every receipt with the claim.",
+    midCtaBody: "Supplement Snap keeps photos, notes and findings in one project so nothing gets lost between the roof and the office. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to keep"],
+        rows: [
+          { feature: "The permit", values: ["The receipt or record from the building department showing the fee and the address"] },
+          { feature: "The date", values: ["When it was paid, so it fits the timeline of the work"] },
+          { feature: "The scope", values: ["That the permit covers the roof work on the claim"] },
+          { feature: "The invoice", values: ["Show the permit as its own line so it is easy to match to the receipt"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Get the receipt before you need it", text: "Ask for or save the receipt when you pull the permit. Finding it later is harder, especially if a different person handled it." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Many places require a permit for a roof replacement, and the fee is a real cost of the job. Carriers often handle it as a cost incurred on the job and ask for proof, such as the receipt. Whether the first estimate included it and how the carrier handles it depends on the carrier and the policy, so treat it like any other item: document it and send it with the right paperwork.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "What the paperwork looks like",
+        content: "The table lists the proof to keep. A permit record that shows the address, the work and the fee is the simplest support. Keep it with the claim number written on it or in the same folder.",
+      },
+      {
+        heading: "When to submit it",
+        content: "Some contractors send permit costs with the first estimate, and others add them in a supplement once the permit is paid. Follow the process your carrier or the claim contact uses. If you send it later, say it is a permit cost and attach the receipt.",
+      },
+      {
+        heading: "If the fee changes",
+        content: "Fees can depend on the project value or on the local schedule. If the final fee is different from what was estimated, send the actual receipt and note the difference. Do not round or guess.",
+      },
+      {
+        heading: "Inspections and other local costs",
+        content: "Some places charge for inspections, re-inspections or special reviews. Keep those receipts too, and list them separately rather than folding them into one number. Building codes, policy wording and carrier practice vary by state, county and policy. Confirm the details for your job with the local building department and the claim documents.",
+      },
+      {
+        heading: "Common mistakes",
+        content: "• Requesting a permit fee with no receipt\n• Combining permit, disposal and other costs in one line\n• Forgetting the permit when the first estimate is written, then adding it late with no explanation\n• Not saving the permit record with the claim file",
+      },
+    ],
+    faq: [
+      {
+        q: "Does insurance pay for roofing permits?",
+        a: "Carriers commonly consider permit costs as part of the cost of the job, but how and when depends on the carrier and policy.",
+      },
+      {
+        q: "What proof do I need?",
+        a: "The permit receipt or record showing the fee, the address and the work. Keep it with the claim number.",
+      },
+      {
+        q: "Can I add a permit fee in a supplement?",
+        a: "Many contractors do. Attach the receipt and list the permit as its own line.",
+      },
+      {
+        q: "What if my permit fee is different from the estimate?",
+        a: "Send the actual receipt and note the difference.",
+      },
+      {
+        q: "Who pulls the permit?",
+        a: "That depends on local rules and your contract. Whoever does it should keep the receipt.",
+      },
+    ],
+    related: ["what-can-you-supplement-on-a-roof-claim","roofing-supplement-email-to-adjuster","how-to-write-a-roofing-supplement","roof-replacement-estimate-vs-final-cost"],
+  },
+  {
+    slug: "starter-strip-ridge-cap-roofing-supplement",
+    title: "Starter Strip and Ridge Cap on a Roof Claim: What to Check",
+    metaTitle: "Starter Strip and Ridge Cap on Roof Claims: Checklist",
+    metaDescription: "Starter strip and ridge cap quantities are easy to undercount in an estimate. How to measure them, compare to the carrier's numbers, and document the gap.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Count the edges and ridges once, with photos.",
+    midCtaBody: "Supplement Snap helps your crew record linear footage and photos in one project. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["How to measure"],
+        rows: [
+          { feature: "Starter strip", values: ["Linear feet along the eaves and, where installed, the rakes"] },
+          { feature: "Ridge cap", values: ["Linear feet of ridges and hips"] },
+          { feature: "Waste", values: ["The carrier's waste allowance may not match the product; note how you cut it"] },
+          { feature: "Product", values: ["Whether you use a standard or a specialty product, as the unit changes"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Compare, don't assume", text: "Some estimates include starter and ridge in the shingle line, others list them separately. Read the estimate before you call something missing." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Starter strip is the first course along the edge of the roof. Ridge cap covers the ridges and hips. Both are measured in linear feet, not square feet, and both are easy to undercount if the estimate relies on roof area. A contractor can compare their own linear measurements to the estimate and document any gap.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "Why they are easy to miss",
+        content: "Area-based measurements do not show ridge and edge lengths directly. Reports built from aerial images can be off on a complicated roof. The table covers what to measure so the numbers come from the roof, not a guess.",
+      },
+      {
+        heading: "How to measure",
+        content: "For starter, add the eave lengths and the rake lengths if you install starter there. For ridge cap, add the ridge and hip lengths. Write each length and the sum. Walk the roof or use a reliable tool, and note which.",
+      },
+      {
+        heading: "How to document",
+        content: "Photograph each ridge and hip, showing its full length where you can. Photograph the eaves. Number the photos and tie them to the measurements in your list.",
+      },
+      {
+        heading: "Compare to the estimate",
+        content: "Find the starter and ridge lines in the carrier's estimate and note the quantities and units. If they differ from yours, write the two numbers side by side with your measurements. Do not assume the difference is an error. It might be a different product or waste factor.",
+      },
+      {
+        heading: "How to word the request",
+        content: "Example: Ridge cap, 118 linear feet measured on roof, estimate shows 96. Photos 22 to 27. Starter, 168 linear feet, estimate shows 140. Photos 3 to 9.\n\nAsk for the difference, show the work, and let the adjuster respond to each line.",
+      },
+    ],
+    faq: [
+      {
+        q: "How is ridge cap measured?",
+        a: "In linear feet along the ridges and hips.",
+      },
+      {
+        q: "How is starter measured?",
+        a: "In linear feet along the eaves, and along the rakes where starter is installed.",
+      },
+      {
+        q: "Why do estimates differ from my measurements?",
+        a: "Aerial measurements, waste factors and product choices can all differ. Compare the numbers and note the difference.",
+      },
+      {
+        q: "Are starter and ridge ever included in the shingle line?",
+        a: "Some estimates combine them. Read the estimate before concluding something is missing.",
+      },
+      {
+        q: "Do I need photos of ridges?",
+        a: "Yes. They show length, condition and where the measurement came from.",
+      },
+    ],
+    related: ["what-can-you-supplement-on-a-roof-claim","drip-edge-roofing-supplement","roofing-estimate-template","xactimate-codes-for-roofing-supplements"],
+  },
+  {
+    slug: "roof-flashing-vents-pipe-jacks-insurance-supplement",
+    title: "Flashing, Vents and Pipe Jacks: Documenting Small Items on a Roof Claim",
+    metaTitle: "Roof Flashing, Vents, Pipe Jacks: Supplement Guide",
+    metaDescription: "Flashing, vents and pipe boots are small items that add up. How to count, photograph and request them in a roofing supplement without missing any.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Count every penetration once.",
+    midCtaBody: "Supplement Snap helps your crew log each item with a photo and location as they find it. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to record"],
+        rows: [
+          { feature: "Pipe boots or jacks", values: ["Count and size; photo of each"] },
+          { feature: "Vents", values: ["Type and count; condition of each"] },
+          { feature: "Step and counter flashing", values: ["Linear feet along walls and chimneys"] },
+          { feature: "Chimney and skylight flashing", values: ["Each one as its own item, with a photo"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Photograph before removal", text: "Once a pipe boot or vent is removed it is hard to prove what was there. Take the photo first." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Small roof items like pipe boots, vents and flashing are easy to overlook in an estimate. They are also easy to document well if the crew counts and photographs them before tear-off. List each one, its location and its condition, and ask for any that the estimate leaves out.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "Why small items matter",
+        content: "A few missing pieces across a job add up, and an estimate built from aerial images cannot count every penetration. The table lists the items to record. A complete count also helps the crew know what to order.",
+      },
+      {
+        heading: "Counting method",
+        content: "Walk each slope with a clipboard or phone notes. Number each penetration, write its type and size, and photograph it. Use the same numbering in the report so the adjuster can match item to photo.",
+      },
+      {
+        heading: "Flashing",
+        content: "Measure step flashing and counter flashing in linear feet along walls, and record chimneys and skylights as separate items. Note whether existing flashing is damaged, reusable or missing, and show it.",
+      },
+      {
+        heading: "Reuse or replace",
+        content: "Carriers and contractors sometimes disagree on whether an item can be reused. Photograph its condition and write down why you replace it, such as corrosion, cracking or a different profile needed for the new roof. Avoid saying it must always be replaced.",
+      },
+      {
+        heading: "How to word the request",
+        content: "Example: Pipe boots, 4, sizes 2 in and 3 in, photos 31 to 34. Step flashing, 36 linear feet along the east wall, photo 35. List each as a numbered finding and give counts.",
+      },
+    ],
+    faq: [
+      {
+        q: "Does insurance pay for pipe boots and vents?",
+        a: "They are often part of a roof replacement estimate. If one is missing, you can document it and ask.",
+      },
+      {
+        q: "How do I count vents?",
+        a: "Walk each slope, number each vent, and photograph it. Record the type.",
+      },
+      {
+        q: "Can flashing be reused?",
+        a: "Sometimes. Document its condition and your reason for replacing it.",
+      },
+      {
+        q: "Do I measure flashing in square feet?",
+        a: "Step and counter flashing are usually measured in linear feet. Check the unit in the estimate.",
+      },
+      {
+        q: "What if the estimate lumps them together?",
+        a: "Compare your counts to the lumped line and show what is not covered.",
+      },
+    ],
+    related: ["what-can-you-supplement-on-a-roof-claim","roof-inspection-checklist","drip-edge-roofing-supplement","how-to-write-a-roofing-supplement"],
+  },
+  {
+    slug: "roof-debris-removal-dumpster-insurance-claim",
+    title: "Debris Removal and Dumpster Costs on a Roof Claim",
+    metaTitle: "Roof Debris Removal and Dumpster Costs on Claims",
+    metaDescription: "Haul-off and dumpster costs are part of most roof replacements. How to document extra layers and weight, and what to send the carrier.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Document the load, not just the bill.",
+    midCtaBody: "Supplement Snap helps your crew log extra layers and conditions found at tear-off. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to keep"],
+        rows: [
+          { feature: "Layers", values: ["Photos of the edge showing how many layers came off"] },
+          { feature: "Extra material", values: ["Notes on decking, felt or other material that added to the load"] },
+          { feature: "Dump records", values: ["Tickets or receipts, with the date and the address or claim number"] },
+          { feature: "Disposal in the estimate", values: ["What the carrier's estimate included, so you can compare"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Layers change the load", text: "A second layer of shingles roughly doubles what comes off. Photograph it at the edge before tear-off." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Removing and hauling off old roofing is a standard part of a replacement, and carriers usually include some disposal in the estimate. When a roof has more layers than expected, or extra material comes off, the load can be larger than the estimate assumed. Document the layers, the extra material and the actual disposal records, then ask for the difference.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "What to document",
+        content: "The table lists what to keep. Photograph the roof edge before tear-off to show the number of layers, and photograph the debris pile or dumpster as it fills. Keep every dump ticket.",
+      },
+      {
+        heading: "Extra layers",
+        content: "Many places limit how many layers can be on a roof, and removing all layers may be needed for a proper install. A photo of the edge at tear-off and the local requirement are the support. Local rules vary. Policy wording, state rules and carrier practice vary, so confirm the details for your job.",
+      },
+      {
+        heading: "Comparing to the estimate",
+        content: "Find the tear-off and disposal lines in the carrier's estimate and note the quantity and unit. Compare them with your count of layers and with actual disposal records. Write the numbers side by side.",
+      },
+      {
+        heading: "How to word the request",
+        content: "Example: Tear-off of second layer, 28 squares, photo 2 shows two layers at the rear eave. Disposal tickets attached, 3 loads. List the difference as its own finding.",
+      },
+    ],
+    faq: [
+      {
+        q: "Does insurance pay for roof debris removal?",
+        a: "Disposal is commonly included in a replacement estimate. Extra amounts depend on the policy and what you can show.",
+      },
+      {
+        q: "How do I prove there were two layers?",
+        a: "Photograph the edge of the roof before tear-off, ideally with a tape showing thickness.",
+      },
+      {
+        q: "Do I need dump tickets?",
+        a: "Keep them. They show actual disposal and date.",
+      },
+      {
+        q: "Is the second layer covered?",
+        a: "That depends on the carrier and policy. Documentation lets them review it.",
+      },
+      {
+        q: "Can I include dumpster rental?",
+        a: "Many contractors do when it is a real cost of the job. Show the receipt.",
+      },
+    ],
+    related: ["roof-tear-off-cost","roof-tear-off-vs-overlay","document-rotted-roof-decking-tear-off","what-can-you-supplement-on-a-roof-claim"],
+  },
+  {
+    slug: "insurance-lowball-roof-estimate-what-to-do",
+    title: "Insurance Lowball Roof Estimate: What Roofers and Homeowners Can Do",
+    metaTitle: "Lowball Roof Estimate From Insurance: Next Steps",
+    metaDescription: "The carrier's roof estimate seems too low. Learn how to compare line items, document what is missing, and request a reinspection or supplement properly.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NAIC: State Insurance Departments", url: "https://content.naic.org/state-insurance-departments" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Turn disagreement into documentation.",
+    midCtaBody: "Supplement Snap helps your crew capture the proof a carrier can review. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Where to look"],
+        rows: [
+          { feature: "Scope", values: ["Are all slopes and components in the estimate?"] },
+          { feature: "Quantities", values: ["Do measurements match the roof?"] },
+          { feature: "Line items", values: ["Are drip edge, underlayment, flashing and similar items listed?"] },
+          { feature: "Pricing", values: ["Is the price list current for your area and date?"] },
+          { feature: "Policy limits", values: ["Deductible, depreciation and coverage terms that change the payment"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Low is not the same as wrong", text: "An estimate can be lower than a quote for reasons that are correct, such as depreciation or the deductible. Compare scope and quantity before you call it wrong." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "When an estimate seems low, the first step is to find out why. Compare the carrier's line items with the work you would do, check the quantities, and separate differences in scope from differences in price. Then document what is missing and send it through the carrier's process, usually a supplement or a reinspection request.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "Compare line by line",
+        content: "The table lists places to look. Put the carrier's estimate next to your own and mark each difference as scope, quantity or price. Differences in scope and quantity are the ones you can back with photos and measurements.",
+      },
+      {
+        heading: "Understand depreciation and the deductible",
+        content: "Part of the gap between a quote and a payment can come from the deductible and from depreciation that may be recoverable later. Those are policy matters. Explain them to the homeowner as questions for the carrier and avoid predicting the outcome.",
+      },
+      {
+        heading: "Documenting what is missing",
+        content: "For each difference, take photos, record measurements and write a short factual note. Number the items. If the roof was not fully inspected, a reinspection request may fit better than a supplement.",
+      },
+      {
+        heading: "Choosing the next step",
+        content: "Use a supplement for items found or missed that you can document. Use a reinspection when you think the original inspection missed visible damage. If you and the carrier still disagree on the amount of loss, the policy may offer an appraisal process. Read the policy and ask the carrier.",
+      },
+      {
+        heading: "Keep it professional",
+        content: "Stay factual and polite in writing, keep copies, and note dates. Contractors should be careful about negotiating coverage for a homeowner because rules differ by state. Policy wording, state rules and carrier practice vary, so confirm the details for your job.",
+      },
+    ],
+    faq: [
+      {
+        q: "Why is the insurance estimate lower than my contractor's quote?",
+        a: "Differences can come from scope, quantities, prices, depreciation or the deductible. Compare line by line to find out.",
+      },
+      {
+        q: "Can I dispute an insurance estimate?",
+        a: "You can ask the carrier to review it with new documentation. The policy may have other dispute steps.",
+      },
+      {
+        q: "What is a supplement?",
+        a: "A request for additional payment for items found or missed, with documentation.",
+      },
+      {
+        q: "When should I ask for a reinspection?",
+        a: "When you think visible damage was missed or measured differently in the original inspection.",
+      },
+      {
+        q: "Should the contractor argue with the adjuster?",
+        a: "Provide documentation. Whether a contractor can negotiate the claim depends on state rules.",
+      },
+    ],
+    related: ["roofing-supplement-denied-what-to-do","roof-claim-reinspection-request","roof-claim-appraisal-process","recoverable-depreciation-roof-claims"],
+  },
+  {
+    slug: "roof-claim-appraisal-process",
+    title: "The Appraisal Clause on a Roof Claim: How It Works",
+    metaTitle: "Roof Claim Appraisal Clause: How the Process Works",
+    metaDescription: "When a homeowner and carrier disagree on the amount of a roof loss, the policy may offer appraisal. What it is, how it generally works and what to prepare.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NAIC: State Insurance Departments", url: "https://content.naic.org/state-insurance-departments" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Good records help in every dispute path.",
+    midCtaBody: "Supplement Snap keeps photos, notes and findings together by project. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Typically"],
+        rows: [
+          { feature: "Who starts it", values: ["Often either side can demand it, if the policy has the clause"] },
+          { feature: "What it decides", values: ["Usually the amount of loss, not whether the policy covers it"] },
+          { feature: "Who takes part", values: ["An appraiser for each side and an umpire if they disagree"] },
+          { feature: "Cost", values: ["Each side usually pays its own appraiser and shares the umpire; check the policy"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Policies differ", text: "Some policies word appraisal differently, and state law can change how it works. Read the clause and ask your state insurance department or an attorney." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Many property policies include an appraisal clause for disputes about the amount of a loss. If the homeowner and the carrier agree the damage is covered but not on how much it costs, appraisal may be a way to settle the number. It is a formal process with its own rules and cost, so it is not a first step. This page is a general overview.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "How it generally works",
+        content: "The table gives the usual shape. Each side picks an appraiser. The two appraisers try to agree on the amount. If they cannot, they ask an umpire to help decide. An agreement by two of the three is typically binding on the amount, subject to the policy and state law.",
+      },
+      {
+        heading: "What it does not do",
+        content: "Appraisal usually does not decide whether the loss is covered under the policy. Coverage disputes can follow a different path. A homeowner who is unsure which kind of dispute they have can ask the carrier or an attorney.",
+      },
+      {
+        heading: "Where a contractor fits",
+        content: "A contractor is a witness to conditions and a source of documentation. Appraisers may look at your photos, measurements and estimates, so keep them organized. A contractor with a financial interest generally should not act as the homeowner's appraiser, and local rules vary.",
+      },
+      {
+        heading: "What to prepare",
+        content: "Collect photos with dates and locations, tear-off notes, measurements, estimates and the carrier's documents. Number everything and keep a clear index. Policy wording, state rules and carrier practice vary, so confirm the details for your job.",
+      },
+      {
+        heading: "Before you start",
+        content: "Appraisal can take time and cost money. Often a well-documented supplement or reinspection resolves the gap sooner. If it comes to appraisal, the homeowner should read the policy and consider professional advice.",
+      },
+    ],
+    faq: [
+      {
+        q: "What is the appraisal clause?",
+        a: "A policy provision that can allow an appraisal process for disputes about the amount of a loss.",
+      },
+      {
+        q: "Does appraisal decide coverage?",
+        a: "Usually no. It deals with the amount of loss. Coverage questions are handled differently.",
+      },
+      {
+        q: "Who pays for appraisal?",
+        a: "Policies commonly have each side pay its appraiser and share the umpire. Check the policy.",
+      },
+      {
+        q: "Can a roofer be the appraiser?",
+        a: "Appraisers are generally expected to be impartial, and a contractor with a stake usually should not. Rules vary.",
+      },
+      {
+        q: "Should I try a supplement first?",
+        a: "Often, yes. A supplement or a reinspection can resolve missed items faster and cost less.",
+      },
+    ],
+    related: ["insurance-lowball-roof-estimate-what-to-do","roofing-supplement-denied-what-to-do","roof-claim-reinspection-request","can-a-roofer-talk-to-the-insurance-company"],
+  },
+  {
+    slug: "roofing-supplement-tracker-template",
+    title: "Roofing Supplement Tracker Template (Free PDF, Fillable, Word)",
+    metaTitle: "Roofing Supplement Tracker (Free Template)",
+    metaDescription: "Keep track of every supplement you send: claim, carrier, date, follow-up and status. A free printable and fillable tracker and how to keep it current.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    downloads: "roofing-supplement-tracker",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Stop losing supplements in the inbox.",
+    midCtaBody: "Supplement Snap keeps each project's findings and report together, so your tracker only needs the status. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to write"],
+        rows: [
+          { feature: "Claim number and property", values: ["How the carrier and you both find the file"] },
+          { feature: "Sent on", values: ["The date the package left your hands"] },
+          { feature: "Follow up on", values: ["A date you commit to, so it does not slip"] },
+          { feature: "Status", values: ["A short word that says where it stands"] },
+          { feature: "Amount asked", values: ["What the supplement requested, for your own totals"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Set the follow-up date when you send", text: "A tracker only works if the next date is written down at the moment you send. Waiting to remember is how supplements go quiet." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "A supplement tracker is a simple list with one line for each supplement you send. It shows what is open, what needs a follow-up and what has been paid or denied. The template here is a one-page printable and fillable PDF and a Word version, so you can start today without software.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "What to put in it",
+        content: "The table lists the columns. Keep the entries short. The details live in the claim file. The tracker exists to point you to the next action.",
+      },
+      {
+        heading: "How to keep it current",
+        content: "Update it when you send, when you hear back and when you follow up. Once a week, scan the list for anything past its follow-up date. Mark paid and denied ones so the open list stays short.",
+      },
+      {
+        heading: "Status words",
+        content: "Pick a few and use them the same way every time: sent, in review, questions, paid in full, paid in part, denied, closed. Consistent words make it easy to search and count.",
+      },
+      {
+        heading: "When a paper list is not enough",
+        content: "If you handle many claims at once, a tracker in a project tool can show status next to the photos and report. Supplement Snap, for example, has a claim status on each project. The principle is the same either way: one place, one next date.",
+      },
+      {
+        heading: "Using the follow-up date",
+        content: "On the follow-up date, send a short note in the same email thread and record the contact. Our supplement follow-up log guide covers wording and timing.",
+      },
+    ],
+    faq: [
+      {
+        q: "Is the tracker free?",
+        a: "Yes. It is a free download in printable PDF, fillable PDF and Word formats.",
+      },
+      {
+        q: "How often should I update it?",
+        a: "Whenever something changes, and review it once a week.",
+      },
+      {
+        q: "What should I track besides status?",
+        a: "The date sent, the follow-up date, who you spoke to and the amount asked.",
+      },
+      {
+        q: "Can I use it for any carrier?",
+        a: "Yes. It is not tied to a carrier.",
+      },
+      {
+        q: "Do I need software to use it?",
+        a: "No. Print it or type into the fillable PDF or Word file.",
+      },
+    ],
+    related: ["roofing-supplement-follow-up-log","how-long-does-a-roofing-supplement-take","roofing-supplement-email-to-adjuster","roofing-supplement-process-explained"],
+  },
+  {
+    slug: "roof-tear-off-findings-log-template",
+    title: "Roof Tear-Off Findings Log Template (Free PDF and Word)",
+    metaTitle: "Roof Tear-Off Findings Log Template (Free)",
+    metaDescription: "What to capture during roof tear-off: decking, layers, flashing and more. A free findings log and checklist your crew can use on the roof.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    downloads: "roof-tear-off-findings-log",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Log it on the roof, not at the kitchen table.",
+    midCtaBody: "Supplement Snap lets your crew capture findings with photos and notes on a phone, then export the report. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Capture it when you see it"],
+        rows: [
+          { feature: "Soft or rotted decking", values: ["Where, how many sheets, photos wide and close"] },
+          { feature: "Extra layers", values: ["Photo at the edge, number of layers"] },
+          { feature: "Missing or damaged underlayment", values: ["Area and photo"] },
+          { feature: "Flashing and vents", values: ["Count, condition, photo"] },
+          { feature: "Anything not in the scope", values: ["A note with location and photo"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Do it before it is covered", text: "Concealed conditions are only visible for a short time. After the new deck or underlayment is on, the evidence is gone." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Tear-off is when hidden conditions show up. A simple log, filled in as the crew works, turns what they see into something the office can use. The free findings log below has a table for each finding and a checklist to finish before the crew leaves the roof.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "What to log",
+        content: "The table lists the usual things. For each, write where it is, what it is, how much and the photo numbers. Keep the wording factual.",
+      },
+      {
+        heading: "How to use the log",
+        content: "Give it to the crew lead before the job. As the roof opens up, the lead writes a line for each finding. A phone photo of the page at the end of the day gets it to the office the same day.",
+      },
+      {
+        heading: "Measure, don't guess",
+        content: "A quantity written as about two sheets is easy to dispute. Measure or count and write the number. Include the arithmetic for areas.",
+      },
+      {
+        heading: "Before you leave the roof",
+        content: "Use the checklist: close and wide photos, scale in the picture, photo numbers recorded, quantities measured, and the office informed. Five minutes here prevents a return trip.",
+      },
+      {
+        heading: "From log to supplement",
+        content: "The log feeds the findings in your supplement. Each row becomes a numbered finding with photos and a quantity. See our guide to writing a supplement for the full package.",
+      },
+    ],
+    faq: [
+      {
+        q: "Is the findings log free?",
+        a: "Yes. It comes as a printable PDF, a fillable PDF and a Word file.",
+      },
+      {
+        q: "Who should fill it in?",
+        a: "Whoever sees the condition, usually the crew lead.",
+      },
+      {
+        q: "How detailed should entries be?",
+        a: "Where, what, how much and which photos. Short and factual.",
+      },
+      {
+        q: "Do I still need photos?",
+        a: "Yes. The log points to the photos.",
+      },
+      {
+        q: "Can I use a phone instead?",
+        a: "Yes. An app can hold the same information. The log works with no app at all.",
+      },
+    ],
+    related: ["document-rotted-roof-decking-tear-off","roofing-crew-supplement-documentation-sop","roofing-photo-documentation-checklist","how-to-write-a-roofing-supplement"],
+  },
+  {
+    slug: "roofing-crew-supplement-documentation-sop",
+    title: "A Crew SOP for Supplement Documentation (Free Checklist)",
+    metaTitle: "Roofing Crew Documentation SOP (Free Checklist)",
+    metaDescription: "How to get every crew to document insurance jobs the same way. A simple SOP and one-page checklist to reduce missed photos and missed supplements.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    downloads: "roofing-crew-documentation-checklist",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Make the routine the same on every job.",
+    midCtaBody: "Supplement Snap gives the crew one simple way to capture findings on any phone. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Who does it"],
+        rows: [
+          { feature: "Before tear-off", values: ["Crew lead: whole-roof photos and existing conditions"] },
+          { feature: "During tear-off", values: ["Whoever sees a finding: stop, photograph, measure, tell the lead"] },
+          { feature: "Before leaving", values: ["Crew lead: check the list, send the log"] },
+          { feature: "Next morning", values: ["Office: review and build the supplement"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Keep it to one page", text: "A long procedure does not get read on a roof. One page, large type and checkboxes get used." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "A standard operating procedure, or SOP, is a short written routine everyone follows. For insurance jobs, a simple documentation SOP reduces missed photos and missed items. The free one-page checklist covers before tear-off, during tear-off and before the crew leaves.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "Why crews skip documentation",
+        content: "It is slow, it is raining, the phone is dirty and nobody told them what the office needs. A routine makes the expectation clear and short. The table assigns each step to a person.",
+      },
+      {
+        heading: "How to introduce it",
+        content: "Show the checklist at a morning meeting. Walk one real job through it. Explain why: each missed item is money the company may not recover. Keep the tone practical, not punishing.",
+      },
+      {
+        heading: "Make it easy",
+        content: "Tape the checklist where the crew sees it. Keep a labeled marker and a tape measure in the truck. Use one phone or app for photos so they end up in one place.",
+      },
+      {
+        heading: "Review and improve",
+        content: "After a few jobs, ask the crew what slowed them down and fix it. Check one job per week for photos and quantities. Praise good logs.",
+      },
+      {
+        heading: "Adapt it",
+        content: "The checklist is a starting point. Add your carrier's requirements and your state's rules, and remove what does not apply. It is not legal advice.",
+      },
+    ],
+    faq: [
+      {
+        q: "What is an SOP?",
+        a: "A short written routine that everyone follows the same way.",
+      },
+      {
+        q: "Is the checklist free?",
+        a: "Yes. It is a printable PDF, a fillable PDF and a Word file.",
+      },
+      {
+        q: "How long should it be?",
+        a: "One page.",
+      },
+      {
+        q: "How do I get crews to use it?",
+        a: "Explain why, keep it short, and review it with them on real jobs.",
+      },
+      {
+        q: "Can I add my own steps?",
+        a: "Yes. Edit the Word file.",
+      },
+    ],
+    related: ["roof-tear-off-findings-log-template","roofing-photo-documentation-checklist","roofing-documentation-spanish-speaking-crews","how-roofing-contractors-work-insurance-claims"],
+  },
+  {
+    slug: "is-roofing-supplement-software-worth-it",
+    title: "Is Roofing Supplement Software Worth It? The Break-Even Math",
+    metaTitle: "Is Roofing Supplement Software Worth It? Break-Even",
+    metaDescription: "How to work out whether supplement software pays for itself: the break-even formula, the inputs you need and the honest limits of any estimate.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Run the numbers on your own jobs.",
+    midCtaBody: "Your first Supplement Snap project is free, so you can judge the report before you pay for anything.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Where it comes from"],
+        rows: [
+          { feature: "Monthly cost of the tool", values: ["The price on the vendor's pricing page"] },
+          { feature: "Supplements you file in a month", values: ["Your own records"] },
+          { feature: "Average extra you recover per supplement", values: ["Your own records, not an industry average"] },
+          { feature: "Share the software helps with", values: ["Your honest estimate; start low"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Use your numbers", text: "Averages from other companies do not describe your jobs. Use your last three months and treat the result as a rough guide, not a promise." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Software is worth it when the extra money it helps you recover, plus the time it saves, is more than it costs. You can check this with simple arithmetic and your own records. No one can promise a result, because carriers decide and every job differs.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "The break-even formula",
+        content: "Break-even supplements per month = monthly cost divided by the average extra you recover per supplement. If a tool costs $99 a month and the extra you recover averages $400 per supplement, then $99 divided by $400 is about 0.25, so one such recovery every four months covers the monthly cost. Those are example numbers only. Use your own and check the vendor's current price, or try the <a href='/roofing-supplement-roi-calculator'>ROI calculator</a>.",
+      },
+      {
+        heading: "What goes in",
+        content: "The table lists the inputs. Pull them from your records: how many supplements you sent last quarter, what you asked for, what was paid. If you do not track those, start with the free tracker.",
+      },
+      {
+        heading: "The time side",
+        content: "Hours spent building reports, sorting photos and chasing details also cost money. Estimate how long a report takes now and how long it takes with a better process, and value the difference at your own rate. Be careful with this one, because faster is only worth it if the reports are as good.",
+      },
+      {
+        heading: "What software cannot do",
+        content: "It cannot make a carrier pay. It can help you present clearer documentation. If you rarely find hidden damage, or you already have a process that works, the benefit may be small.",
+      },
+      {
+        heading: "How to test cheaply",
+        content: "Use the free project or trial on one real job and compare the output with your current process. Then decide. Our guide to free supplement software and the cost comparison give more detail.",
+      },
+    ],
+    faq: [
+      {
+        q: "How do I calculate the return on supplement software?",
+        a: "Compare its monthly cost with the extra you recover and the time you save, using your own records.",
+      },
+      {
+        q: "What is a good break-even?",
+        a: "That depends on your volume and averages. Fewer supplements needed to break even is better.",
+      },
+      {
+        q: "Does software guarantee more money?",
+        a: "No. Carriers decide. Software helps organize and present documentation.",
+      },
+      {
+        q: "What if I only file a few supplements a year?",
+        a: "The benefit may be small, and a free tracker and template may be enough.",
+      },
+      {
+        q: "Should I trust a vendor's ROI claims?",
+        a: "Treat them as examples. Use your own data.",
+      },
+    ],
+    related: ["roofing-supplement-software-cost","free-roofing-supplement-software","best-roofing-supplement-software","roofing-supplement-companies-vs-software"],
+  },
+  {
+    slug: "roofing-supplement-mistakes-that-delay-payment",
+    title: "9 Roofing Supplement Mistakes That Slow Down or Sink a Request",
+    metaTitle: "9 Roofing Supplement Mistakes That Delay Payment",
+    metaDescription: "Missing claim numbers, vague photos, guessed quantities and no follow-up date are common reasons supplements stall. Nine mistakes and how to avoid each.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Fix the paperwork problems before they cost you.",
+    midCtaBody: "Supplement Snap helps your crew capture locations, quantities and photos together so each finding is complete. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["The fix"],
+        rows: [
+          { feature: "No claim number on the package", values: ["Put it on the cover page and in the email subject"] },
+          { feature: "Photos with no location", values: ["Number them and match each to a finding"] },
+          { feature: "Guessed quantities", values: ["Measure, and show the arithmetic"] },
+          { feature: "Everything in one email", values: ["Send one organized PDF with a short cover note"] },
+          { feature: "No follow-up date", values: ["Write the date when you send"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Most delays are paperwork", text: "Reviewers handle many files. A package that is complete and easy to check is easier to act on than one that needs questions answered first." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Supplements stall for many reasons, and some of them are outside your control. The ones inside your control are mostly about completeness and clarity. These nine mistakes come up often in the documentation advice we have written, and avoiding them makes a request easier to review. None of this guarantees payment, because the carrier decides.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "1. Leaving off the claim number",
+        content: "Without it, the package can be misfiled or need a call to match. Put the claim number on the first page, in the file name and in the subject line.",
+      },
+      {
+        heading: "2. Photos without locations",
+        content: "A photo of rotted wood means little if the reviewer cannot tell where it is. Number photos, tie them to findings and say which slope or area.",
+      },
+      {
+        heading: "3. Guessing at quantities",
+        content: "About ten sheets is easy to dispute. Measure, count and show the math, such as 12 ft x 8 ft = 96 sq ft.",
+      },
+      {
+        heading: "4. Mixing opinions with facts",
+        content: "Say what you found and where. Avoid blaming the adjuster or guessing at causes you cannot prove.",
+      },
+      {
+        heading: "5. Sending a pile instead of a package",
+        content: "Twenty loose photos in a long email are hard to review. One PDF with a cover page, a findings list and photos beside each finding is easier.",
+      },
+      {
+        heading: "6. Waiting too long",
+        content: "Hidden damage is only visible during tear-off. Document it that day and send the package promptly. Check the claim for any time limits.",
+      },
+      {
+        heading: "7. No follow-up plan",
+        content: "Write a follow-up date when you send, and record each contact. See the follow-up log guide for wording.",
+      },
+      {
+        heading: "8. Skipping the code or policy source",
+        content: "If your request depends on a code requirement, attach where it comes from. Policy wording, state rules and carrier practice vary, so confirm the details for your job.",
+      },
+      {
+        heading: "9. Not keeping copies",
+        content: "Keep what you sent, when, and to whom. If a request is questioned, your records matter.",
+      },
+    ],
+    faq: [
+      {
+        q: "Why do supplements get delayed?",
+        a: "Common reasons include missing claim details, unclear photos, estimated quantities and no follow-up. Carrier review time also varies.",
+      },
+      {
+        q: "Do these steps guarantee approval?",
+        a: "No. The carrier decides. These steps make a request easier to review.",
+      },
+      {
+        q: "How soon should I send a supplement?",
+        a: "Promptly after documenting the findings. Also check the claim for any deadlines.",
+      },
+      {
+        q: "What should the email say?",
+        a: "A short note with the claim number, the number of findings, the total requested and what is attached.",
+      },
+      {
+        q: "What if the carrier denies it?",
+        a: "Read the reason, add missing documentation and consider a reinspection request or other steps.",
+      },
+    ],
+    related: ["how-to-write-a-roofing-supplement","roofing-supplement-denied-what-to-do","roofing-supplement-email-to-adjuster","roofing-supplement-follow-up-log"],
+  },
+  {
+    slug: "roofing-adjuster-inspection-what-to-bring",
+    title: "Meeting the Insurance Adjuster on the Roof: What to Bring and Do",
+    metaTitle: "Roof Adjuster Meeting: What Roofers Should Bring",
+    metaDescription: "Preparing for the adjuster's roof inspection: what to bring, what to show, how to take notes and how to stay professional. A practical contractor checklist.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NAIC: State Insurance Departments", url: "https://content.naic.org/state-insurance-departments" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Walk in with the proof already organized.",
+    midCtaBody: "Supplement Snap helps you keep photos and notes by project so you can show what you found. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Why bring it"],
+        rows: [
+          { feature: "Your photos and notes", values: ["So you can point to what you saw"] },
+          { feature: "A tape and chalk or marker", values: ["To show size and mark spots, if allowed"] },
+          { feature: "The carrier's estimate, if you have it", values: ["To compare scope and quantities"] },
+          { feature: "A notebook or phone", values: ["To record what is said and agreed"] },
+          { feature: "Safe access and gear", values: ["So the inspection can happen safely"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Stay on your scope", text: "Show the condition of the roof and the work you would do. Whether to discuss coverage is up to the homeowner and the carrier, and rules for contractors differ by state." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "An adjuster visit is a chance to show the roof as you found it. Arrive early, bring organized photos and measurements, be polite and take notes. Avoid arguing coverage. Your job is to make the condition of the roof clear. The homeowner is the policyholder, and in many states rules limit what a contractor may do on a claim.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "What to bring",
+        content: "The table lists the basics. Add a ladder or access plan so the adjuster can see the roof safely, and have the homeowner's permission for you to be there.",
+      },
+      {
+        heading: "What to show",
+        content: "Walk the roof the way you would for your own estimate. Point out each area of concern, show photos taken before the visit, and let the adjuster look for themselves. Keep your comments factual.",
+      },
+      {
+        heading: "Taking notes",
+        content: "Write the date, the adjuster's name and company, who was present, and what was inspected. Note any item the adjuster agrees to include or declines, in their words. Send a short written summary afterward.",
+      },
+      {
+        heading: "Staying professional",
+        content: "A calm, helpful visit helps everyone. If you disagree about something, record it and follow up in writing with documentation rather than arguing on the roof. Policy wording, state rules and carrier practice vary, so confirm the details for your job.",
+      },
+      {
+        heading: "After the visit",
+        content: "Compare the carrier's estimate to your scope when it arrives. If items are missing, document them and send a supplement or a reinspection request.",
+      },
+    ],
+    faq: [
+      {
+        q: "Should a roofer attend the adjuster's inspection?",
+        a: "Many do, with the homeowner's permission. Rules about what a contractor may say or do differ by state.",
+      },
+      {
+        q: "What should I bring?",
+        a: "Photos, measurements, a tape, a way to take notes and safe access to the roof.",
+      },
+      {
+        q: "Can I argue coverage with the adjuster?",
+        a: "Focus on documenting conditions. Coverage is between the policyholder and the carrier, and state rules vary.",
+      },
+      {
+        q: "What if the adjuster misses something?",
+        a: "Note it and follow up in writing with photos. A reinspection request or supplement may fit.",
+      },
+      {
+        q: "Should I send a summary afterward?",
+        a: "Yes. A short written note of what was inspected and discussed helps keep a record.",
+      },
+    ],
+    related: ["how-insurance-adjusters-determine-roof-damage","can-a-roofer-talk-to-the-insurance-company","roof-claim-reinspection-request","insurance-lowball-roof-estimate-what-to-do"],
   },
   {
     slug: "roof-tear-off-vs-overlay",
@@ -4984,7 +6205,7 @@ const ARTICLES: Article[] = [
         a: "That depends on your policy and the carrier, not on a general rule. If damage is found at tear-off that was not in the carrier's estimate, contractors document it and request it through a supplement.",
       },
     ],
-    related: ["roof-tear-off-cost", "document-rotted-roof-decking-tear-off", "how-insurance-adjusters-determine-roof-damage", "roofing-photo-documentation-checklist"],
+    related: ["roof-debris-removal-dumpster-insurance-claim", "roof-tear-off-cost", "document-rotted-roof-decking-tear-off", "how-insurance-adjusters-determine-roof-damage", "roofing-photo-documentation-checklist"],
   },
   {
     slug: "roof-repair-estimate-template",
@@ -5389,7 +6610,7 @@ const ARTICLES: Article[] = [
         a: "No tool can promise that. Approval depends on the claim, the policy, the carrier and your documentation. Clear, detailed notes help the adjuster understand the finding.",
       },
     ],
-    related: ["document-rotted-roof-decking-tear-off", "roofing-photo-documentation-checklist", "organize-roofing-supplement-photos-by-claim", "best-app-to-document-roof-damage-for-insurance"],
+    related: ["roofing-crew-supplement-documentation-sop", "document-rotted-roof-decking-tear-off", "roofing-photo-documentation-checklist", "organize-roofing-supplement-photos-by-claim", "best-app-to-document-roof-damage-for-insurance"],
   },
   {
     slug: "free-roofing-supplement-software",

@@ -206,6 +206,15 @@ function Home() {
   const [claimFilter, setClaimFilter] = useState<ClaimStatus | "All">("All")
   const [savingClaimStatus, setSavingClaimStatus] = useState(false)
   const [claimStatusError, setClaimStatusError] = useState("")
+  const [claimSaveError, setClaimSaveError] = useState("")
+  const [notice, setNotice] = useState("")
+  const noticeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // A short message at the bottom of the screen for saves that did not go through (for example no signal on the roof).
+  function showNotice(message: string) {
+    setNotice(message)
+    if (noticeTimer.current) clearTimeout(noticeTimer.current)
+    noticeTimer.current = setTimeout(() => setNotice(""), 7000)
+  }
   const [drafts, setDrafts] = useState<Record<string, string>>({})
   // Photos and edits on saved findings
   const [cardBusy, setCardBusy] = useState<Record<string, boolean>>({})
@@ -513,7 +522,11 @@ function Home() {
       setAddressEditing(false)
       return
     }
-    await supabase.from("projects").update({ property_address: address }).eq("id", selectedProject.id)
+    const { error: addressErr } = await supabase.from("projects").update({ property_address: address }).eq("id", selectedProject.id)
+    if (addressErr) {
+      showNotice("The address was not saved. Check your connection and try again.")
+      return
+    }
     setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, property_address: address } : p))
     setAddressEditing(false)
   }
@@ -705,16 +718,25 @@ function Home() {
       .map((url) => url.match(/test-uploads\/(.+)$/)?.[1])
       .filter((p): p is string => !!p)
 
+    // Remove the record first. If that fails the capture comes back with its photos, instead of a record pointing at deleted files.
+    const { error: deleteErr } = await supabase.from("captures").delete().eq("id", c.id)
+    if (deleteErr) {
+      setCaptures((prev) => (prev.some((cap) => cap.id === c.id) ? prev : [...prev, c].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())))
+      showNotice("The capture could not be deleted, so it was put back. Check your connection and try again.")
+      return
+    }
     if (filePaths.length > 0) {
       await supabase.storage.from("test-uploads").remove(filePaths)
     }
-
-    await supabase.from("captures").delete().eq("id", c.id)
     setCaptures((prev) => prev.filter((cap) => cap.id !== c.id))
   }
 
   async function updateCaptureStatus(captureId: string, newStatus: CaptureStatus) {
-    await supabase.from("captures").update({ status: newStatus }).eq("id", captureId)
+    const { error: statusErr } = await supabase.from("captures").update({ status: newStatus }).eq("id", captureId)
+    if (statusErr) {
+      showNotice("The status was not saved. Check your connection and try again.")
+      return
+    }
     setCaptures((prev) =>
       prev.map((c) => (c.id === captureId ? { ...c, status: newStatus } : c))
     )
@@ -2071,14 +2093,14 @@ function Home() {
 
       {/* Project selector */}
       <section className="mb-8 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-        <label className="mb-3 block text-xs font-semibold uppercase tracking-wider text-zinc-500">
+        <label htmlFor="project-select" className="mb-3 block text-xs font-semibold uppercase tracking-wider text-zinc-500">
           Project / Job
         </label>
         {projects.length >= 2 && (
           <ClaimsOverview projects={projects} query={projectQuery} onQuery={setProjectQuery} filter={claimFilter} onFilter={setClaimFilter} matchCount={filteredProjects.length} />
         )}
         <div className="flex gap-2">
-          <select
+          <select id="project-select"
             value={selectedProjectId}
             onChange={(e) => {
               setSelectedProjectId(e.target.value)
@@ -2244,42 +2266,48 @@ function Home() {
                       })
                       setEditingClaim(true)
                     }}
-                    className="text-indigo-600 hover:text-indigo-500 font-medium"
+                    className="-my-2 px-2 py-2 font-medium text-indigo-600 hover:text-indigo-500"
                   >
                     {selectedProject.insurance_company || selectedProject.claim_number ? "Edit" : "+ Add Claim Info"}
                   </button>
                 </>
               ) : (
                 <div className="w-full space-y-2 pt-1">
-                  <div className="grid grid-cols-2 gap-2">
-                    <input value={editClaimData.insurance_company} onChange={(e) => setEditClaimData(d => ({ ...d, insurance_company: e.target.value }))} placeholder="Insurance company" className="rounded border border-zinc-200 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
-                    <input value={editClaimData.claim_number} onChange={(e) => setEditClaimData(d => ({ ...d, claim_number: e.target.value }))} placeholder="Claim number" className="rounded border border-zinc-200 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
-                    <input value={editClaimData.adjuster_name} onChange={(e) => setEditClaimData(d => ({ ...d, adjuster_name: e.target.value }))} placeholder="Adjuster name" className="rounded border border-zinc-200 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
-                    <input value={editClaimData.adjuster_email} onChange={(e) => setEditClaimData(d => ({ ...d, adjuster_email: e.target.value }))} placeholder="Adjuster email" className="rounded border border-zinc-200 px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <input value={editClaimData.insurance_company} onChange={(e) => setEditClaimData(d => ({ ...d, insurance_company: e.target.value }))} placeholder="Insurance company" className="rounded border border-zinc-200 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
+                    <input value={editClaimData.claim_number} onChange={(e) => setEditClaimData(d => ({ ...d, claim_number: e.target.value }))} placeholder="Claim number" className="rounded border border-zinc-200 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
+                    <input value={editClaimData.adjuster_name} onChange={(e) => setEditClaimData(d => ({ ...d, adjuster_name: e.target.value }))} placeholder="Adjuster name" className="rounded border border-zinc-200 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
+                    <input value={editClaimData.adjuster_email} onChange={(e) => setEditClaimData(d => ({ ...d, adjuster_email: e.target.value }))} placeholder="Adjuster email" className="rounded border border-zinc-200 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
                   </div>
-                  <input type="date" value={editClaimData.date_of_loss} onChange={(e) => setEditClaimData(d => ({ ...d, date_of_loss: e.target.value }))} className="rounded border border-zinc-200 px-2.5 py-1.5 text-xs text-zinc-900" />
+                  <input type="date" value={editClaimData.date_of_loss} onChange={(e) => setEditClaimData(d => ({ ...d, date_of_loss: e.target.value }))} className="rounded border border-zinc-200 px-3 py-2.5 text-xs text-zinc-900" />
                   <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={async () => {
-                        await supabase.from("projects").update({
+                        setClaimSaveError("")
+                        const { error: claimErr } = await supabase.from("projects").update({
                           insurance_company: editClaimData.insurance_company || null,
                           claim_number: editClaimData.claim_number || null,
                           adjuster_name: editClaimData.adjuster_name || null,
                           adjuster_email: editClaimData.adjuster_email || null,
                           date_of_loss: editClaimData.date_of_loss || null,
                         }).eq("id", selectedProject.id)
+                        if (claimErr) {
+                          setClaimSaveError("Could not save the claim details. Check your connection and try again.")
+                          return
+                        }
                         setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, ...editClaimData } : p))
                         setEditingClaim(false)
                       }}
-                      className="rounded bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
+                      className="rounded bg-indigo-600 px-4 py-2.5 text-xs font-medium text-white hover:bg-indigo-500"
                     >
                       Save
                     </button>
-                    <button type="button" onClick={() => setEditingClaim(false)} className="rounded border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-600 hover:bg-zinc-50">
+                    <button type="button" onClick={() => { setClaimSaveError(""); setEditingClaim(false) }} className="rounded border border-zinc-300 px-4 py-2.5 text-xs font-medium text-zinc-600 hover:bg-zinc-50">
                       Cancel
                     </button>
                   </div>
+                  {claimSaveError && <p role="alert" className="text-xs text-red-600">{claimSaveError}</p>}
                 </div>
               )}
             </div>
@@ -2527,8 +2555,8 @@ function Home() {
                       className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm leading-relaxed text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                     />
                     <div className="mt-2 flex gap-2">
-                      <button type="button" onClick={saveProjectDraftEdit} className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500">Save changes</button>
-                      <button type="button" onClick={() => setEditingDraftId(null)} className="rounded-lg border border-zinc-300 bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">Cancel</button>
+                      <button type="button" onClick={saveProjectDraftEdit} className="rounded-lg bg-indigo-600 px-3.5 py-2.5 text-xs font-medium text-white hover:bg-indigo-500">Save changes</button>
+                      <button type="button" onClick={() => setEditingDraftId(null)} className="rounded-lg border border-zinc-300 bg-white px-3.5 py-2.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">Cancel</button>
                     </div>
                   </div>
                 ) : (
@@ -3406,8 +3434,8 @@ function Home() {
                             className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm leading-relaxed text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
                           />
                           <div className="mt-2 flex gap-2">
-                            <button type="button" onClick={() => saveCaptureDraftEdit(c)} className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500">Save</button>
-                            <button type="button" onClick={() => setEditingDraftId(null)} className="rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">Cancel</button>
+                            <button type="button" onClick={() => saveCaptureDraftEdit(c)} className="rounded-lg bg-indigo-600 px-3 py-2.5 text-xs font-medium text-white hover:bg-indigo-500">Save</button>
+                            <button type="button" onClick={() => setEditingDraftId(null)} className="rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">Cancel</button>
                           </div>
                         </div>
                       ) : (
@@ -3476,7 +3504,7 @@ function Home() {
                     <button
                       type="button"
                       onClick={() => deleteCapture(c)}
-                      className="text-xs text-zinc-500 hover:text-red-500"
+                      className="rounded px-3 py-3 text-xs font-medium text-zinc-600 hover:text-red-600"
                     >
                       Delete Capture
                     </button>
@@ -3497,10 +3525,15 @@ function Home() {
         <FeedbackBox page="capture" />
       </div>
 
+      {notice && (
+        <div role="alert" className="fixed bottom-20 left-1/2 z-50 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 rounded-xl bg-red-700 px-4 py-3 text-sm text-white shadow-lg">
+          {notice}
+        </div>
+      )}
       {undoCapture && (
         <div role="status" className="fixed bottom-4 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 items-center justify-between gap-3 rounded-xl bg-zinc-900 px-4 py-3 text-sm text-white shadow-lg">
           <span>Capture deleted</span>
-          <button type="button" onClick={undoDelete} className="rounded-lg bg-white/15 px-3 py-1.5 text-xs font-semibold hover:bg-white/25">Undo</button>
+          <button type="button" onClick={undoDelete} className="rounded-lg bg-white/15 px-3 py-2.5 text-xs font-semibold hover:bg-white/25">Undo</button>
         </div>
       )}
       {/* Email Modal */}
