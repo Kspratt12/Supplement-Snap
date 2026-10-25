@@ -1413,6 +1413,7 @@ const ARTICLES: Article[] = [
     metaTitle: "How to Write a Roof Inspection Report (2026 Guide)",
     metaDescription: "How to write a professional roof inspection report that gets claims approved: what to document, report structure, common mistakes and software tools.",
     publishedDate: "2026-03-27",
+    updatedDate: "2026-10-25",
     externalLinks: [
       { text: "NRCA: Roof Inspection Guidelines", url: "https://www.nrca.net" },
       { text: "ASTM Roofing Standards", url: "https://www.astm.org" },
@@ -1478,6 +1479,32 @@ const ARTICLES: Article[] = [
       {
         heading: "How software automates roof inspection reports",
         content: "The traditional approach to roof inspection reports involves taking photos on a phone, scribbling notes on paper or a notepad app, and then spending hours at a desk assembling everything into a document. This manual process is slow, error-prone, and does not scale when you have multiple inspections per day.\n\nModern inspection software changes this by moving the documentation process to the roof. Instead of taking random photos and hoping you remember the details later, you capture findings in a structured format while you are looking at the damage.\n\nSupplement Snap takes this a step further for contractors focused on insurance work and supplement recovery. During the inspection or tear-off, your crew captures each finding in the app: a photo tagged with the damage type (decking, flashing, pipe boot, ice and water shield) and the roof area (front slope, valley, chimney). They can add a voice note describing the finding in any language.\n\nFrom those structured field captures, Supplement Snap generates:\n\n• Professional damage narratives written in the specific, detailed language that adjusters require for claim processing\n• Xactimate line items with correct codes, accurate quantities, and current regional pricing\n• An Xactimate-compatible CSV export the adjuster can import directly into their estimating system\n• A complete, branded PDF report with cover page, findings summary, individual finding pages, and all supporting photos\n\nThe result is a professional roof inspection report produced in minutes instead of hours. Everything is captured in real time on the roof, so nothing gets lost or forgotten. The report goes to the adjuster or homeowner the same day, while the inspection is fresh. For contractors who perform multiple inspections per week, this automation is the difference between thorough documentation on every job and cutting corners because there is not enough time to write proper reports.\n\nOnce damage is documented, the next step is writing the supplement. See <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a>."
+      },
+      {
+        heading: "Roof inspection report vs roof condition report",
+        content: "People search for both names, and they are often used for the same kind of document: a written record of what a roof looks like at a point in time, with photos and notes. Some organizations use roof condition report for a short summary of age, materials and visible condition, and roof inspection report for the more detailed version with measurements and findings. There is no single standard, so ask whoever requested it, such as an insurer, a lender, a buyer or a property manager, what format and detail they expect.",
+      },
+    ],
+    faq: [
+      {
+        q: "What is a roof inspection report?",
+        a: "A written record of a roof's condition, including materials, measurements, visible damage or wear, and photos, used for repairs, insurance claims, sales and maintenance planning.",
+      },
+      {
+        q: "Is a roof condition report the same as a roof inspection report?",
+        a: "The terms overlap and are often used interchangeably. Some use condition report for a shorter summary and inspection report for a detailed one, so ask the person requesting it what they expect.",
+      },
+      {
+        q: "What should a roof inspection report include?",
+        a: "Property and inspection details, roof type and materials, measurements and pitch, findings by roof area with photos, a plain description of each issue, and recommendations tied to the findings.",
+      },
+      {
+        q: "How do you write a roof inspection report for an insurance claim?",
+        a: "Keep it factual and specific: location, what you observed, quantity, and photo references for each finding, with no guesses about cause or coverage. See our guides on documenting hail and wind damage for what carriers look for.",
+      },
+      {
+        q: "Can software create a roof inspection report?",
+        a: "Yes. Many tools let you capture photos and notes on the roof and export a report. Check what each one actually produces, and review any drafted wording before you send it.",
       },
     ],
   },
@@ -2323,9 +2350,20 @@ const ARTICLES: Article[] = [
   {
     slug: "supplemental-roofing-estimate-explained",
     title: "What Is a Supplemental Roofing Estimate? When It Applies and What It Includes",
-    metaTitle: "What Is a Supplemental Roofing Estimate? | Supplement Snap",
+    metaTitle: "Supplemental Roofing Estimate: What It Is and How It Works",
     metaDescription: "A supplemental roofing estimate asks the insurer to cover damage found after the first estimate. Learn when it applies, what it includes, and how to submit one.",
     publishedDate: "2026-10-23",
+    updatedDate: "2026-10-25",
+    visuals: {
+      5: { type: "matrix", data: {
+        headers: ["Who it goes to", "What it does"],
+        rows: [
+          { feature: "Supplement (supplemental roofing estimate)", values: ["The insurance carrier", "Requests payment for items missing from the original estimate"] },
+          { feature: "Change order", values: ["The property owner", "Changes the scope or price of the contractor's agreement"] },
+          { feature: "Revised estimate", values: ["Issued by the carrier", "Shows what the carrier approved after reviewing a supplement or reinspecting"] },
+        ],
+      }},
+    },
     sections: [
       {
         heading: "What a supplemental roofing estimate is",
@@ -2347,6 +2385,18 @@ const ARTICLES: Article[] = [
         heading: "Doing it yourself or using software",
         content: "Plenty of contractors write supplements by hand. The slow parts are matching photos to findings and building a clean report. <a href='/roofing-supplement-software'>Roofing supplement software</a> like Supplement Snap helps with exactly that: you capture and describe findings on the roof, and it assembles the report for the adjuster. Compare approaches in <a href='/roofing-supplement-software-vs-spreadsheets'>software vs. spreadsheets</a>.\n\nNo tool can guarantee coverage or approval. That depends on the claim, the policy and the carrier. For the full walkthrough, read <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a>.",
       },
+      {
+        heading: "Supplemental estimate, supplement and change order: what is the difference?",
+        content: "People use these words loosely, so it helps to separate them. A supplemental roofing estimate, usually called a supplement, is sent to the insurance carrier to request payment for items missing from the original claim estimate. A change order is an agreement between the contractor and the property owner that changes the scope or price of the job. A revised estimate is what the carrier issues after it reviews a supplement or reinspects the roof.\n\nIn insurance work, supplement and supplemental mean the same request. The table shows how they differ from the other terms.",
+      },
+      {
+        heading: "A fictional example",
+        content: "This example is made up to show the idea, and the quantities are not typical of any real claim.\n\nThe carrier's estimate covers tear-off and new shingles on a two-slope roof. During tear-off, the crew finds three sheets of soft decking on the rear slope and no drip edge along one eave. The crew photographs each area with a tape measure in the frame, notes where it is and when it was found, and records the quantities. The supplement then lists two findings, decking and drip edge, each with its location, quantity, photo numbers and a plain description, in the format the adjuster uses. The adjuster reviews it and decides what to approve.\n\nThe point is the evidence: what was found, where, how much, and proof that it was not visible before work began. See <a href='/roofing-supplement-report-example'>a sample supplement report</a>.",
+      },
+      {
+        heading: "How to request one, step by step",
+        content: "1. Document hidden damage before new materials cover it, with wide and close photos and a measurement.\n2. Write each finding as a location, a quantity and a plain description, without guessing at causes you cannot show.\n3. Put the findings and line items in one organized PDF with the claim number on the first page.\n4. Email it to the adjuster with a short note, using our <a href='/blog/roofing-supplement-email-to-adjuster'>supplement email template</a>.\n5. Note a follow-up date and track every contact in a <a href='/blog/roofing-supplement-follow-up-log'>follow-up log</a>.\n6. If it is denied or reduced, see <a href='/blog/roofing-supplement-denied-what-to-do'>what to do next</a>.\n\nThe <a href='/blog/what-can-you-supplement-on-a-roof-claim'>list of common supplement items</a> shows what contractors typically check for, and <a href='/blog/how-long-does-a-roofing-supplement-take'>how long a supplement takes</a> explains the timing.",
+      },
     ],
     faq: [
       {
@@ -2365,11 +2415,27 @@ const ARTICLES: Article[] = [
         q: "How long does a supplement take?",
         a: "It varies by carrier and claim. Complete, organized documentation helps avoid back-and-forth requests for more information.",
       },
+      {
+        q: "Is a supplemental estimate the same as a supplement?",
+        a: "Yes. In roofing insurance claims, supplement, supplemental estimate and supplemental roofing estimate all describe a request for payment for items missing from the carrier's original estimate.",
+      },
+      {
+        q: "What is the difference between a supplement and a change order?",
+        a: "A supplement is a request to the insurance carrier. A change order is an agreement between the contractor and the property owner that changes the scope or price of the work.",
+      },
+      {
+        q: "Can a homeowner request a supplement?",
+        a: "The policyholder can ask the carrier to review additional damage, and contractors often prepare the documentation. Who may submit or negotiate varies by state, so see our guide on what contractors may and may not do on a claim.",
+      },
+      {
+        q: "What should I do if the carrier denies the supplement?",
+        a: "Ask for the reason in writing, review your documentation, and consider a reinspection or other options in the policy. See our guide on what to do when a supplement is denied.",
+      },
     ],
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["how-to-write-a-roofing-supplement", "roofing-supplement-template", "roofing-supplement-denied-what-to-do"],
+    related: ["how-to-write-a-roofing-supplement", "roofing-supplement-email-to-adjuster", "what-can-you-supplement-on-a-roof-claim", "roofing-supplement-denied-what-to-do"],
   },
   {
     slug: "xactimate-roofing-estimate-example",
@@ -4503,7 +4569,7 @@ const ARTICLES: Article[] = [
     slug: "what-can-you-supplement-on-a-roof-claim",
     title: "What Can You Supplement on a Roof Claim? 12 Items Contractors Commonly Request",
     metaTitle: "What Can You Supplement on a Roof Claim? (12 Items)",
-    metaDescription: "Common items roofers request in a supplement, from decking to flashing and drip edge, and what to document for each. Coverage depends on the policy and carrier.",
+    metaDescription: "Common items roofers request in a supplement, from decking to flashing and drip edge, and what to document. Coverage depends on the policy and carrier.",
     publishedDate: "2026-10-25",
     updatedDate: "2026-10-25",
     externalLinks: [
@@ -4745,7 +4811,7 @@ const ARTICLES: Article[] = [
     slug: "how-long-does-a-roofing-supplement-take",
     title: "How Long Does a Roofing Supplement Take? What to Expect and How to Follow Up",
     metaTitle: "How Long Does a Roofing Supplement Take?",
-    metaDescription: "How long a roofing supplement takes depends on the carrier and the file. See where delays happen, what to ask the adjuster, and how to follow up without nagging.",
+    metaDescription: "How long a roofing supplement takes depends on the carrier and the file. See where delays happen, what to ask the adjuster, and how to follow up.",
     publishedDate: "2026-10-25",
     updatedDate: "2026-10-25",
     externalLinks: [
