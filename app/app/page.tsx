@@ -8,6 +8,8 @@ import { jsPDF } from "jspdf"
 import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { PhotoAnnotator } from "../dashboard/photo-annotator"
+import { ClaimsOverview, ClaimStatusSelect, StartHere } from "./claims-overview"
+import { normalizeClaimStatus, filterProjects, statusAfterSend, isFirstRun, type ClaimStatus } from "../../lib/claim-status"
 import { FeedbackBox } from "../dashboard/feedback-box"
 import { ensureSpace, drawLabeledText, drawSectionLabel } from "../../lib/pdf-layout"
 import { extractAllExifData, type PhotoMetadata } from "../../lib/exif-utils"
@@ -200,6 +202,10 @@ function Home() {
   // Captures + drafts
   const [captures, setCaptures] = useState<Capture[]>([])
   const [statusFilter, setStatusFilter] = useState<"All" | CaptureStatus>("All")
+  const [projectQuery, setProjectQuery] = useState("")
+  const [claimFilter, setClaimFilter] = useState<ClaimStatus | "All">("All")
+  const [savingClaimStatus, setSavingClaimStatus] = useState(false)
+  const [claimStatusError, setClaimStatusError] = useState("")
   const [drafts, setDrafts] = useState<Record<string, string>>({})
   // Photos and edits on saved findings
   const [cardBusy, setCardBusy] = useState<Record<string, boolean>>({})
@@ -1481,6 +1487,8 @@ function Home() {
       }
 
       setEmailStatus("sent")
+      const afterSend = statusAfterSend(selectedProject.claim_status)
+      if (afterSend !== normalizeClaimStatus(selectedProject.claim_status)) void updateClaimStatus(afterSend, { silent: true })
 
       // Log activity
       authFetch("/api/activity-log", {
@@ -1501,6 +1509,33 @@ function Home() {
       setEmailError(err instanceof Error ? err.message : "Failed to send email")
     } finally {
       setEmailSending(false)
+    }
+  }
+
+  // Moves a job to a new claim stage. Updates the screen first, saves, and puts the old value back if the save fails.
+  async function updateClaimStatus(next: ClaimStatus, opts: { silent?: boolean } = {}) {
+    const project = projects.find((p) => p.id === selectedProjectId)
+    if (!project) return
+    const previous = project.claim_status
+    if (normalizeClaimStatus(previous) === next && previous) return
+    setClaimStatusError("")
+    setSavingClaimStatus(true)
+    setProjects((prev) => prev.map((p) => (p.id === project.id ? { ...p, claim_status: next } : p)))
+    try {
+      const { error } = await supabase.from("projects").update({ claim_status: next }).eq("id", project.id)
+      if (error) throw error
+      if (!opts.silent && user) {
+        authFetch("/api/activity-log", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.id, projectId: project.id, action: "Claim status changed", details: `${normalizeClaimStatus(previous)} to ${next}` }),
+        }).catch(() => {})
+      }
+    } catch {
+      setProjects((prev) => prev.map((p) => (p.id === project.id ? { ...p, claim_status: previous } : p)))
+      setClaimStatusError("Could not save the status. Please try again.")
+    } finally {
+      setSavingClaimStatus(false)
     }
   }
 
@@ -1960,6 +1995,9 @@ function Home() {
   }
 
   const selectedProject = projects.find((p) => p.id === selectedProjectId)
+  const filteredProjects = filterProjects(projects, projectQuery, claimFilter)
+  const listedProjects =
+    selectedProject && !filteredProjects.some((p) => p.id === selectedProject.id) ? [selectedProject, ...filteredProjects] : filteredProjects
 
   if (authLoading || subscriptionLoading || !user) return null
 
@@ -2027,11 +2065,18 @@ function Home() {
         </div>
       )}
 
+      {isFirstRun(projects) && projects.length > 0 && (
+        <StartHere onCreateProject={() => setShowNewProject(true)} isFreeUser={isFreeUser} freeCaptureLimit={FREE_CAPTURE_LIMIT} />
+      )}
+
       {/* Project selector */}
       <section className="mb-8 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <label className="mb-3 block text-xs font-semibold uppercase tracking-wider text-zinc-500">
           Project / Job
         </label>
+        {projects.length >= 2 && (
+          <ClaimsOverview projects={projects} query={projectQuery} onQuery={setProjectQuery} filter={claimFilter} onFilter={setClaimFilter} matchCount={filteredProjects.length} />
+        )}
         <div className="flex gap-2">
           <select
             value={selectedProjectId}
@@ -2042,9 +2087,9 @@ function Home() {
             className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
           >
             <option value="">Select a project...</option>
-            {projects.map((p) => (
+            {listedProjects.map((p) => (
               <option key={p.id} value={p.id}>
-                {p.project_name}
+                {p.project_name} ({normalizeClaimStatus(p.claim_status)})
               </option>
             ))}
           </select>
@@ -2174,6 +2219,7 @@ function Home() {
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-500">
               {!editingClaim ? (
                 <>
+                  <ClaimStatusSelect value={selectedProject.claim_status} onChange={(n) => updateClaimStatus(n)} saving={savingClaimStatus} error={claimStatusError} />
                   {selectedProject.insurance_company && (
                     <span><span className="font-medium text-zinc-600">Ins:</span> {selectedProject.insurance_company}</span>
                   )}
