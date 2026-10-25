@@ -424,7 +424,15 @@ function Home() {
       }
     }
 
-    recognition.onerror = () => {
+    recognition.onerror = (event) => {
+      const reason = (event as unknown as { error?: string }).error
+      if (reason === "not-allowed" || reason === "service-not-allowed") {
+        showNotice("The microphone is blocked. Allow it in your browser settings, or type your note instead.")
+      } else if (reason === "audio-capture") {
+        showNotice("No microphone was found. You can type your note instead.")
+      } else if (reason === "network") {
+        showNotice("Voice notes need a connection. Type your note, or try again when you have signal.")
+      }
       setIsRecording(false)
       recognitionRef.current = null
     }

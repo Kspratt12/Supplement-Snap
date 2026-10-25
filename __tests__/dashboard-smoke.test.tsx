@@ -225,4 +225,25 @@ describe("dashboard smoke test (stand-in database)", () => {
     expect(errors.mock.calls.filter((c) => String(c[0]).includes("PDF generation failed"))).toHaveLength(0)
     errors.mockRestore()
   })
+
+  it("tells the user when the microphone is blocked instead of failing silently", async () => {
+    let instance: { onerror?: (e: unknown) => void } | null = null
+    class FakeRecognition {
+      onerror?: (e: unknown) => void
+      onend?: () => void
+      start() {
+        instance = this
+      }
+      stop() {}
+    }
+    ;(window as unknown as { webkitSpeechRecognition: unknown }).webkitSpeechRecognition = FakeRecognition
+    db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
+    render(<AppPage />)
+    fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
+    fireEvent.click(await screen.findByRole("button", { name: /voice|speak|record|dictate/i }))
+    expect(instance).not.toBeNull()
+    instance!.onerror!({ error: "not-allowed" })
+    expect(await screen.findByText(/microphone is blocked/i)).toBeTruthy()
+    delete (window as unknown as { webkitSpeechRecognition?: unknown }).webkitSpeechRecognition
+  })
 })
