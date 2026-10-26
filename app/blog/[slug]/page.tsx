@@ -7053,7 +7053,7 @@ const ARTICLES: Article[] = [
         headers: ["How Supplement Snap answers (see our privacy policy)"],
         rows: [
           { feature: "Where data is stored", values: ["Account data and projects in Supabase, a managed database; uploaded images in Supabase Storage"] },
-          { feature: "Who can read it", values: ["Only the signed-in account that owns it, and team members the owner invites. We tested that a visitor with no login can read none of the tables."] },
+          { feature: "Who can read it", values: ["Project records: only the signed-in account that owns them, and team members the owner invites. We tested that a visitor with no login can read none of the tables. Photos: each file has a long, hard-to-guess web address, and anyone who has the exact link can open it, so do not post report photo links publicly."] },
           { feature: "AI drafting", values: ["The drafting step sends the written notes and details to an AI service (Anthropic). Photos are not part of that request as the app is built today."] },
           { feature: "Payments", values: ["Handled by Stripe. We do not store card numbers."] },
           { feature: "Deleting your account", values: ["Per our privacy policy, data is removed within 30 days of account deletion."] },
@@ -7073,7 +7073,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Where it is stored and who can see it",
-        content: "Ask: where is the data stored, and who inside the company can access it? Ask how accounts are separated from each other. For us, data lives in Supabase and is tied to your login. We tested that a person with no login cannot read the tables. We cannot claim a system is impossible to breach, and no honest vendor can.",
+        content: "Ask: where is the data stored, and who inside the company can access it? Ask how accounts are separated from each other. For us, project records live in Supabase and are tied to your login, and we tested that a person with no login cannot read the tables. Photos are different: they are stored as files with long, hard-to-guess web addresses, and anyone who has the exact address can open the photo without logging in. That is a common design, but you should know it. We cannot claim a system is impossible to breach, and no honest vendor can.",
       },
       {
         heading: "AI and your information",
