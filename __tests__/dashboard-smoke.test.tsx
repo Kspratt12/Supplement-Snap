@@ -107,6 +107,13 @@ const project = (over: Record<string, unknown>) => ({
   ...over,
 })
 
+// The project list loads after the page renders, so wait for the option to exist before choosing it
+async function pickProject(id: string) {
+  const select = (await screen.findByLabelText("Project / Job")) as HTMLSelectElement
+  await waitFor(() => expect(select.querySelector(`option[value="${id}"]`)).not.toBeNull())
+  fireEvent.change(select, { target: { value: id } })
+}
+
 describe("dashboard smoke test (stand-in database)", () => {
   beforeEach(() => {
     db.rows = { projects: [], captures: [], team_members: [] }
@@ -148,7 +155,7 @@ describe("dashboard smoke test (stand-in database)", () => {
   it("saves a claim status change and writes it to the projects table", async () => {
     db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
     render(<AppPage />)
-    fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
+    await pickProject("p1")
     const select = (await screen.findByLabelText("Claim status")) as HTMLSelectElement
     fireEvent.change(select, { target: { value: "In Review" } })
     await waitFor(() => expect(db.writes.some((w) => w.table === "projects" && w.op === "update" && JSON.stringify(w.payload) === JSON.stringify({ claim_status: "In Review" }))).toBe(true))
@@ -158,7 +165,7 @@ describe("dashboard smoke test (stand-in database)", () => {
   it("puts the old status back and says so when the save fails", async () => {
     db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
     render(<AppPage />)
-    fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
+    await pickProject("p1")
     const select = (await screen.findByLabelText("Claim status")) as HTMLSelectElement
     db.failWrites = true
     fireEvent.change(select, { target: { value: "Denied" } })
@@ -169,7 +176,7 @@ describe("dashboard smoke test (stand-in database)", () => {
   it("keeps the claim details form open and shows a message when saving them fails", async () => {
     db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
     render(<AppPage />)
-    fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
+    await pickProject("p1")
     fireEvent.click(await screen.findByRole("button", { name: "Edit" }))
     db.failWrites = true
     fireEvent.click(screen.getByRole("button", { name: "Save" }))
@@ -181,7 +188,7 @@ describe("dashboard smoke test (stand-in database)", () => {
     db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
     db.rows.captures = [{ id: "c1", project_id: "p1", image_url: "", damage_type: "Decking", roof_area: "Front", field_note: "Soft decking", status: "Captured", created_at: "2026-10-02T00:00:00Z" }]
     render(<AppPage />)
-    fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
+    await pickProject("p1")
     const del = await screen.findByRole("button", { name: "Delete Capture" })
     vi.useFakeTimers({ shouldAdvanceTime: true })
     try {
@@ -201,7 +208,7 @@ describe("dashboard smoke test (stand-in database)", () => {
     db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
     db.rows.captures = [{ id: "c1", project_id: "p1", image_url: "", damage_type: "Decking", roof_area: "Front", field_note: "Soft decking", status: "Captured", created_at: "2026-10-02T00:00:00Z" }]
     render(<AppPage />)
-    fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
+    await pickProject("p1")
     fireEvent.click(await screen.findByRole("button", { name: /Generate Project Report/ }))
     fireEvent.click(await screen.findByRole("button", { name: /Send Report/ }))
     expect(await screen.findByText("Upgrade to unlock")).toBeTruthy()
@@ -212,7 +219,7 @@ describe("dashboard smoke test (stand-in database)", () => {
     db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
     db.rows.captures = [{ id: "c1", project_id: "p1", image_url: "", damage_type: "Decking", roof_area: "Front", field_note: "Soft decking", status: "Captured", created_at: "2026-10-02T00:00:00Z" }]
     render(<AppPage />)
-    fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
+    await pickProject("p1")
     fireEvent.click(await screen.findByRole("button", { name: /Generate Project Report/ }))
     fireEvent.click(await screen.findByRole("button", { name: /Send Report/ }))
     await waitFor(() => expect(screen.queryByText("Upgrade to unlock")).toBeNull())
@@ -227,7 +234,7 @@ describe("dashboard smoke test (stand-in database)", () => {
     const errors = vi.spyOn(console, "error").mockImplementation(() => {})
     saved.length = 0
     render(<AppPage />)
-    fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
+    await pickProject("p1")
     fireEvent.click(await screen.findByRole("button", { name: /Generate Project Report/ }))
     fireEvent.click(await screen.findByRole("button", { name: /Download PDF/ }))
     await waitFor(() => expect(saved.length).toBeGreaterThan(0), { timeout: 20000 })
@@ -249,7 +256,7 @@ describe("dashboard smoke test (stand-in database)", () => {
     ;(window as unknown as { webkitSpeechRecognition: unknown }).webkitSpeechRecognition = FakeRecognition
     db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
     render(<AppPage />)
-    fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
+    await pickProject("p1")
     fireEvent.click(await screen.findByRole("button", { name: /voice|speak|record|dictate/i }))
     expect(instance).not.toBeNull()
     instance!.onerror!({ error: "not-allowed" })
