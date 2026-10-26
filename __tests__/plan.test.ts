@@ -137,27 +137,10 @@ describe("getAccess", () => {
     expect(await getAccess("u1", "a@b.com")).toMatchObject({ plan: "starter", viaOwner: false })
   })
 
-  it("attaches a payment made before the account existed to the person who signs in with that confirmed email", async () => {
-    store.tables.subscriptions = [{ id: "s1", user_id: null, status: "active", plan: "starter", stripe_customer_id: "cus_1", stripe_customer_email: "Crystal@Example.com" }]
-    store.authUsers.u1 = { email: "crystal@example.com", email_confirmed_at: "2026-10-25T00:00:00Z" }
-    const a = await getAccess("u1", "crystal@example.com")
-    expect(a).toMatchObject({ plan: "starter", active: true, hasBilling: true })
-    expect(store.updates.some((u) => u.table === "subscriptions" && u.patch.user_id === "u1")).toBe(true)
-  })
-  it("does not hand a payment to someone whose email is not confirmed", async () => {
-    store.tables.subscriptions = [{ id: "s1", user_id: null, status: "active", plan: "starter", stripe_customer_id: "cus_1", stripe_customer_email: "crystal@example.com" }]
-    store.authUsers.u1 = { email: "crystal@example.com", email_confirmed_at: null }
+  it("never hands an unattached payment to someone just because they signed up with the same email", async () => {
+    // The Supabase project auto-confirms signups, so a matching email proves nothing about who owns it.
+    store.tables.subscriptions = [{ id: "s1", user_id: null, status: "active", plan: "pro", stripe_customer_id: "cus_1", stripe_customer_email: "crystal@example.com" }]
     expect(await getAccess("u1", "crystal@example.com")).toMatchObject({ plan: "free", active: false })
     expect(store.updates.filter((u) => u.table === "subscriptions")).toHaveLength(0)
-  })
-  it("does not hand a payment to a different email, even a similar one", async () => {
-    store.tables.subscriptions = [{ id: "s1", user_id: null, status: "active", plan: "pro", stripe_customer_id: "cus_1", stripe_customer_email: "a_b@example.com" }]
-    store.authUsers.u1 = { email: "axb@example.com", email_confirmed_at: "2026-10-25T00:00:00Z" }
-    expect(await getAccess("u1", "axb@example.com")).toMatchObject({ plan: "free", active: false })
-  })
-  it("does not attach a cancelled payment", async () => {
-    store.tables.subscriptions = [{ id: "s1", user_id: null, status: "canceled", plan: "starter", stripe_customer_id: "cus_1", stripe_customer_email: "crystal@example.com" }]
-    store.authUsers.u1 = { email: "crystal@example.com", email_confirmed_at: "2026-10-25T00:00:00Z" }
-    expect(await getAccess("u1", "crystal@example.com")).toMatchObject({ active: false })
   })
 })

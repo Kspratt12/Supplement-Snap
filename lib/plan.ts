@@ -44,27 +44,6 @@ export async function getAccess(userId: string, email?: string | null): Promise<
   if (email) {
     const lower = email.toLowerCase()
 
-    // A payment made before this account existed (or while the database was down) is stored with no user.
-    // Attach it to the person who now signs in with the same email, so paying never leads to a dead end.
-    const { data: candidates } = await db
-      .from("subscriptions")
-      .select("id, status, plan, stripe_customer_id, stripe_customer_email")
-      .is("user_id", null)
-      .order("created_at", { ascending: false })
-      .limit(50)
-    const unclaimed = (candidates || []).find((r) => (r.stripe_customer_email || "").toLowerCase() === lower && isLive(r.status))
-    if (unclaimed && !(own && isLive(own.status))) {
-      // Only a confirmed email address may claim a payment, so nobody can sign up with someone else's email and take their plan
-      const { data: authUser } = await db.auth.admin.getUserById(userId)
-      const confirmed = !!authUser?.user?.email_confirmed_at && (authUser.user.email || "").toLowerCase() === lower
-      if (confirmed) {
-        const { error: claimErr } = await db.from("subscriptions").update({ user_id: userId, updated_at: new Date().toISOString() }).eq("id", unclaimed.id)
-        if (!claimErr) {
-          return { plan: normPlan(unclaimed.plan), status: unclaimed.status as SubStatus, active: true, viaOwner: false, hasBilling: !!unclaimed.stripe_customer_id }
-        }
-      }
-    }
-
     // An invited person has now signed in: turn their pending invites into active ones
     await db
       .from("team_members")
