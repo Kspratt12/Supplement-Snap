@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { findUserByEmail } from "../../../../lib/find-user"
 import { createClient } from "@supabase/supabase-js"
 
 import { isAdminRequest } from "../../../../lib/admin-auth"
@@ -21,10 +22,7 @@ export async function POST(request: Request) {
     )
 
     // Find the user
-    const { data: users } = await supabaseAdmin.auth.admin.listUsers()
-    const user = users?.users?.find(
-      (u) => u.email?.toLowerCase() === email.toLowerCase()
-    )
+    const user = await findUserByEmail(supabaseAdmin, email)
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 
 import { checkAdminRequest } from "../../../../lib/admin-auth"
+import { listAllUsers } from "../../../../lib/find-user"
 
 export async function POST(request: Request) {
   try {
@@ -15,8 +16,7 @@ export async function POST(request: Request) {
     )
 
     // Fetch all users
-    const { data: usersData } = await supabaseAdmin.auth.admin.listUsers()
-    const users = usersData?.users || []
+    const users = await listAllUsers(supabaseAdmin)
 
     // Fetch all subscriptions
     const { data: subscriptions } = await supabaseAdmin

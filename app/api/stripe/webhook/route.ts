@@ -3,6 +3,7 @@ import { Resend } from "resend"
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { planFromPriceId } from "../../../../lib/plan"
+import { findUserByEmail } from "../../../../lib/find-user"
 
 export async function POST(request: Request) {
   if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
@@ -44,10 +45,7 @@ export async function POST(request: Request) {
         let userId = metadataUserId || null
 
         if (!userId && customerEmail) {
-          const { data: users } = await supabaseAdmin.auth.admin.listUsers()
-          const matched = users?.users?.find(
-            (u) => u.email?.toLowerCase() === customerEmail.toLowerCase()
-          )
+          const matched = await findUserByEmail(supabaseAdmin, customerEmail)
           userId = matched?.id || null
         }
 

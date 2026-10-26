@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server"
 import { Resend } from "resend"
+import { rateLimited } from "../../../lib/rate-limit"
 
 const escapeHtml = (s: string) => s.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`)
 
 export async function POST(request: Request) {
+  const ip = (request.headers.get("x-forwarded-for") || "unknown").split(",")[0].trim()
+  if (rateLimited("waitlist:" + ip, 5, 60 * 60 * 1000)) {
+    return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 })
+  }
   const { email, company } = (await request.json().catch(() => ({}))) as {
     email?: string
     company?: string
