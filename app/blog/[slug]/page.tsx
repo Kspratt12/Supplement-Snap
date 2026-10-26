@@ -411,7 +411,7 @@ const ARTICLES: Article[] = [
       { text: "National Association of Insurance Commissioners (NAIC)", url: "https://www.naic.org" },
       { text: "NRCA: Contractor Resources", url: "https://www.nrca.net" },
     ],
-    highlight: { label: "Denial Rate With Weak Docs", value: "60–80%", subtext: "Supplements without photos and narratives get denied" },
+    highlight: { label: "What Helps Most", value: "Clear photos and notes", subtext: "Reviewers can only act on what the documentation shows" },
     visuals: {
       1: { type: "steps", data: [
         { num: "1", title: "Review the denial reason", desc: "Read the denial letter carefully. The stated reason tells you exactly what to fix." },
@@ -613,11 +613,6 @@ const ARTICLES: Article[] = [
         { label: "Pipe boot replacement", value: "$85–$340", color: "text-zinc-900" },
         { label: "Drip edge (full perimeter)", value: "$150–$400", color: "text-zinc-900" },
       ]},
-      3: { type: "stats", data: [
-        { label: "Monthly revenue (no supplements)", value: "$120,000" },
-        { label: "Monthly revenue (with supplements)", value: "$144,000", color: "text-green-700" },
-        { label: "Additional annual revenue", value: "$288,000", color: "text-green-700" },
-      ]},
       6: {"type":"calculator","data":{"title":"Illustrative Supplement Example","rows":[{"label":"Decking replacement (96 SF at $2.50)","value":"$240"},{"label":"Step flashing (20 LF at $9.00)","value":"$180"},{"label":"Ice and water barrier (100 SF at $2.00)","value":"$200"},{"label":"Pipe jacks (3 at $90)","value":"$270"},{"label":"Drip edge (120 LF at $4.50)","value":"$540"}],"total":{"label":"Example supplement total","value":"$1,430","color":"text-green-700"}}},
     },
     updatedDate: "2026-10-22",
@@ -650,15 +645,15 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "What items contribute to supplement value",
-        content: "The most valuable supplement items by average recovery:\n\n• Decking replacement (3+ sheets): $200–$600. This is the most common supplement item.\n• Step and counter flashing (chimney or wall): $300–$800. Often corroded and hidden.\n• Ice and water shield (valleys + eaves): $200–$500. Code-required, often missing on older roofs.\n• Multiple layer removal: $400–$1,000. Only discovered during tear-off.\n• Pipe boot replacement (multiple): $85–$340. Cracked boots are extremely common.\n• Drip edge (full perimeter): $150–$400. Missing on many older homes.\n\nOn a single job, a crew might find several of these items, and the total depends on the quantities and what the carrier accepts."
+        content: "Items roofers commonly look for, with illustrative price ranges (check your own price list):\n\n• Decking replacement (3+ sheets): $200–$600. This is the most common supplement item.\n• Step and counter flashing (chimney or wall): $300–$800. Often corroded and hidden.\n• Ice and water shield (valleys + eaves): $200–$500. Code-required, often missing on older roofs.\n• Multiple layer removal: $400–$1,000. Only discovered during tear-off.\n• Pipe boot replacement (multiple): $85–$340. Cracked boots are extremely common.\n• Drip edge (full perimeter): $150–$400. Missing on many older homes.\n\nOn a single job, a crew might find several of these items, and the total depends on the quantities and what the carrier accepts."
       },
       {
         heading: "How many jobs have supplementable damage?",
-        content: "Many contractors report that hidden damage is common at tear-off, but how often it happens depends on the roof, the region and the carrier. The damage is almost always there. The question is whether your crew documents it.\n\nThe problem isn't finding the damage. The problem is that most crews don't have a system to capture it properly in the moment. By the time someone in the office tries to write up the supplement from memory and a few blurry photos, the opportunity is lost."
+        content: "Many contractors report that hidden damage is common at tear-off, but how often it happens depends on the roof, the region and the carrier. When there is hidden damage, the question is whether your crew documents it.\n\nThe problem isn't finding the damage. The problem is that most crews don't have a system to capture it properly in the moment. By the time someone in the office tries to write up the supplement from memory and a few blurry photos, the opportunity is lost."
       },
       {
         heading: "The math: what supplements mean for your business",
-        content: "Let's say your company does 10 insurance roof replacements per month:\n\n• Without supplements: 10 jobs × $12,000 average = $120,000/month\n• With supplements ($2,400 avg): 10 jobs × $14,400 average = $144,000/month\n• Additional annual revenue: $288,000\n\nThat's $288,000 in revenue that was already there, on jobs you were already doing. You're not finding new customers. You're just capturing the money that was hiding under the shingles.\n\nEven a solo crew doing 4 jobs per month recovers an additional $115,200/year with proper supplement documentation."
+        content: "We cannot tell you what a supplement will add on your jobs, because it depends on the roof, the policy and the carrier. What you can do is work it out from your own records:\n\n• Extra recovered per month = supplements you send in a month x the share that get paid x the average extra on those that are paid\n• Compare that with what you spend on paperwork time and on any software\n\nMany jobs add nothing, and some add a lot. Use your last three months of jobs, not someone else's average. Our ROI calculator does this arithmetic with only the numbers you type in: <a href='/roofing-supplement-roi-calculator'>roofing supplement ROI calculator</a>.\n\nThe point is that the damage you document is money already tied to jobs you are doing, not new customers. Whether it is worth documenting more carefully is something your own numbers will answer.",
       },
       {
         heading: "Why most contractors leave this money on the table",
@@ -789,7 +784,7 @@ const ARTICLES: Article[] = [
       { text: "NRCA: Roofing Tear-Off Guidelines", url: "https://www.nrca.net" },
       { text: "EPA: Roofing Material Disposal", url: "https://www.epa.gov/smm/best-practices-reducing-reusing-and-recycling-construction-and-demolition-materials" },
     ],
-    highlight: { label: "Average Tear-Off Cost", value: "$1,000–$1,800", subtext: "Per square (100 SF) including labor and disposal" },
+    highlight: { label: "What Sets the Price", value: "Varies by region", subtext: "Layers, roof size, access and disposal all change tear-off cost, so get local quotes" },
     images: {
       1: { src: "/blog/roof-tear-off-cost/tear-off-in-progress.jpg", width: 1024, height: 683, alt: "Roof mid-tear-off showing exposed decking and damaged shingles being removed" },
       3: { src: "/blog/roof-tear-off-cost/hidden-damage-found.jpg", width: 1400, height: 934, alt: "Rotted roof decking discovered during tear-off requiring supplement documentation" },
@@ -866,7 +861,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Building your roofing software stack",
-        content: "Most successful roofing contractors in 2026 use a combination of tools rather than relying on a single platform. A practical stack for an insurance restoration contractor looks like this:\n\n• Satellite measurement (EagleView, Roofr, or GAF QuickMeasure) for remote measurements and initial estimates\n• Xactimate for insurance-format estimating and adjuster communication\n• A CRM (JobNimbus, AccuLynx, or similar) for lead tracking, project management, and invoicing\n• A field documentation and supplement tool for capturing hidden damage and generating supplement reports\n\nRetail contractors who do not work insurance claims can often get by with a satellite measurement tool and a CRM with built-in estimating. But any contractor who touches insurance work, even occasionally, needs the supplement documentation piece.\n\nThe question to ask about each tool in your stack is simple: does it pay for itself? A $50 measurement report that helps you close a $15,000 job is an obvious yes. A $200/month CRM that keeps 20 leads from falling through the cracks is an obvious yes. And a supplement tool that recovers $2,000+ per job on work you are already doing is perhaps the highest-ROI investment of all."
+        content: "Most successful roofing contractors in 2026 use a combination of tools rather than relying on a single platform. A practical stack for an insurance restoration contractor looks like this:\n\n• Satellite measurement (EagleView, Roofr, or GAF QuickMeasure) for remote measurements and initial estimates\n• Xactimate for insurance-format estimating and adjuster communication\n• A CRM (JobNimbus, AccuLynx, or similar) for lead tracking, project management, and invoicing\n• A field documentation and supplement tool for capturing hidden damage and generating supplement reports\n\nRetail contractors who do not work insurance claims can often get by with a satellite measurement tool and a CRM with built-in estimating. But any contractor who touches insurance work, even occasionally, needs the supplement documentation piece.\n\nThe question to ask about each tool in your stack is simple: does it pay for itself? A $50 measurement report that helps you close a $15,000 job is an obvious yes. A $200/month CRM that keeps 20 leads from falling through the cracks is an obvious yes. And a supplement tool is worth it if the extra you recover on jobs you are already doing, plus the time you save, is more than it costs. Only your own numbers can tell you that, and our <a href='/roofing-supplement-roi-calculator'>ROI calculator</a> helps you work it out."
       },
       {
         heading: "Why supplement documentation is the missing piece",
@@ -885,7 +880,7 @@ const ARTICLES: Article[] = [
       { text: "IBHS: Hail Damage Research", url: "https://ibhs.org" },
       { text: "NRCA: Storm Damage Resources", url: "https://www.nrca.net" },
     ],
-    highlight: { label: "Storm Season Revenue", value: "$30,000–$64,000", subtext: "Additional monthly revenue from supplements on 20 hail damage re-roofs" },
+    highlight: { label: "Storm Season Tip", value: "Document every job", subtext: "Busy weeks are when documentation gets skipped and hidden damage goes unrecorded" },
     images: {
       1: { src: "/blog/hail-damage-roof-inspection/hail-damaged-shingles.jpg", width: 1200, height: 630, alt: "Close-up of hail-damaged roof shingles showing circular impact marks and granule loss" },
       3: { src: "/blog/hail-damage-roof-inspection/hidden-hail-damage.jpg", width: 1280, height: 720, alt: "Cracked pipe boot found during hail damage roof tear-off inspection" },
@@ -932,7 +927,7 @@ const ARTICLES: Article[] = [
       { text: "NRCA: Technology in Roofing", url: "https://www.nrca.net" },
       { text: "Verisk Xactimate", url: "https://www.verisk.com/insurance/products/xactimate/" },
     ],
-    highlight: { label: "Revenue Gap", value: "$20,000–$30,000/mo", subtext: "Left on the table by contractors with no supplement tool (10 jobs/month)" },
+    highlight: { label: "Work It Out Yourself", value: "Use your own numbers", subtext: "Jobs per month x share with hidden damage x what you recover. Our ROI calculator does the arithmetic." },
     images: {
       0: { src: "/blog/roofing-software-comparison/Roofers-on-a-job.jpg", width: 1400, height: 933, alt: "Roofing crew working on a roof tear-off job site documenting hidden damage for supplements" },
       3: { src: "/blog/roofing-software-comparison/supplement-snap-dashboard.png", width: 2553, height: 1226, alt: "Supplement Snap dashboard showing roofing projects, capture counts, claim pipeline, and activity stats" },
@@ -957,7 +952,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "The gap most contractors don't see",
-        content: "Here's the pattern across the roofing industry: almost every established contractor has a CRM. Most have some form of estimating tool. But very few have a dedicated supplement tool.\n\nThis creates a predictable revenue leak. Consider a typical insurance job:\n\n• The CRM tracks the lead from door knock to signed contract, working perfectly\n• The estimating tool produces accurate measurements and a material order, working perfectly\n• The crew tears off the roof and finds rotted decking, failed flashing, and missing ice and water shield\n• Nobody has a system to document the hidden damage properly\n• The supplement either doesn't happen, or it gets submitted with a blurry photo and a one-line description\n• The adjuster denies it or the office never bothers submitting it\n• $2,000+ in legitimate, recoverable revenue disappears\n\nThis happens job after job, month after month. A contractor doing 10 insurance roofs per month might be leaving $20,000–$30,000 on the table every month, not because the damage isn't there, but because they don't have a system to capture it.\n\nThe irony is that contractors will spend $300–$500/month on a CRM to close more deals but won't invest in a tool that recovers $2,000+ per job on deals they've already closed. The ROI on supplement documentation is dramatically higher than almost any other software investment a roofing company can make."
+        content: "Here's the pattern across the roofing industry: almost every established contractor has a CRM. Most have some form of estimating tool. But very few have a dedicated supplement tool.\n\nThis creates a predictable revenue leak. Consider a typical insurance job:\n\n• The CRM tracks the lead from door knock to signed contract, working perfectly\n• The estimating tool produces accurate measurements and a material order, working perfectly\n• The crew tears off the roof and finds rotted decking, failed flashing, and missing ice and water shield\n• Nobody has a system to document the hidden damage properly\n• The supplement either doesn't happen, or it gets submitted with a blurry photo and a one-line description\n• The adjuster denies it or the office never bothers submitting it\n• Money that could have been documented on a job you already did goes unrecovered\n\nThis can happen job after job, because the damage is only visible for a short time and nobody has a system to capture it. How much it costs a given company depends on how often hidden damage turns up on its roofs and what the carrier pays.\n\nContractors often spend a lot on software to close more deals but little on tools to document what they find on jobs they have already won. Whether a supplement tool is worth it depends on your own numbers."
       },
       {
         heading: "Overlap and integration between the three categories",
@@ -979,7 +974,7 @@ const ARTICLES: Article[] = [
       { text: "Verisk Xactimate Official Documentation", url: "https://www.verisk.com/insurance/products/xactimate/" },
       { text: "International Building Code (ICC)", url: "https://www.iccsafe.org" },
     ],
-    highlight: { label: "Sample Supplement Total", value: "$1,438", subtext: "Typical supplement value using standard Xactimate codes + O&P" },
+    highlight: { label: "Illustrative Example", value: "Sample only", subtext: "The totals on this page are made-up examples to show the format, not typical results" },
     images: {
       0: { src: "/blog/xactimate-roof-estimate-supplements/xactimate.jpg", width: 1280, height: 685, alt: "Xactimate roofing estimate software interface showing line codes and pricing for insurance claims" },
       5: { src: "/blog/xactimate-roof-estimate-supplements/supplement-snap-export.png", width: 2555, height: 1227, alt: "Supplement Snap project report showing $1,300 estimated supplement value with Xactimate line codes and CSV export option" },
@@ -1027,7 +1022,7 @@ const ARTICLES: Article[] = [
       { text: "NRCA: Roof Replacement Standards", url: "https://www.nrca.net" },
       { text: "Verisk Property Estimating", url: "https://www.verisk.com/insurance/products/xactimate/" },
     ],
-    highlight: { label: "Annual Revenue Left Behind", value: "$192,000–$288,000", subtext: "For a contractor doing 8-12 insurance roofs/month without supplements" },
+    highlight: { label: "What Changes the Final Cost", value: "Hidden damage", subtext: "Decking, flashing and extra layers are found at tear-off and are not in the first estimate" },
     images: {
       5: { src: "/blog/roof-replacement-estimate-vs-final-cost/supplement-snap-project-value.png", width: 2533, height: 812, alt: "Supplement Snap app showing project with $1,300 estimated supplement value and damage capture workflow" },
     },
@@ -1047,7 +1042,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How supplements bridge the gap",
-        content: "A supplement is the formal mechanism for closing the gap between the initial estimate and the actual cost. It's a documented request to the insurance carrier saying: your adjuster estimated the visible damage accurately, but our crew found additional concealed damage during tear-off that needs to be covered.\n\nA well-documented supplement includes:\n\n• Photographs of each concealed damage finding, taken during tear-off before new materials cover it up\n• A professional narrative explaining what was found, where it was located, why it was concealed, and why the repair is necessary\n• Xactimate line items with the correct codes, quantities, and current pricing\n• Building code references where applicable\n\nWhen submitted properly, supplements have a high approval rate. Adjusters expect them because they know their surface inspection doesn't catch everything. The key word is 'properly.' A supplement with clear photos, a detailed narrative, and accurate Xactimate formatting gets approved. A supplement with a blurry photo and 'found some bad decking' gets denied.\n\nThe difference between contractors who consistently recover supplement revenue and those who don't comes down to documentation quality and submission speed."
+        content: "A supplement is the formal mechanism for closing the gap between the initial estimate and the actual cost. It's a documented request to the insurance carrier saying: your adjuster estimated the visible damage accurately, but our crew found additional concealed damage during tear-off that needs to be covered.\n\nA well-documented supplement includes:\n\n• Photographs of each concealed damage finding, taken during tear-off before new materials cover it up\n• A professional narrative explaining what was found, where it was located, why it was concealed, and why the repair is necessary\n• Xactimate line items with the correct codes, quantities, and current pricing\n• Building code references where applicable\n\nWhen submitted with good documentation, supplements are easier to review, though the carrier makes the decision. Adjusters expect them because they know their surface inspection doesn't catch everything. The key word is 'properly.' A supplement with clear photos, a detailed narrative, and accurate Xactimate formatting gets approved. A supplement with a blurry photo and 'found some bad decking' gets denied.\n\nThe difference between contractors who consistently recover supplement revenue and those who don't comes down to documentation quality and submission speed."
       },
       {
         heading: "Real scenarios: estimate vs. final with supplements",
@@ -1138,7 +1133,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How the insurance claim process works for storm damage repairs",
-        content: "Understanding the insurance claim process helps you work effectively with both your insurance company and your contractor. Here is the typical timeline from storm to completed repair.\n\nStep 1: File the claim promptly. Contact your insurance company within 24-48 hours of the storm. Most policies have time limits for reporting damage, and delays can complicate your claim. Your insurer will assign a claim number and schedule an adjuster visit.\n\nStep 2: Get an independent contractor inspection. Before the adjuster arrives, have a qualified contractor inspect your roof. They should document all visible damage with photos and provide you with a written assessment. This gives you a baseline to compare against the adjuster's findings.\n\nStep 3: The adjuster inspection. The insurance adjuster will visit your property, inspect the roof, and write an initial estimate using Xactimate. A good practice is to have your contractor present during this inspection so they can point out damage the adjuster might miss. The adjuster's estimate covers only what they can see from the surface.\n\nStep 4: Review the initial estimate. Your contractor should review the adjuster's Xactimate estimate with you. They can identify items that may have been missed or undervalued. If significant visible damage was overlooked, your contractor can request a re-inspection before work begins.\n\nStep 5: Authorize repairs and begin work. Once you're satisfied with the scope, sign a contract with your chosen contractor and schedule the work. Your insurance company issues the first payment (minus your deductible), often held in escrow if you have a mortgage.\n\nStep 6: Tear-off reveals hidden damage. This is the critical phase. When the crew removes the existing roofing materials, they frequently discover concealed damage: rotted decking, corroded flashing, deteriorated pipe boots, missing ice and water shield. This damage was invisible during both your contractor's inspection and the adjuster's visit.\n\nStep 7: Your contractor submits a supplement. The supplement is a formal request for additional insurance payment to cover the concealed damage. It includes photos taken during tear-off, a professional narrative, and Xactimate line items. A well-documented supplement submitted promptly has a high approval rate.\n\nStep 8: Supplement approval and final payment. The insurance company reviews the supplement, may request additional information or a re-inspection, and issues additional payment for approved items. The entire process from claim filing to final supplement approval typically takes 4-8 weeks."
+        content: "Understanding the insurance claim process helps you work effectively with both your insurance company and your contractor. Here is the typical timeline from storm to completed repair.\n\nStep 1: File the claim promptly. Contact your insurance company within 24-48 hours of the storm. Most policies have time limits for reporting damage, and delays can complicate your claim. Your insurer will assign a claim number and schedule an adjuster visit.\n\nStep 2: Get an independent contractor inspection. Before the adjuster arrives, have a qualified contractor inspect your roof. They should document all visible damage with photos and provide you with a written assessment. This gives you a baseline to compare against the adjuster's findings.\n\nStep 3: The adjuster inspection. The insurance adjuster will visit your property, inspect the roof, and write an initial estimate using Xactimate. A good practice is to have your contractor present during this inspection so they can point out damage the adjuster might miss. The adjuster's estimate covers only what they can see from the surface.\n\nStep 4: Review the initial estimate. Your contractor should review the adjuster's Xactimate estimate with you. They can identify items that may have been missed or undervalued. If significant visible damage was overlooked, your contractor can request a re-inspection before work begins.\n\nStep 5: Authorize repairs and begin work. Once you're satisfied with the scope, sign a contract with your chosen contractor and schedule the work. Your insurance company issues the first payment (minus your deductible), often held in escrow if you have a mortgage.\n\nStep 6: Tear-off reveals hidden damage. This is the critical phase. When the crew removes the existing roofing materials, they frequently discover concealed damage: rotted decking, corroded flashing, deteriorated pipe boots, missing ice and water shield. This damage was invisible during both your contractor's inspection and the adjuster's visit.\n\nStep 7: Your contractor submits a supplement. The supplement is a formal request for additional insurance payment to cover the concealed damage. It includes photos taken during tear-off, a professional narrative, and Xactimate line items. A well-documented supplement submitted promptly is easier to review, though the carrier makes the decision.\n\nStep 8: Supplement approval and final payment. The insurance company reviews the supplement, may request additional information or a re-inspection, and issues additional payment for approved items. The entire process from claim filing to final supplement approval typically takes 4-8 weeks."
       },
       {
         heading: "Questions to ask before hiring a storm damage contractor",
@@ -1164,7 +1159,7 @@ const ARTICLES: Article[] = [
       { text: "NRCA: Technology Resources", url: "https://www.nrca.net" },
       { text: "Verisk Xactimate", url: "https://www.verisk.com/insurance/products/xactimate/" },
     ],
-    highlight: { label: "CRM Blind Spot", value: "$2,000+/job", subtext: "Supplement revenue that CRMs don't help you recover" },
+    highlight: { label: "CRM Blind Spot", value: "Field documentation", subtext: "Most CRMs track jobs and customers but do not capture hidden damage at tear-off" },
     images: {
       0: { src: "/blog/best-roofing-crm/roofing-office.jpg", width: 1200, height: 800, alt: "Roofing contractor using CRM software on a computer screen" },
     },
@@ -1189,19 +1184,6 @@ const ARTICLES: Article[] = [
       2: { type: "compare", data: {
         before: { label: "What Your CRM Does", items: ["Tracks leads from first contact to close", "Generates estimates and proposals", "Schedules production crews", "Stores job photos and documents", "Manages customer communication", "Reports on sales pipeline and revenue"] },
         after: { label: "What Your CRM Misses", items: ["Documenting hidden damage during tear-off", "Generating supplement narratives from field data", "Mapping findings to Xactimate line codes", "Creating insurance-ready PDF supplement reports", "Exporting Xactimate-compatible CSV files", "Tracking supplement status and recovery rates"] },
-      }},
-      4: { type: "calculator", data: {
-        title: "The Revenue Impact of Adding Supplement Tools",
-        rows: [
-          { label: "Insurance roofs per month", value: "10 jobs" },
-          { label: "Jobs with supplementable hidden damage", value: "8 jobs (80%)" },
-          { label: "Average supplement recovery per job", value: "$2,100" },
-          { label: "Monthly supplement revenue (with proper tools)", value: "$16,800" },
-          { label: "Monthly supplement revenue (without tools)", value: "$2,100 (1-2 jobs)" },
-          { label: "Revenue difference per month", value: "$14,700" },
-          { label: "Cost of supplement tool (monthly)", value: "$149" },
-        ],
-        total: { label: "Net Annual Revenue Gain", value: "$174,612", color: "text-emerald-600" },
       }},
       5: { type: "tip", data: {
         type: "info",
@@ -1229,7 +1211,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "The math: what this gap costs your company every year",
-        content: "Let's put specific numbers to the CRM supplement gap. These figures are based on industry averages for insurance roofing contractors.\n\nStart with your monthly insurance job volume. A mid-size storm restoration company typically runs 8-12 insurance roofs per month. We'll use 10 as a round number.\n\nThe most common findings are rotted decking (found on approximately 60% of tear-offs), deteriorated pipe boots (50%), corroded or missing flashing (40%), and missing ice and water shield in code-required areas (35%). Using the conservative end, 8 out of 10 jobs have supplementable damage.\n\nThe variation depends on roof age, complexity, regional pricing, and how thoroughly the damage is documented. We'll use $2,100 as a realistic midpoint.\n\nWith proper documentation tools and a systematic process, contractors typically submit supplements on 80-90% of eligible jobs and achieve a 70-85% approval rate. Without tools (relying on the crew to text blurry photos to the office and someone to write up the supplement days later), submission rates drop to 10-20% of eligible jobs, and approval rates fall below 50%.\n\nHere is the annual comparison:\n\n• With supplement tools: 10 jobs/month x 80% eligible x 85% submission x 80% approval x $2,100 = $11,424/month = $137,088/year\n• Without supplement tools: 10 jobs/month x 80% eligible x 15% submission x 45% approval x $2,100 = $1,134/month = $13,608/year\n• Annual revenue difference: $123,480\n\nThat is over $120,000 per year in revenue that exists on jobs you've already won, that your CRM tracked through the pipeline, that your crews completed. The work was done. The damage was real. The insurance policy covered it. The money was there. It just never got documented and submitted.\n\nAnd here's the part that should keep you up at night: your CRM dashboard shows the job as complete and the revenue as collected. There's no field for \"supplement revenue left on the table.\" The gap is invisible unless you're specifically tracking it."
+        content: "It helps to put numbers on the CRM supplement gap, but the numbers have to be yours. We will not give you industry averages, because we do not have reliable ones.\n\nStart with your monthly insurance job volume. Then look back over the last few months and count: on how many of those jobs did your crew find hidden damage, on how many did you actually send a supplement, and how much did the carrier pay on the ones that were paid?\n\nThen compare two figures:\n\n• What you recovered in supplements over those months\n• What you could have documented if every job with hidden damage had a complete package\n\nThe second figure is an estimate, so keep it conservative. The gap between the two is the part a better process can address. Our <a href='/roofing-supplement-roi-calculator'>ROI calculator</a> does the arithmetic with only the numbers you enter.\n\nHere is the part worth thinking about: your CRM dashboard shows the job as complete and the revenue as collected. There is usually no field for supplement money that was never requested, so the gap is invisible unless you track it.",
       },
       {
         heading: "Building the complete roofing tech stack for 2026",
@@ -1252,7 +1234,7 @@ const ARTICLES: Article[] = [
       { text: "NRCA: Storm Damage Resources", url: "https://www.nrca.net" },
       { text: "Insurance Information Institute", url: "https://www.iii.org" },
     ],
-    highlight: { label: "Storm Damage Market", value: "$15B+", subtext: "Annual U.S. insurance payouts for storm-related roof damage" },
+    highlight: { label: "Storm Damage", value: "Hail and wind", subtext: "The two storm types most often behind insurance roof claims" },
     images: {
       1: { src: "/blog/storm-damage-roof-repair/storm-roof.jpg", width: 1200, height: 800, alt: "Roof with visible storm damage showing wind-lifted and missing shingles" },
     },
@@ -1418,7 +1400,7 @@ const ARTICLES: Article[] = [
       { text: "NRCA: Roof Inspection Guidelines", url: "https://www.nrca.net" },
       { text: "ASTM Roofing Standards", url: "https://www.astm.org" },
     ],
-    highlight: { label: "Reports That Get Approved", value: "3x faster", subtext: "When they include tagged photos, narratives, and Xactimate codes" },
+    highlight: { label: "Easier to Review", value: "Tagged and explained", subtext: "Reports with tagged photos, plain narratives and line items are easier for a reviewer to follow" },
     images: {
       0: { src: "/blog/roof-inspection-report/roof-inspection.jpg", width: 1024, height: 1536, alt: "Contractor inspecting a roof and documenting damage with a phone" },
     },
