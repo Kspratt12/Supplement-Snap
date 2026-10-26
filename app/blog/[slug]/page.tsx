@@ -2993,7 +2993,7 @@ const ARTICLES: Article[] = [
     metaTitle: "What Is the 25% Rule for Roofing? | Supplement Snap",
     metaDescription: "The 25% rule for roofing: what it generally means, why it varies by jurisdiction and code edition, and how contractors should handle it on insurance claims.",
     publishedDate: "2026-10-23",
-    updatedDate: "2026-10-23",
+    updatedDate: "2026-10-26",
     externalLinks: [
       { text: "International Code Council (ICC)", url: "https://www.iccsafe.org" },
       { text: "NRCA: National Roofing Contractors Association", url: "https://www.nrca.net" },
@@ -3070,6 +3070,14 @@ const ARTICLES: Article[] = [
       {
         q: "How should a contractor raise it with an adjuster?",
         a: "Cite the specific code section and, if possible, written confirmation from the building department, along with photos and measurements of the repair area.",
+      },
+      {
+        q: "What is a 25% roof slope?",
+        a: "That is a different meaning of 25%. Slope is how steep a roof is: rise divided by run. A 25% slope rises 25 units for every 100 units of run, which is the same as a 3-in-12 pitch (about 14 degrees). It has nothing to do with the 25% repair rule.",
+      },
+      {
+        q: "Does the 25% rule for roofing work the same in Texas or Florida?",
+        a: "We cannot state the current rule for either state, and it should not be assumed. Building codes are adopted and amended locally, and editions change, so the answer depends on the city or county where the roof is. Ask the local building department which code edition and amendments apply to the address.",
       },
     ],
     related: ["roofing-code-upgrades-ordinance-and-law", "how-insurance-adjusters-determine-roof-damage", "roofing-supplement-template", "roof-replacement-estimate-vs-final-cost"],
