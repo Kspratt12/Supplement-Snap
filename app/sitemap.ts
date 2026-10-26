@@ -52,6 +52,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/blog/is-roofing-supplement-software-worth-it`, lastModified: new Date("2026-10-25"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/roofing-supplement-mistakes-that-delay-payment`, lastModified: new Date("2026-10-25"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/roofing-adjuster-inspection-what-to-bring`, lastModified: new Date("2026-10-25"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/questions-to-ask-before-buying-roofing-supplement-software`, lastModified: new Date("2026-10-25"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/how-to-write-roofing-supplements-faster`, lastModified: new Date("2026-10-25"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/roof-tear-off-vs-overlay`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/roof-repair-estimate-template`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/good-better-best-roofing-proposal-template`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },

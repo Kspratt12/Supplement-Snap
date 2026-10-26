@@ -327,7 +327,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["roofing-supplement-mistakes-that-delay-payment", "roofing-supplement-email-to-adjuster", "what-can-you-supplement-on-a-roof-claim", "roofing-supplement-template","roofing-supplement-denied-what-to-do","xactimate-codes-for-roofing-supplements","roofing-photo-documentation-checklist", "best-roofing-supplement-software"],
+    related: ["how-to-write-roofing-supplements-faster", "roofing-supplement-mistakes-that-delay-payment", "roofing-supplement-email-to-adjuster", "what-can-you-supplement-on-a-roof-claim", "roofing-supplement-template","roofing-supplement-denied-what-to-do","xactimate-codes-for-roofing-supplements","roofing-photo-documentation-checklist", "best-roofing-supplement-software"],
     faq: [
       {
         "q": "Do I need Xactimate to submit a roofing supplement?",
@@ -711,7 +711,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["how-long-does-a-roofing-supplement-take", "how-to-write-a-roofing-supplement","roofing-photo-documentation-checklist","roofing-supplement-denied-what-to-do","roofing-supplement-template", "roofing-supplement-companies-vs-software"],
+    related: ["how-to-write-roofing-supplements-faster", "how-long-does-a-roofing-supplement-take", "how-to-write-a-roofing-supplement","roofing-photo-documentation-checklist","roofing-supplement-denied-what-to-do","roofing-supplement-template", "roofing-supplement-companies-vs-software"],
     faq: [
       {
         "q": "How long does the roofing supplement process take?",
@@ -3580,7 +3580,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy, the carrier and the documentation. Software can make your package clearer and more complete.",
       },
     ],
-    related: ["is-roofing-supplement-software-worth-it", "roofing-supplement-companies-vs-software", "xactimate-roofing-software-explained", "roofing-software-comparison", "supplemental-roofing-estimate-explained", "supplement-snap-vs-roofgenius", "roofing-supplement-software-cost", "claimtrax-vs-suppx-vs-supplement-snap", "roofing-supplement-software-for-small-roofing-companies", "supplement-snap-vs-acculynx-supplements", "free-roofing-supplement-software"],
+    related: ["questions-to-ask-before-buying-roofing-supplement-software", "is-roofing-supplement-software-worth-it", "roofing-supplement-companies-vs-software", "xactimate-roofing-software-explained", "roofing-software-comparison", "supplemental-roofing-estimate-explained", "supplement-snap-vs-roofgenius", "roofing-supplement-software-cost", "claimtrax-vs-suppx-vs-supplement-snap", "roofing-supplement-software-for-small-roofing-companies", "supplement-snap-vs-acculynx-supplements", "free-roofing-supplement-software"],
   },
   {
     slug: "recoverable-depreciation-roof-claims",
@@ -4108,7 +4108,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy, the carrier and your documentation, not on the price of the tool.",
       },
     ],
-    related: ["is-roofing-supplement-software-worth-it", "best-roofing-supplement-software", "roofing-supplement-companies-vs-software", "supplement-snap-vs-roofgenius", "ai-roofing-supplement-tools-compared", "free-roofing-supplement-software"],
+    related: ["questions-to-ask-before-buying-roofing-supplement-software", "is-roofing-supplement-software-worth-it", "best-roofing-supplement-software", "roofing-supplement-companies-vs-software", "supplement-snap-vs-roofgenius", "ai-roofing-supplement-tools-compared", "free-roofing-supplement-software"],
   },
   {
     slug: "best-app-to-document-roof-damage-for-insurance",
@@ -4868,7 +4868,7 @@ const ARTICLES: Article[] = [
         a: "Send a polite follow-up in the same thread, ask who else can review the file, such as a claims supervisor, and keep a record of every attempt.",
       },
     ],
-    related: ["roofing-supplement-tracker-template", "roofing-supplement-process-explained","roofing-supplement-follow-up-log","roofing-supplement-denied-what-to-do","how-to-write-a-roofing-supplement"],
+    related: ["how-to-write-roofing-supplements-faster", "roofing-supplement-tracker-template", "roofing-supplement-process-explained","roofing-supplement-follow-up-log","roofing-supplement-denied-what-to-do","how-to-write-a-roofing-supplement"],
   },
   {
     slug: "drip-edge-roofing-supplement",
@@ -6265,7 +6265,7 @@ const ARTICLES: Article[] = [
         a: "Look at why first. If documentation is the reason, better capture may help. If the reason is coverage, software will not change it.",
       },
     ],
-    related: ["roofing-supplement-software-cost","free-roofing-supplement-software","best-roofing-supplement-software","roofing-supplement-companies-vs-software"],
+    related: ["questions-to-ask-before-buying-roofing-supplement-software", "roofing-supplement-software-cost","free-roofing-supplement-software","best-roofing-supplement-software","roofing-supplement-companies-vs-software"],
   },
   {
     slug: "roofing-supplement-mistakes-that-delay-payment",
@@ -6478,6 +6478,190 @@ const ARTICLES: Article[] = [
       },
     ],
     related: ["how-insurance-adjusters-determine-roof-damage","can-a-roofer-talk-to-the-insurance-company","roof-claim-reinspection-request","insurance-lowball-roof-estimate-what-to-do"],
+  },
+  {
+    slug: "questions-to-ask-before-buying-roofing-supplement-software",
+    title: "15 Questions to Ask Before You Buy Roofing Supplement Software",
+    metaTitle: "15 Questions to Ask Before Buying Supplement Software",
+    metaDescription: "A buyer's checklist for roofing supplement software: pricing limits, users, trial terms, cancellation, offline use, data, AI review and what to test first.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Test it on one real job before you pay.",
+    midCtaBody: "Your first Supplement Snap project is free, and paid plans start with a 14-day trial. Judge the report it produces against your current process.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["How Supplement Snap answers (verify on our pricing page)"],
+        rows: [
+          { feature: "Free way to try it", values: ["First project is free with no card. Paid plans start with a 14-day trial; a card is required."] },
+          { feature: "Price", values: ["Starter $99, Team $199, Pro $299 per month at the time of writing. Check the pricing page for current prices."] },
+          { feature: "Users", values: ["Starter 1, Team up to 3, Pro up to 5"] },
+          { feature: "Project limit on paid plans", values: ["Unlimited projects"] },
+          { feature: "Cancelling", values: ["From the account page, through Manage billing, with no call needed"] },
+          { feature: "Works with weak signal", values: ["Captures made without signal are saved on the phone and upload when it returns"] },
+          { feature: "CRM integration", values: ["None. Reports download as PDF; Team and Pro can also export Xactimate CSV."] },
+          { feature: "Who decides coverage", values: ["The carrier. The software does not decide coverage or guarantee approval."] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Ask every vendor the same questions", text: "Use this list with any company, including us. A good vendor answers plainly and in writing. If an answer is vague, or you are told to talk to sales for something as basic as price, treat that as information." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Before you pay for roofing supplement software, you should know five things: what it costs at your volume, what your crew has to do on the roof, who owns your photos and reports, how you leave if it does not work, and what it cannot do. The fifteen questions below cover those and a few more. Ask them of every vendor, then test your favorite on one real job.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "Price and limits (questions 1 to 4)",
+        content: "1. What does it cost per month at my size, in writing? Ask for the total, not the starting price.\n2. Is there a limit on projects, supplements or photos? Some tools price per claim or cap the number per month, which changes the math if you file a lot.\n3. How many people can log in on the plan I would use? A crew lead, an office person and an owner may all need access.\n4. Are there setup, onboarding or per-user fees on top?\n\nThe table shows how we answer a few of these. Compare the numbers to your own volume with the <a href='/roofing-supplement-roi-calculator'>ROI calculator</a>, and see the <a href='/blog/roofing-supplement-software-cost'>cost guide</a> for how pricing models differ.",
+      },
+      {
+        heading: "Trial, contract and cancelling (questions 5 to 7)",
+        content: "5. Can I try it on a real job before paying? A free project or a trial is a fair test. A demo video is not.\n6. Is a card required for the trial, and what happens on day 15? Ask what reminder you get before the first charge.\n7. How do I cancel, and is it self-service? You should be able to cancel without a call or an email chain, and you should know whether access continues to the end of the paid period.\n\nIf cancelling takes a phone call, that is worth knowing before you start.",
+      },
+      {
+        heading: "What your crew actually does (questions 8 to 10)",
+        content: "8. How many taps from opening the app to a captured finding with a photo and a note? Try it with gloves on or at arm's length in sunlight.\n9. What happens with no signal? Roofs and rural jobs often have weak coverage. Ask whether captures are saved on the phone and sent later.\n10. Can the crew speak a note instead of typing? Voice notes save time in the field, but ask what happens when the microphone is blocked or the network is down.\n\nThe best test is to hand the phone to your least technical crew member and watch. If they get stuck, your crew will too.",
+      },
+      {
+        heading: "AI and the quality of the report (questions 11 to 12)",
+        content: "11. Does the AI write something I have to review, or does it send on its own? You should be able to read and edit every description before anything goes to an adjuster. Software that drafts is useful. Software that sends without review is a risk to your reputation.\n12. What does the finished report look like, and can I see a real sample? Compare it with what you send today. Look for photos beside each finding, locations, quantities and a clear cover page.\n\nNo software can promise a carrier will pay. Anyone who guarantees approval is selling something they cannot control.",
+      },
+      {
+        heading: "Your data and how you leave (questions 13 to 14)",
+        content: "13. Who owns my photos, notes and reports, and can I download them? Ask what you would walk away with if you cancelled tomorrow.\n14. How long are photos kept, and what happens to them after I cancel? Claims can take months, and you may need the photos later.\n\nGet the answers in writing. For us, reports download as PDF and Team and Pro plans can export an Xactimate CSV. If you need a bulk export of everything, ask any vendor, including us, exactly what they provide.",
+      },
+      {
+        heading: "Fit with your other tools (question 15)",
+        content: "15. Does it connect to my CRM or estimating software, and do I need that? Some tools integrate and some do not. We do not integrate with CRMs today, so jobs are set up in Supplement Snap on their own. If a CRM connection is essential for you, that is a fair reason to choose something else. Our <a href='/blog/best-roofing-crm'>CRM guide</a> and <a href='/blog/best-roofing-supplement-software'>supplement software comparison</a> cover how the categories differ.",
+      },
+      {
+        heading: "How to run a one-job test",
+        content: "Pick one real job with hidden damage. Document it the way you normally would on one side, and with the software on the other. Then compare: how long each took, how complete each report looks, and how comfortable your crew was.\n\nWrite the answers to the fifteen questions on one page for each vendor you test. The decision is usually clear by the second page.\n\nIf you want a fallback that costs nothing, our free <a href='/free-roofing-templates'>supplement template, tracker and findings log</a> work without any software.",
+      },
+    ],
+    faq: [
+      {
+        q: "What should I look for in roofing supplement software?",
+        a: "Clear pricing for your volume, a free way to test it, simple capture that works on a roof, drafts you review before sending, a report adjusters can follow, and an easy way to cancel.",
+      },
+      {
+        q: "Is a free trial enough to decide?",
+        a: "It is enough if you use it on a real job. Test the capture, the report and the cancellation process before the trial ends.",
+      },
+      {
+        q: "Should the software connect to my CRM?",
+        a: "Only if that matters to your workflow. Many contractors use a CRM for customers and a separate tool for documenting hidden damage. Ask each vendor what it supports today.",
+      },
+      {
+        q: "Can software guarantee that the carrier pays?",
+        a: "No. The carrier decides. Software can help you document and present findings clearly.",
+      },
+      {
+        q: "What is a red flag when buying?",
+        a: "No price until a sales call, no free way to test, a cancellation process that needs a phone call, or promises about how much money you will recover.",
+      },
+      {
+        q: "What if I only file a few supplements a year?",
+        a: "A template, a tracker and a crew checklist may be enough. Run the numbers with your own volume before paying for software.",
+      },
+    ],
+    related: ["best-roofing-supplement-software","roofing-supplement-software-cost","is-roofing-supplement-software-worth-it","free-roofing-supplement-software"],
+  },
+  {
+    slug: "how-to-write-roofing-supplements-faster",
+    title: "How to Write Roofing Supplements Faster (Without Cutting Corners)",
+    metaTitle: "How to Write Roofing Supplements Faster: A Workflow",
+    metaDescription: "Roofing supplements take too long when documentation starts in the office. A step-by-step workflow that moves the work to the roof and keeps reports complete.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    downloads: "roofing-supplement-template",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Draft while the damage is still in front of you.",
+    midCtaBody: "Supplement Snap lets your crew capture photos, tags and voice notes on the roof and drafts descriptions for you to review. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["Where the time usually goes"],
+        rows: [
+          { feature: "Sorting photos", values: ["Photos arrive by text with no labels, so someone matches them to findings later"] },
+          { feature: "Chasing details", values: ["Quantities and locations were never written down, so the office calls the crew"] },
+          { feature: "Writing descriptions", values: ["Each finding is written from scratch from memory and a blurry photo"] },
+          { feature: "Formatting", values: ["Photos, notes and line items are pasted into a document by hand"] },
+          { feature: "Resending", values: ["The carrier asks for something missing and the cycle repeats"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Speed comes from capturing once, well", text: "Faster supplements usually mean fewer steps after the roof, not faster typing in the office. Every missing detail you fix on the roof saves a phone call later." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Most of the time spent on a supplement is not writing. It is finding the right photo, remembering where it was taken, and asking the crew for numbers they did not write down. You write supplements faster by capturing each finding completely on the roof, using one routine every time, and building the package from what was captured instead of from memory. Better documentation also tends to mean fewer rounds with the adjuster.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "Where the time goes",
+        content: "The table lists the usual time sinks. None of them is hard on its own, but they pile up. If your supplements take days, look for which of these five is costing you the most and fix that one first.",
+      },
+      {
+        heading: "Step 1: Capture each finding completely at the roof",
+        content: "For every finding, the crew records five things before moving on: a wide photo for location, a close photo for detail, what it is, where it is, and how much. A tape in the picture and a quantity written down save the most time later.\n\nOur free <a href='/blog/roof-tear-off-findings-log-template'>tear-off findings log</a> is a printable way to do this, and an app can hold the same fields on a phone. What matters is that the same five things are captured every time.",
+      },
+      {
+        heading: "Step 2: Use one routine so nothing is optional",
+        content: "A short checklist taped to the truck beats a long training. Give the crew lead one page: before tear-off, during tear-off, before leaving. Our <a href='/blog/roofing-crew-supplement-documentation-sop'>crew SOP and checklist</a> is a free starting point.\n\nA routine removes the question of what to photograph, which is where most missed items come from.",
+      },
+      {
+        heading: "Step 3: Write short, factual descriptions",
+        content: "A good description is two or three sentences: what was found, where, how much, and when it was found. For example: Decking, rear slope along the eave. Four sheets soft and deteriorated, about 128 square feet, found after shingles and underlayment were removed.\n\nAvoid guessing at causes you cannot prove, and avoid arguing with the adjuster in the description. Plain facts are quick to write and easy to review. Software can draft these from a photo and a voice note, but read every description yourself before it goes out.",
+      },
+      {
+        heading: "Step 4: Build one package, not a pile",
+        content: "Put the cover page, the findings list, each finding with its photos, and the line items in one PDF. Our <a href='/blog/roofing-supplement-template'>supplement template</a> has all five parts. One organized file is faster for you to assemble and faster for the carrier to review than a long email with attachments.",
+      },
+      {
+        heading: "A worked example (fictional)",
+        content: "A crew finds soft decking, two corroded flashing sections and a missing drip edge section on one roof. Without a routine: the crew texts eleven photos, the office asks where each was taken, the crew guesses at quantities, and the supplement goes out two days later.\n\nWith a routine: the crew lead logs three findings on the roof, each with a wide photo, a close photo, a tape reading and a location. The office builds the package the same afternoon, reviews the descriptions and sends one PDF with a cover note.\n\nThe example is invented and the time saved will differ on your jobs. The point is that the work moved to the moment when the answers were easy to get.",
+      },
+      {
+        heading: "Step 5: Send it the same day and set a follow-up",
+        content: "Speed also means not letting a finished package sit. Send it promptly with a short cover email (see our <a href='/blog/roofing-supplement-email-to-adjuster'>email template</a>) and write a follow-up date in your <a href='/blog/roofing-supplement-tracker-template'>tracker</a>. A supplement that is sent quickly and followed up is usually resolved sooner than one that waits.",
+      },
+      {
+        heading: "Where software helps and where it does not",
+        content: "Software helps by keeping photos, tags, quantities and drafts in one place, so you are not assembling them by hand. It does not decide coverage, and it cannot make a carrier pay. If you are weighing tools, use our <a href='/blog/questions-to-ask-before-buying-roofing-supplement-software'>buyer's checklist</a> and test one on a real job. If you only file a few supplements a year, the free templates may be all you need.",
+      },
+    ],
+    faq: [
+      {
+        q: "How long should a supplement take to write?",
+        a: "It varies with the number of findings and how much was captured on the roof. Complete capture is what shortens it.",
+      },
+      {
+        q: "What slows supplements down the most?",
+        a: "Missing details: unlabeled photos, no locations or quantities, and descriptions written from memory days later.",
+      },
+      {
+        q: "Can AI write my supplement?",
+        a: "AI can draft descriptions from photos and notes. You should read and edit every one, and the carrier still decides what to pay.",
+      },
+      {
+        q: "Do I need software to write supplements faster?",
+        a: "No. A findings log, a checklist and a template get you most of the way. Software helps when volume is high or many people capture findings.",
+      },
+      {
+        q: "Should I send the supplement right away?",
+        a: "Send it promptly once it is complete, and write down a follow-up date. Check your claim for any time limits.",
+      },
+      {
+        q: "What should the crew capture at minimum?",
+        a: "A wide photo, a close photo, what it is, where it is, and how much, for every finding.",
+      },
+    ],
+    related: ["how-to-write-a-roofing-supplement","roof-tear-off-findings-log-template","roofing-crew-supplement-documentation-sop","roofing-supplement-email-to-adjuster"],
   },
   {
     slug: "roof-tear-off-vs-overlay",
