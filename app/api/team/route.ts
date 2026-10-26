@@ -104,6 +104,7 @@ export async function POST(request: Request) {
         await resend.emails.send({
           from: process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.io",
           to: email.toLowerCase(),
+          replyTo: "support@supplementsnap.io",
           subject: "You've been invited to Supplement Snap",
           html: `
             <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:480px;margin:0 auto;">

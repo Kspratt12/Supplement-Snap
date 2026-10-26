@@ -140,6 +140,7 @@ ${message}
     const { error } = await resend.emails.send({
       from: `${fromName} <${fromAddress}>`,
       to: [to],
+      replyTo: user.email || undefined,
       subject,
       html: htmlBody,
       attachments: pdfBase64
