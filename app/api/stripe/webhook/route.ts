@@ -75,7 +75,7 @@ export async function POST(request: Request) {
         }
 
         // Send subscription activation email
-        if (customerEmail && process.env.RESEND_API_KEY) {
+        if (userId && customerEmail && process.env.RESEND_API_KEY) {
           try {
             // Look up user name if we have a userId
             let userName = ""
@@ -125,6 +125,39 @@ export async function POST(request: Request) {
             })
           } catch (emailErr) {
             console.error("Subscription activation email failed:", emailErr)
+          }
+        }
+
+        // Paid, but no account was found for this email: say so plainly and how to fix it
+        if (!userId && customerEmail && process.env.RESEND_API_KEY) {
+          try {
+            const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://supplementsnap.io"
+            const fromAddress = process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.io"
+            const resend = new Resend(process.env.RESEND_API_KEY)
+            await resend.emails.send({
+              from: `Supplement Snap <${fromAddress}>`,
+              to: [customerEmail],
+              replyTo: "support@supplementsnap.io",
+              subject: "Payment received: create your Supplement Snap login",
+              html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #27272a;">
+                  <div style="background-color: #4f46e5; padding: 20px 24px; border-radius: 8px 8px 0 0;">
+                    <h1 style="color: #ffffff; margin: 0; font-size: 18px; font-weight: 700;">Supplement Snap</h1>
+                  </div>
+                  <div style="border: 1px solid #e4e4e7; border-top: none; padding: 32px 24px; border-radius: 0 0 8px 8px;">
+                    <p style="font-size: 15px; line-height: 1.6; margin: 0 0 16px 0;">Hi there,</p>
+                    <p style="font-size: 15px; line-height: 1.6; margin: 0 0 16px 0;">Thank you. We received your payment, but we could not find a Supplement Snap login for this email address yet.</p>
+                    <p style="font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">Create your login with <strong>${customerEmail}</strong> and your plan switches on automatically. You do not need to pay again.</p>
+                    <div style="text-align: center; margin: 0 0 24px 0;">
+                      <a href="${siteUrl}/signup" style="display: inline-block; background-color: #4f46e5; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 28px; border-radius: 8px;">Create my login</a>
+                    </div>
+                    <p style="font-size: 13px; line-height: 1.6; color: #52525b; margin: 0;">Stuck? Reply to this email and we will set it up for you.</p>
+                  </div>
+                </div>
+              `,
+            })
+          } catch (emailErr) {
+            console.error("Unclaimed payment email failed:", emailErr)
           }
         }
 
