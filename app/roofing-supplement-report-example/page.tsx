@@ -78,7 +78,7 @@ export default function SupplementReportExamplePage() {
               {[
                 { num: "1", title: "Decking: Front Slope", desc: "Three sheets of rotted OSB decking discovered along the eave edge during tear-off. Wood was soft and deteriorated from prolonged moisture exposure. Damage was concealed beneath existing shingles." },
                 { num: "2", title: "Flashing: Chimney", desc: "Step flashing along the chimney wall was severely corroded with multiple separation points. Counter flashing seal had failed at the mortar joint. Not visible prior to shingle removal." },
-                { num: "3", title: "Ice & Water Shield: Valley", desc: "No ice and water shield membrane present in the main valley. Current building code requires installation. Condition was concealed under existing roofing materials." },
+                { num: "3", title: "Ice & Water Shield: Valley", desc: "No ice and water shield membrane present in the main valley. Local code and the shingle maker's instructions may require installation. Condition was concealed under existing roofing materials." },
               ].map((f) => (
                 <div key={f.num} className="flex items-start gap-2.5">
                   <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">{f.num}</span>

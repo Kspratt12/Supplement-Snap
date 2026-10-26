@@ -128,7 +128,7 @@ export default function PricingPage() {
             <p className="mt-1 text-sm text-zinc-500">No credit card required</p>
 
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
-              {["1 demo project", "Capture damage photos", "Voice-to-note documentation", "AI supplement draft", "See sample PDF report"].map((f) => (
+              {["Demo project plus 1 project of your own", "Capture damage photos", "Voice-to-note documentation", "AI supplement draft", "See sample PDF report"].map((f) => (
                 <div key={f} className="flex items-start gap-2.5">
                   <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />

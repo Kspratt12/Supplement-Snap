@@ -142,7 +142,8 @@ function Home() {
 
   const isFreeUser = !hasActiveSubscription(subscriptionStatus)
   const isProUser = hasActiveSubscription(subscriptionStatus) && (subscriptionPlan === "pro" || subscriptionPlan === "team")
-  const FREE_PROJECT_LIMIT = 1
+  // Every account starts with an auto-created demo project, so a free account holds 2: the demo plus one of its own
+  const FREE_PROJECT_LIMIT = 2
   const FREE_CAPTURE_LIMIT = 3
 
   // Project state
@@ -242,7 +243,7 @@ function Home() {
   const [draftExpanded, setDraftExpanded] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [editingClaim, setEditingClaim] = useState(false)
-  const [editClaimData, setEditClaimData] = useState({ insurance_company: "", claim_number: "", adjuster_name: "", adjuster_email: "", date_of_loss: "" })
+  const [editClaimData, setEditClaimData] = useState({ insurance_company: "", claim_number: "", policy_number: "", adjuster_name: "", adjuster_email: "", date_of_loss: "" })
 
   // Project report state
   const [showReport, setShowReport] = useState(false)
@@ -2268,6 +2269,7 @@ function Home() {
                       setEditClaimData({
                         insurance_company: selectedProject.insurance_company || "",
                         claim_number: selectedProject.claim_number || "",
+                        policy_number: selectedProject.policy_number || "",
                         adjuster_name: selectedProject.adjuster_name || "",
                         adjuster_email: selectedProject.adjuster_email || "",
                         date_of_loss: selectedProject.date_of_loss || "",
@@ -2284,6 +2286,7 @@ function Home() {
                   <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     <input value={editClaimData.insurance_company} onChange={(e) => setEditClaimData(d => ({ ...d, insurance_company: e.target.value }))} placeholder="Insurance company" className="rounded border border-zinc-200 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
                     <input value={editClaimData.claim_number} onChange={(e) => setEditClaimData(d => ({ ...d, claim_number: e.target.value }))} placeholder="Claim number" className="rounded border border-zinc-200 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
+                    <input value={editClaimData.policy_number} onChange={(e) => setEditClaimData(d => ({ ...d, policy_number: e.target.value }))} placeholder="Policy number" className="rounded border border-zinc-200 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
                     <input value={editClaimData.adjuster_name} onChange={(e) => setEditClaimData(d => ({ ...d, adjuster_name: e.target.value }))} placeholder="Adjuster name" className="rounded border border-zinc-200 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
                     <input value={editClaimData.adjuster_email} onChange={(e) => setEditClaimData(d => ({ ...d, adjuster_email: e.target.value }))} placeholder="Adjuster email" className="rounded border border-zinc-200 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-zinc-400" />
                   </div>
@@ -2297,6 +2300,7 @@ function Home() {
                           insurance_company: editClaimData.insurance_company || null,
                           claim_number: editClaimData.claim_number || null,
                           adjuster_name: editClaimData.adjuster_name || null,
+                          policy_number: editClaimData.policy_number || null,
                           adjuster_email: editClaimData.adjuster_email || null,
                           date_of_loss: editClaimData.date_of_loss || null,
                         }).eq("id", selectedProject.id)

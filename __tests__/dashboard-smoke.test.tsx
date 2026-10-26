@@ -18,14 +18,20 @@ vi.mock("../lib/supabase", () => {
       if (op !== "select") db.writes.push({ table, op, payload })
       if (op !== "select" && db.failWrites) return { data: null, error: { message: "network down" } }
       const rows = db.rows[table] ?? []
-      return { data: rows, error: null }
+      return { data: rows, error: null, count: rows.length }
     }
     const proxy: unknown = new Proxy(
       {},
       {
         get(_t, prop: string) {
           if (prop === "then") return (res: (v: unknown) => unknown, rej: (e: unknown) => unknown) => Promise.resolve(result()).then(res, rej)
-          if (prop === "single" || prop === "maybeSingle") return () => Promise.resolve({ data: (db.rows[table] ?? [])[0] ?? null, error: null })
+          if (prop === "single" || prop === "maybeSingle") {
+            return () => {
+              const r = result() // records the write, and reports a failure when the test asked for one
+              const data = op === "insert" && !r.error ? { id: "new-id", ...(payload as object) } : (db.rows[table] ?? [])[0] ?? null
+              return Promise.resolve({ data, error: r.error })
+            }
+          }
           if (prop === "insert") return (p: unknown) => chain(table, "insert", p)
           if (prop === "update") return (p: unknown) => chain(table, "update", p)
           if (prop === "delete") return () => chain(table, "delete")
@@ -245,5 +251,30 @@ describe("dashboard smoke test (stand-in database)", () => {
     instance!.onerror!({ error: "not-allowed" })
     expect(await screen.findByText(/microphone is blocked/i)).toBeTruthy()
     delete (window as unknown as { webkitSpeechRecognition?: unknown }).webkitSpeechRecognition
+  })
+
+  async function startProjectFromForm(name: string) {
+    fireEvent.click(await screen.findByRole("button", { name: "+ New" }))
+    fireEvent.change(await screen.findByPlaceholderText(/Project name/), { target: { value: name } })
+    fireEvent.change(screen.getByPlaceholderText("Property address"), { target: { value: "12 Oak Lane, Cary NC" } })
+    fireEvent.click(screen.getByRole("button", { name: "Create Project" }))
+  }
+
+  it("lets a free account start a project of its own next to the auto-created demo", async () => {
+    plan.paid = false
+    db.rows.projects = [project({ id: "demo", project_name: "Demo Project — Smith Residence" })]
+    render(<AppPage />)
+    await startProjectFromForm("Garcia Roof")
+    await waitFor(() => expect(db.writes.some((w) => w.table === "projects" && w.op === "insert")).toBe(true))
+    expect(screen.queryByText("Upgrade to unlock")).toBeNull()
+  })
+
+  it("asks a free account that already has the demo and one project to upgrade for another", async () => {
+    plan.paid = false
+    db.rows.projects = [project({ id: "demo", project_name: "Demo Project — Smith Residence" }), project({ id: "p1", project_name: "Garcia Roof" })]
+    render(<AppPage />)
+    await startProjectFromForm("Third Job")
+    expect(await screen.findByText("Upgrade to unlock")).toBeTruthy()
+    expect(db.writes.some((w) => w.table === "projects" && w.op === "insert")).toBe(false)
   })
 })
