@@ -34,8 +34,8 @@ const TEAM_FEATURES = [
 const PRO_FEATURES = [
   "Everything in Team, plus:",
   "Up to 5 team members",
-  "Priority support",
-  "Dedicated onboarding",
+  "Priority email replies",
+  "Setup walkthrough for your team",
   "Custom branding",
 ]
 
@@ -46,7 +46,7 @@ const FAQ = [
   },
   {
     q: "What's the difference between the plans?",
-    a: "Starter is for solo contractors (1 user). Team is for small crews of 2-3 people who need shared access, email tracking, and Xactimate export. Pro is for larger operations with up to 5 users, priority support, dedicated onboarding, and custom branding.",
+    a: "Starter is for solo contractors (1 user). Team is for small crews of 2-3 people who need shared access, email tracking, and Xactimate export. Pro is for larger operations with up to 5 users, priority email replies, a setup walkthrough for your team, and custom branding.",
   },
   {
     q: "Can I upgrade from Starter to Pro later?",
@@ -269,8 +269,8 @@ export default function PricingPage() {
                   ["Team access", false, false, true, true],
                   ["Email open tracking", false, false, true, true],
                   ["Photo annotations", false, true, true, true],
-                  ["Priority support", false, false, false, true],
-                  ["Dedicated onboarding", false, false, false, true],
+                  ["Priority email replies", false, false, false, true],
+                  ["Setup walkthrough for your team", false, false, false, true],
                   ["Custom branding", false, false, false, true],
                 ] as Array<[string, string | boolean, string | boolean, string | boolean, string | boolean]>).map(([feature, free, starter, team, pro]) => (
                   <tr key={feature}>
