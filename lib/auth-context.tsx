@@ -164,5 +164,6 @@ export function useAuth() {
 }
 
 export function hasActiveSubscription(status: SubscriptionStatus): boolean {
-  return status === "active" || status === "trialing"
+  // past_due: a renewal failed and Stripe is retrying, so access continues until the retries run out
+  return status === "active" || status === "trialing" || status === "past_due"
 }

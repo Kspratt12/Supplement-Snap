@@ -6,7 +6,7 @@ export type SubStatus = "active" | "trialing" | "past_due" | "canceled" | "inact
 export type Access = {
   plan: Plan
   status: SubStatus
-  /** true when the user (or the team owner they belong to) has an active or trialing subscription */
+  /** true when the user (or the team owner they belong to) has an active, trialing or past-due-but-retrying subscription */
   active: boolean
   /** true when the access comes from a team owner's subscription, not the user's own */
   viaOwner: boolean
@@ -18,7 +18,9 @@ export type Access = {
 const admin = () =>
   createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "", process.env.SUPABASE_SERVICE_ROLE_KEY || "")
 
-const isLive = (s?: string | null) => s === "active" || s === "trialing"
+// "past_due" means a renewal payment failed and Stripe is still retrying the card. The customer keeps access during
+// that window. If every retry fails, Stripe cancels the subscription and the webhook marks it "canceled".
+const isLive = (s?: string | null) => s === "active" || s === "trialing" || s === "past_due"
 const normPlan = (p?: string | null): Plan => (p === "team" || p === "pro" || p === "starter" ? p : "starter")
 
 /**

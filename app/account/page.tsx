@@ -169,7 +169,7 @@ export default function AccountPage() {
               )}
               {subscriptionStatus === "past_due" && (
                 <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">
-                  Your last payment did not go through. Update your card under Manage billing to restore access.
+                  Your last payment did not go through. You can keep using Supplement Snap while we retry, but please update your card under Manage billing so your plan is not cancelled.
                 </p>
               )}
               {subscriptionHasBilling && !subscriptionViaOwner && (
