@@ -164,6 +164,7 @@ export async function POST(request: Request) {
     const { error } = await resend.emails.send({
       from: `Supplement Snap <${fromAddress}>`,
       to: [to],
+      replyTo: "support@supplementsnap.io",
       subject: email.subject,
       html: email.html,
     })

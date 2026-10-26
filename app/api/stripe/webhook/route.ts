@@ -94,6 +94,7 @@ export async function POST(request: Request) {
             await resend.emails.send({
               from: `Supplement Snap <${fromAddress}>`,
               to: [customerEmail],
+              replyTo: "support@supplementsnap.io",
               subject: "Your Supplement Snap subscription is active",
               html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #27272a;">

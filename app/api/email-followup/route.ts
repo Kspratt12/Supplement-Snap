@@ -27,7 +27,7 @@ export async function GET(request: Request) {
     // Find emails due for follow-up: not opened, follow_up_at in the past, not already followed up
     const { data: pending } = await supabase
       .from("email_tracking")
-      .select("id, recipient_email, subject, project_id")
+      .select("id, recipient_email, subject, project_id, user_id")
       .not("follow_up_at", "is", null)
       .lte("follow_up_at", new Date().toISOString())
       .is("opened_at", null)
@@ -41,9 +41,15 @@ export async function GET(request: Request) {
     let sent = 0
     for (const record of pending) {
       try {
+        let senderEmail: string | undefined
+        if (record.user_id) {
+          const { data: sender } = await supabase.auth.admin.getUserById(record.user_id)
+          senderEmail = sender?.user?.email || undefined
+        }
         await resend.emails.send({
           from: fromEmail,
           to: record.recipient_email,
+          replyTo: senderEmail,
           subject: `Follow-up: ${record.subject}`,
           html: `
             <div style="font-family: -apple-system, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px;">

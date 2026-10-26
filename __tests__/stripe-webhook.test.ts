@@ -88,6 +88,7 @@ describe("Stripe webhook: a new purchase", () => {
     expect(w).toMatchObject({ table: "subscriptions", op: "upsert", opts: { onConflict: "user_id" } })
     expect(w.row).toMatchObject({ user_id: "u1", status: "active", plan: "team", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1" })
     expect(calls.emails.map((e) => e.subject)).toEqual(["Your Supplement Snap subscription is active"])
+    expect(calls.emails[0].replyTo).toBe("support@supplementsnap.io")
   })
   it("finds the user by email when the checkout carries no user id", async () => {
     calls.users = [{ id: "u9", email: "Crystal@Example.com" }]
