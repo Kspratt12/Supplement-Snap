@@ -789,7 +789,7 @@ const ARTICLES: Article[] = [
       1: { src: "/blog/roof-tear-off-cost/tear-off-in-progress.jpg", width: 1024, height: 683, alt: "Roof mid-tear-off showing exposed decking and damaged shingles being removed" },
       3: { src: "/blog/roof-tear-off-cost/hidden-damage-found.jpg", width: 1400, height: 934, alt: "Rotted roof decking discovered during tear-off requiring supplement documentation" },
     },
-    related: ["roof-debris-removal-dumpster-insurance-claim", "roof-tear-off-findings-log-template", "roof-tear-off-vs-overlay", "roofing-overhead-and-profit-claims","how-much-do-roofing-supplements-pay","roof-replacement-estimate-vs-final-cost","roofing-code-upgrades-ordinance-and-law"],
+    related: ["how-to-document-multiple-roof-layers-during-tear-off", "roof-debris-removal-dumpster-insurance-claim", "roof-tear-off-findings-log-template", "roof-tear-off-vs-overlay", "roofing-overhead-and-profit-claims","how-much-do-roofing-supplements-pay","roof-replacement-estimate-vs-final-cost","roofing-code-upgrades-ordinance-and-law"],
     sections: [
       {
         heading: "What is a roof tear-off and why does cost matter?",
@@ -2280,7 +2280,7 @@ const ARTICLES: Article[] = [
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
     midCtaBody: "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
-    related: ["roof-tear-off-findings-log-template", "roof-tear-off-vs-overlay", "roofing-photo-documentation-checklist", "roofing-supplement-template", "hail-damage-roof-inspection", "roofing-documentation-spanish-speaking-crews"],
+    related: ["document-rotted-fascia-and-sub-fascia-roof-claim", "document-deck-damage-from-old-underlayment-and-fasteners", "roof-tear-off-findings-log-template", "roof-tear-off-vs-overlay", "roofing-photo-documentation-checklist", "roofing-supplement-template", "hail-damage-roof-inspection", "roofing-documentation-spanish-speaking-crews"],
   },
   {
     slug: "organize-roofing-supplement-photos-by-claim",
@@ -4627,7 +4627,7 @@ const ARTICLES: Article[] = [
         a: "See our guide to Xactimate codes for roofing supplements. Codes and pricing vary by carrier and region, so match the format the adjuster uses.",
       },
     ],
-    related: ["drip-edge-roofing-supplement", "ice-and-water-shield-roofing-supplement", "roofing-permit-fees-insurance-claim", "starter-strip-ridge-cap-roofing-supplement", "roof-flashing-vents-pipe-jacks-insurance-supplement", "xactimate-codes-for-roofing-supplements","document-rotted-roof-decking-tear-off","roofing-code-upgrades-ordinance-and-law","roofing-photo-documentation-checklist"],
+    related: ["document-rotted-fascia-and-sub-fascia-roof-claim", "step-flashing-behind-siding-roof-claim", "drip-edge-roofing-supplement", "ice-and-water-shield-roofing-supplement", "roofing-permit-fees-insurance-claim", "starter-strip-ridge-cap-roofing-supplement", "roof-flashing-vents-pipe-jacks-insurance-supplement", "xactimate-codes-for-roofing-supplements","document-rotted-roof-decking-tear-off","roofing-code-upgrades-ordinance-and-law","roofing-photo-documentation-checklist"],
   },
   {
     slug: "roof-claim-reinspection-request",
@@ -5570,7 +5570,7 @@ const ARTICLES: Article[] = [
         a: "Count them and list by type and size. Whether the estimate prices them individually or as a group, your list lets the reviewer match what you installed to what was priced.",
       },
     ],
-    related: ["what-can-you-supplement-on-a-roof-claim","roof-inspection-checklist","drip-edge-roofing-supplement","how-to-write-a-roofing-supplement"],
+    related: ["step-flashing-behind-siding-roof-claim", "what-can-you-supplement-on-a-roof-claim","roof-inspection-checklist","drip-edge-roofing-supplement","how-to-write-a-roofing-supplement"],
   },
   {
     slug: "roof-debris-removal-dumpster-insurance-claim",
@@ -5665,7 +5665,7 @@ const ARTICLES: Article[] = [
         a: "Do not use a combined ticket as proof for one job. Ask the facility for a ticket for each job or note the split.",
       },
     ],
-    related: ["roof-tear-off-cost","roof-tear-off-vs-overlay","document-rotted-roof-decking-tear-off","what-can-you-supplement-on-a-roof-claim"],
+    related: ["how-to-document-multiple-roof-layers-during-tear-off", "roof-tear-off-cost","roof-tear-off-vs-overlay","document-rotted-roof-decking-tear-off","what-can-you-supplement-on-a-roof-claim"],
   },
   {
     slug: "insurance-lowball-roof-estimate-what-to-do",
@@ -7133,6 +7133,374 @@ const ARTICLES: Article[] = [
     related: ["questions-to-ask-before-buying-roofing-supplement-software","best-roofing-supplement-software","roofing-supplement-software-free-trial-plan","roofing-supplement-companies-vs-software"],
   },
   {
+    slug: "how-to-document-multiple-roof-layers-during-tear-off",
+    title: "How to Document Multiple Roof Layers During Tear-Off",
+    metaTitle: "How to Document Multiple Roof Layers at Tear-Off",
+    metaDescription: "Found a second or third roof layer? How to photograph each layer with a tape, record the count by slope, and send proof for extra labor and disposal.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Catch the layers before they hit the dumpster.",
+    midCtaBody: "Supplement Snap lets your crew photograph and tag each finding by slope the moment it appears. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to capture"],
+        rows: [
+          { feature: "The edge", values: ["A close photo of the cut edge showing every layer stacked, with a tape against it"] },
+          { feature: "The count", values: ["How many layers, on which slope, and where on that slope"] },
+          { feature: "The type", values: ["Shingles, felt, wood shakes or something else, so the office knows what came off"] },
+          { feature: "The change", values: ["A wide photo showing where the extra layers start and stop"] },
+          { feature: "The proof of work", values: ["Photos of the debris or weight tickets from the extra material"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Photograph it before the second layer is gone", text: "The edge is only readable until it is torn off. Take the photo the moment you see more than you expected, and write down the slope while you are standing there." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "When a crew strips the first section of a roof and finds a second or third layer that was not visible from the ground, the job is bigger than the estimate assumed. Extra layers mean more labor, more disposal and sometimes different installation steps. To ask the carrier to reflect that, you need proof the office can use: a clear photo of the stacked edge with a tape, the count by slope, and a note of the material. Take it during tear-off, before the layers are in the trailer.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "Why layers get missed",
+        content: "From the ground, a roof with two layers can look like one. Edges are covered by drip edge or fascia, and the layer count may differ between slopes if part of the roof was repaired or re-roofed at another time. The estimate is usually built from what the adjuster could see and from aerial measurements, so extra layers often show up only once the crew is on the roof. The table lists what to capture the moment you find them.",
+      },
+      {
+        heading: "Step 1: Photograph the stacked edge",
+        content: "Cut or lift a clean edge so the layers are visible from the side. Hold a tape measure or a marked stick against it. Take one close photo showing every layer and the tape, and one slightly wider photo that shows where on the slope the edge is. If you cannot get a clean side view, photograph the exposed layers as the crew removes them, one at a time, with the slope noted.\n\nDo not rely on a single photo. If a reviewer cannot tell how many layers there are, the photo does not do its job.",
+      },
+      {
+        heading: "Step 2: Count by slope, not by house",
+        content: "Layers can differ across a roof. A rear addition may have one layer while the main roof has two. Write the count for each slope: Front slope, two layers. Rear slope, one layer. Addition, three layers. Then put the quantity of roofing in squares beside each count, if the crew has measured it. Our free <a href='/blog/roof-tear-off-findings-log-template'>findings log</a> has a table for exactly this.",
+      },
+      {
+        heading: "Step 3: Name what you found",
+        content: "Say what the layers are made of. Asphalt shingles over felt over old shingles is different from wood shakes under newer shingles. Note whether the lower layer looks like a different age or product, and whether you saw anything unusual between layers. Keep it factual: what is there, not why it happened.",
+      },
+      {
+        heading: "Step 4: Keep proof of the extra disposal",
+        content: "Extra layers add weight and loads. Keep dump tickets and dumpster invoices, and photograph the debris pile if useful. Write the claim number or address on each receipt. Our article on <a href='/blog/roof-debris-removal-dumpster-insurance-claim'>debris removal and dumpster costs</a> covers what the carrier may need to see. Building codes, manufacturer instructions, policy wording and carrier practice vary, so confirm the details for your job with the building department and the claim documents.",
+      },
+      {
+        heading: "A worked example (fictional)",
+        content: "A crew starts on the rear slope of a 32 square roof. The lead lifts a shingle at the eave and finds two layers. He walks the roof, finds the same stack on the front slope, and then sees that the garage addition has only one. He photographs the cut edge on each slope with a tape, writes Front 2 layers, Rear 2 layers, Garage 1 layer in the log, and sends the log and photos to the office before lunch.\n\nThe office builds a supplement with three numbered findings, each with its edge photo, and compares the tear-off quantity in the estimate with the second-layer quantity. The example is made up. It shows the order: stop, photograph, count by slope, send.",
+      },
+      {
+        heading: "How to word the request",
+        content: "Keep it short and checkable: Second layer of asphalt shingles found on front and rear slopes, 28 squares. Photos 6 to 11 show the stacked edge with a tape. Garage addition has one layer, photo 12. Dump tickets attached.\n\nAsk for the difference between what the estimate lists and what you found. Do not argue about why the adjuster did not see it. The roof was not open when they looked.",
+      },
+      {
+        heading: "Mistakes that weaken the proof",
+        content: "• One photo of the edge with no tape and no slope noted\n• A count for the whole house when slopes differ\n• Photos taken after the layers were already in the dumpster\n• No receipts for the extra disposal\n• Claiming a layer you did not photograph",
+      },
+    ],
+    faq: [
+      {
+        q: "Does insurance pay for an extra layer of shingles?",
+        a: "Sometimes. It depends on the policy, local code, and what the carrier accepts after reviewing your photos and quantities. Document it clearly and ask.",
+      },
+      {
+        q: "How do I prove how many layers there were?",
+        a: "Photograph the cut edge with a tape against it, and write the count for each slope with the photo numbers.",
+      },
+      {
+        q: "Do layers have to be removed?",
+        a: "Many places limit how many layers a roof can have, and shingle manufacturers give installation instructions. Check your local code and the manufacturer's sheet for the product you install.",
+      },
+      {
+        q: "What if only part of the roof has two layers?",
+        a: "Document each slope separately. Quantities and counts by slope are what the reviewer needs.",
+      },
+      {
+        q: "Should I keep the dump tickets?",
+        a: "Yes. They show the extra weight and loads and support the disposal line.",
+      },
+      {
+        q: "Can I add this to a supplement after the first estimate?",
+        a: "Many contractors do. Send the photos, counts and receipts together and follow the carrier's process.",
+      },
+    ],
+    related: ["roof-debris-removal-dumpster-insurance-claim","roof-tear-off-vs-overlay","roof-tear-off-findings-log-template","what-can-you-supplement-on-a-roof-claim"],
+  },
+  {
+    slug: "document-rotted-fascia-and-sub-fascia-roof-claim",
+    title: "Rotted Fascia and Sub-Fascia Found at Tear-Off: How to Document It",
+    metaTitle: "Rotted Fascia Found at Tear-Off: How to Document It",
+    metaDescription: "Dropping the gutters can reveal rotted fascia and rafter tails the estimate never saw. How to photograph, measure and describe it factually for the carrier.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Log it before the gutters go back up.",
+    midCtaBody: "Supplement Snap helps your crew capture each finding with a photo, a location and a note while the damage is still exposed. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to capture"],
+        rows: [
+          { feature: "The wide shot", values: ["The whole eave or rake, showing where along the roof the damage is"] },
+          { feature: "The close shot", values: ["The rotted board with a tape, and a probe or screwdriver showing how soft it is"] },
+          { feature: "The length", values: ["Linear feet of fascia, and how many rafter tails look affected"] },
+          { feature: "What is behind it", values: ["The gutter attachment and the edge of the roof deck, if exposed"] },
+          { feature: "The date", values: ["When the gutters came off, so the finding is tied to the tear-off"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "State what you see, not the cause", text: "Say the board is soft and discolored and where. Whether it is storm damage, old moisture or maintenance is for the carrier and the policy to decide, and a guess weakens your credibility." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Fascia, sub-fascia and rafter tails sit behind the gutters, so their condition is often unknown until the gutters come off during a replacement. When the crew finds rot there, the job has gained work that was not in the first estimate. The way to handle it is to stop, photograph and measure while it is exposed, describe it plainly without guessing at the cause, and send it to the office the same day. The carrier decides whether it is covered.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "Why it shows up late",
+        content: "Gutters and drip edge cover the fascia, and the sub-fascia and rafter tails are behind it. Water that runs down the back of a gutter or sits against the eave can soften wood out of sight. An adjuster inspecting from the ground or from aerial images usually cannot see it. The table lists what to capture the moment the board is exposed.",
+      },
+      {
+        heading: "Step 1: Wide shot, then close shot",
+        content: "Take a photo of the whole eave or rake first, so a reviewer can see where the damage is. Then move in: photograph the rotted board with a tape against it. If it is soft, press a screwdriver or a probe into it and photograph that, because it shows condition better than a description.",
+      },
+      {
+        heading: "Step 2: Measure and count",
+        content: "Write the linear feet of fascia that is affected, and how many rafter tails look soft. Note which side of the house and which part of the eave. Our <a href='/blog/roof-tear-off-findings-log-template'>findings log</a> has a row for each, with photo numbers.",
+      },
+      {
+        heading: "Step 3: Describe it without guessing",
+        content: "A short factual note works: Front eave, left side. About 14 linear feet of fascia is soft and discolored when probed. Three rafter tails show deterioration at the end. Found after gutters were removed. Photos 18 to 23.\n\nAvoid words like neglected, old or storm damage unless you can show the evidence. Leave the cause to the reviewer.",
+      },
+      {
+        heading: "Step 4: Send it before the repair",
+        content: "Do not replace the board before the office has the photos. If the work cannot wait because of weather or safety, photograph it thoroughly first and tell the office what you did. If you need the carrier's approval before replacing it, send the photos right away and follow up. Building codes, manufacturer instructions, policy wording and carrier practice vary, so confirm the details for your job with the building department and the claim documents.",
+      },
+      {
+        heading: "A worked example (fictional)",
+        content: "On a full replacement, the crew removes the gutters on the front eave and finds that a length of fascia crumbles at the lower edge. The lead photographs the eave, then the board with a tape, then a screwdriver sinking into the wood. He counts three rafter tails with the same condition, writes it in the log, and calls the office.\n\nThe office builds a numbered finding for fascia and another for the rafter tails, attaches the photos and asks the carrier to review the added work. The numbers and details are invented to show the process, and the carrier may decide differently.",
+      },
+      {
+        heading: "How to word the request",
+        content: "Fascia and rafter tails, front eave: 14 linear feet of fascia and 3 rafter tails soft and deteriorated, found after gutter removal. Photos 18 to 23 show the condition with a tape and probe. Replacement requested for the affected sections.\n\nKeep fascia and rafter tails as separate findings so the reviewer can answer each on its own.",
+      },
+      {
+        heading: "Mistakes to avoid",
+        content: "• Replacing the board before photographing it\n• Writing a cause you cannot show\n• One photo of a whole eave with no close shot\n• No length or count\n• Sending the request weeks later, after the exposed wood is covered",
+      },
+    ],
+    faq: [
+      {
+        q: "Does insurance cover rotted fascia?",
+        a: "It depends on the policy, the cause and the carrier's review. Document what you find and ask. Do not promise the homeowner that it will be covered.",
+      },
+      {
+        q: "What is sub-fascia?",
+        a: "The board behind the fascia that the gutter and fascia attach to. It is also called a fascia backer or sub-fascia depending on the region.",
+      },
+      {
+        q: "How do I show how soft the wood is?",
+        a: "Photograph a screwdriver or probe pressed into it, with a tape alongside for size.",
+      },
+      {
+        q: "Should I replace it before the carrier agrees?",
+        a: "Photograph it thoroughly first and tell the office. If you must proceed for safety or weather, document what you did and why.",
+      },
+      {
+        q: "How do I avoid blaming the cause?",
+        a: "Describe condition and location only. The reviewer decides cause.",
+      },
+      {
+        q: "Can this be part of a supplement?",
+        a: "Many contractors list it as its own numbered finding with photos and a quantity. The carrier decides what to pay.",
+      },
+    ],
+    related: ["document-rotted-roof-decking-tear-off","what-can-you-supplement-on-a-roof-claim","roof-tear-off-findings-log-template","roofing-photo-documentation-checklist"],
+  },
+  {
+    slug: "step-flashing-behind-siding-roof-claim",
+    title: "Corroded Step Flashing Behind Siding: How to Document It",
+    metaTitle: "Corroded Step Flashing Behind Siding: Documentation",
+    metaDescription: "Old step flashing behind stucco or siding is hard to reuse and hard to explain. How to photograph it, say why it cannot be reused, and log the added labor.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Photograph the flashing before it comes out.",
+    midCtaBody: "Supplement Snap helps your crew capture the condition, location and length of each flashing section while it is exposed. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to capture"],
+        rows: [
+          { feature: "The wall", values: ["Wide photo of the roof-to-wall junction, showing the siding type and the roof slope"] },
+          { feature: "The condition", values: ["Close photos of rust, holes, lifted pieces or missing sections with a tape"] },
+          { feature: "The length", values: ["Linear feet along the wall, written down"] },
+          { feature: "Why it cannot be reused", values: ["A short factual note: corroded, broken when lifted, or wrong profile for the new roof"] },
+          { feature: "The access", values: ["What had to be cut, lifted or removed to reach it"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Reusing flashing is not always the right call", text: "Some flashing can be reused and some cannot. Photograph its condition and write why you are replacing it. Do not claim it must always be replaced." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Step flashing along a sidewall or dormer is often covered by siding, stucco or trim. When the crew opens the junction and finds the old flashing rusted through, bent or missing, the replacement may need extra labor around the wall covering. The way to document it is to photograph the junction, the condition of the metal and the access work, record the length, and write down plainly why the old pieces cannot be reused. The carrier decides what to pay.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "Why this item gets disputed",
+        content: "Flashing behind siding is out of sight, so the original estimate often does not know its condition. A reviewer may also ask whether the existing metal could have been reused, and whether the work behind the siding was necessary. A clear photo and a factual reason answer both questions before they are asked.",
+      },
+      {
+        heading: "Step 1: Show the junction",
+        content: "Take a wide photo of the wall where it meets the roof, with the roof slope and the wall covering in the frame. Note which wall it is: left sidewall of the main roof, dormer front, chimney side. Our <a href='/blog/roof-flashing-vents-pipe-jacks-insurance-supplement'>flashing and vents guide</a> covers the full count of small items.",
+      },
+      {
+        heading: "Step 2: Photograph the condition",
+        content: "Lift or remove only what you need to see it, then photograph the flashing close up with a tape. Rust through, holes, pieces that crumble or lift, and missing sections should each have a close photo. If a piece cannot be reused because it breaks when lifted, photograph it breaking, or photograph the broken piece beside the tape.",
+      },
+      {
+        heading: "Step 3: Record the length and the access",
+        content: "Write the linear feet along the wall. Note what had to be cut, lifted or removed to reach the flashing, such as a section of siding trim, a row of stucco, or a counterflashing. Photograph the access work. The labor to reach and restore the area is part of the finding.",
+      },
+      {
+        heading: "Step 4: Say why it cannot be reused",
+        content: "A short note is enough: Existing step flashing corroded with holes along 22 linear feet. Pieces broke when lifted. Replacement installed to match the new shingle course. Avoid saying it is always required. Local code and the shingle maker's instructions may say how flashing should be installed, so check them. Building codes, manufacturer instructions, policy wording and carrier practice vary, so confirm the details for your job with the building department and the claim documents.",
+      },
+      {
+        heading: "A worked example (fictional)",
+        content: "On a roof with a stucco sidewall, the crew exposes the step flashing along 22 feet and finds holes and crumbling edges. The lead photographs the wall, the metal with a tape, and a piece that breaks in his hand. He notes that a strip of stucco was cut back to reach the flashing and photographs that too.\n\nThe office makes one finding for the flashing with the length and photos and a second for the stucco work, so each can be reviewed separately. The numbers are invented for the example.",
+      },
+      {
+        heading: "How to word the request",
+        content: "Step flashing, left sidewall of main roof: 22 linear feet corroded with holes, pieces broke when lifted. Stucco cut back and restored to reach it. Photos 24 to 31 show the wall, condition and access. Replacement and restoration requested.\n\nSeparate the flashing from the wall work so the reviewer can say yes or no to each.",
+      },
+      {
+        heading: "Mistakes to avoid",
+        content: "• Removing flashing before photographing the condition\n• Saying it can never be reused\n• Lumping flashing and siding work into one line\n• No length or wall noted\n• No photos of what was cut or lifted",
+      },
+    ],
+    faq: [
+      {
+        q: "Can step flashing be reused?",
+        a: "Sometimes. It depends on its condition and the new roofing. Photograph it and write why you are replacing it.",
+      },
+      {
+        q: "Does insurance pay to replace flashing behind siding?",
+        a: "It depends on the policy and the carrier's review. Document the condition, length and access work and ask.",
+      },
+      {
+        q: "Do I need to remove the siding?",
+        a: "Only as much as needed to reach and replace the flashing properly, following the manufacturer's instructions and local code. Photograph what you did.",
+      },
+      {
+        q: "How do I measure step flashing?",
+        a: "In linear feet along the wall. Write the length and note which wall.",
+      },
+      {
+        q: "Should I separate flashing from siding work?",
+        a: "Yes. Separate findings are easier for a reviewer to approve or question.",
+      },
+      {
+        q: "What if the old flashing looks fine?",
+        a: "Say so honestly. If it can be reused, the reviewer may reasonably ask for that, and exaggerating hurts your other findings.",
+      },
+    ],
+    related: ["roof-flashing-vents-pipe-jacks-insurance-supplement","what-can-you-supplement-on-a-roof-claim","document-rotted-roof-decking-tear-off","roofing-code-upgrades-ordinance-and-law"],
+  },
+  {
+    slug: "document-deck-damage-from-old-underlayment-and-fasteners",
+    title: "Documenting Deck Damage From Old Underlayment and Rusted Fasteners",
+    metaTitle: "Deck Damage From Old Underlayment and Rusted Nails",
+    metaDescription: "When old self-adhered underlayment tears the deck or rusted nails lose their grip, the evidence ends up in the dumpster. How to photograph it first.",
+    publishedDate: "2026-10-25",
+    updatedDate: "2026-10-25",
+    externalLinks: [
+      { text: "NRCA", url: "https://www.nrca.net" },
+    ],
+    midCtaAfter: 1,
+    midCtaTitle: "Capture it before the sheets hit the dumpster.",
+    midCtaBody: "Supplement Snap lets your crew log each finding by slope with photos and notes at tear-off. Your first project is free.",
+    visuals: {
+      1: { type: "matrix", data: {
+        headers: ["What to capture"],
+        rows: [
+          { feature: "The underlayment", values: ["Close photo of old self-adhered underlayment bonded to the deck and what happens as it is lifted"] },
+          { feature: "The deck surface", values: ["Top ply torn, shredded or delaminated, with a tape for size"] },
+          { feature: "The fasteners", values: ["Close photos of rusted or pulled-through nails, and nail heads that no longer hold"] },
+          { feature: "The area", values: ["Which slope, and how many sheets or square feet are affected"] },
+          { feature: "The test", values: ["A photo of how the deck holds a new fastener, or fails to"] },
+        ],
+      }},
+      3: { type: "tip", data: { type: "info", title: "Describe what the deck does, not what you assume", text: "Say the top ply tears away when the underlayment is removed, or that the nails pull through. Check the shingle maker's deck requirements and your local code before saying the deck does not meet them." } },
+    },
+    sections: [
+      {
+        heading: "The short answer",
+        content: "Two conditions show up only once the old roof is off: old self-adhered underlayment that bonds so tightly the deck surface tears when it is removed, and rusted or loosened fasteners that no longer hold. Both can mean the deck needs partial replacement before new roofing is installed. Because the evidence is destroyed when the sheets go in the trailer, the crew has to photograph it on the roof: close shots, a tape, the slope, and a count of sheets. The carrier decides what to pay.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+      },
+      {
+        heading: "Why the evidence disappears",
+        content: "Torn or delaminated decking is thrown away with the old roof. Rusted nails come off with the shingles. A reviewer who was not on the roof cannot judge what they cannot see, so a description with no photo carries little weight. The table lists what to capture before the material is removed.",
+      },
+      {
+        heading: "Step 1: Photograph the underlayment as it comes up",
+        content: "Take a close photo of the old underlayment bonded to the deck, then another as the crew lifts it showing what comes with it. If the top ply of the plywood or the surface of the OSB tears away, photograph the torn area with a tape. Do it for each slope where it happens, not just one.",
+      },
+      {
+        heading: "Step 2: Photograph the fasteners",
+        content: "Pull a few shingles back or lift a section of deck and photograph the nail shanks and heads close up. Rusted shanks, nails that have pulled through the deck, and heads that spin freely are all worth a clear shot with a tape. Note which slope and where on it. Our <a href='/blog/document-rotted-roof-decking-tear-off'>decking documentation guide</a> covers the sheet-by-sheet count.",
+      },
+      {
+        heading: "Step 3: Count the area",
+        content: "Write how many sheets or how many square feet on each slope are affected. If you walk the deck and it flexes, or fasteners will not bite, note it as an observation. Do not write that the whole roof is bad unless you have checked every slope.",
+      },
+      {
+        heading: "Step 4: Say what is required, with sources",
+        content: "If you are saying the deck must be replaced to install the new roof, point to something you can show: the shingle manufacturer's deck and fastening requirements, the underlayment maker's instructions, or the building department's requirement. Attach the page, or ask the building department for it in writing. Building codes, manufacturer instructions, policy wording and carrier practice vary, so confirm the details for your job with the building department and the claim documents.",
+      },
+      {
+        heading: "A worked example (fictional)",
+        content: "On a steep rear slope, the crew peels back an old self-adhered underlayment. The top ply of the plywood comes up with it in strips. The lead photographs the bonded underlayment, the torn deck with a tape, and a handful of rusted nails with the heads pulling through. He counts nine sheets affected, writes it by slope, and sends the log.\n\nThe office builds one finding for the sheets, one for the rusted fasteners, attaches the manufacturer's deck requirements and asks for review. The example is invented. The carrier may decide differently, and some tears can be repaired without replacing the sheet.",
+      },
+      {
+        heading: "How to word the request",
+        content: "Decking, rear slope: 9 sheets with the top ply torn away when old self-adhered underlayment was removed, photos 33 to 38 with a tape. Rusted fasteners pulling through the deck on the same slope, photos 39 to 41. Replacement of affected sheets requested. Manufacturer deck requirements attached.\n\nKeep the torn sheets and the fastener condition as separate findings.",
+      },
+      {
+        heading: "Mistakes to avoid",
+        content: "• Photographing only the new, clean deck\n• Claiming the whole roof deck is failed without checking each slope\n• No tape or scale in the photo\n• Stating a code or manufacturer requirement you did not check\n• Throwing the sheets away before photographing them",
+      },
+    ],
+    faq: [
+      {
+        q: "Does insurance pay for decking damaged when removing old underlayment?",
+        a: "It depends on the policy, the cause and the carrier's review. Document the condition and ask. Do not promise the homeowner it will be covered.",
+      },
+      {
+        q: "How do I prove rusted nails matter?",
+        a: "Photograph the nail shanks and heads close up with a tape, and note where the nails pull through. Then point to the manufacturer's or code requirement for fastening.",
+      },
+      {
+        q: "Can torn decking be repaired instead of replaced?",
+        a: "Sometimes. The reviewer may ask. Describe what you saw and why you chose to replace it.",
+      },
+      {
+        q: "Do I count by sheet or square foot?",
+        a: "Either, as long as you show the arithmetic. A sheet is typically 4 ft by 8 ft, 32 square feet.",
+      },
+      {
+        q: "Should I photograph every slope?",
+        a: "Yes where the condition appears. A photo on one slope does not prove the same on another.",
+      },
+      {
+        q: "Where do I find the manufacturer's requirements?",
+        a: "In the shingle and underlayment installation instructions, usually on the maker's website or the package. Attach the page you rely on.",
+      },
+    ],
+    related: ["document-rotted-roof-decking-tear-off","roof-tear-off-vs-overlay","roofing-photo-documentation-checklist","roof-tear-off-findings-log-template"],
+  },
+  {
     slug: "roof-tear-off-vs-overlay",
     title: "Roof Tear-Off vs Overlay: Which to Choose and What Gets Missed",
     metaTitle: "Roof Tear-Off vs Overlay: Pros, Cons & What's Missed",
@@ -7228,7 +7596,7 @@ const ARTICLES: Article[] = [
         a: "That depends on your policy and the carrier, not on a general rule. If damage is found at tear-off that was not in the carrier's estimate, contractors document it and request it through a supplement.",
       },
     ],
-    related: ["roof-debris-removal-dumpster-insurance-claim", "roof-tear-off-cost", "document-rotted-roof-decking-tear-off", "how-insurance-adjusters-determine-roof-damage", "roofing-photo-documentation-checklist"],
+    related: ["how-to-document-multiple-roof-layers-during-tear-off", "document-deck-damage-from-old-underlayment-and-fasteners", "roof-debris-removal-dumpster-insurance-claim", "roof-tear-off-cost", "document-rotted-roof-decking-tear-off", "how-insurance-adjusters-determine-roof-damage", "roofing-photo-documentation-checklist"],
   },
   {
     slug: "roof-repair-estimate-template",
