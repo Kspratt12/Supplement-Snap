@@ -147,11 +147,11 @@ export async function POST(request: Request) {
                   <div style="border: 1px solid #e4e4e7; border-top: none; padding: 32px 24px; border-radius: 0 0 8px 8px;">
                     <p style="font-size: 15px; line-height: 1.6; margin: 0 0 16px 0;">Hi there,</p>
                     <p style="font-size: 15px; line-height: 1.6; margin: 0 0 16px 0;">Thank you. We received your payment, but we could not find a Supplement Snap login for this email address yet.</p>
-                    <p style="font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">Create your login with <strong>${customerEmail}</strong> and your plan switches on automatically. You do not need to pay again.</p>
+                    <p style="font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">Create your login with <strong>${customerEmail}</strong>, then reply to this email so we can connect your payment to your login. You do not need to pay again.</p>
                     <div style="text-align: center; margin: 0 0 24px 0;">
                       <a href="${siteUrl}/signup" style="display: inline-block; background-color: #4f46e5; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 28px; border-radius: 8px;">Create my login</a>
                     </div>
-                    <p style="font-size: 13px; line-height: 1.6; color: #52525b; margin: 0;">Stuck? Reply to this email and we will set it up for you.</p>
+                    <p style="font-size: 13px; line-height: 1.6; color: #52525b; margin: 0;">Replying takes a few seconds and we will switch your plan on the same day.</p>
                   </div>
                 </div>
               `,
