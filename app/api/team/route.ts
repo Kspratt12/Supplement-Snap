@@ -47,7 +47,7 @@ export async function POST(request: Request) {
       .limit(1)
       .maybeSingle()
 
-    const live = !!sub && (sub.status === "active" || sub.status === "trialing")
+    const live = !!sub && (sub.status === "active" || sub.status === "trialing" || sub.status === "past_due")
     if (!live) {
       return NextResponse.json({ error: "An active Team or Pro plan is required to invite team members." }, { status: 403 })
     }

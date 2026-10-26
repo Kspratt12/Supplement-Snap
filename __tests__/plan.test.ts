@@ -100,8 +100,19 @@ describe("getAccess", () => {
     store.tables.subscriptions = [{ user_id: "u1", status: "active", plan: "starter", stripe_customer_id: null }]
     expect(await getAccess("u1", "a@b.com")).toMatchObject({ plan: "starter", active: true, hasBilling: false })
   })
-  it("falls back to free for cancelled, past due or missing subscriptions", async () => {
-    for (const status of ["canceled", "past_due", "inactive"]) {
+  it("keeps a customer whose renewal failed usable while Stripe retries the card", async () => {
+    store.tables.subscriptions = [{ user_id: "u1", status: "past_due", plan: "starter", stripe_customer_id: "cus_1" }]
+    const a = await getAccess("u1", "a@b.com")
+    expect(a).toMatchObject({ plan: "starter", status: "past_due", active: true })
+    expect(can.emailReports(a)).toBe(true)
+  })
+  it("lets a team member keep using the plan while the owner's renewal is being retried", async () => {
+    store.tables.subscriptions = [{ user_id: "owner", status: "past_due", plan: "team", stripe_customer_id: "cus_o" }]
+    store.tables.team_members = [{ owner_id: "owner", member_email: "m@b.com", status: "active" }]
+    expect(await getAccess("m1", "m@b.com")).toMatchObject({ plan: "team", active: true, viaOwner: true })
+  })
+  it("falls back to free for cancelled, inactive or missing subscriptions", async () => {
+    for (const status of ["canceled", "inactive"]) {
       store.tables.subscriptions = [{ user_id: "u1", status, plan: "pro", stripe_customer_id: "cus_1" }]
       expect(await getAccess("u1", "a@b.com")).toMatchObject({ plan: "free", active: false })
     }
