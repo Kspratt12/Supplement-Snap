@@ -88,6 +88,7 @@ export default function FreeRoofingTemplatesPage() {
         </p>
 
         <div className="mt-8">
+          <h2 className="sr-only">All free templates</h2>
           {TEMPLATES.map((t) => (
             <div key={t.id}>
               <DownloadBox template={t} />
