@@ -14,10 +14,10 @@ const homepageFaqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   mainEntity: [
-    { "@type": "Question", name: "How long does it take to set up?", acceptedAnswer: { "@type": "Answer", text: "About 5 minutes. Create an account, start a project, and your crew can begin capturing damage immediately from any phone." } },
-    { "@type": "Question", name: "Does it work without cell service?", acceptedAnswer: { "@type": "Answer", text: "Photos and voice notes are saved on your phone. Once you have signal, everything syncs automatically. You just need a connection to generate the AI supplement draft." } },
+    { "@type": "Question", name: "How long does it take to set up?", acceptedAnswer: { "@type": "Answer", text: "A few minutes. Create an account, start a project, and your crew can begin capturing damage from any phone." } },
+    { "@type": "Question", name: "Does it work without cell service?", acceptedAnswer: { "@type": "Answer", text: "Photos and typed notes are saved on your phone when there is no signal, and they upload automatically once you are back online. Voice notes and the AI supplement draft need a connection, because speech-to-text and drafting happen online." } },
     { "@type": "Question", name: "Do I need special equipment?", acceptedAnswer: { "@type": "Answer", text: "No. Any smartphone with a camera works. Your crew is already carrying everything they need." } },
-    { "@type": "Question", name: "Can my office staff see what the crew captures?", acceptedAnswer: { "@type": "Answer", text: "Yes. Everything is saved to the cloud by project. Office staff can log in from any device and see all captures, notes, and reports." } },
+    { "@type": "Question", name: "Can my office staff see what the crew captures?", acceptedAnswer: { "@type": "Answer", text: "Yes. Everything is saved to the cloud by project. On the Team and Pro plans each person gets their own login (up to 3 or 5 people), and office staff can see all captures, notes and reports from any device. The Starter plan is one login." } },
     { "@type": "Question", name: "What if my crew speaks Spanish?", acceptedAnswer: { "@type": "Answer", text: "Voice notes are automatically translated to English. Your crew speaks in their language, and the system converts it for the supplement report." } },
     { "@type": "Question", name: "Is $99/month worth it for one crew?", acceptedAnswer: { "@type": "Answer", text: "Depending on your claims, recovering one missed line item may offset the monthly cost. There are no setup fees. Results vary by claim and are not guaranteed." } },
   ],
@@ -32,7 +32,7 @@ const softwareSchema = {
   description: "Roofing supplement software that helps contractors capture hidden damage during tear-off, generate AI supplement drafts, and send adjuster-ready PDF reports in minutes.",
   url: "https://supplementsnap.io",
   offers: [
-    { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free", description: "1 demo project" },
+    { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free", description: "Demo project plus 1 project of your own" },
     { "@type": "Offer", price: "99", priceCurrency: "USD", name: "Starter", description: "Unlimited projects, 1 user, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "99", priceCurrency: "USD" } },
     { "@type": "Offer", price: "199", priceCurrency: "USD", name: "Team", description: "Up to 3 users, Xactimate export, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "199", priceCurrency: "USD" } },
     { "@type": "Offer", price: "299", priceCurrency: "USD", name: "Pro", description: "Up to 5 users, priority support, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "299", priceCurrency: "USD" } },
@@ -514,7 +514,7 @@ export default function LandingPage() {
                   <div>
                     <p className="text-sm font-semibold text-zinc-900">Ice &amp; Water Shield: Valley</p>
                     <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                      No ice and water shield membrane was present in the main valley. Current building code requires ice and water shield in all valley areas. Installation is necessary to bring the roof system into compliance.
+                      No ice and water shield membrane was present in the main valley. Local code and the shingle maker's instructions may require it here. Installation would bring the roof system into line with those requirements.
                     </p>
                   </div>
                 </div>
@@ -639,7 +639,7 @@ export default function LandingPage() {
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">3</div>
               <h3 className="text-base font-semibold">Generate and send</h3>
               <p className="mt-2 text-sm leading-relaxed text-zinc-500">
-                One click generates a professional supplement draft, exports a PDF report, and emails it to the adjuster, all from the field.
+                In a few taps, generate a supplement draft, build the PDF report and email it to the adjuster, all from the field. You review the draft before it goes out.
               </p>
             </div>
           </div>
@@ -758,7 +758,7 @@ export default function LandingPage() {
               </div>
               <p className="mt-1 text-sm text-zinc-500">No credit card required</p>
               <div className="mt-5 flex-1 space-y-2.5">
-                {["1 demo project", "Damage photo capture", "AI supplement draft", "Voice notes", "See sample PDF"].map((f) => (
+                {["Demo project plus 1 project of your own", "Damage photo capture", "AI supplement draft", "Voice notes", "See sample PDF"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
                     <svg className="h-4 w-4 flex-shrink-0 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                     <span className="text-sm text-zinc-700">{f}</span>
@@ -847,11 +847,11 @@ export default function LandingPage() {
             {[
               {
                 q: "How long does it take to set up?",
-                a: "About 5 minutes. Create an account, start a project, and your crew can begin capturing damage immediately from any phone."
+                a: "A few minutes. Create an account, start a project, and your crew can begin capturing damage from any phone."
               },
               {
                 q: "Does it work without cell service?",
-                a: "Photos and voice notes are saved on your phone. Once you have signal, everything syncs automatically. You just need a connection to generate the AI supplement draft."
+                a: "Photos and typed notes are saved on your phone when there is no signal, and they upload automatically once you are back online. Voice notes and the AI supplement draft need a connection, because speech-to-text and drafting happen online."
               },
               {
                 q: "Do I need special equipment?",
@@ -859,7 +859,7 @@ export default function LandingPage() {
               },
               {
                 q: "Can my office staff see what the crew captures?",
-                a: "Yes. Everything is saved to the cloud by project. Office staff can log in from any device and see all captures, notes, and reports."
+                a: "Yes. Everything is saved to the cloud by project. On the Team and Pro plans each person gets their own login (up to 3 or 5 people), and office staff can see all captures, notes and reports from any device. The Starter plan is one login."
               },
               {
                 q: "What if my crew speaks Spanish?",
@@ -942,13 +942,13 @@ export default function LandingPage() {
           {/* Featured Blog Articles */}
           <div className="mt-16">
             <h3 className="text-center text-lg font-bold text-zinc-900">From the Blog</h3>
-            <p className="mt-2 text-center text-sm text-zinc-500">Guides and real numbers for roofing contractors</p>
+            <p className="mt-2 text-center text-sm text-zinc-500">Guides for roofing contractors</p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { href: "/blog/roof-tear-off-cost", title: "Roof Tear-Off Cost in 2026", desc: "What tear-offs actually cost by size, material, and pitch, plus hidden costs and how to recover them." },
+                { href: "/blog/roof-tear-off-cost", title: "Roof Tear-Off Cost in 2026", desc: "What affects tear-off cost: size, material, pitch, layers and disposal, plus hidden costs and how to document them." },
                 { href: "/blog/best-roof-estimating-software", title: "Best Roof Estimating Software", desc: "Compare satellite measurement, estimating, CRM, and supplement tools for roofing contractors." },
-                { href: "/blog/roof-replacement-estimate-vs-final-cost", title: "Estimate vs. Final Cost", desc: "Why the initial estimate is always lower and how supplements bridge the gap." },
-                { href: "/blog/hail-damage-roof-inspection", title: "Hail Damage Roof Inspection", desc: "What adjusters miss, hidden damage found during tear-off, and how to document for supplements." },
+                { href: "/blog/roof-replacement-estimate-vs-final-cost", title: "Estimate vs. Final Cost", desc: "Why the final cost often differs from the first estimate, and how supplements bridge the gap." },
+                { href: "/blog/hail-damage-roof-inspection", title: "Hail Damage Roof Inspection", desc: "Hidden damage found during tear-off, and how to document it for supplements." },
                 { href: "/blog/roofing-software-comparison", title: "CRM vs. Estimating vs. Supplement Tools", desc: "The three categories of roofing software and where the revenue gap hides." },
                 { href: "/blog/xactimate-roof-estimate-supplements", title: "Xactimate Roof Estimate Guide", desc: "Line codes, pricing benchmarks, and how to format supplements adjusters approve fast." },
               ].map((r) => (

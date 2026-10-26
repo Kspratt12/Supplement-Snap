@@ -216,7 +216,7 @@ export function StartHere({
 
       {isFreeUser && (
         <p className="mt-4 rounded-lg bg-white/70 p-3 text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
-          On the free plan you can try one project with up to {freeCaptureLimit} findings. Downloading the PDF, emailing it to an adjuster and the Xactimate export are on paid plans, so you will see the upgrade message there. Nothing is lost when you see it.
+          On the free plan you can try the demo project and one project of your own, each with up to {freeCaptureLimit} findings. Downloading the PDF, emailing it to an adjuster and the Xactimate export are on paid plans, so you will see the upgrade message there. Nothing is lost when you see it.
         </p>
       )}
 

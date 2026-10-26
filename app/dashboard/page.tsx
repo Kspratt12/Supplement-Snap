@@ -630,7 +630,7 @@ export default function DashboardPage() {
                       <div>
                         <p className="text-sm font-semibold text-zinc-900">Ice &amp; Water Shield — Valley</p>
                         <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                          No ice and water shield membrane present in the main valley. Current building code requires installation.
+                          No ice and water shield membrane present in the main valley. Local code and the shingle maker's instructions may require installation.
                         </p>
                       </div>
                     </div>

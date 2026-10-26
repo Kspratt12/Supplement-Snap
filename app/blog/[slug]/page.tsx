@@ -2246,6 +2246,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "document-rotted-roof-decking-tear-off",
+    images: { 0: { src: "/blog/document-rotted-roof-decking-tear-off/diagram.png", alt: "Illustration of a roof deck from above made of 4 by 8 foot sheets with three whole sheets and half a sheet marked soft or rotted, and the arithmetic for square feet", width: 1200, height: 630 } },
     downloads: "roof-tear-off-findings-log",
     title: "How to Document Rotted Roof Decking Found During Tear-Off",
     metaTitle: "How to Document Rotted Roof Decking at Tear-Off",
@@ -4973,7 +4974,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "drip-edge-roofing-supplement",
-    images: { 0: { src: "/blog/drip-edge-roofing-supplement/card.png", alt: "Key points from the guide: Drip Edge on a Roof Claim: How Roofers Document and Request It", width: 1200, height: 630 } },
+    images: { 0: { src: "/blog/drip-edge-roofing-supplement/diagram.png", alt: "Illustration of an eave and a rake in side view showing the roof deck, drip edge, underlayment and shingles in their typical order, with a reminder to measure both in linear feet", width: 1200, height: 630 } },
     downloads: "roof-tear-off-findings-log",
     title: "Drip Edge on a Roof Claim: How Roofers Document and Request It",
     metaTitle: "Drip Edge Roofing Supplement: How to Request It",
@@ -5074,7 +5075,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "ice-and-water-shield-roofing-supplement",
-    images: { 0: { src: "/blog/ice-and-water-shield-roofing-supplement/card.png", alt: "Key points from the guide: Ice and Water Shield on a Roof Claim: Documenting and Requesting It", width: 1200, height: 630 } },
+    images: { 0: { src: "/blog/ice-and-water-shield-roofing-supplement/diagram.png", alt: "Illustration of an ice and water shield strip along the eave in side view, with the exterior wall line and distance up the roof, and a roof plan showing eave and valley strips measured as length times width", width: 1200, height: 630 } },
     downloads: "roof-tear-off-findings-log",
     title: "Ice and Water Shield on a Roof Claim: Documenting and Requesting It",
     metaTitle: "Ice and Water Shield Supplement: Document and Request",
@@ -5285,7 +5286,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "steep-roof-charge-roofing-supplement",
-    images: { 0: { src: "/blog/steep-roof-charge-roofing-supplement/card.png", alt: "Key points from the guide: Steep Roof and High Roof Charges: How to Document Them", width: 1200, height: 630 } },
+    images: { 0: { src: "/blog/steep-roof-charge-roofing-supplement/diagram.png", alt: "Illustration of a 6 in 12 roof pitch as a right triangle with a level, 12 inches of run and 6 inches of rise, beside 4 in 12, 9 in 12 and 12 in 12 slopes", width: 1200, height: 630 } },
     downloads: "roof-tear-off-findings-log",
     title: "Steep Roof and High Roof Charges: How to Document Them",
     metaTitle: "Steep Roof Charge Supplement: How to Document It",
@@ -5487,7 +5488,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "starter-strip-ridge-cap-roofing-supplement",
-    images: { 0: { src: "/blog/starter-strip-ridge-cap-roofing-supplement/card.png", alt: "Key points from the guide: Starter Strip and Ridge Cap on a Roof Claim: What to Check", width: 1200, height: 630 } },
+    images: { 0: { src: "/blog/starter-strip-ridge-cap-roofing-supplement/diagram.png", alt: "Illustration of a gable roof and a hip roof from above with eaves marked for starter strip, rakes marked if starter is installed there, and ridges and hips marked for ridge cap", width: 1200, height: 630 } },
     downloads: "roof-tear-off-findings-log",
     title: "Starter Strip and Ridge Cap on a Roof Claim: What to Check",
     metaTitle: "Starter Strip and Ridge Cap on Roof Claims: Checklist",
@@ -5588,7 +5589,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-flashing-vents-pipe-jacks-insurance-supplement",
-    images: { 0: { src: "/blog/roof-flashing-vents-pipe-jacks-insurance-supplement/card.png", alt: "Key points from the guide: Flashing, Vents and Pipe Jacks: Documenting Small Items on a Roof Claim", width: 1200, height: 630 } },
+    images: { 0: { src: "/blog/roof-flashing-vents-pipe-jacks-insurance-supplement/diagram.png", alt: "Illustration of a roof plan with numbered pipe boots, vents, a chimney and step flashing along a wall, with a legend for counting each penetration", width: 1200, height: 630 } },
     downloads: "roof-tear-off-findings-log",
     title: "Flashing, Vents and Pipe Jacks: Documenting Small Items on a Roof Claim",
     metaTitle: "Roof Flashing, Vents, Pipe Jacks: Supplement Guide",
