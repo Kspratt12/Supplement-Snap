@@ -7136,7 +7136,7 @@ const ARTICLES: Article[] = [
     slug: "how-to-document-multiple-roof-layers-during-tear-off",
     title: "How to Document Multiple Roof Layers During Tear-Off",
     metaTitle: "How to Document Multiple Roof Layers at Tear-Off",
-    metaDescription: "Found a second or third roof layer mid tear-off? How to photograph each layer with a tape, record the count by slope, and send proof for extra labor and disposal.",
+    metaDescription: "Found a second or third roof layer? How to photograph each layer with a tape, record the count by slope, and send proof for extra labor and disposal.",
     publishedDate: "2026-10-25",
     updatedDate: "2026-10-25",
     externalLinks: [
