@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { findUserByEmail } from "../../../lib/find-user"
 import { createClient } from "@supabase/supabase-js"
 import { getUserId } from "../../../lib/auth-utils"
 import { MAX_INVITES } from "../../../lib/plan"
@@ -76,8 +77,7 @@ export async function POST(request: Request) {
     }
 
     // Check if this email has an account
-    const { data: users } = await supabase().auth.admin.listUsers()
-    const matchedUser = users?.users?.find(u => u.email === email.toLowerCase())
+    const matchedUser = await findUserByEmail(supabase(), email)
 
     const { data, error } = await supabase()
       .from("team_members")
