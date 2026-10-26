@@ -105,7 +105,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/blog/roofing-photo-documentation-checklist`, lastModified: new Date("2026-10-22"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/blog/roofing-overhead-and-profit-claims`, lastModified: new Date("2026-10-22"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/blog/roofing-code-upgrades-ordinance-and-law`, lastModified: new Date("2026-10-22"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE_URL}/blog/companycam-alternative-roofing-supplements`, lastModified: new Date("2026-10-22"), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE_URL}/blog/companycam-alternative-roofing-supplements`, lastModified: new Date("2026-10-26"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/roofing-supplement-software/raleigh-nc`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/roofing-supplement-software/apex-nc`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/terms`, changeFrequency: "yearly", priority: 0.3 },

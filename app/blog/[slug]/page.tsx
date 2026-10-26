@@ -2194,135 +2194,82 @@ const ARTICLES: Article[] = [
     ]
   },
   {
-    "slug": "companycam-alternative-roofing-supplements",
-    "title": "CompanyCam Alternative for Roofing Supplements: How to Choose",
-    "metaTitle": "CompanyCam Alternative for Roofers: Supplement Tools",
-    "metaDescription": "Comparing photo apps with supplement-focused tools for roofers: what each does well, where gaps appear and how to choose for your crew.",
-    "publishedDate": "2026-10-22",
-    "related": [
-      "roofing-software-comparison",
-      "best-roof-estimating-software",
-      "roofing-photo-documentation-checklist",
-      "best-roofing-crm"
-    , "best-app-to-document-roof-damage-for-insurance"],
-    "externalLinks": [
-      {
-        "text": "CompanyCam",
-        "url": "https://companycam.com"
-      },
-      {
-        "text": "NRCA Roofing Manual and Standards",
-        "url": "https://www.nrca.net"
-      }
+    slug: "companycam-alternative-roofing-supplements",
+    title: "5 CompanyCam Alternatives for Roofers (2026)",
+    metaTitle: "5 CompanyCam Alternatives for Roofers (2026)",
+    metaDescription: "Five CompanyCam alternatives for roofers compared: Manifold, LibreCam, Roof Report Pro, Supplement Snap and your CRM's photos. What each does and costs as listed.",
+    publishedDate: "2026-10-22",
+    updatedDate: "2026-10-26",
+    related: ["best-app-to-document-roof-damage-for-insurance", "best-roofing-supplement-software", "roofing-photo-documentation-checklist", "roofing-software-comparison", "best-roofing-crm"],
+    externalLinks: [
+      { text: "CompanyCam pricing (public page)", url: "https://www.companycam.com/pricing" },
+      { text: "Manifold for roofing contractors", url: "https://www.scanmanifold.com/roofing-contractors" },
+      { text: "LibreCam", url: "https://librecam.com" },
+      { text: "NRCA Roofing Manual and Standards", url: "https://www.nrca.net" },
     ],
-    "highlight": {
-      "label": "Disclosure",
-      "value": "We Make One",
-      "subtext": "Supplement Snap is our product. Verify every vendor's current features yourself"
+    highlight: { label: "Disclosure", value: "We make one", subtext: "Supplement Snap is our product. Prices come from public pages seen on October 24, 2026. Verify them yourself." },
+    visuals: {
+      0: { type: "matrix", data: {
+        headers: ["Built for", "Price as listed"],
+        rows: [
+          { feature: "1. Manifold", values: ["Photo documentation with GPS tags, PDF export and share links", "Photo $16 per user per month; Photo + Scan $24; 14-day trial, no card, per its page"] },
+          { feature: "2. LibreCam", values: ["Free photo capture for crews, with voice captions and offline use", "$0 for unlimited users, per its own page"] },
+          { feature: "3. Roof Report Pro", values: ["AI damage tagging and PDF inspection reports", "Not checked here"] },
+          { feature: "4. Supplement Snap", values: ["Damage capture tied to supplement findings and the adjuster report", "Starter $99, Team $199, Pro $299 per month; first project free"] },
+          { feature: "5. Your CRM's photo tools", values: ["Photos stored with the job in JobNimbus, AccuLynx and similar", "Included in the CRM plan you already pay for"] },
+        ],
+      }},
+      1: { type: "tip", data: { type: "info", title: "Verify before you switch", text: "Prices and features change often, and a comparison page can be out of date. We have not tested these apps. Everything here comes from each company's public pages, seen on October 24, 2026. Confirm current details and try one real job before you move your crew." } },
+      7: { type: "checklist", data: { title: "Test any CompanyCam alternative on one real job", items: [
+        { text: "Does every photo stay attached to a finding and a note?", checked: true },
+        { text: "Are time and location recorded on each photo?", checked: true },
+        { text: "Can I share or export one clear report an adjuster can open?", checked: true },
+        { text: "Does it work with a weak signal on the roof?", checked: true },
+        { text: "What does it cost for my real crew size?", checked: true },
+        { text: "Can I take my photos and reports with me if I leave?", checked: true },
+      ]}},
     },
-    "visuals": {
-      "2": {
-        "type": "matrix",
-        "data": {
-          "headers": [
-            "General photo app",
-            "Supplement-focused tool"
-          ],
-          "rows": [
-            {
-              "feature": "Organizes job photos by project",
-              "values": [
-                true,
-                true
-              ]
-            },
-            {
-              "feature": "Built for many trades",
-              "values": [
-                true,
-                false
-              ]
-            },
-            {
-              "feature": "Findings tied to roofing damage types",
-              "values": [
-                "Varies",
-                true
-              ]
-            },
-            {
-              "feature": "Supplement narrative drafting",
-              "values": [
-                "Varies",
-                true
-              ]
-            },
-            {
-              "feature": "Adjuster-ready PDF report",
-              "values": [
-                "Varies",
-                true
-              ]
-            },
-            {
-              "feature": "Xactimate-style item export",
-              "values": [
-                "Varies",
-                true
-              ]
-            }
-          ]
-        }
-      },
-      "4": {
-        "type": "tip",
-        "data": {
-          "type": "info",
-          "title": "Check features and pricing directly",
-          "text": "Products change. Before you decide, confirm each vendor's current features, limits and pricing on their own site and try a real job with each."
-        }
-      }
-    },
-    "sections": [
-      {
-        "heading": "Photo apps and supplement tools solve different problems",
-        "content": "General-purpose job photo apps, CompanyCam being a well-known example, are built to help crews in many trades capture, organize and share job photos. Many roofers use them every day, and they do that job well.\n\nSupplement-focused tools start from a different question: how do we turn those photos into a document an insurance adjuster will approve? That adds roofing-specific findings, written narratives, line items and a formatted report.\n\nSo the honest answer to which is better is that it depends on the problem you are trying to solve."
-      },
-      {
-        "heading": "What a roofing company actually needs",
-        "content": "Before comparing products, write down your real workflow. Most roofing companies need to do five things:\n\n1. Capture photos on the roof: Fast, with labels, and ideally without typing.\n2. Keep them organized: By job, by slope and by finding.\n3. Describe what was found: A short factual note for each photo.\n4. Turn findings into a supplement: Narratives and line items.\n5. Send something an adjuster accepts: Usually a clean PDF.\n\nA photo app covers the first two well and may help with the third. The last two are where supplement-focused tools focus. Pick the product that closes the gaps you actually have."
-      },
-      {
-        "heading": "How the two types compare",
-        "content": "The comparison below is a general guide to categories, not a claim about any single product. Features vary by vendor and change over time, so verify before you decide.\n\nIf your crew already has a photo app they like and your office writes supplements well, you may not need another tool. If supplement paperwork is where jobs slow down or money gets missed, a supplement-focused tool is worth testing."
-      },
-      {
-        "heading": "Questions to ask any vendor",
-        "content": "Use the same questions on every product you try:\n\n• How fast can a crew capture a labeled photo from the roof?\n• Does it work with a weak signal, and what happens offline?\n• Can I add a note or voice note to each photo?\n• How does it turn findings into a written supplement?\n• What does the report look like to an adjuster?\n• Can I export items in a format my estimating software accepts?\n• What do users, storage and support cost as I grow?\n• Who owns my photos and can I export them?"
-      },
-      {
-        "heading": "How to run a fair test",
-        "content": "Do not decide from a demo. Run a real job through each tool.\n\n1. Pick one active job with hidden damage.\n2. Have the same crew capture the same findings in each tool.\n3. Time how long it takes to get from photos to a sendable package.\n4. Send both packages to a trusted contact and ask which is clearer.\n5. Compare the cost of each at your volume.\n\nThe winner is the one that saves your office time and produces documentation adjusters respond to. For a broader view of tool categories, read our <a href='/blog/roofing-software-comparison'>roofing software comparison</a>, and for what to capture in the field, see the <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a>."
-      }
+    faq: [
+      { q: "What is the best alternative to CompanyCam for roofers?", a: "It depends on why you are looking. Manifold and LibreCam are photo apps, so they fit if you want lower cost or different features. Roof Report Pro and Supplement Snap are built around roof damage reports, so they fit if the report for the adjuster is your bottleneck. Run one real job through two options before you switch." },
+      { q: "Is there a free alternative to CompanyCam?", a: "LibreCam says on its own page that it is free for unlimited users. Some other apps offer free trials. A free tool may not include reports or support, so check what you need. Supplement Snap's first project is free." },
+      { q: "Why would a roofer switch from CompanyCam?", a: "Common reasons are cost for a larger crew, wanting a report built for insurance work, or wanting damage findings tied to each photo. If CompanyCam already works for your crew and your office writes supplements well, you may not need to switch." },
+      { q: "Can I use CompanyCam and a supplement tool together?", a: "Yes. Some contractors keep a general photo app for job records and add a supplement tool for the insurance paperwork. Roof Report Pro lists a CompanyCam integration on its Capterra page, but confirm what it does before you rely on it." },
+      { q: "Will a different app get my claim approved?", a: "No. Approval depends on the claim, the policy, the carrier and your documentation. A better app can make your package clearer and more complete." },
     ],
-    "faq": [
+    sections: [
       {
-        "q": "Can I use a photo app for roofing supplements?",
-        "a": "Yes. Many roofers do, and then write the supplement separately. A supplement-focused tool can reduce that extra work by drafting narratives and reports."
+        heading: "The short answer: five alternatives, and who each one fits",
+        content: "CompanyCam is a popular job photo app, and many roofers use it every day. People look for alternatives for a few reasons: cost as the crew grows, wanting a report built for insurance work, or wanting damage findings tied to each photo.\n\nThe table lists five options in no particular order. No vendor paid to be on this list.\n\nDisclosure: we make Supplement Snap, one of the five. We have not tested the other apps, so this page compares what their public pages say, as seen on October 24, 2026.",
       },
       {
-        "q": "What is the difference between a photo app and supplement software?",
-        "a": "A photo app organizes job photos for many trades. Supplement software turns roofing findings into narratives, line items and an adjuster-ready report."
+        heading: "Why roofers look for a CompanyCam alternative",
+        content: "CompanyCam's pricing page lists plans at $63, $129 and $199 per month, with extra users at $29. The page does not say which billing cycle those figures use, and it notes annual billing saves 20 percent. Its page describes time-stamped photos, project history and job reports. It does not describe insurance workflows, so if you work claims, confirm that its reports meet what your adjuster needs.\n\nThe alternatives below fall into three groups: other photo apps, tools built around roof damage reports, and the photo tools you may already have in your CRM.",
       },
       {
-        "q": "Do I need both?",
-        "a": "Not necessarily. If your photo app and office process already produce approved supplements, you may not. If supplement paperwork is a bottleneck, test a focused tool."
+        heading: "1. Manifold: photo documentation with PDF export",
+        content: "Manifold's page describes GPS-tagged photos, exports to a branded PDF and share links that adjusters can open without an account.\n\n• Good fit when: You want a photo app with shareable reports and a per-user price.\n• Watch for: Its page lists $16 per user per month with no seat minimum, while one third-party roundup reported a minimum, so confirm with Manifold.\n• Cost as listed: Photo $16 per user per month, Photo + Scan $24, with a 14-day trial and no card required.",
       },
       {
-        "q": "How do I choose between tools?",
-        "a": "Run a real job through each, time the path from photos to a sendable package and compare what adjusters respond to and what each costs."
-      }
-    ]
+        heading: "2. LibreCam: free photo capture for crews",
+        content: "LibreCam describes free photo capture with voice captions and offline use.\n\n• Good fit when: Cost is the main issue and you mostly need organized, captioned photos.\n• Watch for: These are the vendor's own claims on a page it wrote. A free tool may lack reports, support or the features you need, so test it on a real job.\n• Cost as listed: $0 for unlimited users, per its own page.",
+      },
+      {
+        heading: "3. Roof Report Pro: AI damage tagging and PDF reports",
+        content: "Roof Report Pro, per its Capterra listing, uses AI to tag damage types in photos and produce PDF inspection reports. It also lists integrations with JobNimbus and CompanyCam.\n\n• Good fit when: You want roof-specific tagging and a ready report, and you may keep your existing photo app alongside it.\n• Watch for: AI tags need a human check. We did not review its pricing, so check its site. For a side-by-side with ours, see <a href='/blog/supplement-snap-vs-roof-report-pro'>Supplement Snap vs Roof Report Pro</a>.\n• Cost as listed: Not checked here.",
+      },
+      {
+        heading: "4. Supplement Snap: damage capture tied to the supplement",
+        content: "Supplement Snap is built for one job: documenting hidden damage found at tear-off. Your crew photographs damage on the roof, tags the roof area and damage type, adds a typed or voice note, and the app drafts a written description of each finding that you review and edit. You then email a PDF report to the adjuster.\n\n• Good fit when: Turning photos and notes into a clear supplement package is where your time goes.\n• Watch for: It is not a general photo app for every trade, a CRM or an estimating tool. Team plans add an Xactimate-style CSV export, which is a starting list you review and price yourself.\n• Cost as listed: Starter $99, Team $199 and Pro $299 per month. The first project is free. Check the <a href='/pricing'>pricing page</a> for current details, and see a <a href='/roofing-supplement-report-example'>sample report</a>.",
+      },
+      {
+        heading: "5. Your CRM's photo tools: the option you already pay for",
+        content: "Roofing CRMs such as JobNimbus and AccuLynx store photos and documents with each job. If your crew already works in one, its photo tools may cover the basics without another subscription.\n\n• Good fit when: You want photos kept with the customer record and do not need a separate report.\n• Watch for: CRM photo tools are usually a side feature. Check how labeling, reports and offline use work for your crew. See our <a href='/blog/best-roofing-crm'>list of the best roofing CRMs</a>.\n• Cost as listed: Part of your existing CRM plan.",
+      },
+      {
+        heading: "How to choose and test fairly",
+        content: "Do not decide from a demo. Run one real job through two or three options. Have the same crew photograph the same roof, add the same notes, and time how long it takes to get from the first photo to a package you could send. Then show each result to someone who was not on the roof, and compare cost at your real crew size.\n\nIf your photo app and office process already produce approved supplements, you may not need to switch. For what to photograph at tear-off, see the <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a>, and for a broader comparison see <a href='/blog/best-app-to-document-roof-damage-for-insurance'>5 best apps to document roof damage</a>.",
+      },
+    ],
   },
   {
     slug: "document-rotted-roof-decking-tear-off",
