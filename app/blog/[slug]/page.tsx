@@ -245,13 +245,13 @@ function DamageCards({ items }: { items: Array<{ icon: string; title: string; de
   )
 }
 
-function ComparisonMatrix({ headers, rows }: { headers: string[]; rows: Array<{ feature: string; values: Array<boolean | string> }> }) {
+function ComparisonMatrix({ headers, rows, label = "Feature" }: { headers: string[]; rows: Array<{ feature: string; values: Array<boolean | string> }>; label?: string }) {
   return (
     <div className="my-8 overflow-x-auto rounded-xl border border-zinc-200 shadow-sm">
       <table className="w-full text-sm">
         <thead>
           <tr className="bg-zinc-50 border-b border-zinc-200">
-            <th className="px-4 py-3 text-left font-semibold text-zinc-900">Feature</th>
+            <th className="px-4 py-3 text-left font-semibold text-zinc-900">{label}</th>
             {headers.map((h, i) => (
               <th key={i} className="px-4 py-3 text-center font-semibold text-zinc-900">{h}</th>
             ))}
@@ -260,7 +260,7 @@ function ComparisonMatrix({ headers, rows }: { headers: string[]; rows: Array<{ 
         <tbody className="divide-y divide-zinc-100">
           {rows.map((row, i) => (
             <tr key={i} className="bg-white">
-              <td className="px-4 py-3 text-zinc-700">{row.feature}</td>
+              <td className="whitespace-nowrap px-4 py-3 text-zinc-700">{row.feature}</td>
               {row.values.map((val, j) => (
                 <td key={j} className="px-4 py-3 text-center">
                   {val === true ? (
@@ -291,7 +291,7 @@ function VisualBlock({ visual }: { visual: Visual }) {
     case "calculator": return <CalculatorCard title={visual.data.title} rows={visual.data.rows} total={visual.data.total} />
     case "tip": return <TipBox type={visual.data.type} title={visual.data.title} text={visual.data.text} />
     case "damage-cards": return <DamageCards items={visual.data} />
-    case "matrix": return <ComparisonMatrix headers={visual.data.headers} rows={visual.data.rows} />
+    case "matrix": return <ComparisonMatrix headers={visual.data.headers} rows={visual.data.rows} label={visual.data.label} />
     default: return null
   }
 }
@@ -849,6 +849,7 @@ const ARTICLES: Article[] = [
     },
     visuals: {
       0: { type: "matrix", data: {
+        label: "Tool",
         headers: ["Best known for", "Good fit when"],
         rows: [
           { feature: "1. Roofr", values: ["Measurement reports, instant estimates, proposals and a CRM together", "You run a small residential retail crew and want one tool to quote and close"] },
@@ -1228,6 +1229,7 @@ const ARTICLES: Article[] = [
     },
     visuals: {
       0: { type: "matrix", data: {
+        label: "CRM",
         headers: ["Best known for", "Good fit when"],
         rows: [
           { feature: "1. JobNimbus", values: ["A straightforward roofing CRM with a visual pipeline", "You want quick setup and a clean pipeline for leads and jobs"] },
@@ -2210,6 +2212,7 @@ const ARTICLES: Article[] = [
     highlight: { label: "Disclosure", value: "We make one", subtext: "Supplement Snap is our product. Prices come from public pages seen on October 24, 2026. Verify them yourself." },
     visuals: {
       0: { type: "matrix", data: {
+        label: "App",
         headers: ["Built for", "Price as listed"],
         rows: [
           { feature: "1. Manifold", values: ["Photo documentation with GPS tags, PDF export and share links", "Photo $16 per user per month; Photo + Scan $24; 14-day trial, no card, per its page"] },
