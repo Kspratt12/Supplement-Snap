@@ -13,7 +13,7 @@ const PLAN_INCLUDES: Record<string, string[]> = {
   none: ["Demo project plus 1 project of your own", "Damage photo capture", "AI supplement draft", "Voice notes", "Sample PDF"],
   starter: ["Unlimited projects", "AI supplement drafts", "PDF reports and email to adjusters", "Photo annotations", "Voice notes", "1 user"],
   team: ["Everything in Starter", "Up to 3 team members", "Xactimate CSV export", "Email open tracking"],
-  pro: ["Everything in Team", "Up to 5 team members", "Custom branding", "Priority support", "Dedicated onboarding"],
+  pro: ["Everything in Team", "Up to 5 team members", "Custom branding", "Priority email replies", "Setup walkthrough for your team"],
 }
 
 export default function AccountPage() {
