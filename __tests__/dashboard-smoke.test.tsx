@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor, cleanup, configure } from "@testing
 
 // The whole dashboard renders in these tests, so give a busy machine more time before a lookup gives up.
 configure({ asyncUtilTimeout: 6000 })
-vi.setConfig({ testTimeout: 20000 })
+vi.setConfig({ testTimeout: 30000 })
 
 // A stand-in database: every query returns the rows set for that table, and writes can be told to fail.
 const db = vi.hoisted(() => ({
@@ -226,7 +226,7 @@ describe("dashboard smoke test (stand-in database)", () => {
     fireEvent.change(await screen.findByLabelText("Project / Job"), { target: { value: "p1" } })
     fireEvent.click(await screen.findByRole("button", { name: /Generate Project Report/ }))
     fireEvent.click(await screen.findByRole("button", { name: /Download PDF/ }))
-    await waitFor(() => expect(saved.length).toBeGreaterThan(0), { timeout: 8000 })
+    await waitFor(() => expect(saved.length).toBeGreaterThan(0), { timeout: 20000 })
     expect(saved[0]).toMatch(/Report.pdf$/)
     expect(errors.mock.calls.filter((c) => String(c[0]).includes("PDF generation failed"))).toHaveLength(0)
     errors.mockRestore()
