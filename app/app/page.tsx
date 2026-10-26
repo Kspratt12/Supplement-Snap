@@ -2035,18 +2035,18 @@ function Home() {
     <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
       {/* App header */}
       <header className="mb-8 flex items-center justify-between">
-        <Link href="/dashboard" className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-bold">
+        <Link href="/dashboard" className="flex min-w-0 items-center gap-3">
+          <div className="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-bold">
             S
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Supplement Snap</h1>
-            <p className="text-sm text-zinc-500">
+            <h1 className="whitespace-nowrap text-lg font-bold tracking-tight sm:text-2xl">Supplement Snap</h1>
+            <p className="hidden text-sm text-zinc-500 sm:block">
               Capture roof damage during tear-off and generate supplement drafts
             </p>
           </div>
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-none items-center gap-2 whitespace-nowrap sm:gap-3">
           <Link
             href="/dashboard"
             className="inline-flex min-h-10 items-center px-1 text-xs font-medium text-zinc-600 hover:text-zinc-800"
@@ -2114,7 +2114,7 @@ function Home() {
               setSelectedProjectId(e.target.value)
               setShowNewProject(false)
             }}
-            className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
+            className="min-w-0 flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100"
           >
             <option value="">Select a project...</option>
             {listedProjects.map((p) => (
