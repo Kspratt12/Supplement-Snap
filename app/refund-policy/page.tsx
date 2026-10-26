@@ -33,6 +33,10 @@ export default function RefundPolicyPage() {
         </ul>
       </Section>
 
+      <Section title="If We Cause the Problem">
+        <p>If a problem on our side, such as an outage or a login problem, stops you from using Supplement Snap, we will refund the period you were affected. Email billing@supplementsnap.io and tell us what happened.</p>
+      </Section>
+
       <Section title="Billing Disputes">
         <p>If you believe you were charged in error or have a billing dispute, please contact us within 30 days of the charge. We will review the issue and work with you to resolve it promptly.</p>
       </Section>
