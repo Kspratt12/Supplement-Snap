@@ -25,14 +25,14 @@ export function DownloadBox({ template, showHubLink = false }: { template: Templ
         ))}
       </div>
       {template.files.some((f) => f.format === "Fillable PDF") && (
-        <p className="mt-3 text-xs text-zinc-500">Fillable PDF: open it in a PDF reader such as Adobe Acrobat Reader to type into the blanks. Some phone and browser previews cannot.</p>
+        <p className="mt-3 text-xs text-zinc-700">Fillable PDF: open it in a PDF reader such as Adobe Acrobat Reader to type into the blanks. Some phone and browser previews cannot.</p>
       )}
       {showHubLink && (
         <p className="mt-3 text-sm">
           <a href="/free-roofing-templates" className="font-medium text-indigo-600 underline hover:text-indigo-800">See all free roofing templates &rarr;</a>
         </p>
       )}
-      <p className="mt-3 text-xs text-zinc-500">No email or sign-up needed. General guidance, not legal advice. Adjust it to your carrier&apos;s, client&apos;s and state&apos;s requirements.</p>
+      <p className="mt-3 text-xs text-zinc-700">No email or sign-up needed. General guidance, not legal advice. Adjust it to your carrier&apos;s, client&apos;s and state&apos;s requirements.</p>
     </div>
   )
 }
