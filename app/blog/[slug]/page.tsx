@@ -3591,7 +3591,7 @@ const ARTICLES: Article[] = [
     updatedDate: "2026-10-23",
     externalLinks: [
       { text: "NAIC: Consumer insurance resources", url: "https://content.naic.org" },
-      { text: "Insurance Information Institute: Homeowners insurance", url: "https://www.iii.org/article/what-covered-under-standard-homeowners-insurance-policy" },
+      { text: "Insurance Information Institute (iii.org)", url: "https://www.iii.org" },
     ],
     visuals: {
       1: { type: "matrix", data: {
@@ -3673,7 +3673,7 @@ const ARTICLES: Article[] = [
     publishedDate: "2026-10-23",
     updatedDate: "2026-10-23",
     externalLinks: [
-      { text: "Insurance Information Institute: What homeowners insurance covers", url: "https://www.iii.org/article/what-covered-under-standard-homeowners-insurance-policy" },
+      { text: "Insurance Information Institute (iii.org)", url: "https://www.iii.org" },
       { text: "NAIC: Consumer insurance resources", url: "https://content.naic.org" },
     ],
     visuals: {
