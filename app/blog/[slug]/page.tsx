@@ -299,6 +299,8 @@ function VisualBlock({ visual }: { visual: Visual }) {
 const ARTICLES: Article[] = [
   {
     slug: "how-to-write-a-roofing-supplement",
+    images: { 0: { src: "/blog/how-to-write-a-roofing-supplement/card.png", alt: "Key points from the guide: How to Write a Roofing Supplement That Gets Approved", width: 1200, height: 630 } },
+    downloads: "roofing-supplement-template",
     title: "How to Write a Roofing Supplement That Gets Approved",
     metaTitle: "How to Write a Roofing Supplement (Step-by-Step Guide)",
     metaDescription: "Learn how to write a roofing supplement adjusters approve. Step-by-step guide with documentation tips, Xactimate codes and common mistakes to avoid.",
@@ -403,6 +405,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-denied-what-to-do",
+    images: { 0: { src: "/blog/roofing-supplement-denied-what-to-do/card.png", alt: "Key points from the guide: Roofing Supplement Denied? Here's What to Do Next", width: 1200, height: 630 } },
+    downloads: "roofing-supplement-tracker",
     title: "Roofing Supplement Denied? Here's What to Do Next",
     metaTitle: "Roofing Supplement Denied? What to Do Next",
     metaDescription: "Your roofing supplement was denied. Here's what to do next, from re-documenting damage to appeals and preventing future denials.",
@@ -683,6 +687,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-process-explained",
+    downloads: "roofing-supplement-template",
     title: "The Roofing Supplement Process Explained: From Tear-Off to Approval",
     metaTitle: "Roofing Supplement Process: Tear-Off to Approval",
     metaDescription: "Complete guide to the roofing supplement process, from discovering hidden damage during tear-off to getting insurance approval. Written for contractors.",
@@ -1492,6 +1497,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "xactimate-roofing-estimate-approved",
+    images: { 0: { src: "/blog/xactimate-roofing-estimate-approved/card.png", alt: "Key points from the guide: How to Write an Xactimate Roofing Estimate That Actually Gets Approved", width: 1200, height: 630 } },
     title: "How to Write an Xactimate Roofing Estimate That Actually Gets Approved",
     metaTitle: "Xactimate Roofing Estimate: How to Get It Approved",
     metaDescription: "How to write an Xactimate roofing estimate adjusters approve: accurate measurements, complete line items, waste and pitch charges, O&P and photo proof.",
@@ -1630,6 +1636,7 @@ const ARTICLES: Article[] = [
   },
   {
     "slug": "roofing-supplement-template",
+    images: { 0: { src: "/blog/roofing-supplement-template/card.png", alt: "Key points from the guide: Roofing Supplement Template: Format, Checklist and Example", width: 1200, height: 630 } },
     "title": "Roofing Supplement Template: Format, Checklist and Example",
     "metaTitle": "Roofing Supplement Template and Checklist (Free Format)",
     "metaDescription": "A roofing supplement template you can copy: cover page, findings format, narrative wording, line items and a pre-submission checklist adjusters respond to.",
@@ -1775,6 +1782,8 @@ const ARTICLES: Article[] = [
   },
   {
     "slug": "roofing-photo-documentation-checklist",
+    images: { 0: { src: "/blog/roofing-photo-documentation-checklist/card.png", alt: "Key points from the guide: Roofing Photo Documentation Checklist: What to Photograph at Tear-Off", width: 1200, height: 630 } },
+    downloads: "roofing-crew-documentation-checklist",
     "title": "Roofing Photo Documentation Checklist: What to Photograph at Tear-Off",
     "metaTitle": "Roofing Photo Documentation Checklist for Insurance Claims",
     "metaDescription": "What roofers should photograph at inspection and tear-off for insurance claims: required shots, hidden damage, labels and a checklist adjusters accept.",
@@ -2237,6 +2246,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "document-rotted-roof-decking-tear-off",
+    downloads: "roof-tear-off-findings-log",
     title: "How to Document Rotted Roof Decking Found During Tear-Off",
     metaTitle: "How to Document Rotted Roof Decking at Tear-Off",
     metaDescription: "What to photograph, measure and write down when you find rotted roof decking during tear-off, so the finding is clear to the adjuster.",
@@ -2259,6 +2269,22 @@ const ARTICLES: Article[] = [
         content: "Before you submit, check that the numbers agree. If the note says four sheets, the photos should show four sheets and the line item quantity should reflect that. Mismatches are the quickest way to lose trust with an adjuster.\n\nIf you want a full pre-submission check, use the <a href='/free-roofing-supplement-checklist'>free roofing supplement checklist</a>. For layout help, see the <a href='/blog/roofing-supplement-template'>roofing supplement template</a> and the <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a>.",
       },
       {
+        heading: "A copy-and-paste checklist for decking",
+        content: "• Wide photo of the slope, showing where the damage sits\n• Close photo of each soft, rotted or delaminated area with a tape\n• Photo of a screwdriver or probe pressed into the wood\n• Photos of the old underlayment and shingles over it as they come off, if you can capture them\n• Sheets or square feet affected, written down with the arithmetic\n• The slope and where on it\n• A short factual note, with photo numbers\n\nOur free <a href='/blog/roof-tear-off-findings-log-template'>findings log</a> has a row for each.",
+      },
+      {
+        heading: "Decking, sheathing, plywood and OSB",
+        content: "People use several words for the same layer. Decking and sheathing both mean the boards or panels the roofing is attached to. Plywood is thin layers of wood glued together. OSB, or oriented strand board, is made of pressed wood strands. Older homes may have plank boards instead. Use the word that matches what you see, and say which kind it is, because it affects how damage looks and how it is described.",
+      },
+      {
+        heading: "Counting sheets and square feet",
+        content: "A standard sheet is 4 feet by 8 feet, which is 32 square feet. Four sheets are 128 square feet. If damage covers part of a sheet, say so rather than rounding up without explanation: about half of a sheet along the eave, roughly 16 square feet, for example. Show the arithmetic in your note, such as 4 ft x 8 ft x 4 sheets = 128 sq ft, so a reviewer can check it.",
+      },
+      {
+        heading: "When the damage followed a storm",
+        content: "Reviewers often want to know whether rot was sudden or has been building for a long time. That is not for you to decide, and guessing weakens your package. What you can do is photograph the layers as they come off, show the condition of the underlayment and shingles above the soft area, and describe exactly what you see. Our guide to <a href='/blog/wind-damage-roof-insurance-claim-documentation'>wind damage documentation</a> covers the rest of that package. Building codes, policy wording and carrier practice vary, so confirm the details for your job.",
+      },
+      {
         heading: "Doing this faster on the roof",
         content: "The slow part is usually not taking photos. It is matching them to notes and measurements later. Capturing the photo, the roof area and a short note at the same moment keeps everything linked.\n\nThat is the workflow <a href='/roofing-supplement-software'>Supplement Snap</a> is built around: photograph, tag and describe the finding on the roof, then generate a report. You can preview the output in the <a href='/roofing-supplement-report-example'>sample report</a>. Software organizes the evidence; it cannot guarantee a supplement is approved.",
       },
@@ -2276,6 +2302,18 @@ const ARTICLES: Article[] = [
         q: "Does documenting decking guarantee the carrier pays for it?",
         a: "No. Clear documentation helps you present the finding, but payment depends on the claim, policy and carrier.",
       },
+      {
+        q: "What is the difference between plywood and OSB decking?",
+        a: "Plywood is made of thin glued layers of wood. OSB is pressed wood strands. Both are used as decking, and they can fail differently when wet, so say which you found.",
+      },
+      {
+        q: "How do I count decking in square feet or sheets?",
+        a: "A standard sheet is 32 square feet. Count whole and partial sheets, write the arithmetic, and keep photo numbers beside the count.",
+      },
+      {
+        q: "Can damaged decking be repaired instead of replaced?",
+        a: "Sometimes small areas can be repaired. If you replaced it, write why: soft to the probe, delaminated, or unable to hold fasteners. The reviewer may reasonably ask.",
+      },
     ],
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
@@ -2284,6 +2322,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "organize-roofing-supplement-photos-by-claim",
+    images: { 0: { src: "/blog/organize-roofing-supplement-photos-by-claim/card.png", alt: "Key points from the guide: How to Organize Roofing Supplement Photos by Claim and Roof Area", width: 1200, height: 630 } },
+    downloads: "roof-tear-off-findings-log",
     title: "How to Organize Roofing Supplement Photos by Claim and Roof Area",
     metaTitle: "Organize Roofing Supplement Photos by Claim",
     metaDescription: "A repeatable system for naming, grouping and labeling roofing supplement photos by claim and roof area so reports are fast to build.",
@@ -2306,6 +2346,22 @@ const ARTICLES: Article[] = [
         content: "For each photo, record the area, the condition and the order, for example: rear-slope-decking-soft-03. If you cannot name the photo, you probably cannot explain it to an adjuster either.\n\nTie each photo to a finding in your notes. A finding with no photo, or a photo with no finding, is a gap to close before submitting.",
       },
       {
+        heading: "A naming pattern you can copy",
+        content: "Pick one pattern and use it on every job. For example: claim-number, then area, then what it shows, then a number.\n\n• 12345-front-slope-wide-01\n• 12345-rear-eave-decking-soft-04\n• 12345-chimney-flashing-corroded-09\n\nSequential numbers keep photos in the order they were taken, and the words tell a reviewer what each one shows without opening it. Keep the original files untouched and do any renaming on copies if your phone or software needs it.",
+      },
+      {
+        heading: "Phone habits that save time later",
+        content: "• Keep a separate album for each job so personal photos never mix in\n• Do not delete anything until the claim is fully closed, including blurry shots\n• Back photos up the same day, in case the phone is lost or broken\n• Many phones record the date and time inside the photo file. Keep the originals so that information stays with the photo\n• Do not crop or edit the original. If you want to mark up a photo, do it on a copy\n• Clean the lens before you start, because wet or dusty glass ruins close-ups",
+      },
+      {
+        heading: "Handing photos to the office",
+        content: "Photos are only useful if the person writing the supplement can find them. Send them to one shared folder, not through a chain of texts, and send the findings log with them. Our free <a href='/blog/roof-tear-off-findings-log-template'>findings log</a> lists each finding with its photo numbers. A simple check helps: the office confirms it received the number of photos the crew says it sent, and the log's findings match the folders.",
+      },
+      {
+        heading: "Why this matters to the reviewer",
+        content: "A reviewer who opens a package with labeled photos, matching findings and a clear order can follow it quickly. One who opens a folder of unlabeled images has to guess. Labeling is not extra work for its own sake. It is the difference between a package that can be reviewed and one that gets sent back. See <a href='/blog/roofing-supplement-mistakes-that-delay-payment'>the common supplement mistakes</a> for the other places packages stall.",
+      },
+      {
         heading: "Step 4: Build the report from the folder",
         content: "With photos grouped and labeled, the report writes itself: one section per finding, with its photos, measurements and note. Check it against the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a> before sending.\n\nIf you would rather not rename files by hand, <a href='/roofing-supplement-software'>Supplement Snap</a> attaches each photo to a finding, roof area and note as you capture it, then builds the PDF. Compare approaches in <a href='/roofing-supplement-software-vs-spreadsheets'>software vs. spreadsheets</a>. Good organization supports a claim but does not guarantee approval.",
       },
@@ -2323,6 +2379,18 @@ const ARTICLES: Article[] = [
         q: "Do I need software to organize photos?",
         a: "No. A consistent folder and naming system works. Software mainly saves the time spent matching photos to notes and building the report.",
       },
+      {
+        q: "How long should I keep claim photos?",
+        a: "Claims can take months and sometimes go through further steps, so keep them until the claim is fully closed. Also follow your own record-retention policy and any requirement from your carrier, state or attorney.",
+      },
+      {
+        q: "Should I edit or crop claim photos?",
+        a: "Keep the original untouched. If you need to circle or label something, do it on a copy and keep both.",
+      },
+      {
+        q: "What if my crew uses their own phones?",
+        a: "Set one rule for how photos are named and where they are sent. A shared album or folder per job works, and everyone should know who owns the final set.",
+      },
     ],
     midCtaAfter: 1,
     midCtaTitle: "Capture this on the roof, not from memory.",
@@ -2331,6 +2399,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "supplemental-roofing-estimate-explained",
+    images: { 0: { src: "/blog/supplemental-roofing-estimate-explained/card.png", alt: "Key points from the guide: What Is a Supplemental Roofing Estimate? When It Applies and What It Includes", width: 1200, height: 630 } },
+    downloads: "roofing-supplement-template",
     title: "What Is a Supplemental Roofing Estimate? When It Applies and What It Includes",
     metaTitle: "Supplemental Roofing Estimate: What It Is and How It Works",
     metaDescription: "A supplemental roofing estimate asks the insurer to cover damage found after the first estimate. Learn when it applies, what it includes, and how to submit one.",
@@ -2421,6 +2491,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "xactimate-roofing-estimate-example",
+    images: { 0: { src: "/blog/xactimate-roofing-estimate-example/card.png", alt: "Key points from the guide: Xactimate Roofing Estimate Example: How a Supplement Line-Item List Looks", width: 1200, height: 630 } },
     title: "Xactimate Roofing Estimate Example: How a Supplement Line-Item List Looks",
     metaTitle: "Xactimate Roofing Estimate Example (Sample Layout)",
     metaDescription: "A sample Xactimate-style roofing estimate layout: the sections it contains, how supplement line items are written, and how to attach photo proof.",
@@ -2506,6 +2577,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "xactimate-roofing-software-explained",
+    images: { 0: { src: "/blog/xactimate-roofing-software-explained/card.png", alt: "Key points from the guide: Xactimate Roofing Software Explained: What It Does and What It Does Not", width: 1200, height: 630 } },
     title: "Xactimate Roofing Software Explained: What It Does and What It Does Not",
     metaTitle: "Xactimate Roofing Software: What It Does and Doesn't",
     metaDescription: "What Xactimate does for roofing estimates, what it does not do for supplements, and how a documentation tool fits alongside it.",
@@ -2594,6 +2666,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-inspection-report-software",
+    images: { 0: { src: "/blog/roof-inspection-report-software/card.png", alt: "Key points from the guide: Roof Inspection Report Software: What to Look For", width: 1200, height: 630 } },
     title: "Roof Inspection Report Software: What to Look For",
     metaTitle: "Roof Inspection Report Software: What to Look For",
     metaDescription: "What roof inspection report software should do: capture labeled photos, attach notes and produce a clear report. Features and how to compare tools.",
@@ -2690,6 +2763,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-follow-up-log",
+    images: { 0: { src: "/blog/roofing-supplement-follow-up-log/card.png", alt: "Key points from the guide: Roofing Supplement Follow-Up Log: Track Submissions and Adjuster Responses", width: 1200, height: 630 } },
+    downloads: "roofing-supplement-tracker",
     title: "Roofing Supplement Follow-Up Log: Track Submissions and Adjuster Responses",
     metaTitle: "Roofing Supplement Follow-Up Log (Free Template)",
     metaDescription: "A simple roofing supplement follow-up log: the columns to track, status definitions, a follow-up routine and how to learn from adjuster responses.",
@@ -2785,6 +2860,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "how-insurance-adjusters-determine-roof-damage",
+    images: { 0: { src: "/blog/how-insurance-adjusters-determine-roof-damage/card.png", alt: "Key points from the guide: How Insurance Adjusters Determine Roof Damage (and What Documentation Helps)", width: 1200, height: 630 } },
+    downloads: "roof-damage-report-template",
     title: "How Insurance Adjusters Determine Roof Damage (and What Documentation Helps)",
     metaTitle: "How Adjusters Determine Roof Damage | Supplement Snap",
     metaDescription: "How insurance adjusters evaluate roof damage: the inspection, what they look for, how estimates are built and what documentation makes a claim easier to review.",
@@ -2968,6 +3045,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-damage-report-template",
+    images: { 0: { src: "/blog/roof-damage-report-template/card.png", alt: "Key points from the guide: Roof Damage Report Template: Sections, Example and Checklist", width: 1200, height: 630 } },
     title: "Roof Damage Report Template: Sections, Example and Checklist",
     metaTitle: "Roof Damage Report Template (Free, Copyable)",
     metaDescription: "A copyable roof damage report template with the sections to include, a sample finding, a photo checklist and the mistakes that make reports hard to use.",
@@ -3063,6 +3141,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "how-roofing-contractors-work-insurance-claims",
+    images: { 0: { src: "/blog/how-roofing-contractors-work-insurance-claims/card.png", alt: "Key points from the guide: How Roofing Contractors Work Insurance Claims: A Step-by-Step Guide", width: 1200, height: 630 } },
     title: "How Roofing Contractors Work Insurance Claims: A Step-by-Step Guide",
     metaTitle: "How Roofers Work Insurance Claims (Step by Step)",
     metaDescription: "How roofing contractors work insurance claims from the first inspection to final payment: the steps, the contractor's role, documentation and supplements.",
@@ -3151,6 +3230,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "hail-damage-roof-insurance-claim-documentation",
+    images: { 0: { src: "/blog/hail-damage-roof-insurance-claim-documentation/card.png", alt: "Key points from the guide: Hail Damage Roof Insurance Claims: What Contractors Should Document", width: 1200, height: 630 } },
+    downloads: "roof-damage-report-template",
     title: "Hail Damage Roof Insurance Claims: What Contractors Should Document",
     metaTitle: "Hail Damage Roof Insurance Claims: What to Document",
     metaDescription: "What roofing contractors should document on a hail damage insurance claim: signs of hail damage, test squares, date of loss and the photos adjusters need.",
@@ -3241,6 +3322,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "wind-damage-roof-insurance-claim-documentation",
+    images: { 0: { src: "/blog/wind-damage-roof-insurance-claim-documentation/card.png", alt: "Key points from the guide: Wind Damage Roof Insurance Claims: What to Document", width: 1200, height: 630 } },
+    downloads: "roof-damage-report-template",
     title: "Wind Damage Roof Insurance Claims: What to Document",
     metaTitle: "Wind Damage Roof Insurance Claims: What to Document",
     metaDescription: "How to document wind damage on a roof for an insurance claim: creased and missing shingles, lifted tabs, debris impact, photos and notes adjusters can verify.",
@@ -3326,6 +3409,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-leak-insurance-claim-contractor-guide",
+    images: { 0: { src: "/blog/roof-leak-insurance-claim-contractor-guide/card.png", alt: "Key points from the guide: Roof Leak Insurance Claims: What Contractors Should Know", width: 1200, height: 630 } },
+    downloads: "roof-damage-report-template",
     title: "Roof Leak Insurance Claims: What Contractors Should Know",
     metaTitle: "Roof Leak Insurance Claims: A Contractor Guide",
     metaDescription: "What contractors should know about roof leak insurance claims: finding the source, documenting damage, temporary protection and why cause decides coverage.",
@@ -3584,6 +3669,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "recoverable-depreciation-roof-claims",
+    images: { 0: { src: "/blog/recoverable-depreciation-roof-claims/card.png", alt: "Key points from the guide: Recoverable Depreciation on a Roof Claim: How It Works and How Contractors Help Get It Paid", width: 1200, height: 630 } },
     title: "Recoverable Depreciation on a Roof Claim: How It Works and How Contractors Help Get It Paid",
     metaTitle: "Recoverable Depreciation on Roof Claims Explained",
     metaDescription: "ACV vs. RCV, what recoverable depreciation is, when insurers release it and what paperwork a roofing contractor needs to help the homeowner collect it.",
@@ -3667,6 +3753,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "does-insurance-cover-roof-replacement",
+    images: { 0: { src: "/blog/does-insurance-cover-roof-replacement/card.png", alt: "Key points from the guide: Does Insurance Cover Roof Replacement? What Contractors Should Tell Homeowners", width: 1200, height: 630 } },
     title: "Does Insurance Cover Roof Replacement? What Contractors Should Tell Homeowners",
     metaTitle: "Does Insurance Cover Roof Replacement? A Contractor Guide",
     metaDescription: "When homeowners insurance may pay for a new roof, when it usually does not, and how contractors can explain coverage without promising an outcome.",
@@ -3750,6 +3837,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-inspection-checklist",
+    images: { 0: { src: "/blog/roof-inspection-checklist/card.png", alt: "Key points from the guide: Roof Inspection Checklist for Roofing Contractors (Printable)", width: 1200, height: 630 } },
+    downloads: "roof-damage-report-template",
     title: "Roof Inspection Checklist for Roofing Contractors (Printable)",
     metaTitle: "Roof Inspection Checklist for Contractors (Printable)",
     metaDescription: "A practical roof inspection checklist covering exterior, flashing, attic and decking, plus how to document findings for a client or insurance claim.",
@@ -4018,6 +4107,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-software-cost",
+    images: { 0: { src: "/blog/roofing-supplement-software-cost/card.png", alt: "Key points from the guide: How Much Does Roofing Supplement Software Cost? A 2026 Price Guide", width: 1200, height: 630 } },
     title: "How Much Does Roofing Supplement Software Cost? A 2026 Price Guide",
     metaTitle: "Roofing Supplement Software Cost: 2026 Price Guide",
     metaDescription: "What roofing supplement software costs: monthly plans, per-claim credits and outsourced services, using prices companies publish. We make Supplement Snap.",
@@ -4278,6 +4368,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-software-for-small-roofing-companies",
+    images: { 0: { src: "/blog/roofing-supplement-software-for-small-roofing-companies/card.png", alt: "Key points from the guide: Roofing Supplement Software for Small Roofing Companies: Do You Need It?", width: 1200, height: 630 } },
     title: "Roofing Supplement Software for Small Roofing Companies: Do You Need It?",
     metaTitle: "Roofing Supplement Software for Small Companies",
     metaDescription: "Do small roofing companies need supplement software? Compare spreadsheets, software and services by claim volume and cost. We make Supplement Snap.",
@@ -4371,6 +4462,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-estimate-template",
+    images: { 0: { src: "/blog/roofing-estimate-template/card.png", alt: "Key points from the guide: Roofing Estimate Template: Free PDF, Word and Excel Download", width: 1200, height: 630 } },
     title: "Roofing Estimate Template: Free PDF, Word and Excel Download",
     metaTitle: "Roofing Estimate Template: Free PDF, Word & Excel",
     metaDescription: "Free roofing estimate template as PDF, Word and Excel, plus what every estimate should include and how it differs from an insurance supplement.",
@@ -4464,6 +4556,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-email-to-adjuster",
+    images: { 0: { src: "/blog/roofing-supplement-email-to-adjuster/card.png", alt: "Key points from the guide: How to Write a Roofing Supplement Request Email to an Adjuster (With Template)", width: 1200, height: 630 } },
+    downloads: "roofing-supplement-template",
     title: "How to Write a Roofing Supplement Request Email to an Adjuster (With Template)",
     metaTitle: "Roofing Supplement Email to Adjuster (Template)",
     metaDescription: "How to email an insurance adjuster a roofing supplement request: what the subject line, body and attachments should include, with a copy-and-paste template.",
@@ -4549,6 +4643,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "what-can-you-supplement-on-a-roof-claim",
+    images: { 0: { src: "/blog/what-can-you-supplement-on-a-roof-claim/card.png", alt: "Key points from the guide: What Can You Supplement on a Roof Claim? 12 Items Contractors Commonly Request", width: 1200, height: 630 } },
+    downloads: "roof-tear-off-findings-log",
     title: "What Can You Supplement on a Roof Claim? 12 Items Contractors Commonly Request",
     metaTitle: "What Can You Supplement on a Roof Claim? (12 Items)",
     metaDescription: "Common items roofers request in a supplement, from decking to flashing and drip edge, and what to document. Coverage depends on the policy and carrier.",
@@ -4631,6 +4727,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-claim-reinspection-request",
+    images: { 0: { src: "/blog/roof-claim-reinspection-request/card.png", alt: "Key points from the guide: How to Request a Reinspection on a Roof Claim (and When a Supplement Fits Better)", width: 1200, height: 630 } },
+    downloads: "roof-damage-report-template",
     title: "How to Request a Reinspection on a Roof Claim (and When a Supplement Fits Better)",
     metaTitle: "Roof Claim Reinspection: How to Request One",
     metaDescription: "How to ask an insurer for a roof reinspection, what to prepare, and how a reinspection differs from a supplement. Processes vary by carrier and policy.",
@@ -4711,6 +4809,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "can-a-roofer-talk-to-the-insurance-company",
+    images: { 0: { src: "/blog/can-a-roofer-talk-to-the-insurance-company/card.png", alt: "Key points from the guide: Can a Roofer Talk to the Insurance Company? What Contractors May and May Not Do", width: 1200, height: 630 } },
     title: "Can a Roofer Talk to the Insurance Company? What Contractors May and May Not Do",
     metaTitle: "Can a Roofer Deal With Your Insurance Company?",
     metaDescription: "Can a roofing contractor work with your insurance company? General guidance on what contractors usually can and cannot do on a claim. Rules vary by state.",
@@ -4791,6 +4890,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "how-long-does-a-roofing-supplement-take",
+    images: { 0: { src: "/blog/how-long-does-a-roofing-supplement-take/card.png", alt: "Key points from the guide: How Long Does a Roofing Supplement Take? What to Expect and How to Follow Up", width: 1200, height: 630 } },
+    downloads: "roofing-supplement-tracker",
     title: "How Long Does a Roofing Supplement Take? What to Expect and How to Follow Up",
     metaTitle: "How Long Does a Roofing Supplement Take?",
     metaDescription: "How long a roofing supplement takes depends on the carrier and the file. See where delays happen, what to ask the adjuster, and how to follow up.",
@@ -4872,6 +4973,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "drip-edge-roofing-supplement",
+    images: { 0: { src: "/blog/drip-edge-roofing-supplement/card.png", alt: "Key points from the guide: Drip Edge on a Roof Claim: How Roofers Document and Request It", width: 1200, height: 630 } },
+    downloads: "roof-tear-off-findings-log",
     title: "Drip Edge on a Roof Claim: How Roofers Document and Request It",
     metaTitle: "Drip Edge Roofing Supplement: How to Request It",
     metaDescription: "Drip edge is a common line item roofers ask carriers to include. Learn how to check local code, document it with photos, and request it in a supplement.",
@@ -4971,6 +5074,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "ice-and-water-shield-roofing-supplement",
+    images: { 0: { src: "/blog/ice-and-water-shield-roofing-supplement/card.png", alt: "Key points from the guide: Ice and Water Shield on a Roof Claim: Documenting and Requesting It", width: 1200, height: 630 } },
+    downloads: "roof-tear-off-findings-log",
     title: "Ice and Water Shield on a Roof Claim: Documenting and Requesting It",
     metaTitle: "Ice and Water Shield Supplement: Document and Request",
     metaDescription: "Ice and water barrier is often left out or undercounted in roof estimates. Learn what to check, how to measure it, and how to request it with proof.",
@@ -5075,6 +5180,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-shingle-matching-insurance-claim",
+    images: { 0: { src: "/blog/roof-shingle-matching-insurance-claim/card.png", alt: "Key points from the guide: Shingle Matching on Roof Claims: What Roofers Should Know", width: 1200, height: 630 } },
+    downloads: "roof-damage-report-template",
     title: "Shingle Matching on Roof Claims: What Roofers Should Know",
     metaTitle: "Roof Shingle Matching Insurance Claims Explained",
     metaDescription: "When shingles are discontinued or colors no longer match, who pays? How matching works on roof claims, what varies by state, and how to document it.",
@@ -5178,6 +5285,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "steep-roof-charge-roofing-supplement",
+    images: { 0: { src: "/blog/steep-roof-charge-roofing-supplement/card.png", alt: "Key points from the guide: Steep Roof and High Roof Charges: How to Document Them", width: 1200, height: 630 } },
+    downloads: "roof-tear-off-findings-log",
     title: "Steep Roof and High Roof Charges: How to Document Them",
     metaTitle: "Steep Roof Charge Supplement: How to Document It",
     metaDescription: "Steep-pitch and multi-story roofs take more labor and safety gear. Learn how to measure pitch, photograph it, and request steep and high charges.",
@@ -5277,6 +5386,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-permit-fees-insurance-claim",
+    images: { 0: { src: "/blog/roofing-permit-fees-insurance-claim/card.png", alt: "Key points from the guide: Roofing Permit Fees on an Insurance Claim: How to Request Them", width: 1200, height: 630 } },
+    downloads: "roof-tear-off-findings-log",
     title: "Roofing Permit Fees on an Insurance Claim: How to Request Them",
     metaTitle: "Roofing Permit Fees on Insurance Claims: How to Ask",
     metaDescription: "Permit costs are a normal part of a roof replacement. Learn how to document them, when to submit, and how to keep the paper trail carriers expect.",
@@ -5376,6 +5487,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "starter-strip-ridge-cap-roofing-supplement",
+    images: { 0: { src: "/blog/starter-strip-ridge-cap-roofing-supplement/card.png", alt: "Key points from the guide: Starter Strip and Ridge Cap on a Roof Claim: What to Check", width: 1200, height: 630 } },
+    downloads: "roof-tear-off-findings-log",
     title: "Starter Strip and Ridge Cap on a Roof Claim: What to Check",
     metaTitle: "Starter Strip and Ridge Cap on Roof Claims: Checklist",
     metaDescription: "Starter strip and ridge cap quantities are easy to undercount in an estimate. How to measure them, compare to the carrier's numbers, and document the gap.",
@@ -5475,6 +5588,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-flashing-vents-pipe-jacks-insurance-supplement",
+    images: { 0: { src: "/blog/roof-flashing-vents-pipe-jacks-insurance-supplement/card.png", alt: "Key points from the guide: Flashing, Vents and Pipe Jacks: Documenting Small Items on a Roof Claim", width: 1200, height: 630 } },
+    downloads: "roof-tear-off-findings-log",
     title: "Flashing, Vents and Pipe Jacks: Documenting Small Items on a Roof Claim",
     metaTitle: "Roof Flashing, Vents, Pipe Jacks: Supplement Guide",
     metaDescription: "Flashing, vents and pipe boots are small items that add up. How to count, photograph and request them in a roofing supplement without missing any.",
@@ -5574,6 +5689,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-debris-removal-dumpster-insurance-claim",
+    images: { 0: { src: "/blog/roof-debris-removal-dumpster-insurance-claim/card.png", alt: "Key points from the guide: Debris Removal and Dumpster Costs on a Roof Claim", width: 1200, height: 630 } },
+    downloads: "roof-tear-off-findings-log",
     title: "Debris Removal and Dumpster Costs on a Roof Claim",
     metaTitle: "Roof Debris Removal and Dumpster Costs on Claims",
     metaDescription: "Haul-off and dumpster costs are part of most roof replacements. How to document extra layers and weight, and what to send the carrier.",
@@ -5669,6 +5786,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "insurance-lowball-roof-estimate-what-to-do",
+    images: { 0: { src: "/blog/insurance-lowball-roof-estimate-what-to-do/card.png", alt: "Key points from the guide: Insurance Lowball Roof Estimate: What Roofers and Homeowners Can Do", width: 1200, height: 630 } },
+    downloads: "roofing-supplement-template",
     title: "Insurance Lowball Roof Estimate: What Roofers and Homeowners Can Do",
     metaTitle: "Lowball Roof Estimate From Insurance: Next Steps",
     metaDescription: "The carrier's roof estimate seems too low. Learn how to compare line items, document what is missing, and request a reinspection or supplement properly.",
@@ -5769,6 +5888,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-claim-appraisal-process",
+    images: { 0: { src: "/blog/roof-claim-appraisal-process/card.png", alt: "Key points from the guide: The Appraisal Clause on a Roof Claim: How It Works", width: 1200, height: 630 } },
     title: "The Appraisal Clause on a Roof Claim: How It Works",
     metaTitle: "Roof Claim Appraisal Clause: How the Process Works",
     metaDescription: "When a homeowner and carrier disagree on the amount of a roof loss, the policy may offer appraisal. What it is, how it generally works and what to prepare.",
@@ -5868,6 +5988,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-tracker-template",
+    images: { 0: { src: "/blog/roofing-supplement-tracker-template/card.png", alt: "Key points from the guide: Roofing Supplement Tracker Template (Free PDF, Fillable, Word)", width: 1200, height: 630 } },
     title: "Roofing Supplement Tracker Template (Free PDF, Fillable, Word)",
     metaTitle: "Roofing Supplement Tracker (Free Template)",
     metaDescription: "Keep track of every supplement you send: claim, carrier, date, follow-up and status. A free printable and fillable tracker and how to keep it current.",
@@ -5969,6 +6090,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-tear-off-findings-log-template",
+    images: { 0: { src: "/blog/roof-tear-off-findings-log-template/card.png", alt: "Key points from the guide: Roof Tear-Off Findings Log Template (Free PDF and Word)", width: 1200, height: 630 } },
     title: "Roof Tear-Off Findings Log Template (Free PDF and Word)",
     metaTitle: "Roof Tear-Off Findings Log Template (Free)",
     metaDescription: "What to capture during roof tear-off: decking, layers, flashing and more. A free findings log and checklist your crew can use on the roof.",
@@ -6070,6 +6192,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-crew-supplement-documentation-sop",
+    images: { 0: { src: "/blog/roofing-crew-supplement-documentation-sop/card.png", alt: "Key points from the guide: A Crew SOP for Supplement Documentation (Free Checklist)", width: 1200, height: 630 } },
     title: "A Crew SOP for Supplement Documentation (Free Checklist)",
     metaTitle: "Roofing Crew Documentation SOP (Free Checklist)",
     metaDescription: "How to get every crew to document insurance jobs the same way. A simple SOP and one-page checklist to reduce missed photos and missed supplements.",
@@ -6170,6 +6293,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "is-roofing-supplement-software-worth-it",
+    images: { 0: { src: "/blog/is-roofing-supplement-software-worth-it/card.png", alt: "Key points from the guide: Is Roofing Supplement Software Worth It? The Break-Even Math", width: 1200, height: 630 } },
     title: "Is Roofing Supplement Software Worth It? The Break-Even Math",
     metaTitle: "Is Roofing Supplement Software Worth It? Break-Even",
     metaDescription: "How to work out whether supplement software pays for itself: the break-even formula, the inputs you need and the honest limits of any estimate.",
@@ -6269,6 +6393,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-mistakes-that-delay-payment",
+    images: { 0: { src: "/blog/roofing-supplement-mistakes-that-delay-payment/card.png", alt: "Key points from the guide: 9 Roofing Supplement Mistakes That Slow Down or Sink a Request", width: 1200, height: 630 } },
+    downloads: "roofing-supplement-template",
     title: "9 Roofing Supplement Mistakes That Slow Down or Sink a Request",
     metaTitle: "9 Roofing Supplement Mistakes That Delay Payment",
     metaDescription: "Missing claim numbers, vague photos, guessed quantities and no follow-up date are common reasons supplements stall. Nine mistakes and how to avoid each.",
@@ -6381,6 +6507,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-adjuster-inspection-what-to-bring",
+    images: { 0: { src: "/blog/roofing-adjuster-inspection-what-to-bring/card.png", alt: "Key points from the guide: Meeting the Insurance Adjuster on the Roof: What to Bring and Do", width: 1200, height: 630 } },
+    downloads: "roof-damage-report-template",
     title: "Meeting the Insurance Adjuster on the Roof: What to Bring and Do",
     metaTitle: "Roof Adjuster Meeting: What Roofers Should Bring",
     metaDescription: "Preparing for the adjuster's roof inspection: what to bring, what to show, how to take notes and how to stay professional. A practical contractor checklist.",
@@ -6481,6 +6609,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "questions-to-ask-before-buying-roofing-supplement-software",
+    images: { 0: { src: "/blog/questions-to-ask-before-buying-roofing-supplement-software/card.png", alt: "Key points from the guide: 15 Questions to Ask Before You Buy Roofing Supplement Software", width: 1200, height: 630 } },
     title: "15 Questions to Ask Before You Buy Roofing Supplement Software",
     metaTitle: "15 Questions to Ask Before Buying Supplement Software",
     metaDescription: "A buyer's checklist for roofing supplement software: pricing limits, users, trial terms, cancellation, offline use, data, AI review and what to test first.",
@@ -6572,6 +6701,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "how-to-write-roofing-supplements-faster",
+    images: { 0: { src: "/blog/how-to-write-roofing-supplements-faster/card.png", alt: "Key points from the guide: How to Write Roofing Supplements Faster (Without Cutting Corners)", width: 1200, height: 630 } },
     title: "How to Write Roofing Supplements Faster (Without Cutting Corners)",
     metaTitle: "How to Write Roofing Supplements Faster: A Workflow",
     metaDescription: "Roofing supplements take too long when documentation starts in the office. A step-by-step workflow that moves the work to the roof and keeps reports complete.",
@@ -6665,6 +6795,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-software-field-test-checklist",
+    images: { 0: { src: "/blog/roofing-supplement-software-field-test-checklist/card.png", alt: "Key points from the guide: How to Field-Test Roofing Supplement Software Before You Buy", width: 1200, height: 630 } },
     title: "How to Field-Test Roofing Supplement Software Before You Buy",
     metaTitle: "Field-Test Roofing Supplement Software: A Checklist",
     metaDescription: "Test supplement software where it matters: on a roof, with gloves, in sun, with weak signal. A field-test checklist for one real job before you pay.",
@@ -6762,6 +6893,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-software-free-trial-plan",
+    images: { 0: { src: "/blog/roofing-supplement-software-free-trial-plan/card.png", alt: "Key points from the guide: How to Use a Free Trial to Choose Roofing Supplement Software", width: 1200, height: 630 } },
     title: "How to Use a Free Trial to Choose Roofing Supplement Software",
     metaTitle: "Free Trial Plan for Roofing Supplement Software",
     metaDescription: "A 14-day plan for testing supplement software on real jobs: what to do each week, what to compare, and how to cancel before you pay for a tool you do not use.",
@@ -6853,6 +6985,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "how-to-roll-out-roofing-supplement-software",
+    images: { 0: { src: "/blog/how-to-roll-out-roofing-supplement-software/card.png", alt: "Key points from the guide: How to Roll Out Supplement Software to Your Crew: First 30 Days", width: 1200, height: 630 } },
     title: "How to Roll Out Supplement Software to Your Crew: First 30 Days",
     metaTitle: "Roll Out Roofing Supplement Software: First 30 Days",
     metaDescription: "A practical 30-day plan for getting a roofing crew to use new supplement software: who does what, what to check weekly, and how to fix what is not sticking.",
@@ -6944,6 +7077,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "how-to-measure-roofing-supplement-results",
+    images: { 0: { src: "/blog/how-to-measure-roofing-supplement-results/card.png", alt: "Key points from the guide: How to Track Whether Your Roofing Supplements Are Working", width: 1200, height: 630 } },
     title: "How to Track Whether Your Roofing Supplements Are Working",
     metaTitle: "How to Track Roofing Supplement Results (Simple Metrics)",
     metaDescription: "Track a few simple numbers to see if your supplement process works: time to send, paid versus asked and follow-ups. Free tracker included.",
@@ -7037,6 +7171,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-software-data-and-privacy-questions",
+    images: { 0: { src: "/blog/roofing-supplement-software-data-and-privacy-questions/card.png", alt: "Key points from the guide: Roofing Supplement Software: Data, Privacy and Security Questions", width: 1200, height: 630 } },
     title: "Roofing Supplement Software: Data, Privacy and Security Questions",
     metaTitle: "Supplement Software Data and Privacy: What to Ask",
     metaDescription: "Your photos, notes and homeowner details live in the tool you choose. Ask about data ownership, AI use, storage, deleting your account and security.",
@@ -7720,6 +7855,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-repair-estimate-template",
+    images: { 0: { src: "/blog/roof-repair-estimate-template/card.png", alt: "Key points from the guide: Roof Repair Estimate Template: Free PDF, Fillable PDF and Word", width: 1200, height: 630 } },
     title: "Roof Repair Estimate Template: Free PDF, Fillable PDF and Word",
     metaTitle: "Roof Repair Estimate Template: Free PDF & Word",
     metaDescription: "Free roof repair estimate template as a printable PDF, fillable PDF and Word file, plus what a repair estimate should say that a full replacement estimate does not.",
@@ -7798,6 +7934,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "good-better-best-roofing-proposal-template",
+    images: { 0: { src: "/blog/good-better-best-roofing-proposal-template/card.png", alt: "Key points from the guide: Good Better Best Roofing Proposal Template: Free PDF and Word", width: 1200, height: 630 } },
     title: "Good Better Best Roofing Proposal Template: Free PDF and Word",
     metaTitle: "Good Better Best Roofing Proposal Template (Free)",
     metaDescription: "Free good, better, best roofing proposal template as a printable PDF, fillable PDF and Word file, with how to build three honest options and a comparison table.",
@@ -8046,6 +8183,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-documentation-spanish-speaking-crews",
+    images: { 0: { src: "/blog/roofing-documentation-spanish-speaking-crews/card.png", alt: "Key points from the guide: Roofing Damage Documentation for Spanish-Speaking Crews", width: 1200, height: 630 } },
+    downloads: "roofing-crew-documentation-checklist",
     title: "Roofing Damage Documentation for Spanish-Speaking Crews",
     metaTitle: "Roof Damage Documentation for Spanish-Speaking Crews",
     metaDescription: "How Spanish-speaking roofing crews can document tear-off damage for insurance supplements in their own language, and what to check in the English text.",
@@ -8125,6 +8264,7 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "free-roofing-supplement-software",
+    images: { 0: { src: "/blog/free-roofing-supplement-software/card.png", alt: "Key points from the guide: Free Roofing Supplement Software: What Is Actually Free?", width: 1200, height: 630 } },
     title: "Free Roofing Supplement Software: What Is Actually Free?",
     metaTitle: "Free Roofing Supplement Software: What's Really Free",
     metaDescription: "Free roofing supplement software compared: free trials, free apps and free plans, with what each includes and what to check. We make Supplement Snap.",
