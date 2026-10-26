@@ -25,6 +25,7 @@ type ProjectWithCount = {
   claim_status?: string
   adjuster_name?: string
   date_of_loss?: string
+  user_id?: string
 }
 
 export default function DashboardPage() {
@@ -43,6 +44,9 @@ export default function DashboardPage() {
   const [showPhotoCapture, setShowPhotoCapture] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [emailOpens, setEmailOpens] = useState(0)
+  const [deleteTarget, setDeleteTarget] = useState<ProjectWithCount | null>(null)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState("")
 
   useEffect(() => {
     if (!authLoading && !user) router.replace("/login")
@@ -90,6 +94,7 @@ export default function DashboardPage() {
     const projectsData = allProjects.filter((p, i) => allProjects.findIndex(x => x.id === p.id) === i)
 
     if (projectsData.length === 0) {
+      setProjects([])
       setLoadingProjects(false)
       return
     }
@@ -171,6 +176,38 @@ export default function DashboardPage() {
       alert("Unable to open billing portal. Please try again.")
     } finally {
       setPortalLoading(false)
+    }
+  }
+
+  // Removes the project, its findings (the database deletes those with it) and, best effort, the photos stored for them
+  async function deleteProject() {
+    if (!deleteTarget || !user || deleting) return
+    setDeleting(true)
+    setDeleteError("")
+    try {
+      const { data: photoRows } = await supabase.from("captures").select("image_url").eq("project_id", deleteTarget.id)
+      const { error } = await supabase.from("projects").delete().eq("id", deleteTarget.id).eq("user_id", user.id)
+      if (error) {
+        setDeleteError("We couldn't delete that project. Nothing was removed. Please try again.")
+        return
+      }
+      const paths = (photoRows || [])
+        .map((r: { image_url?: string | null }) => (r.image_url || "").match(/test-uploads\/([^?]+)/)?.[1])
+        .filter((v): v is string => !!v)
+        .map((v) => decodeURIComponent(v))
+      if (paths.length > 0) {
+        try {
+          await supabase.storage.from("test-uploads").remove(paths)
+        } catch {
+          // the project is already gone; leftover photo files are harmless
+        }
+      }
+      setDeleteTarget(null)
+      await loadProjects()
+    } catch {
+      setDeleteError("We couldn't delete that project. Nothing was removed. Please try again.")
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -469,10 +506,10 @@ export default function DashboardPage() {
                   const q = searchQuery.toLowerCase()
                   return p.project_name.toLowerCase().includes(q) || (p.property_address || "").toLowerCase().includes(q)
                 }).map((p) => (
+                  <div key={p.id} className="flex items-stretch gap-2">
                   <Link
-                    key={p.id}
                     href={`/app?project=${p.id}`}
-                    className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm hover:border-indigo-200 hover:shadow-md transition-all active:bg-zinc-50"
+                    className="flex min-w-0 flex-1 items-center justify-between rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 shadow-sm hover:border-indigo-200 hover:shadow-md transition-all active:bg-zinc-50"
                   >
                     <div className="min-w-0">
                       <h3 className="text-sm sm:text-base font-semibold text-zinc-900 truncate">{p.project_name}</h3>
@@ -497,7 +534,35 @@ export default function DashboardPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                   </Link>
+                  {p.user_id === user.id && (
+                    <button
+                      type="button"
+                      onClick={() => { setDeleteError(""); setDeleteTarget(p) }}
+                      aria-label={`Delete project ${p.project_name}`}
+                      className="flex min-h-[44px] w-12 flex-shrink-0 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-500 hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                    >
+                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 7h12M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2m-8 0l.7 11a1 1 0 001 .9h4.6a1 1 0 001-.9L17 7M10 11v5m4-5v5" />
+                      </svg>
+                    </button>
+                  )}
+                  </div>
                 ))}
+              </div>
+            )}
+            {deleteTarget && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4" role="dialog" aria-modal="true" aria-labelledby="delete-project-title">
+                <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
+                  <h3 id="delete-project-title" className="text-base font-semibold text-zinc-900">Delete this project?</h3>
+                  <p className="mt-2 text-sm text-zinc-600">
+                    <strong>{deleteTarget.project_name}</strong> and its {deleteTarget.capture_count} finding{deleteTarget.capture_count !== 1 ? "s" : ""} and photos will be removed for good. This can&apos;t be undone. Reports you already emailed stay in the recipient&apos;s inbox.
+                  </p>
+                  {deleteError && <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{deleteError}</p>}
+                  <div className="mt-5 flex gap-3">
+                    <button type="button" onClick={() => setDeleteTarget(null)} disabled={deleting} className="min-h-[44px] flex-1 rounded-lg border border-zinc-300 text-sm font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-50">Keep it</button>
+                    <button type="button" onClick={deleteProject} disabled={deleting} className="min-h-[44px] flex-1 rounded-lg bg-red-600 text-sm font-medium text-white hover:bg-red-500 disabled:opacity-50">{deleting ? "Deleting..." : "Delete"}</button>
+                  </div>
+                </div>
               </div>
             )}
           </>
