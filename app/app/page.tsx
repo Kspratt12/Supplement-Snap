@@ -9,7 +9,8 @@ import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { PhotoAnnotator } from "../dashboard/photo-annotator"
 import { ClaimsOverview, ClaimStatusSelect, StartHere } from "./claims-overview"
-import { normalizeClaimStatus, filterProjects, statusAfterSend, isFirstRun, type ClaimStatus } from "../../lib/claim-status"
+import { normalizeClaimStatus, filterProjects, statusAfterSend, isFirstRun, isDemoProject, type ClaimStatus } from "../../lib/claim-status"
+import { hasCreatedProject, markProjectCreated } from "../../lib/guide-state"
 import { FeedbackBox } from "../dashboard/feedback-box"
 import { ensureSpace, drawLabeledText, drawSectionLabel } from "../../lib/pdf-layout"
 import { extractAllExifData, type PhotoMetadata } from "../../lib/exif-utils"
@@ -577,7 +578,8 @@ function Home() {
     const unique = all.filter((p, i) => all.findIndex(x => x.id === p.id) === i)
 
     // Auto-create a demo project for brand new users
-    if (unique.length === 0 && user?.id && demoCreatedFor.current !== user.id) {
+    // (not for someone who has made their own project and then deleted everything)
+    if (unique.length === 0 && user?.id && demoCreatedFor.current !== user.id && !hasCreatedProject(user.id)) {
       demoCreatedFor.current = user.id
       try {
         const { data: demo } = await supabase
@@ -625,6 +627,7 @@ function Home() {
       }
     }
 
+    if (user?.id && unique.some((p) => !isDemoProject(p))) markProjectCreated(user.id)
     setProjects(unique)
   }
 
@@ -681,6 +684,7 @@ function Home() {
       .single()
 
     if (!error && data) {
+      if (user) markProjectCreated(user.id)
       setProjects((prev) => [data, ...prev])
       setSelectedProjectId(data.id)
       setNewProjectName("")
@@ -2096,8 +2100,8 @@ function Home() {
         </div>
       )}
 
-      {isFirstRun(projects) && projects.length > 0 && (
-        <StartHere onCreateProject={() => setShowNewProject(true)} isFreeUser={isFreeUser} freeCaptureLimit={FREE_CAPTURE_LIMIT} />
+      {user && projects.length > 0 && (
+        <StartHere userId={user.id} onlyDemoOrNone={isFirstRun(projects)} onCreateProject={() => setShowNewProject(true)} isFreeUser={isFreeUser} freeCaptureLimit={FREE_CAPTURE_LIMIT} />
       )}
 
       {/* Project selector */}

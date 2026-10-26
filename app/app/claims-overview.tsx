@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { hasCreatedProject, hideGuideThisVisit, isGuideHiddenThisVisit, shouldShowStartGuide } from "../../lib/guide-state"
 import {
   CLAIM_STATUSES,
   CLAIM_STATUS_STYLES,
@@ -137,36 +138,32 @@ export function ClaimStatusSelect({
   )
 }
 
-const DISMISS_KEY = "ss-start-here-dismissed"
-
-/** A short guide for accounts that only have the demo project. Dismissal is remembered when the browser allows it. */
+/**
+ * A short guide for accounts that have no project of their own yet.
+ * It never shows once the person has created a project, even if they later delete it.
+ * Hide only lasts for this visit: it comes back the next time they log in, until they create a project.
+ */
 export function StartHere({
+  userId,
+  onlyDemoOrNone,
   onCreateProject,
   isFreeUser,
   freeCaptureLimit,
 }: {
+  userId: string
+  onlyDemoOrNone: boolean
   onCreateProject: () => void
   isFreeUser: boolean
   freeCaptureLimit: number
 }) {
   // This only renders after the dashboard has loaded the user's projects in the browser, so storage can be read directly.
-  const [dismissed, setDismissed] = useState(() => {
-    try {
-      return window.localStorage.getItem(DISMISS_KEY) === "1"
-    } catch {
-      return false
-    }
-  })
+  const [hidden, setHidden] = useState(() => isGuideHiddenThisVisit())
 
-  if (dismissed) return null
+  if (!shouldShowStartGuide({ onlyDemoOrNone, createdBefore: hasCreatedProject(userId), hiddenThisVisit: hidden })) return null
 
   const dismiss = () => {
-    setDismissed(true)
-    try {
-      window.localStorage.setItem(DISMISS_KEY, "1")
-    } catch {
-      // storage can be blocked; the card simply comes back next visit
-    }
+    setHidden(true)
+    hideGuideThisVisit()
   }
 
   const steps = [
@@ -194,7 +191,7 @@ export function StartHere({
           type="button"
           onClick={dismiss}
           aria-label="Hide the start guide"
-          className="shrink-0 rounded px-2 py-1 text-xs font-medium text-zinc-500 hover:text-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:text-zinc-200"
+          className="shrink-0 rounded px-3 py-2 text-xs font-medium text-zinc-600 hover:text-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:text-zinc-200"
         >
           Hide
         </button>

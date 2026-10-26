@@ -115,7 +115,11 @@ describe("dashboard smoke test (stand-in database)", () => {
     plan.paid = true
     window.localStorage.clear()
   })
-  afterEach(() => cleanup())
+  afterEach(() => {
+    cleanup()
+    window.localStorage.clear()
+    window.sessionStorage.clear()
+  })
 
   it("shows the start guide to an account that only has the demo project", async () => {
     db.rows.projects = [project({ id: "demo", project_name: "Demo Project — Smith Residence" })]

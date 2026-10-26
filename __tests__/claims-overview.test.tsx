@@ -1,10 +1,12 @@
 import { describe, it, expect, vi, afterEach } from "vitest"
 import { render, screen, fireEvent, cleanup } from "@testing-library/react"
 import { ClaimsOverview, ClaimStatusSelect, StartHere } from "../app/app/claims-overview"
+import { clearGuideVisit, markProjectCreated } from "../lib/guide-state"
 
 afterEach(() => {
   cleanup()
   window.localStorage.clear()
+  window.sessionStorage.clear()
 })
 
 const projects = [
@@ -71,27 +73,44 @@ describe("ClaimStatusSelect", () => {
 })
 
 describe("StartHere", () => {
+  const base = { userId: "u1", onlyDemoOrNone: true, onCreateProject: () => {}, isFreeUser: false, freeCaptureLimit: 5 }
+
   it("shows three steps and starts a project", () => {
     const onCreate = vi.fn()
-    render(<StartHere onCreateProject={onCreate} isFreeUser={false} freeCaptureLimit={5} />)
+    render(<StartHere {...base} onCreateProject={onCreate} />)
     expect(screen.getAllByRole("listitem")).toHaveLength(3)
     fireEvent.click(screen.getByRole("button", { name: "Start my first project" }))
     expect(onCreate).toHaveBeenCalled()
   })
 
   it("explains the free plan only to free users", () => {
-    const { rerender } = render(<StartHere onCreateProject={() => {}} isFreeUser={true} freeCaptureLimit={5} />)
+    const { rerender } = render(<StartHere {...base} isFreeUser={true} />)
     expect(screen.getByText(/free plan/)).toBeTruthy()
-    rerender(<StartHere onCreateProject={() => {}} isFreeUser={false} freeCaptureLimit={5} />)
+    rerender(<StartHere {...base} isFreeUser={false} />)
     expect(screen.queryByText(/free plan/)).toBeNull()
   })
 
-  it("can be hidden and stays hidden next time", () => {
-    const { unmount } = render(<StartHere onCreateProject={() => {}} isFreeUser={false} freeCaptureLimit={5} />)
+  it("hides for this visit only, and comes back after logging in again", () => {
+    const { unmount } = render(<StartHere {...base} />)
     fireEvent.click(screen.getByRole("button", { name: "Hide the start guide" }))
     expect(screen.queryByTestId("start-here")).toBeNull()
     unmount()
-    render(<StartHere onCreateProject={() => {}} isFreeUser={false} freeCaptureLimit={5} />)
+    render(<StartHere {...base} />)
+    expect(screen.queryByTestId("start-here")).toBeNull() // same visit
+    cleanup()
+    clearGuideVisit() // what logging out does
+    render(<StartHere {...base} />)
+    expect(screen.getByTestId("start-here")).toBeTruthy()
+  })
+
+  it("never shows once the person has created a project, even if they delete it later", () => {
+    markProjectCreated("u1")
+    render(<StartHere {...base} />)
+    expect(screen.queryByTestId("start-here")).toBeNull()
+  })
+
+  it("does not show when the person already has projects of their own", () => {
+    render(<StartHere {...base} onlyDemoOrNone={false} />)
     expect(screen.queryByTestId("start-here")).toBeNull()
   })
 
@@ -102,7 +121,7 @@ describe("StartHere", () => {
     const set = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
       throw new Error("blocked")
     })
-    render(<StartHere onCreateProject={() => {}} isFreeUser={false} freeCaptureLimit={5} />)
+    render(<StartHere {...base} />)
     expect(screen.getByTestId("start-here")).toBeTruthy()
     fireEvent.click(screen.getByRole("button", { name: "Hide the start guide" }))
     expect(screen.queryByTestId("start-here")).toBeNull()
