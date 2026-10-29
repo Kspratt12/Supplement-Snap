@@ -4579,7 +4579,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Mistakes that cause disputes",
-        content: "• A vague scope. Write what is included roof area by roof area.\n• Lumping everything into one price. Separate materials, labor and extra charges so the customer can follow it.\n• No expiry date. Material prices change, and an estimate with no end date can be held against you for months.\n• Nothing about hidden damage. Say how rotted decking or extra layers will be handled.\n• No signature line. An unsigned estimate is a suggestion.\n• Promising an insurance outcome. Never tell a customer that the carrier will pay, because that depends on the policy, the claim and the carrier.",
+        content: "• A vague scope. Write what is included roof area by roof area.\n• Lumping everything into one price. Separate materials, labor and extra charges so the customer can follow it.\n• No expiry date. Material prices change, and an estimate with no end date can be held against you for months.\n• Nothing about hidden damage. Say how rotted decking or extra layers will be handled.\n• No signature line. Without a signature, it can be unclear whether the customer accepted the estimate.\n• Promising an insurance outcome. Never tell a customer that the carrier will pay, because that depends on the policy, the claim and the carrier.",
       },
       {
         heading: "Check your local rules before you use it",
@@ -4609,7 +4609,7 @@ const ARTICLES: Article[] = [
       },
       {
         q: "Does a roofing estimate need a signature?",
-        a: "A signature line is good practice because it turns the estimate into an agreement. Some states have specific contract requirements, so confirm what yours requires.",
+        a: "A signature line is good practice because it gives you a written record that the customer accepted the estimate. Whether an estimate or a signature creates a binding agreement depends on the circumstances and applicable law, and some states have specific contract requirements, so confirm what yours requires.",
       },
     ],
     downloads: "roofing-estimate-template",
@@ -7941,7 +7941,7 @@ const ARTICLES: Article[] = [
           { feature: "Line items", values: ["Materials, labor and any trip or disposal charge, listed separately", "Makes a short job easy to follow"] },
           { feature: "What could change the price", values: ["How extra damage found once the area is opened up will be handled", "Avoids a surprise bill"] },
           { feature: "Workmanship warranty", values: ["How long you stand behind this repair and what it covers", "Sets expectations about the repaired area, not the whole roof"] },
-          { feature: "Terms and signature", values: ["Payment terms, planned date window and a line for the customer to accept", "Turns the estimate into an agreement"] },
+          { feature: "Terms and signature", values: ["Payment terms, planned date window and a line for the customer to accept", "Shows the customer accepted the estimate"] },
         ],
       }},
       4: { type: "tip", data: { type: "info", title: "Rules differ by state", text: "Licensing, written-contract requirements, cancellation rights and permitted payment terms vary by state and sometimes by city. This template is a starting layout, not legal advice. Have it reviewed against your local rules before you use it with customers." } },
