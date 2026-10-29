@@ -5,6 +5,16 @@ import { getAuthenticatedUser } from "../../../lib/auth-utils"
 import { rateLimited } from "../../../lib/rate-limit"
 import { getAccess, can } from "../../../lib/plan"
 
+// User-typed text is placed in the email as plain text, so it cannot add markup or links of its own
+function escapeHtml(value: unknown): string {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+}
+
 export async function POST(request: Request) {
   try {
     if (!process.env.RESEND_API_KEY) {
@@ -76,9 +86,10 @@ export async function POST(request: Request) {
     }
 
     // Use company branding if available
-    const brandName = companyName || "Supplement Snap"
-    const headerTitle = companyName ? `${companyName} – Supplement Report` : "Supplement Snap – Project Report"
-    const footerText = companyName ? `Sent by ${companyName} via Supplement Snap` : "Sent via Supplement Snap"
+    const safeCompany = typeof companyName === "string" ? companyName.replace(/[\r\n<>"]/g, " ").trim().slice(0, 120) : ""
+    const brandName = escapeHtml(safeCompany || "Supplement Snap")
+    const headerTitle = safeCompany ? `${escapeHtml(safeCompany)} – Supplement Report` : "Supplement Snap – Project Report"
+    const footerText = safeCompany ? `Sent by ${escapeHtml(safeCompany)} via Supplement Snap` : "Sent via Supplement Snap"
 
     // Build HTML email body
     const htmlBody = `
@@ -95,7 +106,7 @@ export async function POST(request: Request) {
             </tr>
             <tr>
               <td style="padding: 0 0 16px 0;">
-                <span style="font-size: 17px; font-weight: 700; color: #18181b;">${projectName}</span>
+                <span style="font-size: 17px; font-weight: 700; color: #18181b;">${escapeHtml(projectName)}</span>
               </td>
             </tr>
             ${propertyAddress ? `
@@ -106,7 +117,7 @@ export async function POST(request: Request) {
             </tr>
             <tr>
               <td style="padding: 0 0 16px 0;">
-                <span style="font-size: 15px; color: #3f3f46;">${propertyAddress}</span>
+                <span style="font-size: 15px; color: #3f3f46;">${escapeHtml(propertyAddress)}</span>
               </td>
             </tr>
             ` : ""}
@@ -123,7 +134,7 @@ export async function POST(request: Request) {
           </table>
           <hr style="border: none; border-top: 1px solid #e4e4e7; margin: 16px 0;" />
           <div style="white-space: pre-wrap; font-size: 14px; line-height: 1.7; color: #3f3f46;">
-${message}
+${escapeHtml(message)}
           </div>
           <hr style="border: none; border-top: 1px solid #e4e4e7; margin: 20px 0 12px 0;" />
           <p style="font-size: 11px; color: #a1a1aa; margin: 0;">
@@ -135,7 +146,7 @@ ${message}
     `
 
     const fromAddress = process.env.RESEND_FROM_EMAIL || "reports@supplementsnap.io"
-    const fromName = companyName ? `${companyName} via Supplement Snap` : "Supplement Snap"
+    const fromName = safeCompany ? `${safeCompany} via Supplement Snap` : "Supplement Snap"
 
     const { error } = await resend.emails.send({
       from: `${fromName} <${fromAddress}>`,
