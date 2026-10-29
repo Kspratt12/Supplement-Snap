@@ -244,12 +244,12 @@ describe("dashboard smoke test (stand-in database)", () => {
   })
 
   it("tells the user when the microphone is blocked instead of failing silently", async () => {
-    let instance: { onerror?: (e: unknown) => void } | null = null
+    const instances: Array<{ onerror?: (e: unknown) => void }> = []
     class FakeRecognition {
       onerror?: (e: unknown) => void
       onend?: () => void
       start() {
-        instance = this
+        instances.push(this)
       }
       stop() {}
     }
@@ -258,8 +258,8 @@ describe("dashboard smoke test (stand-in database)", () => {
     render(<AppPage />)
     await pickProject("p1")
     fireEvent.click(await screen.findByRole("button", { name: /voice|speak|record|dictate/i }))
-    expect(instance).not.toBeNull()
-    instance!.onerror!({ error: "not-allowed" })
+    expect(instances).toHaveLength(1)
+    instances[0].onerror!({ error: "not-allowed" })
     expect(await screen.findByText(/microphone is blocked/i)).toBeTruthy()
     delete (window as unknown as { webkitSpeechRecognition?: unknown }).webkitSpeechRecognition
   })

@@ -1,43 +1,62 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useMemo, useSyncExternalStore } from "react"
 import { trackEvent } from "../../lib/analytics"
 
 type Group = { title: string; items: string[] }
 
 const STORAGE_KEY = "ss-supplement-checklist-v1"
 
-export function ChecklistClient({ groups }: { groups: Group[] }) {
-  const [checked, setChecked] = useState<Record<string, boolean>>({})
+// The checklist lives in the browser's storage. If storage is blocked it still works for this visit, held in memory.
+const listeners = new Set<() => void>()
+let memory: string | null = null
 
-  useEffect(() => {
+function subscribe(listener: () => void) {
+  listeners.add(listener)
+  window.addEventListener("storage", listener)
+  return () => {
+    listeners.delete(listener)
+    window.removeEventListener("storage", listener)
+  }
+}
+
+function readRaw(): string {
+  if (memory !== null) return memory
+  try {
+    return window.localStorage.getItem(STORAGE_KEY) || ""
+  } catch {
+    return ""
+  }
+}
+
+function writeRaw(value: string) {
+  memory = value
+  try {
+    if (value) window.localStorage.setItem(STORAGE_KEY, value)
+    else window.localStorage.removeItem(STORAGE_KEY)
+  } catch {
+    // storage unavailable: the in-memory copy keeps the checklist working for this visit
+  }
+  listeners.forEach((l) => l())
+}
+
+export function ChecklistClient({ groups }: { groups: Group[] }) {
+  // The server renders an empty list; the saved ticks appear as soon as the page is in the browser
+  const raw = useSyncExternalStore(subscribe, readRaw, () => "")
+  const checked = useMemo<Record<string, boolean>>(() => {
     try {
-      const raw = window.localStorage.getItem(STORAGE_KEY)
-      if (raw) setChecked(JSON.parse(raw) as Record<string, boolean>)
+      return raw ? (JSON.parse(raw) as Record<string, boolean>) : {}
     } catch {
-      // storage unavailable or corrupt: start with an empty checklist
+      return {} // corrupt copy: start with an empty checklist
     }
-  }, [])
+  }, [raw])
 
   function toggle(key: string) {
-    setChecked((prev) => {
-      const next = { ...prev, [key]: !prev[key] }
-      try {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-      } catch {
-        // ignore storage errors
-      }
-      return next
-    })
+    writeRaw(JSON.stringify({ ...checked, [key]: !checked[key] }))
   }
 
   function reset() {
-    setChecked({})
-    try {
-      window.localStorage.removeItem(STORAGE_KEY)
-    } catch {
-      // ignore storage errors
-    }
+    writeRaw("")
   }
 
   const total = groups.reduce((n, g) => n + g.items.length, 0)
