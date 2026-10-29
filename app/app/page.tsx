@@ -268,6 +268,13 @@ function Home() {
   // Offline queue state
   const [pendingQueueCount, setPendingQueueCount] = useState(0)
   const [syncing, setSyncing] = useState(false)
+  // Shows "Saved" for a few seconds after a capture is stored or queued captures finish syncing
+  const [savedFlash, setSavedFlash] = useState(false)
+  useEffect(() => {
+    if (!savedFlash) return
+    const t = setTimeout(() => setSavedFlash(false), 3000)
+    return () => clearTimeout(t)
+  }, [savedFlash])
   const [isOnline, setIsOnline] = useState(typeof navigator !== "undefined" ? navigator.onLine : true)
 
   // Email modal state
@@ -340,6 +347,7 @@ function Home() {
             return false
           }
         })
+        if (synced > 0) setSavedFlash(true)
         if (synced > 0 && selectedProjectId) {
           await loadCaptures(selectedProjectId)
         }
@@ -490,6 +498,8 @@ function Home() {
   // Load the chosen project's captures and its saved draft
   useEffect(() => {
     if (!selectedProjectId) return
+    // A different project starts at the top of the page, not wherever the last view was scrolled to
+    window.scrollTo({ top: 0 })
     loadCaptures(selectedProjectId)
     supabase.from("projects").select("last_draft").eq("id", selectedProjectId).single().then(({ data }) => {
       setProjectDraft(cleanAi(data?.last_draft || ""))
@@ -1856,6 +1866,7 @@ function Home() {
     setStatus(failedIndexes.length > 0
       ? `Saved with ${uploadedUrls.length} photos! ${failedIndexes.length} photo(s) failed — you can re-add them later.`
       : "Capture saved!")
+    setSavedFlash(true)
 
     // Log activity (fire-and-forget)
     authFetch("/api/activity-log", {
@@ -2068,6 +2079,13 @@ function Home() {
           </button>
         </div>
       </header>
+
+      {/* Subtle save status */}
+      {(saving || syncing || savedFlash) && (
+        <p role="status" aria-live="polite" className="mb-2 text-right text-xs text-zinc-500">
+          {saving ? "Saving..." : syncing ? "Syncing..." : "✓ Saved"}
+        </p>
+      )}
 
       {/* Offline / sync status banner */}
       {!isOnline && (
@@ -2657,12 +2675,12 @@ function Home() {
 
       {/* Generate Project Report button */}
       {selectedProject && captures.length > 0 && !showReport && (
-        <section className="mb-8">
+        <section className="sticky bottom-3 z-20 mb-8">
           <button
             type="button"
             onClick={generateReport}
             disabled={reportLoading}
-            className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750"
+            className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 shadow-lg text-sm font-semibold text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-750"
           >
             {reportLoading ? (
               <span className="inline-flex items-center gap-2">

@@ -7,7 +7,22 @@ import { InteractiveDemo } from "./components/interactive-demo"
 import { CheckoutButton } from "./pricing/checkout-button"
 
 export const metadata: Metadata = {
+  title: "Roofing Supplement Software for Documenting Tear-Off Damage",
+  description: "Capture tear-off photos, notes and hidden damage on any phone, draft supplement language, and email an adjuster-ready PDF report. Start your first project free.",
   alternates: { canonical: "https://supplementsnap.io" },
+  openGraph: {
+    title: "Roofing Supplement Software for Documenting Tear-Off Damage",
+    description: "Capture tear-off photos, notes and hidden damage on any phone, draft supplement language, and email an adjuster-ready PDF report. Start your first project free.",
+    siteName: "Supplement Snap",
+    type: "website",
+    locale: "en_US",
+    url: "https://supplementsnap.io",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Roofing Supplement Software for Documenting Tear-Off Damage",
+    description: "Capture tear-off photos, notes and hidden damage on any phone, draft supplement language, and email an adjuster-ready PDF report. Start your first project free.",
+  },
 }
 
 const homepageFaqSchema = {
@@ -18,7 +33,6 @@ const homepageFaqSchema = {
     { "@type": "Question", name: "Does it work without cell service?", acceptedAnswer: { "@type": "Answer", text: "Photos and typed notes are saved on your phone when there is no signal, and they upload automatically once you are back online. Voice notes and the AI supplement draft need a connection, because speech-to-text and drafting happen online." } },
     { "@type": "Question", name: "Do I need special equipment?", acceptedAnswer: { "@type": "Answer", text: "No. Any smartphone with a camera works. Your crew is already carrying everything they need." } },
     { "@type": "Question", name: "Can my office staff see what the crew captures?", acceptedAnswer: { "@type": "Answer", text: "Yes. Everything is saved to the cloud by project. On the Team and Pro plans each person gets their own login (up to 3 or 5 people), and office staff can see all captures, notes and reports from any device. The Starter plan is one login." } },
-    { "@type": "Question", name: "What if my crew speaks Spanish?", acceptedAnswer: { "@type": "Answer", text: "Voice notes are automatically translated to English. Your crew speaks in their language, and the system converts it for the supplement report." } },
     { "@type": "Question", name: "Is $99/month worth it for one crew?", acceptedAnswer: { "@type": "Answer", text: "Depending on your claims, recovering one missed line item may offset the monthly cost. There are no setup fees. Results vary by claim and are not guaranteed." } },
   ],
 }
@@ -84,7 +98,13 @@ export default function LandingPage() {
           PDF reports, all in minutes.
         </p>
         <p className="mx-auto mt-3 max-w-2xl text-sm text-zinc-500">
-          It doesn&apos;t replace your CRM. Your crew documents the damage here, and you attach the PDF to the job wherever you already keep it.
+          Supplement Snap works alongside your existing CRM, estimating software and job files. Your crew documents the damage here, and you attach the PDF to the job wherever you already keep it.
+        </p>
+        <p className="mx-auto mt-5 inline-flex max-w-full items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-3.5 py-1.5 text-left text-xs font-medium text-indigo-700">
+          <svg className="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Reports are structured for insurance supplement workflows: findings, photos and notes organized by roof area</span>
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <TrackedLink location="home-hero-get-started"
@@ -375,7 +395,7 @@ export default function LandingPage() {
           <div className="text-center">
             <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Documentation</p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              What damage gets documented
+              Hidden roof damage to document for your supplement
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
               During tear-off, crews capture the hidden issues that insurance supplements often miss.
@@ -398,6 +418,7 @@ export default function LandingPage() {
                 <div className="mt-3 flex gap-1.5">
                   <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Decking</span>
                   <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">Front slope</span>
+                  <Link href="/blog/document-rotted-roof-decking-tear-off" className="ml-auto text-xs font-medium text-indigo-600 hover:underline">How to document &rarr;</Link>
                 </div>
               </div>
             </div>
@@ -417,6 +438,7 @@ export default function LandingPage() {
                 <div className="mt-3 flex gap-1.5">
                   <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Flashing</span>
                   <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">Chimney</span>
+                  <Link href="/blog/roof-flashing-vents-pipe-jacks-insurance-supplement" className="ml-auto text-xs font-medium text-indigo-600 hover:underline">How to document &rarr;</Link>
                 </div>
               </div>
             </div>
@@ -436,6 +458,7 @@ export default function LandingPage() {
                 <div className="mt-3 flex gap-1.5">
                   <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">Ice &amp; Water</span>
                   <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">Valley</span>
+                  <Link href="/blog/ice-and-water-shield-roofing-supplement" className="ml-auto text-xs font-medium text-indigo-600 hover:underline">How to document &rarr;</Link>
                 </div>
               </div>
             </div>
@@ -449,7 +472,7 @@ export default function LandingPage() {
           <div className="mb-12 text-center">
             <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Output</p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              Adjuster-ready supplement reports
+              Roofing supplement reports with photos, findings and notes
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
               Generate clean documentation that can be sent directly to insurance adjusters.
@@ -571,7 +594,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
                 title: "Claim Tracking",
@@ -593,6 +616,17 @@ export default function LandingPage() {
                 desc: "Attach EagleView reports or roof sketches to any project. Everything the adjuster needs in one place.",
                 icon: "M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5",
               },
+              {
+                title: "Spanish Voice Notes",
+                desc: "Crews can speak a damage note in Spanish or another supported language. It is translated to English for the report, so read it over before you send.",
+                icon: "M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z",
+                href: "/blog/roofing-documentation-spanish-speaking-crews",
+              },
+              {
+                title: "Photo Capture Without Signal",
+                desc: "Photos and typed notes save on the phone when there is no service and upload once you are back online. Voice notes and AI drafts need a connection.",
+                icon: "M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z",
+              },
             ].map((item) => (
               <div key={item.title} className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
                 <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-50">
@@ -602,6 +636,7 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-sm font-semibold text-zinc-900">{item.title}</h3>
                 <p className="mt-1.5 text-xs leading-relaxed text-zinc-500">{item.desc}</p>
+                {item.href && <Link href={item.href} className="mt-3 inline-block text-xs font-medium text-indigo-600 hover:underline">Read the guide &rarr;</Link>}
               </div>
             ))}
           </div>
@@ -704,7 +739,7 @@ export default function LandingPage() {
                 Built for real roofing workflows
               </h2>
               <p className="mt-4 text-base leading-relaxed text-zinc-500">
-                Supplement Snap was designed around real roofing supplement workflows. From tear-off inspections to adjuster documentation, every step is built to help crews capture hidden damage and generate clear supplement reports.
+                Supplement Snap was designed around real roofing supplement workflows. From tear-off inspections to adjuster documentation, every step is built to help crews capture hidden damage and generate clear supplement reports. New to supplements? Start with <Link href="/how-roofing-supplements-work" className="font-medium text-indigo-600 hover:underline">how roofing supplements work</Link> or what <Link href="/roofing-supplement-documentation" className="font-medium text-indigo-600 hover:underline">supplement documentation</Link> usually includes.
               </p>
             </div>
 
@@ -840,7 +875,7 @@ export default function LandingPage() {
           <div className="text-center">
             <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">FAQ</p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              Common questions from contractors
+              Roofing supplement software: common questions
             </h2>
           </div>
           <div className="mt-12 space-y-0 divide-y divide-zinc-200">
@@ -860,10 +895,6 @@ export default function LandingPage() {
               {
                 q: "Can my office staff see what the crew captures?",
                 a: "Yes. Everything is saved to the cloud by project. On the Team and Pro plans each person gets their own login (up to 3 or 5 people), and office staff can see all captures, notes and reports from any device. The Starter plan is one login."
-              },
-              {
-                q: "What if my crew speaks Spanish?",
-                a: "Voice notes are automatically translated to English. Your crew speaks in their language, and the system converts it for the supplement report."
               },
               {
                 q: "Is $99/month worth it for one crew?",
