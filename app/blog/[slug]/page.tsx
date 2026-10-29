@@ -9,7 +9,14 @@ import { TrackedLink } from "../../../lib/tracked-link"
 import { DownloadBox } from "./download-box"
 import { getTemplate } from "../../../lib/templates"
 
-type BlogImage = { src: string; alt: string; width?: number; height?: number }
+type BlogImage = {
+  src: string
+  alt: string
+  width?: number
+  height?: number
+  /** Show the whole picture, uncropped and centered with a caption. For tall pictures such as a document page. */
+  contain?: boolean
+}
 type Visual =
   | { type: "stats"; data: ComponentProps<typeof StatsGrid>["items"] }
   | { type: "steps"; data: ComponentProps<typeof StepsFlow>["items"] }
@@ -30,6 +37,8 @@ type Article = {
   publishedDate: string
   highlight?: { label: string; value: string; subtext: string }
   images?: Record<number, BlogImage>
+  /** The picture used for link sharing and structured data, when it should differ from the first picture on the page */
+  socialImage?: BlogImage
   visuals?: Record<number, Visual>
   midCtaAfter?: number
   /** id from lib/templates.ts: shows a free download box after the first section */
@@ -1728,7 +1737,8 @@ const ARTICLES: Article[] = [
   },
   {
     "slug": "roofing-supplement-template",
-    images: { 0: { src: "/blog/roofing-supplement-template/card.png", alt: "Key points from the guide: Roofing Supplement Template: Format, Checklist and Example", width: 1200, height: 630 } },
+    socialImage: { src: "/blog/roofing-supplement-template/card.png", alt: "Key points from the guide: Roofing Supplement Template: Format, Checklist and Example", width: 1200, height: 630 },
+    images: { 0: { ...{ src: "/templates/previews/roofing-supplement-template-preview.jpg", alt: "First page of the free roofing supplement template (PDF version), a blank form ready to fill in", width: 900, height: 1165 }, contain: true } },
     "title": "Roofing Supplement Template: Format, Checklist and Example",
     "metaTitle": "Roofing Supplement Template and Checklist (Free Format)",
     "metaDescription": "A roofing supplement template you can copy: cover page, findings format, narrative wording, line items and a pre-submission checklist adjusters respond to.",
@@ -3094,7 +3104,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-damage-report-template",
-    images: { 0: { src: "/blog/roof-damage-report-template/card.png", alt: "Key points from the guide: Roof Damage Report Template: Sections, Example and Checklist", width: 1200, height: 630 } },
+    socialImage: { src: "/blog/roof-damage-report-template/card.png", alt: "Key points from the guide: Roof Damage Report Template: Sections, Example and Checklist", width: 1200, height: 630 },
+    images: { 0: { ...{ src: "/templates/previews/roof-damage-report-template-preview.jpg", alt: "First page of the free roof damage report template (PDF version), a blank form ready to fill in", width: 900, height: 1165 }, contain: true } },
     title: "Roof Damage Report Template: Sections, Example and Checklist",
     metaTitle: "Roof Damage Report Template (Free, Copyable)",
     metaDescription: "A copyable roof damage report template with the sections to include, a sample finding, a photo checklist and the mistakes that make reports hard to use.",
@@ -4511,7 +4522,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-estimate-template",
-    images: { 0: { src: "/blog/roofing-estimate-template/card.png", alt: "Key points from the guide: Roofing Estimate Template: Free PDF, Word and Excel Download", width: 1200, height: 630 } },
+    socialImage: { src: "/blog/roofing-estimate-template/card.png", alt: "Key points from the guide: Roofing Estimate Template: Free PDF, Word and Excel Download", width: 1200, height: 630 },
+    images: { 0: { ...{ src: "/templates/previews/roofing-estimate-template-preview.jpg", alt: "First page of the free roofing estimate template (PDF version), a blank form ready to fill in", width: 900, height: 1165 }, contain: true } },
     title: "Roofing Estimate Template: Free PDF, Word and Excel Download",
     metaTitle: "Roofing Estimate Template: Free PDF, Word & Excel",
     metaDescription: "Free roofing estimate template as PDF, Word and Excel, plus what every estimate should include and how it differs from an insurance supplement.",
@@ -4605,7 +4617,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-email-to-adjuster",
-    images: { 0: { src: "/blog/roofing-supplement-email-to-adjuster/card.png", alt: "Key points from the guide: How to Write a Roofing Supplement Request Email to an Adjuster (With Template)", width: 1200, height: 630 } },
+    socialImage: { src: "/blog/roofing-supplement-email-to-adjuster/card.png", alt: "Key points from the guide: How to Write a Roofing Supplement Request Email to an Adjuster (With Template)", width: 1200, height: 630 },
+    images: { 0: { ...{ src: "/templates/previews/roofing-supplement-template-preview.jpg", alt: "First page of the free roofing supplement template (PDF version), a blank form ready to fill in", width: 900, height: 1165 }, contain: true } },
     downloads: "roofing-supplement-template",
     title: "How to Write a Roofing Supplement Request Email to an Adjuster (With Template)",
     metaTitle: "Roofing Supplement Email to Adjuster (Template)",
@@ -6037,7 +6050,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roofing-supplement-tracker-template",
-    images: { 0: { src: "/blog/roofing-supplement-tracker-template/card.png", alt: "Key points from the guide: Roofing Supplement Tracker Template (Free PDF, Fillable, Word)", width: 1200, height: 630 } },
+    socialImage: { src: "/blog/roofing-supplement-tracker-template/card.png", alt: "Key points from the guide: Roofing Supplement Tracker Template (Free PDF, Fillable, Word)", width: 1200, height: 630 },
+    images: { 0: { ...{ src: "/templates/previews/roofing-supplement-tracker-preview.jpg", alt: "First page of the free roofing supplement tracker (PDF version), a blank form ready to fill in", width: 900, height: 1165 }, contain: true } },
     title: "Roofing Supplement Tracker Template (Free PDF, Fillable, Word)",
     metaTitle: "Roofing Supplement Tracker (Free Template)",
     metaDescription: "Keep track of every supplement you send: claim, carrier, date, follow-up and status. A free printable and fillable tracker and how to keep it current.",
@@ -6139,7 +6153,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-tear-off-findings-log-template",
-    images: { 0: { src: "/blog/roof-tear-off-findings-log-template/card.png", alt: "Key points from the guide: Roof Tear-Off Findings Log Template (Free PDF and Word)", width: 1200, height: 630 } },
+    socialImage: { src: "/blog/roof-tear-off-findings-log-template/card.png", alt: "Key points from the guide: Roof Tear-Off Findings Log Template (Free PDF and Word)", width: 1200, height: 630 },
+    images: { 0: { ...{ src: "/templates/previews/roof-tear-off-findings-log-preview.jpg", alt: "First page of the free roof tear-off findings log (PDF version), a blank form ready to fill in", width: 900, height: 1165 }, contain: true } },
     title: "Roof Tear-Off Findings Log Template (Free PDF and Word)",
     metaTitle: "Roof Tear-Off Findings Log Template (Free)",
     metaDescription: "What to capture during roof tear-off: decking, layers, flashing and more. A free findings log and checklist your crew can use on the roof.",
@@ -7904,7 +7919,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "roof-repair-estimate-template",
-    images: { 0: { src: "/blog/roof-repair-estimate-template/card.png", alt: "Key points from the guide: Roof Repair Estimate Template: Free PDF, Fillable PDF and Word", width: 1200, height: 630 } },
+    socialImage: { src: "/blog/roof-repair-estimate-template/card.png", alt: "Key points from the guide: Roof Repair Estimate Template: Free PDF, Fillable PDF and Word", width: 1200, height: 630 },
+    images: { 0: { ...{ src: "/templates/previews/roof-repair-estimate-template-preview.jpg", alt: "First page of the free roof repair estimate template (PDF version), a blank form ready to fill in", width: 900, height: 1165 }, contain: true } },
     title: "Roof Repair Estimate Template: Free PDF, Fillable PDF and Word",
     metaTitle: "Roof Repair Estimate Template: Free PDF & Word",
     metaDescription: "Free roof repair estimate template as a printable PDF, fillable PDF and Word file, plus what a repair estimate should say that a full replacement estimate does not.",
@@ -7983,7 +7999,8 @@ const ARTICLES: Article[] = [
   },
   {
     slug: "good-better-best-roofing-proposal-template",
-    images: { 0: { src: "/blog/good-better-best-roofing-proposal-template/card.png", alt: "Key points from the guide: Good Better Best Roofing Proposal Template: Free PDF and Word", width: 1200, height: 630 } },
+    socialImage: { src: "/blog/good-better-best-roofing-proposal-template/card.png", alt: "Key points from the guide: Good Better Best Roofing Proposal Template: Free PDF and Word", width: 1200, height: 630 },
+    images: { 0: { ...{ src: "/templates/previews/good-better-best-roofing-proposal-template-preview.jpg", alt: "First page of the free good, better, best roofing proposal template (PDF version), a blank form ready to fill in", width: 900, height: 1165 }, contain: true } },
     title: "Good Better Best Roofing Proposal Template: Free PDF and Word",
     metaTitle: "Good Better Best Roofing Proposal Template (Free)",
     metaDescription: "Free good, better, best roofing proposal template as a printable PDF, fillable PDF and Word file, with how to build three honest options and a comparison table.",
@@ -8570,7 +8587,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const article = ARTICLES.find((a) => a.slug === slug)
   if (!article) return {}
-  const firstImage = article.images ? Object.values(article.images)[0] : null
+  const firstImage = article.socialImage || (article.images ? Object.values(article.images)[0] : null)
   const ogImage = firstImage ? `https://supplementsnap.io${firstImage.src}` : "https://supplementsnap.io/opengraph-image"
   return {
     title: article.metaTitle,
@@ -8601,7 +8618,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
   const article = ARTICLES.find((a) => a.slug === slug)
   if (!article) notFound()
 
-  const firstImg = article.images ? Object.values(article.images)[0] : null
+  const firstImg = article.socialImage || (article.images ? Object.values(article.images)[0] : null)
   const wordCount = article.sections.reduce((sum, s) => sum + s.content.split(/\s+/).length, 0)
 
   const articleSchema = {
@@ -8754,7 +8771,19 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
             <section key={i}>
               <h2 id={section.heading.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")} className="scroll-mt-24 text-xl font-bold tracking-tight text-zinc-900">{section.heading}</h2>
               <RichContent text={section.content} />
-              {article.images?.[i] && (
+              {article.images?.[i] && (article.images[i].contain ? (
+                <figure className="mt-6 flex flex-col items-center rounded-xl border border-zinc-200 bg-zinc-50 p-4 shadow-sm" data-testid="template-preview">
+                  <img
+                    src={article.images[i].src}
+                    alt={article.images[i].alt}
+                    width={article.images[i].width}
+                    height={article.images[i].height}
+                    className="h-auto w-full max-w-[440px] rounded border border-zinc-200 bg-white shadow"
+                    loading="lazy"
+                  />
+                  <figcaption className="mt-3 text-center text-xs text-zinc-500">First page of the PDF version. The Word, Excel and fillable versions follow the same layout.</figcaption>
+                </figure>
+              ) : (
                 <div className="mt-6 overflow-hidden rounded-xl border border-zinc-200 shadow-sm">
                   <img
                     src={article.images[i].src}
@@ -8765,7 +8794,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
                     loading="lazy"
                   />
                 </div>
-              )}
+              ))}
               {article.visuals?.[i] && <VisualBlock visual={article.visuals[i]} />}
               {i === 0 && article.downloads && getTemplate(article.downloads) && (
                 <DownloadBox template={getTemplate(article.downloads)!} showHubLink />

@@ -91,7 +91,7 @@ export default function FreeRoofingTemplatesPage() {
           <h2 className="sr-only">All free templates</h2>
           {TEMPLATES.map((t) => (
             <div key={t.id}>
-              <DownloadBox template={t} />
+              <DownloadBox template={t} showPreview />
               <p className="-mt-4 mb-8 text-sm">
                 <Link href={t.guideHref} className="font-medium text-indigo-600 underline hover:text-indigo-800">{t.guideLabel} &rarr;</Link>
               </p>

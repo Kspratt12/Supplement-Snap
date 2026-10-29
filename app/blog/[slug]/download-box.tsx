@@ -4,9 +4,22 @@ import { trackEvent } from "../../../lib/analytics"
 import type { Template } from "../../../lib/templates"
 
 /** Free download buttons for a template. Plain links to the files, no sign-up. */
-export function DownloadBox({ template, showHubLink = false }: { template: Template; showHubLink?: boolean }) {
+export function DownloadBox({ template, showHubLink = false, showPreview = false }: { template: Template; showHubLink?: boolean; showPreview?: boolean }) {
   return (
-    <div className="my-8 rounded-xl border border-indigo-200 bg-indigo-50 p-5" data-testid="download-box">
+    <div className="my-8 flex flex-col gap-5 rounded-xl border border-indigo-200 bg-indigo-50 p-5 sm:flex-row" data-testid="download-box">
+      {showPreview && (
+        <a href={template.guideHref} className="mx-auto block w-40 shrink-0 sm:mx-0 sm:w-44" data-testid="download-preview" aria-label={`${template.title}: ${template.guideLabel}`}>
+          <img
+            src={template.preview.src}
+            alt={template.preview.alt}
+            width={template.preview.width}
+            height={template.preview.height}
+            className="h-auto w-full rounded border border-zinc-200 bg-white shadow"
+            loading="lazy"
+          />
+        </a>
+      )}
+      <div className="min-w-0 flex-1">
       <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Free download</p>
       <h3 className="mt-1 text-lg font-bold text-zinc-900">{template.title}</h3>
       <p className="mt-1 text-sm text-zinc-600">{template.description}</p>
@@ -33,6 +46,7 @@ export function DownloadBox({ template, showHubLink = false }: { template: Templ
         </p>
       )}
       <p className="mt-3 text-xs text-zinc-700">No email or sign-up needed. General guidance, not legal advice. Adjust it to your carrier&apos;s, client&apos;s and state&apos;s requirements.</p>
+      </div>
     </div>
   )
 }

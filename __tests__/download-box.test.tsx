@@ -25,6 +25,21 @@ describe("DownloadBox", () => {
     expect(screen.getByText(/not legal advice/i)).toBeTruthy()
   })
 
+  it("shows the template preview only when asked, with the page size set so nothing jumps, and links it to the guide", () => {
+    const t = getTemplate("roofing-estimate-template")!
+    const { rerender } = render(<DownloadBox template={t} />)
+    expect(screen.queryByTestId("download-preview")).toBeNull()
+    rerender(<DownloadBox template={t} showPreview />)
+    const img = screen.getByAltText(t.preview.alt) as HTMLImageElement
+    expect(img.getAttribute("src")).toBe(t.preview.src)
+    expect(img.getAttribute("width")).toBe(String(t.preview.width))
+    expect(img.getAttribute("height")).toBe(String(t.preview.height))
+    expect(img.getAttribute("loading")).toBe("lazy")
+    expect(screen.getByTestId("download-preview").getAttribute("href")).toBe(t.guideHref)
+    // the download buttons are all still there
+    for (const f of t.files) expect(screen.getByRole("link", { name: new RegExp("Download " + f.format) }).getAttribute("href")).toBe(f.href)
+  })
+
   it("only shows the templates page link when asked", () => {
     const t = TEMPLATES[0]
     const { rerender } = render(<DownloadBox template={t} />)

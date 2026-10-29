@@ -262,3 +262,38 @@ describe("Excel estimate", () => {
     }
   })
 })
+
+describe("template previews", () => {
+  /** width and height from a JPEG's start-of-frame marker */
+  function jpegSize(buf: Buffer): { w: number; h: number } {
+    let i = 2
+    while (i < buf.length) {
+      if (buf[i] !== 0xff) throw new Error("not a JPEG marker")
+      const marker = buf[i + 1]
+      const len = buf.readUInt16BE(i + 2)
+      if (marker >= 0xc0 && marker <= 0xc3) return { h: buf.readUInt16BE(i + 5), w: buf.readUInt16BE(i + 7) }
+      i += 2 + len
+    }
+    throw new Error("no size found")
+  }
+
+  it("every template has a real preview picture of the size the page expects, small enough to load quickly", () => {
+    for (const t of TEMPLATES) {
+      const file = path.join(process.cwd(), "public", t.preview.src)
+      expect(fs.existsSync(file), t.id).toBe(true)
+      const buf = fs.readFileSync(file)
+      expect(buf[0] === 0xff && buf[1] === 0xd8, `${t.id} is a JPEG`).toBe(true)
+      expect(jpegSize(buf), t.id).toEqual({ w: t.preview.width, h: t.preview.height })
+      expect(buf.length, `${t.id} size`).toBeLessThan(150 * 1024)
+    }
+  })
+  it("every preview has descriptive alt text that names the template", () => {
+    for (const t of TEMPLATES) {
+      expect(t.preview.alt.toLowerCase(), t.id).toContain(t.title.toLowerCase())
+      expect(t.preview.alt.length).toBeGreaterThan(30)
+    }
+  })
+  it("previews are named after the template and live in one folder", () => {
+    for (const t of TEMPLATES) expect(t.preview.src).toBe(`/templates/previews/${t.id}-preview.jpg`)
+  })
+})
