@@ -12,6 +12,14 @@ export interface TemplateFile {
   note: string
 }
 
+export interface TemplatePreview {
+  /** First page of the PDF, made by scripts/render-template-previews.mjs */
+  src: string
+  alt: string
+  width: number
+  height: number
+}
+
 export interface Template {
   id: string
   title: string
@@ -19,6 +27,7 @@ export interface Template {
   /** The guide that explains how to use it. */
   guideHref: string
   guideLabel: string
+  preview: TemplatePreview
   files: TemplateFile[]
 }
 
@@ -29,6 +38,7 @@ export const TEMPLATES: Template[] = [
     description: "Company details, scope of work, line items, other charges, terms and a signature line. Totals calculate in the Excel version.",
     guideHref: "/blog/roofing-estimate-template",
     guideLabel: "How to fill it in",
+    preview: { src: "/templates/previews/roofing-estimate-template-preview.jpg", alt: "First page of the free roofing estimate template (PDF version), a blank form ready to fill in", width: 900, height: 1165 },
     files: [
       { format: "PDF", href: "/downloads/roofing-estimate-template.pdf", note: "Print and fill in by hand" },
       { format: "Fillable PDF", href: "/downloads/roofing-estimate-template-fillable.pdf", note: "Type into it on screen, then save or print" },
@@ -42,6 +52,7 @@ export const TEMPLATES: Template[] = [
     description: "The five-part package: cover page, findings summary, findings with photo numbers, line items and sign-off, plus a before-you-send checklist.",
     guideHref: "/blog/roofing-supplement-template",
     guideLabel: "How to use it",
+    preview: { src: "/templates/previews/roofing-supplement-template-preview.jpg", alt: "First page of the free roofing supplement template (PDF version), a blank form ready to fill in", width: 900, height: 1165 },
     files: [
       { format: "PDF", href: "/downloads/roofing-supplement-template.pdf", note: "Print and fill in by hand" },
       { format: "Fillable PDF", href: "/downloads/roofing-supplement-template-fillable.pdf", note: "Type into it on screen, then save or print" },
@@ -54,6 +65,7 @@ export const TEMPLATES: Template[] = [
     description: "Job details, roof summary, numbered findings, recommendations, a photo index and a photo checklist.",
     guideHref: "/blog/roof-damage-report-template",
     guideLabel: "How to write each section",
+    preview: { src: "/templates/previews/roof-damage-report-template-preview.jpg", alt: "First page of the free roof damage report template (PDF version), a blank form ready to fill in", width: 900, height: 1165 },
     files: [
       { format: "PDF", href: "/downloads/roof-damage-report-template.pdf", note: "Print and fill in by hand" },
       { format: "Fillable PDF", href: "/downloads/roof-damage-report-template-fillable.pdf", note: "Type into it on screen, then save or print" },
@@ -66,6 +78,7 @@ export const TEMPLATES: Template[] = [
     description: "For a limited repair rather than a full replacement: the problem, the repair scope, line items, what could change the price, terms and a signature line.",
     guideHref: "/blog/roof-repair-estimate-template",
     guideLabel: "How to fill it in",
+    preview: { src: "/templates/previews/roof-repair-estimate-template-preview.jpg", alt: "First page of the free roof repair estimate template (PDF version), a blank form ready to fill in", width: 900, height: 1165 },
     files: [
       { format: "PDF", href: "/downloads/roof-repair-estimate-template.pdf", note: "Print and fill in by hand" },
       { format: "Fillable PDF", href: "/downloads/roof-repair-estimate-template-fillable.pdf", note: "Type into it on screen, then save or print" },
@@ -78,6 +91,7 @@ export const TEMPLATES: Template[] = [
     description: "Three options side by side with a comparison table, shared scope, terms and a place for the customer to choose and sign.",
     guideHref: "/blog/good-better-best-roofing-proposal-template",
     guideLabel: "How to build the three options",
+    preview: { src: "/templates/previews/good-better-best-roofing-proposal-template-preview.jpg", alt: "First page of the free good, better, best roofing proposal template (PDF version), a blank form ready to fill in", width: 900, height: 1165 },
     files: [
       { format: "PDF", href: "/downloads/good-better-best-roofing-proposal-template.pdf", note: "Print and fill in by hand" },
       { format: "Fillable PDF", href: "/downloads/good-better-best-roofing-proposal-template-fillable.pdf", note: "Type into it on screen, then save or print" },
@@ -90,6 +104,7 @@ export const TEMPLATES: Template[] = [
     description: "One line per supplement: claim, carrier, date sent, follow-up date, status and amount asked, with a weekly checklist.",
     guideHref: "/blog/roofing-supplement-tracker-template",
     guideLabel: "How to keep it up to date",
+    preview: { src: "/templates/previews/roofing-supplement-tracker-preview.jpg", alt: "First page of the free roofing supplement tracker (PDF version), a blank form ready to fill in", width: 900, height: 1165 },
     files: [
       { format: "PDF", href: "/downloads/roofing-supplement-tracker.pdf", note: "Print and fill in by hand" },
       { format: "Fillable PDF", href: "/downloads/roofing-supplement-tracker-fillable.pdf", note: "Type into it on screen, then save or print" },
@@ -102,6 +117,7 @@ export const TEMPLATES: Template[] = [
     description: "A log for the roof: where each finding is, what it is, how much, and which photos show it, with a checklist before you leave.",
     guideHref: "/blog/roof-tear-off-findings-log-template",
     guideLabel: "How to use it on a job",
+    preview: { src: "/templates/previews/roof-tear-off-findings-log-preview.jpg", alt: "First page of the free roof tear-off findings log (PDF version), a blank form ready to fill in", width: 900, height: 1165 },
     files: [
       { format: "PDF", href: "/downloads/roof-tear-off-findings-log.pdf", note: "Print and fill in by hand" },
       { format: "Fillable PDF", href: "/downloads/roof-tear-off-findings-log-fillable.pdf", note: "Type into it on screen, then save or print" },
@@ -114,6 +130,7 @@ export const TEMPLATES: Template[] = [
     description: "A one-page routine for before tear-off, during tear-off and before the crew leaves.",
     guideHref: "/blog/roofing-crew-supplement-documentation-sop",
     guideLabel: "How to roll it out to your crew",
+    preview: { src: "/templates/previews/roofing-crew-documentation-checklist-preview.jpg", alt: "First page of the free roofing crew documentation checklist (PDF version), a blank form ready to fill in", width: 900, height: 1165 },
     files: [
       { format: "PDF", href: "/downloads/roofing-crew-documentation-checklist.pdf", note: "Print and fill in by hand" },
       { format: "Fillable PDF", href: "/downloads/roofing-crew-documentation-checklist-fillable.pdf", note: "Type into it on screen, then save or print" },
