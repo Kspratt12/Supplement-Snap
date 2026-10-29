@@ -59,11 +59,11 @@ export default function LandingPage() {
       {/* Nav */}
       <nav className="border-b border-zinc-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2.5">
+          <Link href="/" aria-label="Supplement Snap home" className="flex min-h-[44px] items-center gap-2.5 sm:min-h-0">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">
               S
             </div>
-            <span className="text-lg font-bold tracking-tight">Supplement Snap</span>
+            <span className="hidden whitespace-nowrap text-lg font-bold tracking-tight min-[480px]:inline">Supplement Snap</span>
           </Link>
           <NavLinks />
         </div>
@@ -79,7 +79,7 @@ export default function LandingPage() {
         </h1>
         <p className="mx-auto mt-4 text-sm font-medium text-zinc-500">Built for roofing crews who document hidden damage during tear-off</p>
         <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl">
-          Don't let hidden damage go undocumented during tear-off. Supplement Snap helps roofing crews
+          Don&apos;t let hidden damage go undocumented during tear-off. Supplement Snap helps roofing crews
           capture hidden damage, generate supplement documentation, and email adjuster-ready
           PDF reports, all in minutes.
         </p>
@@ -514,7 +514,7 @@ export default function LandingPage() {
                   <div>
                     <p className="text-sm font-semibold text-zinc-900">Ice &amp; Water Shield: Valley</p>
                     <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                      No ice and water shield membrane was present in the main valley. Local code and the shingle maker's instructions may require it here. Installation would bring the roof system into line with those requirements.
+                      No ice and water shield membrane was present in the main valley. Local code and the shingle maker&apos;s instructions may require it here. Installation would bring the roof system into line with those requirements.
                     </p>
                   </div>
                 </div>
