@@ -30,7 +30,7 @@ vi.mock("@supabase/supabase-js", () => ({
   }),
 }))
 
-import { getAccess, can, MAX_INVITES, planFromPriceId, type Access } from "../lib/plan"
+import { getAccess, can, MAX_INVITES, planFromPriceId, normPlan, isPlanPurchasable, GAP_DETECTOR_READY, type Access } from "../lib/plan"
 
 const access = (plan: Access["plan"], active = true): Access => ({ plan, status: active ? "active" : "inactive", active, viaOwner: false, hasBilling: true })
 
@@ -58,9 +58,11 @@ describe("what each plan can do", () => {
     expect(can.emailTracking(a)).toBe(true)
     expect(can.customBranding(a)).toBe(false)
   })
-  it("pro can do everything", () => {
+  it("pro can do everything that exists today (the Gap Detector is a separate, not-yet-ready feature)", () => {
     const a = access("pro")
-    for (const fn of Object.values(can)) expect(fn(a)).toBe(true)
+    const { estimateGap, ...today } = can
+    for (const fn of Object.values(today)) expect(fn(a)).toBe(true)
+    expect(estimateGap(a)).toBe(false)
   })
   it("a paid plan that is not active unlocks nothing", () => {
     for (const p of ["starter", "team", "pro"] as const) for (const fn of Object.values(can)) expect(fn(access(p, false))).toBe(false)
@@ -69,6 +71,40 @@ describe("what each plan can do", () => {
     expect(MAX_INVITES.starter + 1).toBe(1)
     expect(MAX_INVITES.team + 1).toBe(3)
     expect(MAX_INVITES.pro + 1).toBe(5)
+  })
+})
+
+describe("enterprise (proposed) and the Gap Detector", () => {
+  const ent: Access = { plan: "enterprise", status: "active", active: true, viaOwner: false, hasBilling: true }
+  it("is a recognized plan, never mistaken for starter", () => {
+    expect(normPlan("enterprise")).toBe("enterprise")
+    expect(normPlan("platinum")).toBe("starter")
+  })
+  it("as the top plan, has everything Pro has", () => {
+    expect(can.emailReports(ent)).toBe(true)
+    expect(can.xactimateExport(ent)).toBe(true)
+    expect(can.emailTracking(ent)).toBe(true)
+    expect(can.customBranding(ent)).toBe(true)
+  })
+  it("does not give Team or Starter branding", () => {
+    expect(can.customBranding({ ...ent, plan: "team" })).toBe(false)
+    expect(can.customBranding({ ...ent, plan: "starter" })).toBe(false)
+  })
+  it("is not granted the Gap Detector while the detector is not ready, even on an active Enterprise plan", () => {
+    expect(GAP_DETECTOR_READY).toBe(false)
+    expect(can.estimateGap(ent)).toBe(false)
+    expect(can.estimateGap({ ...ent, plan: "pro" })).toBe(false)
+  })
+  it("cannot be bought while the detector is not ready, even if a Stripe price is configured", () => {
+    vi.stubEnv("STRIPE_PRICE_ENTERPRISE_MONTHLY", "price_enterprise")
+    expect(isPlanPurchasable("enterprise")).toBe(false)
+    expect(isPlanPurchasable("starter")).toBe(true)
+    expect(isPlanPurchasable("team")).toBe(true)
+    expect(isPlanPurchasable("pro")).toBe(true)
+    vi.unstubAllEnvs()
+  })
+  it("seat count is a placeholder equal to Pro's until it is decided", () => {
+    expect(MAX_INVITES.enterprise).toBe(MAX_INVITES.pro)
   })
 })
 
@@ -120,7 +156,7 @@ describe("getAccess", () => {
     expect(await getAccess("u1", "a@b.com")).toMatchObject({ plan: "free", active: false })
   })
   it("treats an unknown plan name on an active subscription as starter, never as a higher plan", async () => {
-    store.tables.subscriptions = [{ user_id: "u1", status: "active", plan: "enterprise", stripe_customer_id: "cus_1" }]
+    store.tables.subscriptions = [{ user_id: "u1", status: "active", plan: "platinum", stripe_customer_id: "cus_1" }]
     expect((await getAccess("u1", "a@b.com")).plan).toBe("starter")
   })
   it("lets an invited team member use the owner's plan, without a billing portal of their own", async () => {

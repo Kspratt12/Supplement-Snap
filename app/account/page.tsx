@@ -7,13 +7,14 @@ import { supabase } from "../../lib/supabase"
 import { authFetch } from "../../lib/auth-fetch"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 
-const PLAN_NAMES: Record<string, string> = { starter: "Starter", team: "Team", pro: "Pro", none: "Free" }
+const PLAN_NAMES: Record<string, string> = { starter: "Starter", team: "Team", pro: "Pro", enterprise: "Enterprise", none: "Free" }
 
 const PLAN_INCLUDES: Record<string, string[]> = {
   none: ["Demo project plus 1 project of your own", "Damage photo capture", "AI supplement draft", "Voice notes", "Sample PDF"],
   starter: ["Unlimited projects", "AI supplement drafts", "PDF reports and email to adjusters", "Photo annotations", "Voice notes", "1 user"],
   team: ["Everything in Starter", "Up to 3 team members", "Xactimate CSV export", "Email open tracking"],
   pro: ["Everything in Team", "Up to 5 team members", "Custom branding", "Priority email replies", "Setup walkthrough for your team"],
+  enterprise: ["Everything in Pro"],
 }
 
 export default function AccountPage() {
@@ -23,7 +24,9 @@ export default function AccountPage() {
     subscriptionStatus, subscriptionPlan, subscriptionLoading, subscriptionViaOwner, subscriptionHasBilling, isAdmin,
   } = useAuth()
 
-  const [name, setName] = useState("")
+  // What the person has typed. Until they type, the field shows the saved name.
+  const [nameEdit, setNameEdit] = useState<string | null>(null)
+  const name = nameEdit ?? ((user?.user_metadata?.full_name as string) || "")
   const [nameMsg, setNameMsg] = useState<{ ok: boolean; text: string } | null>(null)
   const [savingName, setSavingName] = useState(false)
 
@@ -38,10 +41,6 @@ export default function AccountPage() {
   useEffect(() => {
     if (!loading && !user) router.replace("/login")
   }, [loading, user, router])
-
-  useEffect(() => {
-    if (user) setName((user.user_metadata?.full_name as string) || "")
-  }, [user])
 
   if (loading || !user) return null
 
@@ -106,14 +105,14 @@ export default function AccountPage() {
     <div className="min-h-screen bg-zinc-50">
       <nav className="border-b border-zinc-100 bg-white">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
-          <Link href="/dashboard" className="flex items-center gap-2">
+          <Link href="/dashboard" aria-label="Supplement Snap dashboard" className="flex min-h-[44px] items-center gap-2 sm:min-h-0">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">S</div>
-            <span className="text-lg font-bold tracking-tight text-zinc-900">Supplement Snap</span>
+            <span className="hidden whitespace-nowrap text-lg font-bold tracking-tight text-zinc-900 min-[480px]:inline">Supplement Snap</span>
           </Link>
-          <div className="flex items-center gap-3">
-            <Link href="/dashboard" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">Dashboard</Link>
-            {isAdmin && <Link href="/admin" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Admin</Link>}
-            <button onClick={async () => { await signOut(); router.push("/") }} className="text-sm font-medium text-zinc-500 hover:text-zinc-900">Log Out</button>
+          <div className="flex items-center gap-3 whitespace-nowrap">
+            <Link href="/dashboard" className="inline-flex min-h-[44px] items-center text-sm font-medium text-zinc-600 hover:text-zinc-900 sm:min-h-0">Dashboard</Link>
+            {isAdmin && <Link href="/admin" className="inline-flex min-h-[44px] items-center text-sm font-medium text-indigo-600 hover:text-indigo-500 sm:min-h-0">Admin</Link>}
+            <button onClick={async () => { await signOut(); router.push("/") }} className="inline-flex min-h-[44px] items-center text-sm font-medium text-zinc-500 hover:text-zinc-900 sm:min-h-0">Log Out</button>
           </div>
         </div>
       </nav>
@@ -146,7 +145,7 @@ export default function AccountPage() {
                     {portalLoading ? "Opening..." : "Manage billing or cancel"}
                   </button>
                 )}
-                {!subscriptionViaOwner && planKey !== "pro" && (
+                {!subscriptionViaOwner && planKey !== "pro" && planKey !== "enterprise" && (
                   <Link href="/pricing" className="rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
                     {planKey === "none" ? "See plans" : "Change plan"}
                   </Link>
@@ -199,7 +198,7 @@ export default function AccountPage() {
           <form onSubmit={saveName} className="mt-4 space-y-4">
             <div>
               <label htmlFor="acct-name" className="mb-1.5 block text-sm font-medium text-zinc-700">Name</label>
-              <input id="acct-name" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} className={input} placeholder="Your name" maxLength={80} />
+              <input id="acct-name" autoComplete="name" value={name} onChange={(e) => setNameEdit(e.target.value)} className={input} placeholder="Your name" maxLength={80} />
             </div>
             <div>
               <label htmlFor="acct-email" className="mb-1.5 block text-sm font-medium text-zinc-700">Email</label>

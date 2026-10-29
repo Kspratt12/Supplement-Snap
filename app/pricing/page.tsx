@@ -89,13 +89,13 @@ export default function PricingPage() {
       {/* Nav */}
       <nav className="border-b border-zinc-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2.5">
+          <Link href="/" aria-label="Supplement Snap home" className="flex min-h-[44px] items-center gap-2.5 sm:min-h-0">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">S</div>
-            <span className="text-lg font-bold tracking-tight">Supplement Snap</span>
+            <span className="hidden whitespace-nowrap text-lg font-bold tracking-tight min-[480px]:inline">Supplement Snap</span>
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/" className="hidden text-sm font-medium text-zinc-600 hover:text-zinc-900 sm:block">Home</Link>
-            <Link href="/signup?trial=1" className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">Start Free Project</Link>
+            <Link href="/signup?trial=1" className="whitespace-nowrap rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 sm:py-2">Start Free Project</Link>
           </div>
         </div>
       </nav>
@@ -223,6 +223,26 @@ export default function PricingPage() {
 
             <CheckoutButton plan="pro" label="Start 14-Day Free Trial" />
           </div>
+        </div>
+
+        {/* Enterprise: planned, not for sale. No checkout button until the product exists. */}
+        <div className="mt-8 rounded-2xl border border-dashed border-indigo-300 bg-indigo-50/60 p-6 sm:p-8" data-testid="enterprise-planned">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <p className="text-sm font-semibold uppercase tracking-wider text-indigo-700">Enterprise</p>
+            <span className="rounded-full bg-white px-2.5 py-0.5 text-xs font-medium text-indigo-700 ring-1 ring-indigo-200">Planned, not available yet</span>
+          </div>
+          <p className="mt-3 text-2xl font-extrabold text-zinc-900">
+            $399<span className="ml-1 text-sm font-normal text-zinc-500">/month, intended price</span>
+          </p>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-600">
+            We are building an Insurance Estimate Gap Detector. You would upload the insurance estimate and your own estimate and see where line items, quantities and prices differ, with the document page each difference came from.
+          </p>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-600">
+            It is still in development, so it cannot be bought today. It is planned as the highest plan, including everything in Pro. The final price, what else it includes and its limits are not decided. When it exists it will point out differences for professional review. It will not say what an insurer owes, and it cannot guarantee approval or payment.
+          </p>
+          <Link href="mailto:support@supplementsnap.io?subject=Enterprise%20plan%20interest" className="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-indigo-700 hover:text-indigo-600">
+            Tell us you are interested &rarr;
+          </Link>
         </div>
 
         <p className="mt-8 text-center text-sm text-zinc-500">

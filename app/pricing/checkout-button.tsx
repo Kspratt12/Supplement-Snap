@@ -2,22 +2,21 @@
 
 import { useState } from "react"
 import { useSearchParams } from "next/navigation"
-import { useAuth } from "../../lib/auth-context"
 import { trackEvent } from "../../lib/analytics"
+import { authFetch } from "../../lib/auth-fetch"
 
 export function CheckoutButton({ plan = "starter", label = "Get Started" }: { plan?: string; label?: string }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const { user } = useAuth()
 
   async function handleCheckout() {
     setLoading(true)
     setError("")
     try {
-      const res = await fetch("/api/create-checkout-session", {
+      const res = await authFetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user?.email, userId: user?.id, plan }),
+        body: JSON.stringify({ plan }),
       })
       const data = await res.json()
 

@@ -222,11 +222,11 @@ export default function DashboardPage() {
   const totalCaptures = statProjects.reduce((sum, p) => sum + p.capture_count, 0)
   const hasAnyData = statProjects.length > 0 || totalCaptures > 0 || reportCount > 0
 
-  const planName = subscriptionPlan === "pro" ? "Pro" : subscriptionPlan === "team" ? "Team" : subscriptionPlan === "starter" ? "Starter" : "Free"
+  const planName = subscriptionPlan === "pro" ? "Pro" : subscriptionPlan === "enterprise" ? "Enterprise" : subscriptionPlan === "team" ? "Team" : subscriptionPlan === "starter" ? "Starter" : "Free"
   const planLabel = subscriptionViaOwner ? `${planName} (team access)` : planName
   // Owners pay for their plan; team members use their owner's plan and cannot manage it
   const isOwnerPlan = isActive && !subscriptionViaOwner
-  const isTeamOrPro = isActive && (subscriptionPlan === "team" || subscriptionPlan === "pro")
+  const isTeamOrPro = isActive && (subscriptionPlan === "team" || subscriptionPlan === "pro" || subscriptionPlan === "enterprise")
   const canManageTeam = isOwnerPlan && isTeamOrPro
   const statusBadge: Record<string, { text: string; color: string }> = {
     active: { text: `${planLabel} — Active`, color: "bg-green-50 text-green-700 border-green-200" },
@@ -242,17 +242,17 @@ export default function DashboardPage() {
       {/* Nav */}
       <nav className="border-b border-zinc-100 bg-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" aria-label="Supplement Snap home" className="flex min-h-[44px] items-center gap-2 sm:min-h-0">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">S</div>
-            <span className="hidden whitespace-nowrap text-lg font-bold tracking-tight text-zinc-900 min-[420px]:inline">Supplement Snap</span>
+            <span className="hidden whitespace-nowrap text-lg font-bold tracking-tight text-zinc-900 sm:inline">Supplement Snap</span>
           </Link>
           <div className="flex items-center gap-3 whitespace-nowrap">
-            <Link href="/app" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">{isActive ? "My Projects" : "Open App"}</Link>
-            <Link href="/account" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">Account</Link>
-            {isAdmin && <Link href="/admin" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Admin</Link>}
+            <Link href="/app" className="inline-flex min-h-[44px] items-center text-sm font-medium text-zinc-600 hover:text-zinc-900 sm:min-h-0">{isActive ? "My Projects" : "Open App"}</Link>
+            <Link href="/account" className="inline-flex min-h-[44px] items-center text-sm font-medium text-zinc-600 hover:text-zinc-900 sm:min-h-0">Account</Link>
+            {isAdmin && <Link href="/admin" className="inline-flex min-h-[44px] items-center text-sm font-medium text-indigo-600 hover:text-indigo-500 sm:min-h-0">Admin</Link>}
             <button
               onClick={async () => { await signOut(); router.push("/") }}
-              className="text-sm font-medium text-zinc-500 hover:text-zinc-900"
+              className="inline-flex min-h-[44px] items-center text-sm font-medium text-zinc-500 hover:text-zinc-900 sm:min-h-0"
             >
               Log Out
             </button>
@@ -598,7 +598,7 @@ export default function DashboardPage() {
                 ) : null}
                 <AdjusterContacts userId={user.id} />
               </div>
-              {subscriptionPlan === "pro" ? (
+              {subscriptionPlan === "pro" || subscriptionPlan === "enterprise" ? (
                 <CompanySettings userId={user.id} />
               ) : subscriptionViaOwner ? null : (
                 <div className="rounded-xl border border-zinc-200 bg-white p-5">
@@ -695,7 +695,7 @@ export default function DashboardPage() {
                       <div>
                         <p className="text-sm font-semibold text-zinc-900">Ice &amp; Water Shield — Valley</p>
                         <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                          No ice and water shield membrane present in the main valley. Local code and the shingle maker's instructions may require installation.
+                          No ice and water shield membrane present in the main valley. Local code and the shingle maker&apos;s instructions may require installation.
                         </p>
                       </div>
                     </div>
