@@ -30,7 +30,8 @@ export async function uploadPhotosWithRetry(
     let uploaded = false
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
-      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}-photo-${i}.jpg`
+      // An unpredictable name: the photo address is public, so it must not be guessable
+      const fileName = `${Date.now()}-${crypto.randomUUID()}-photo-${i}.jpg`
 
       try {
         const { error } = await supabase.storage

@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, useEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useRef, useState, useSyncExternalStore } from "react"
 import { authFetch } from "../../lib/auth-fetch"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
@@ -142,7 +142,7 @@ function Home() {
   }, [user, authLoading, subscriptionLoading, router])
 
   const isFreeUser = !hasActiveSubscription(subscriptionStatus)
-  const isProUser = hasActiveSubscription(subscriptionStatus) && (subscriptionPlan === "pro" || subscriptionPlan === "team")
+  const isProUser = hasActiveSubscription(subscriptionStatus) && (subscriptionPlan === "pro" || subscriptionPlan === "team" || subscriptionPlan === "enterprise")
   // Every account starts with an auto-created demo project, so a free account holds 2: the demo plus one of its own
   const FREE_PROJECT_LIMIT = 2
   const FREE_CAPTURE_LIMIT = 3
@@ -193,7 +193,12 @@ function Home() {
 
   // Voice recording state
   const [isRecording, setIsRecording] = useState(false)
-  const [speechSupported, setSpeechSupported] = useState(false)
+  // Read from the browser. The server and the first render say "no", then the real answer is used.
+  const speechSupported = useSyncExternalStore(
+    () => () => {},
+    () => "SpeechRecognition" in window || "webkitSpeechRecognition" in window,
+    () => false
+  )
   const [translating, setTranslating] = useState(false)
   const [translated, setTranslated] = useState(false)
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
@@ -292,14 +297,6 @@ function Home() {
     setViewerIndex(index)
     setViewerZoom(1)
   }
-
-  // Check speech recognition support on mount
-  useEffect(() => {
-    setSpeechSupported(
-      typeof window !== "undefined" &&
-        ("SpeechRecognition" in window || "webkitSpeechRecognition" in window)
-    )
-  }, [])
 
   // Offline queue: network listener + auto-sync on reconnect
   useEffect(() => {
@@ -466,38 +463,37 @@ function Home() {
     }
   }, [user])
 
-  // Auto-select project from URL parameter
-  useEffect(() => {
-    const projectParam = searchParams.get("project")
-    if (projectParam && projects.length > 0 && !selectedProjectId) {
-      const match = projects.find(p => p.id === projectParam)
-      if (match) setSelectedProjectId(match.id)
-    }
-  }, [projects, searchParams, selectedProjectId])
+  // Auto-select the project named in the URL once the list has loaded (done while rendering, not in an effect)
+  const projectParam = searchParams.get("project")
+  if (projectParam && !selectedProjectId && projects.some((p) => p.id === projectParam)) {
+    setSelectedProjectId(projectParam)
+  }
 
-  // Load captures when selected project changes
-  useEffect(() => {
-    if (selectedProjectId) {
-      loadCaptures(selectedProjectId)
-    } else {
+  // When a different project is chosen, clear everything that belonged to the previous one
+  const [resetFor, setResetFor] = useState(selectedProjectId)
+  if (resetFor !== selectedProjectId) {
+    setResetFor(selectedProjectId)
+    if (!selectedProjectId) {
       setCaptures([])
+      setProjectDraft("")
     }
     setDrafts({})
     setDraftLoading({})
     setDraftErrors({})
     setProjectDraftError("")
-    // Load saved project draft if available
-    if (selectedProjectId) {
-      supabase.from("projects").select("last_draft").eq("id", selectedProjectId).single().then(({ data }) => {
-        setProjectDraft(cleanAi(data?.last_draft || ""))
-      })
-    } else {
-      setProjectDraft("")
-    }
     setShowReport(false)
     setShowMap(false)
     setAddressSuggestions([])
     setAddressSearch("")
+  }
+
+  // Load the chosen project's captures and its saved draft
+  useEffect(() => {
+    if (!selectedProjectId) return
+    loadCaptures(selectedProjectId)
+    supabase.from("projects").select("last_draft").eq("id", selectedProjectId).single().then(({ data }) => {
+      setProjectDraft(cleanAi(data?.last_draft || ""))
+    })
   }, [selectedProjectId])
 
   function searchAddress(query: string) {
@@ -2364,7 +2360,8 @@ function Home() {
                       if (!file || !selectedProject) return
                       setDiagramUploading(true)
                       try {
-                        const fileName = `diagrams/${Date.now()}-${file.name}`
+                        const ext = (file.name.split(".").pop() || "bin").replace(/[^a-zA-Z0-9]/g, "").slice(0, 5).toLowerCase()
+                        const fileName = `diagrams/${Date.now()}-${crypto.randomUUID()}.${ext}`
                         const { error: uploadError } = await supabase.storage.from("test-uploads").upload(fileName, file)
                         if (uploadError) throw uploadError
                         const { data: urlData } = supabase.storage.from("test-uploads").getPublicUrl(fileName)

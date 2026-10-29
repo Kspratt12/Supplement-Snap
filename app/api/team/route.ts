@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       .eq("owner_id", ownerId)
 
     if ((count ?? 0) >= limit) {
-      const planName = plan === "starter" ? "Starter (1 user only)" : plan === "team" ? "Team (up to 3 users)" : "Pro (up to 5 users)"
+      const planName = plan === "starter" ? "Starter (1 user only)" : plan === "team" ? "Team (up to 3 users)" : plan === "enterprise" ? "Enterprise (up to 5 users)" : "Pro (up to 5 users)"
       return NextResponse.json({ error: `Team member limit reached for your ${planName} plan. Upgrade to add more members.` }, { status: 403 })
     }
 

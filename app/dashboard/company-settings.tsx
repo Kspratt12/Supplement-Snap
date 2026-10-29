@@ -13,19 +13,17 @@ export function CompanySettings({ userId }: { userId: string }) {
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    loadSettings()
-  }, [])
-
-  async function loadSettings() {
-    try {
-      const res = await authFetch(`/api/company-settings?userId=${userId}`)
-      const data = await res.json()
-      if (data.settings) {
+    let cancelled = false
+    authFetch(`/api/company-settings?userId=${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (cancelled || !data.settings) return
         setCompanyName(data.settings.company_name || "")
         setLogoUrl(data.settings.logo_url || "")
-      }
-    } catch {}
-  }
+      })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [userId])
 
   async function handleSave() {
     setSaving(true)
@@ -40,8 +38,8 @@ export function CompanySettings({ userId }: { userId: string }) {
 
   async function handleLogoUpload(file: File) {
     setUploading(true)
-    const rand = Math.random().toString(36).slice(2, 8)
-    const filename = `logo-${userId}-${rand}-${file.name}`
+    const rand = crypto.randomUUID()
+    const filename = `logo-${userId}-${rand}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(-60)}`
     const { error } = await supabase.storage.from("test-uploads").upload(filename, file, { contentType: file.type })
     if (!error) {
       const { data } = supabase.storage.from("test-uploads").getPublicUrl(filename)

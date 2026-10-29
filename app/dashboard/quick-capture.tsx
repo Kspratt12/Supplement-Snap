@@ -129,17 +129,20 @@ interface SpeechRecognitionInstance extends EventTarget {
   onend: (() => void) | null
 }
 
-export function QuickVoiceRecord({
+type QuickCaptureProps = { userId: string; open: boolean; onClose: () => void; onSaved: () => void }
+
+// Closed means removed, so every time the window opens it starts with a clean form
+export function QuickVoiceRecord(props: QuickCaptureProps) {
+  if (!props.open) return null
+  return <QuickVoiceRecordInner {...props} />
+}
+
+function QuickVoiceRecordInner({
   userId,
   open,
   onClose,
   onSaved,
-}: {
-  userId: string
-  open: boolean
-  onClose: () => void
-  onSaved: () => void
-}) {
+}: QuickCaptureProps) {
   const p = useProjects(userId, open)
   const [fieldNote, setFieldNote] = useState("")
   const [damageType, setDamageType] = useState("")
@@ -158,25 +161,14 @@ export function QuickVoiceRecord({
   }, [])
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
 
+  // Stop listening when the window closes
   useEffect(() => {
-    if (open) {
-      setFieldNote("")
-      setDamageType("")
-      setRoofArea("")
-      setRecording(false)
-      setTranslating(false)
-      setTranslated(false)
-      setSaving(false)
-      setSaved(false)
-      setError("")
-      p.reset()
-    }
     return () => {
       if (recognitionRef.current) {
         try { recognitionRef.current.stop() } catch {}
       }
     }
-  }, [open])
+  }, [])
 
   const speechSupported = typeof window !== "undefined" && (window.SpeechRecognition || window.webkitSpeechRecognition)
 
@@ -310,7 +302,7 @@ export function QuickVoiceRecord({
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-100 bg-white px-5 py-3.5 rounded-t-2xl sm:rounded-t-xl">
           <h2 className="text-base font-bold text-zinc-900">Quick Voice Record</h2>
-          <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-zinc-100">
+          <button onClick={onClose} aria-label="Close" className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-zinc-100">
             <svg className="h-5 w-5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -465,17 +457,17 @@ export function QuickVoiceRecord({
 // ─── QUICK PHOTO CAPTURE ────────────────────────────────────────
 // Photo-first: snap a photo or upload, pick/create project, save.
 
-export function QuickPhotoCapture({
+export function QuickPhotoCapture(props: QuickCaptureProps) {
+  if (!props.open) return null
+  return <QuickPhotoCaptureInner {...props} />
+}
+
+function QuickPhotoCaptureInner({
   userId,
   open,
   onClose,
   onSaved,
-}: {
-  userId: string
-  open: boolean
-  onClose: () => void
-  onSaved: () => void
-}) {
+}: QuickCaptureProps) {
   const p = useProjects(userId, open)
   const [photos, setPhotos] = useState<File[]>([])
   const [previews, setPreviews] = useState<string[]>([])
@@ -487,20 +479,6 @@ export function QuickPhotoCapture({
   const [error, setError] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (open) {
-      setPhotos([])
-      setPreviews([])
-      setDamageType("")
-      setRoofArea("")
-      setFieldNote("")
-      setSaving(false)
-      setSaved(false)
-      setError("")
-      p.reset()
-    }
-  }, [open])
 
   function handleFiles(files: FileList | null) {
     if (!files) return
@@ -619,7 +597,7 @@ export function QuickPhotoCapture({
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-100 bg-white px-5 py-3.5 rounded-t-2xl sm:rounded-t-xl">
           <h2 className="text-base font-bold text-zinc-900">Quick Photo Capture</h2>
-          <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-zinc-100">
+          <button onClick={onClose} aria-label="Close" className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-zinc-100">
             <svg className="h-5 w-5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>

@@ -1,5 +1,7 @@
 import Stripe from "stripe"
 import { NextResponse } from "next/server"
+import { getAuthenticatedUser } from "../../../lib/auth-utils"
+import { getAccess, isPlanPurchasable } from "../../../lib/plan"
 
 export async function GET() {
   const key = process.env.STRIPE_SECRET_KEY || ""
@@ -23,17 +25,39 @@ export async function POST(request: Request) {
     let plan: string = "starter"
     try {
       const body = await request.json()
-      customerEmail = body.email
-      userId = body.userId
-      plan = body.plan || "starter"
+      plan = typeof body.plan === "string" ? body.plan : "starter"
     } catch {
       // No body or invalid JSON is fine
+    }
+    if (!["starter", "team", "pro", "enterprise"].includes(plan)) {
+      return NextResponse.json({ error: "Unknown plan." }, { status: 400 })
+    }
+    // A plan that is not ready to sell cannot be bought, even if a price exists in Stripe
+    if (!isPlanPurchasable(plan)) {
+      return NextResponse.json({ error: "That plan is not available yet." }, { status: 400 })
+    }
+    // Someone who is signed in is tied to their own account. A visitor who is not signed in checks out as a guest,
+    // and the payment is matched to an account by the email used at checkout.
+    const user = await getAuthenticatedUser(request)
+    if (user) {
+      userId = user.id
+      customerEmail = user.email || undefined
+      // Starting a second subscription would bill them twice and orphan the first one
+      const access = await getAccess(user.id, user.email)
+      if (access.active && !access.viaOwner) {
+        return NextResponse.json(
+          { error: "You already have an active plan. Use Manage billing on your account page to change or cancel it, so you are not billed twice." },
+          { status: 409 }
+        )
+      }
     }
 
     // Determine price ID based on plan
     let priceMonthly: string | undefined
 
-    if (plan === "pro") {
+    if (plan === "enterprise") {
+      priceMonthly = process.env.STRIPE_PRICE_ENTERPRISE_MONTHLY
+    } else if (plan === "pro") {
       priceMonthly = process.env.STRIPE_PRICE_PRO_MONTHLY
     } else if (plan === "team") {
       priceMonthly = process.env.STRIPE_PRICE_TEAM_MONTHLY

@@ -30,25 +30,24 @@ export function ProAnalytics({ userId, projectCount, captureCount, reportCount }
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    loadData()
-  }, [])
-
-  async function loadData() {
-    setLoading(true)
-    try {
-      const [actRes, emailRes] = await Promise.all([
-        authFetch(`/api/activity-log?userId=${userId}&limit=10`),
-        authFetch(`/api/email-track/status?projectId=all&userId=${userId}`),
-      ])
-      const actData = await actRes.json()
-      const emailData = await emailRes.json()
-      setActivities(actData.activities || [])
-      setEmails(emailData.records || [])
-    } catch {
-      // Fail silently
-    }
-    setLoading(false)
-  }
+    let cancelled = false
+    Promise.all([
+      authFetch(`/api/activity-log?userId=${userId}&limit=10`).then((r) => r.json()),
+      authFetch(`/api/email-track/status?projectId=all&userId=${userId}`).then((r) => r.json()),
+    ])
+      .then(([actData, emailData]) => {
+        if (cancelled) return
+        setActivities(actData.activities || [])
+        setEmails(emailData.records || [])
+      })
+      .catch(() => {
+        // Fail silently
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => { cancelled = true }
+  }, [userId])
 
   const emailsOpened = emails.filter(e => e.opened_at).length
   const emailsSent = emails.length

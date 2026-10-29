@@ -1,9 +1,48 @@
 import Stripe from "stripe"
 import { Resend } from "resend"
 import { NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
-import { planFromPriceId } from "../../../../lib/plan"
+import { createClient, type SupabaseClient } from "@supabase/supabase-js"
+import { planFromPriceId, normPlan } from "../../../../lib/plan"
 import { findUserByEmail } from "../../../../lib/find-user"
+
+// Stripe status -> ours. Only active, trialing and past_due (Stripe is still retrying the card) keep access.
+const STATUS_MAP: Record<string, string> = {
+  active: "active",
+  trialing: "trialing",
+  past_due: "past_due",
+  canceled: "canceled",
+  unpaid: "inactive",
+  incomplete: "inactive",
+  incomplete_expired: "inactive",
+  paused: "inactive",
+}
+
+/** The subscription an invoice belongs to, or null for a one-off invoice. Handles both Stripe API shapes. */
+function subscriptionIdOf(invoice: Stripe.Invoice): string | null {
+  const loose = invoice as unknown as {
+    subscription?: string | { id: string } | null
+    parent?: { subscription_details?: { subscription?: string | { id: string } | null } | null } | null
+  }
+  const raw = loose.parent?.subscription_details?.subscription ?? loose.subscription ?? null
+  if (!raw) return null
+  return typeof raw === "string" ? raw : raw.id
+}
+
+type Db = SupabaseClient
+
+/**
+ * Writes a subscription's CURRENT state (as Stripe reports it now) onto our record.
+ * Webhook events can arrive late, twice, or out of order, so we never trust the status carried by the event itself:
+ * a late "paid" event for a subscription that has since been cancelled must not switch access back on.
+ */
+async function applySubscription(db: Db, sub: Stripe.Subscription) {
+  const customerId = typeof sub.customer === "string" ? sub.customer : sub.customer.id
+  const fromPrice = planFromPriceId(sub.items?.data?.[0]?.price?.id)
+  const plan = fromPrice || (sub.metadata?.plan ? normPlan(sub.metadata.plan) : undefined)
+  const update: Record<string, string> = { status: STATUS_MAP[sub.status] || "inactive", updated_at: new Date().toISOString() }
+  if (plan) update.plan = plan
+  await db.from("subscriptions").update(update).eq("stripe_customer_id", customerId)
+}
 
 export async function POST(request: Request) {
   if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
@@ -38,7 +77,14 @@ export async function POST(request: Request) {
         const customerId = session.customer as string
         const subscriptionId = session.subscription as string
         const customerEmail = session.customer_details?.email
-        const plan = session.metadata?.plan || "starter"
+        const plan = normPlan(session.metadata?.plan)
+
+        // The same event can be delivered more than once. If this subscription is already recorded, do nothing:
+        // no second record and no second email.
+        if (subscriptionId) {
+          const { data: existing } = await supabaseAdmin.from("subscriptions").select("id").eq("stripe_subscription_id", subscriptionId).maybeSingle()
+          if (existing) break
+        }
         // Prefer user ID from metadata, fall back to email lookup
         const metadataUserId = session.metadata?.supabase_user_id
 
@@ -164,49 +210,20 @@ export async function POST(request: Request) {
       }
 
       case "customer.subscription.updated": {
-        const sub = event.data.object as Stripe.Subscription
-        const customerId = sub.customer as string
-        const updatedPlan = planFromPriceId(sub.items?.data?.[0]?.price?.id) || sub.metadata?.plan
-        const statusMap: Record<string, string> = {
-          active: "active",
-          trialing: "trialing",
-          past_due: "past_due",
-          canceled: "canceled",
-          unpaid: "inactive",
-          incomplete: "inactive",
-          incomplete_expired: "inactive",
-          paused: "inactive",
-        }
-        const mappedStatus = statusMap[sub.status] || "inactive"
-        const updateData: Record<string, string> = { status: mappedStatus, updated_at: new Date().toISOString() }
-        if (updatedPlan) updateData.plan = updatedPlan
-        await supabaseAdmin
-          .from("subscriptions")
-          .update(updateData)
-          .eq("stripe_customer_id", customerId)
+        const eventSub = event.data.object as Stripe.Subscription
+        // Look the subscription up again so a late or repeated event cannot overwrite newer information
+        await applySubscription(supabaseAdmin, await stripe.subscriptions.retrieve(eventSub.id))
         break
       }
-
-      case "invoice.paid": {
-        const invoice = event.data.object as Stripe.Invoice
-        const customerId = invoice.customer as string
-        await supabaseAdmin
-          .from("subscriptions")
-          .update({ status: "active", updated_at: new Date().toISOString() })
-          .eq("stripe_customer_id", customerId)
-        break
-      }
-
+      case "invoice.paid":
       case "invoice.payment_failed": {
         const invoice = event.data.object as Stripe.Invoice
-        const customerId = invoice.customer as string
-        await supabaseAdmin
-          .from("subscriptions")
-          .update({ status: "past_due", updated_at: new Date().toISOString() })
-          .eq("stripe_customer_id", customerId)
+        const subscriptionId = subscriptionIdOf(invoice)
+        // An invoice that is not for a subscription must never change anyone's access
+        if (!subscriptionId) break
+        await applySubscription(supabaseAdmin, await stripe.subscriptions.retrieve(subscriptionId))
         break
       }
-
       case "customer.subscription.deleted": {
         const sub = event.data.object as Stripe.Subscription
         const customerId = sub.customer as string

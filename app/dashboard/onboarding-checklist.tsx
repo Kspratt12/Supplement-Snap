@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useSyncExternalStore } from "react"
 import Link from "next/link"
 import { supabase } from "../../lib/supabase"
 
@@ -38,26 +38,33 @@ export function OnboardingChecklist({ mode, done, userId, savedState }: Props) {
 
   // Free and paid have different steps, so each remembers its own dismiss
   const storageKey = `ss_onboarding:${userId}:${mode}`
-  const [state, setState] = useState<Saved>((savedState as Saved) || "")
-  const [loaded, setLoaded] = useState(false)
-
-  useEffect(() => {
-    // Account setting wins; the browser copy only covers the moment before it syncs
-    let next: Saved = (savedState as Saved) || ""
-    if (!next) {
+  // The browser's own copy. It covers the moment before the account setting arrives.
+  const local = useSyncExternalStore<Saved>(
+    () => () => {},
+    () => {
       try {
-        const local = localStorage.getItem(storageKey)
-        if (local === "dismissed" || local === "minimized") next = local
+        const v = localStorage.getItem(storageKey)
+        return v === "dismissed" || v === "minimized" ? v : ""
       } catch {
-        // storage unavailable
+        return "" // storage unavailable
       }
-    }
-    setState(next)
-    setLoaded(true)
-  }, [savedState, storageKey])
+    },
+    () => ""
+  )
+  // False while the page is being prepared on the server, so nothing flashes before the real state is known
+  const loaded = useSyncExternalStore(() => () => {}, () => true, () => false)
+  // What the person just chose on this page. A newer account setting replaces it.
+  const [chosen, setChosen] = useState<Saved | null>(null)
+  const [seenSaved, setSeenSaved] = useState(savedState)
+  if (seenSaved !== savedState) {
+    setSeenSaved(savedState)
+    setChosen(null)
+  }
+  // The account setting wins; then what was just chosen; then the browser copy
+  const state: Saved = chosen ?? ((savedState as Saved) || local)
 
   function persist(next: Saved) {
-    setState(next)
+    setChosen(next)
     try {
       if (next) localStorage.setItem(storageKey, next)
       else localStorage.removeItem(storageKey)

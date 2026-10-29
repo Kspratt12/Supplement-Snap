@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js"
 
-export type Plan = "free" | "starter" | "team" | "pro"
+export type Plan = "free" | "starter" | "team" | "pro" | "enterprise"
 export type SubStatus = "active" | "trialing" | "past_due" | "canceled" | "inactive"
 
 export type Access = {
@@ -21,7 +21,8 @@ const admin = () =>
 // "past_due" means a renewal payment failed and Stripe is still retrying the card. The customer keeps access during
 // that window. If every retry fails, Stripe cancels the subscription and the webhook marks it "canceled".
 const isLive = (s?: string | null) => s === "active" || s === "trialing" || s === "past_due"
-const normPlan = (p?: string | null): Plan => (p === "team" || p === "pro" || p === "starter" ? p : "starter")
+// An unrecognized plan name is treated as the lowest paid plan, never as a higher one
+export const normPlan = (p?: string | null): Plan => (p === "team" || p === "pro" || p === "enterprise" || p === "starter" ? p : "starter")
 
 /**
  * Work out what a user is allowed to use. Looks at their own subscription first,
@@ -82,20 +83,44 @@ export async function getAccess(userId: string, email?: string | null): Promise<
   }
 }
 
-/** What each plan includes. Mirrors the pricing page. */
-export const can = {
-  emailReports: (a: Access) => a.active,
-  xactimateExport: (a: Access) => a.active && (a.plan === "team" || a.plan === "pro"),
-  emailTracking: (a: Access) => a.active && (a.plan === "team" || a.plan === "pro"),
-  customBranding: (a: Access) => a.active && a.plan === "pro",
+/**
+ * Whether the Insurance Estimate Gap Detector is built, tested and safe to sell.
+ * It stays false until the whole workflow exists (private upload, text extraction, review and correction,
+ * findings with evidence, report, private storage) and has been tested on real documents. While it is false,
+ * the Enterprise plan cannot be bought and no one is granted the detector, even if a price exists in Stripe.
+ */
+export const GAP_DETECTOR_READY = false
+
+/** Whether a plan can be bought through checkout right now. */
+export function isPlanPurchasable(plan: string): boolean {
+  if (plan === "enterprise") return GAP_DETECTOR_READY && !!process.env.STRIPE_PRICE_ENTERPRISE_MONTHLY
+  return true
 }
 
-/** Extra seats an owner can invite, on top of the owner. Team = 3 users, Pro = 5 users. */
-export const MAX_INVITES: Record<string, number> = { starter: 0, team: 2, pro: 4 }
+/**
+ * What each plan includes. Mirrors the pricing page.
+ * Enterprise is the proposed top plan (intended $399) built around the Gap Detector. It is given everything Pro has, so
+ * the highest-priced plan never has less than a cheaper one. Its own seat count and usage limits are NOT decided yet.
+ */
+export const can = {
+  emailReports: (a: Access) => a.active,
+  xactimateExport: (a: Access) => a.active && (a.plan === "team" || a.plan === "pro" || a.plan === "enterprise"),
+  emailTracking: (a: Access) => a.active && (a.plan === "team" || a.plan === "pro" || a.plan === "enterprise"),
+  customBranding: (a: Access) => a.active && (a.plan === "pro" || a.plan === "enterprise"),
+  /** Only on an active Enterprise plan, and only once the detector is actually ready */
+  estimateGap: (a: Access) => GAP_DETECTOR_READY && a.active && a.plan === "enterprise",
+}
+
+/**
+ * Extra seats an owner can invite, on top of the owner. Team = 3 users, Pro = 5 users.
+ * Enterprise is a PLACEHOLDER equal to Pro until the real seat count is decided.
+ */
+export const MAX_INVITES: Record<string, number> = { starter: 0, team: 2, pro: 4, enterprise: 4 }
 
 /** Map a Stripe price id to our plan name using the price ids configured in the environment. */
 export function planFromPriceId(priceId?: string | null): Plan | null {
   if (!priceId) return null
+  if (process.env.STRIPE_PRICE_ENTERPRISE_MONTHLY && priceId === process.env.STRIPE_PRICE_ENTERPRISE_MONTHLY) return "enterprise"
   if (priceId === process.env.STRIPE_PRICE_PRO_MONTHLY) return "pro"
   if (priceId === process.env.STRIPE_PRICE_TEAM_MONTHLY) return "team"
   if (priceId === process.env.STRIPE_PRICE_MONTHLY) return "starter"

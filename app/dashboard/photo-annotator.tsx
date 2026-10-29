@@ -13,17 +13,20 @@ type Annotation = {
   color: string
 }
 
-export function PhotoAnnotator({
+type PhotoAnnotatorProps = { imageUrl: string; open: boolean; onClose: () => void; onSave: (dataUrl: string) => void }
+
+// Closed means removed, and a different photo starts fresh, so there is nothing to reset by hand
+export function PhotoAnnotator(props: PhotoAnnotatorProps) {
+  if (!props.open) return null
+  return <PhotoAnnotatorInner key={props.imageUrl} {...props} />
+}
+
+function PhotoAnnotatorInner({
   imageUrl,
   open,
   onClose,
   onSave,
-}: {
-  imageUrl: string
-  open: boolean
-  onClose: () => void
-  onSave: (dataUrl: string) => void
-}) {
+}: PhotoAnnotatorProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [tool, setTool] = useState<Tool>("circle")
   const [color, setColor] = useState("#ef4444")
@@ -105,8 +108,6 @@ export function PhotoAnnotator({
       }
     }
     img.src = imageUrl
-    setAnnotations([])
-    setImageLoaded(false)
   }, [open, imageUrl])
 
   useEffect(() => {

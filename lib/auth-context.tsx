@@ -6,7 +6,7 @@ import { supabase } from "./supabase"
 import { clearGuideVisit } from "./guide-state"
 
 type SubscriptionStatus = "active" | "trialing" | "past_due" | "canceled" | "inactive"
-type SubscriptionPlan = "starter" | "team" | "pro" | "none"
+type SubscriptionPlan = "starter" | "team" | "pro" | "enterprise" | "none"
 
 type AuthContextType = {
   user: User | null
