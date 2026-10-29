@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: { inlineCss: true },
+  // The PDF reader loads its own files at run time, so it must not be bundled into the server build
+  serverExternalPackages: ["pdfjs-dist"],
   async redirects() {
     return [
       { source: "/blog/overhead-and-profit-roofing-insurance-claim", destination: "/blog/roofing-overhead-and-profit-claims", permanent: true },
