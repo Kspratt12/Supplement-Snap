@@ -104,7 +104,7 @@ export default function LandingPage() {
           <svg className="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
-          <span>Reports are structured for insurance supplement workflows: findings, photos and notes organized by roof area</span>
+          <span>Reports organize roof-area findings, photos, and notes into clear documentation for insurance supplement preparation.</span>
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <TrackedLink location="home-hero-get-started"
