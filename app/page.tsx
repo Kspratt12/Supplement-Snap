@@ -85,39 +85,36 @@ export default function LandingPage() {
       <main>
 
       {/* Hero */}
-      <section className="mx-auto max-w-4xl px-6 pt-20 pb-16 text-center sm:pt-28 sm:pb-20">
-        <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Roofing Supplement Software</p>
-        <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
-          <span className="block sm:inline">Roofing Supplement Software</span>
-          <span className="block sm:inline text-indigo-600"> That Helps You Document Hidden Damage on Every Roof</span>
+      <section className="mx-auto max-w-3xl px-6 pt-10 pb-10 text-center sm:pt-16 sm:pb-12">
+        <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Built for roofing crews</p>
+        <h1 className="mt-3 text-balance text-3xl font-extrabold leading-tight tracking-tight text-zinc-900 sm:text-4xl lg:text-5xl">
+          Roofing supplement software for <span className="text-indigo-600">documenting tear-off damage.</span>
         </h1>
-        <p className="mx-auto mt-4 text-sm font-medium text-zinc-500">Built for roofing crews who document hidden damage during tear-off</p>
-        <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-zinc-500 sm:text-xl">
-          Don&apos;t let hidden damage go undocumented during tear-off. Supplement Snap helps roofing crews
-          capture hidden damage, generate supplement documentation, and email adjuster-ready
-          PDF reports, all in minutes.
+        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-600 sm:text-lg">
+          Capture photos and notes, organize roof-area findings, and generate a PDF report for supplement preparation.
         </p>
-        <p className="mx-auto mt-3 max-w-2xl text-sm text-zinc-500">
-          Supplement Snap works alongside your existing CRM, estimating software and job files. Your crew documents the damage here, and you attach the PDF to the job wherever you already keep it.
-        </p>
-        <p className="mx-auto mt-5 inline-flex max-w-full items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-3.5 py-1.5 text-left text-xs font-medium text-indigo-700">
-          <svg className="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Reports organize roof-area findings, photos, and notes into clear documentation for insurance supplement preparation.</span>
-        </p>
-        <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <TrackedLink location="home-hero-get-started"
-            href="/pricing"
-            className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
+            href="/signup"
+            className="flex min-h-[48px] w-full items-center justify-center rounded-lg bg-indigo-600 px-7 py-3 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto"
           >
-            Get Started
+            Start Your Free Project
           </TrackedLink>
+          <Link
+            href="/roofing-supplement-report-example"
+            className="flex min-h-[48px] w-full items-center justify-center rounded-lg border border-zinc-300 bg-white px-7 py-3 text-base font-semibold text-zinc-700 hover:bg-zinc-50 sm:w-auto"
+          >
+            View an Example Report
+          </Link>
         </div>
-        <div className="mx-auto mt-6 flex items-center gap-2 justify-center">
-          <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">New</span>
-          <span className="text-sm text-zinc-500">Try your first project free, no credit card required</span>
-        </div>
+        <p className="mt-3 text-sm text-zinc-500">No credit card required.</p>
+      </section>
+
+      {/* Works with existing tools */}
+      <section className="mx-auto max-w-2xl px-6 pb-12 text-center">
+        <p className="text-base leading-relaxed text-zinc-600">
+          Keep your existing CRM and estimating software. Attach your Supplement Snap report wherever you manage the job.
+        </p>
       </section>
 
       {/* Revenue Impact — moved up for maximum persuasion */}
