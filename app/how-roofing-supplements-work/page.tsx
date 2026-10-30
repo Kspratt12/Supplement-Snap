@@ -88,7 +88,7 @@ export default function HowRoofingSupplementsWorkPage() {
             {
               step: "5",
               title: "Adjuster review and approval",
-              text: "The insurance adjuster reviews the supplement documentation. If the evidence is clear and the damage qualifies under the policy, the adjuster approves additional payment for the work. Supplements with strong documentation (clear photos, professional narratives, and organized findings) have higher approval rates.",
+              text: "The insurance adjuster reviews the supplement documentation. If the evidence is clear and the damage qualifies under the policy, the adjuster approves additional payment for the work. Supplements with strong documentation (clear photos, professional narratives, and organized findings) give the adjuster more to evaluate. Whether a supplement is approved is the carrier's decision.",
             },
           ].map((item) => (
             <div key={item.step} className="flex items-start gap-4">

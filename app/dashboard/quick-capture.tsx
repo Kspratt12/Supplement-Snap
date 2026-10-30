@@ -349,7 +349,7 @@ function QuickVoiceRecordInner({
                 <p className="mt-3 text-sm font-medium text-zinc-600">
                   {recording ? "Recording... tap to stop" : "Tap to record damage note"}
                 </p>
-                <p className="mt-1 text-xs text-zinc-500">Speak in any language — auto-translates to English</p>
+                <p className="mt-1 text-xs text-zinc-500">Speak in the language selected below — it is translated to English</p>
               </div>
 
               <div>

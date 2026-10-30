@@ -130,7 +130,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             {[
               { stat: "Photo + tag", label: "Capture on the roof", desc: "Label the finding while it is exposed" },
-              { stat: "Voice or text", label: "Add the note on site", desc: "Voice notes in any language" },
+              { stat: "Voice or text", label: "Add the note on site", desc: "Voice notes in Spanish and other supported languages" },
               { stat: "PDF", label: "Report for the adjuster", desc: "Emailed from the project" },
             ].map((s) => (
               <div key={s.label} className="rounded-xl border border-zinc-200 bg-white p-5 text-center shadow-sm">
@@ -153,7 +153,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           <div className="mt-10 grid gap-8 sm:grid-cols-3">
             {[
               { num: "1", title: "Snap the damage", desc: `Your crew photographs hidden damage during tear-off on ${city.name} properties (decking, flashing, pipe boots, code violations) right from their phone.` },
-              { num: "2", title: "Tag and describe", desc: "Select the damage type and roof area, add a voice note in any language. Everything syncs to the cloud instantly." },
+              { num: "2", title: "Tag and describe", desc: "Select the damage type and roof area, add a voice note in Spanish or another supported language. Everything is saved to your account when the phone is online, or kept on the phone until it is." },
               { num: "3", title: "Generate and send", desc: "AI writes a professional supplement narrative. Export a PDF and email it to the adjuster, all from the field." },
             ].map((step) => (
               <div key={step.num} className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">

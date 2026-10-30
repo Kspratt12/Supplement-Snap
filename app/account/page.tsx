@@ -10,9 +10,9 @@ import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 const PLAN_NAMES: Record<string, string> = { starter: "Starter", team: "Team", pro: "Pro", enterprise: "Enterprise", none: "Free" }
 
 const PLAN_INCLUDES: Record<string, string[]> = {
-  none: ["Demo project plus 1 project of your own", "Damage photo capture", "AI supplement draft", "Voice notes", "Sample PDF"],
+  none: ["Demo project plus 1 project of your own (up to 3 findings per project)", "Damage photo capture", "AI supplement draft", "Voice notes", "Sample report"],
   starter: ["Unlimited projects", "AI supplement drafts", "PDF reports and email to adjusters", "Photo annotations", "Voice notes", "1 user"],
-  team: ["Everything in Starter", "Up to 3 team members", "Xactimate CSV export", "Email open tracking"],
+  team: ["Everything in Starter", "Up to 3 team members", "Xactimate-style CSV export", "Email open tracking"],
   pro: ["Everything in Team", "Up to 5 team members", "Custom branding", "Priority email replies", "Setup walkthrough for your team"],
   enterprise: ["Everything in Pro"],
 }

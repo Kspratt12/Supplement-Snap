@@ -1,7 +1,11 @@
 import { describe, it, expect, vi, afterEach } from "vitest"
 import { render, screen, fireEvent, cleanup } from "@testing-library/react"
 import { ClaimsOverview, ClaimStatusSelect, StartHere } from "../app/app/claims-overview"
-import { clearGuideVisit, markProjectCreated } from "../lib/guide-state"
+import { markProjectCreated } from "../lib/guide-state"
+
+// Saving Hide on the account is a call to Supabase. Here it is a stand-in, so nothing is sent anywhere.
+const updateUser = vi.hoisted(() => vi.fn())
+vi.mock("../lib/supabase", () => ({ supabase: { auth: { updateUser } } }))
 
 afterEach(() => {
   cleanup()
@@ -90,17 +94,48 @@ describe("StartHere", () => {
     expect(screen.queryByText(/free plan/)).toBeNull()
   })
 
-  it("hides for this visit only, and comes back after logging in again", () => {
+  it("Hide closes the panel at once and keeps it closed after a refresh, a new visit and a project change", () => {
+    updateUser.mockReset().mockResolvedValue({ error: null })
     const { unmount } = render(<StartHere {...base} />)
+    expect(screen.getByTestId("start-here")).toBeTruthy()
+    fireEvent.click(screen.getByRole("button", { name: "Hide the start guide" }))
+    expect(screen.queryByTestId("start-here")).toBeNull() // closed immediately
+    unmount()
+    render(<StartHere {...base} />) // refresh or navigation: the page mounts again
+    expect(screen.queryByTestId("start-here")).toBeNull()
+    cleanup()
+    window.sessionStorage.clear() // a later visit starts a new browser session
+    render(<StartHere {...base} />)
+    expect(screen.queryByTestId("start-here")).toBeNull()
+    cleanup()
+    render(<StartHere {...base} onlyDemoOrNone={false} />) // moved to a project of their own...
+    cleanup()
+    render(<StartHere {...base} />) // ...and back
+    expect(screen.queryByTestId("start-here")).toBeNull()
+    expect(updateUser).toHaveBeenCalledWith({ data: { ss_start_here_hidden: true } })
+  })
+
+  it("is already hidden on the first render when the choice was saved, so it never flashes", () => {
+    window.localStorage.setItem("ss-start-here-hidden:u1", "1")
+    render(<StartHere {...base} />)
+    expect(screen.queryByTestId("start-here")).toBeNull() // checked straight after the first render
+    cleanup()
+    window.localStorage.clear()
+    render(<StartHere {...base} hiddenOnAccount={true} />) // saved on the account, none in this browser
+    expect(screen.queryByTestId("start-here")).toBeNull()
+  })
+
+  it("one person's Hide does not hide the guide for another person on the same browser", () => {
+    updateUser.mockReset().mockResolvedValue({ error: null })
+    render(<StartHere {...base} userId="u1" />)
     fireEvent.click(screen.getByRole("button", { name: "Hide the start guide" }))
     expect(screen.queryByTestId("start-here")).toBeNull()
-    unmount()
-    render(<StartHere {...base} />)
-    expect(screen.queryByTestId("start-here")).toBeNull() // same visit
     cleanup()
-    clearGuideVisit() // what logging out does
-    render(<StartHere {...base} />)
+    render(<StartHere {...base} userId="u2" />)
     expect(screen.getByTestId("start-here")).toBeTruthy()
+    cleanup()
+    render(<StartHere {...base} userId="u1" />)
+    expect(screen.queryByTestId("start-here")).toBeNull()
   })
 
   it("never shows once the person has created a project, even if they delete it later", () => {

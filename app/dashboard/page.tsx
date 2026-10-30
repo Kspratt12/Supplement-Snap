@@ -13,6 +13,7 @@ import { TeamManager } from "./team-manager"
 import { ProAnalytics } from "./pro-analytics"
 import { AdjusterContacts } from "./adjuster-contacts"
 import { CompanySettings } from "./company-settings"
+import { photoPathsForCaptures, removePhotoFiles } from "../../lib/storage-paths"
 
 type ProjectWithCount = {
   id: string
@@ -47,6 +48,7 @@ export default function DashboardPage() {
   const [deleteTarget, setDeleteTarget] = useState<ProjectWithCount | null>(null)
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState("")
+  const [fileNotice, setFileNotice] = useState("")
 
   useEffect(() => {
     if (!authLoading && !user) router.replace("/login")
@@ -185,22 +187,28 @@ export default function DashboardPage() {
     setDeleting(true)
     setDeleteError("")
     try {
-      const { data: photoRows } = await supabase.from("captures").select("image_url").eq("project_id", deleteTarget.id)
-      const { error } = await supabase.from("projects").delete().eq("id", deleteTarget.id).eq("user_id", user.id)
-      if (error) {
+      // Every photo on every finding: image_urls holds all of them, image_url only the first
+      const { data: photoRows, error: photoError } = await supabase.from("captures").select("image_url, image_urls").eq("project_id", deleteTarget.id)
+      // Without the list of photos the files could not be removed afterwards, so do not delete the project
+      if (photoError) {
         setDeleteError("We couldn't delete that project. Nothing was removed. Please try again.")
         return
       }
-      const paths = (photoRows || [])
-        .map((r: { image_url?: string | null }) => (r.image_url || "").match(/test-uploads\/([^?]+)/)?.[1])
-        .filter((v): v is string => !!v)
-        .map((v) => decodeURIComponent(v))
-      if (paths.length > 0) {
-        try {
-          await supabase.storage.from("test-uploads").remove(paths)
-        } catch {
-          // the project is already gone; leftover photo files are harmless
-        }
+      const { data: removedProjects, error } = await supabase.from("projects").delete().eq("id", deleteTarget.id).eq("user_id", user.id).select("id")
+      // No error and no rows removed means the database refused or the project was already gone: nothing was deleted
+      if (error || !removedProjects || removedProjects.length === 0) {
+        setDeleteError("We couldn't delete that project. Nothing was removed. Please try again.")
+        return
+      }
+      // Photo files stay reachable by their link until removed, so say so if the storage service did not confirm it
+      const { notConfirmed } = await removePhotoFiles(supabase.storage.from("test-uploads"), photoPathsForCaptures(photoRows || []))
+      if (notConfirmed.length > 0) {
+        setFileNotice(`The project was deleted, but ${notConfirmed.length} photo file${notConfirmed.length === 1 ? "" : "s"} could not be confirmed removed from storage. Email support@supplementsnap.io so we can remove ${notConfirmed.length === 1 ? "it" : "them"}.`)
+        authFetch("/api/activity-log", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "Photo files not confirmed removed", details: notConfirmed.join(", ").slice(0, 1500) }),
+        }).catch(() => {})
       }
       setDeleteTarget(null)
       await loadProjects()
@@ -291,6 +299,13 @@ export default function DashboardPage() {
             </div>
           )}
         </div>
+
+        {fileNotice && (
+          <div role="alert" className="mb-4 flex items-start justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            <span>{fileNotice}</span>
+            <button type="button" onClick={() => setFileNotice("")} className="font-semibold underline">Dismiss</button>
+          </div>
+        )}
 
         {/* ── MAIN ACTION BUTTONS (mobile-first, big tap targets) ── */}
         {isActive && (
