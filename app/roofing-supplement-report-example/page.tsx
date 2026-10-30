@@ -61,6 +61,9 @@ export default function SupplementReportExamplePage() {
         </div>
 
         <h2 className="mt-12 text-xl font-bold text-zinc-900">Sample report structure</h2>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-500">
+          Fictional example for illustration. Names, addresses and findings are not from a real job.
+        </p>
         <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-md">
           <div className="bg-indigo-600 px-6 py-3">
             <p className="text-xs font-semibold text-white tracking-wide">Supplement Snap | Project Report</p>
