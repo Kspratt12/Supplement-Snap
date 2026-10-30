@@ -87,6 +87,9 @@ export function TeamManager({ userId }: { userId: string }) {
           + Invite
         </button>
       </div>
+      <p data-testid="team-help" className="mt-3 text-xs leading-relaxed text-zinc-500">
+        Team members can view your projects, build and email reports, and export the CSV, but only you can add or change findings. Projects a team member creates belong to that member and are not visible to you.
+      </p>
 
       {success && (
         <div className="mt-3 rounded-lg bg-green-50 border border-green-200 px-3 py-2 text-xs text-green-700">
@@ -153,7 +156,7 @@ export function TeamManager({ userId }: { userId: string }) {
         </div>
       ) : members.length === 0 ? (
         <p className="mt-4 text-center text-xs text-zinc-500 py-3">
-          No team members yet. Invite your crew to start collaborating.
+          No team members yet. Invite team members. They can view your projects and send reports, but only you can edit them.
         </p>
       ) : (
         <div className="mt-4 space-y-2">

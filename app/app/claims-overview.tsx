@@ -103,11 +103,14 @@ export function ClaimStatusSelect({
   onChange,
   saving,
   error,
+  readOnly = false,
 }: {
   value?: string | null
   onChange: (next: ClaimStatus) => void
   saving: boolean
   error: string
+  /** Shown but not changeable: the person can view this project but is not its owner */
+  readOnly?: boolean
 }) {
   const current = normalizeClaimStatus(value)
   return (
@@ -118,7 +121,8 @@ export function ClaimStatusSelect({
       <select
         id="claim-status"
         value={current}
-        disabled={saving}
+        disabled={saving || readOnly}
+        title={readOnly ? "Only the project owner can change the claim status" : undefined}
         onChange={(e) => onChange(e.target.value as ClaimStatus)}
         className={`min-h-8 rounded-full border-0 px-3 py-1 text-xs font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-60 ${CLAIM_STATUS_STYLES[current]}`}
       >

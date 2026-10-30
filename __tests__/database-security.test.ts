@@ -264,3 +264,94 @@ describe("after the proposed v10 migration", () => {
     for (const t of ["projects", "captures", "subscriptions", "team_members", "email_tracking"]) expect(await as("anon", `SELECT * FROM ${t}`), t).toHaveLength(0)
   })
 })
+
+// A simulated database built from the migration files. It shows what v11 says, not what the live database holds.
+describe("v11 (proposed): owners can read their team list but no longer write it directly", () => {
+  const V11 = "supabase-migration-v11-team-members-owner-read-only.sql"
+  beforeAll(async () => {
+    await db.exec(sql(V11))
+  }, 30000)
+
+  it("an owner can still read their own team rows", async () => {
+    expect(await as(A, "SELECT member_email FROM team_members WHERE owner_id = $1", [A.id])).toEqual([{ member_email: C.email }])
+  })
+  it("an owner cannot add a team row with their own login", async () => {
+    expect(await fails(() => as(A, "INSERT INTO team_members (owner_id, member_email, status) VALUES ($1, 'extra@example.test', 'active')", [A.id]))).toBe(true)
+    expect(await truth("SELECT count(*)::int AS n FROM team_members WHERE owner_id = $1", [A.id])).toEqual([{ n: 1 }])
+  })
+  it("an owner cannot change or delete a team row with their own login", async () => {
+    await as(A, "UPDATE team_members SET status = 'pending', member_email = 'changed@example.test'")
+    await as(A, "DELETE FROM team_members")
+    expect(await truth("SELECT member_email, status FROM team_members WHERE owner_id = $1", [A.id])).toEqual([{ member_email: C.email, status: "active" }])
+  })
+  it("an owner still cannot write a row for someone else's team either", async () => {
+    expect(await fails(() => as(A, "INSERT INTO team_members (owner_id, member_email, status) VALUES ($1, 'x@example.test', 'active')", [B.id]))).toBe(true)
+  })
+  it("a member can still read their own membership and the owner's projects, but not change them", async () => {
+    expect(await as(C, "SELECT owner_id FROM team_members")).toEqual([{ owner_id: A.id }])
+    expect((await as(C, "SELECT project_name FROM projects")).length).toBeGreaterThan(0)
+    await as(C, "UPDATE projects SET project_name = 'member edit'")
+    expect(await truth("SELECT count(*)::int AS n FROM projects WHERE project_name = 'member edit'")).toEqual([{ n: 0 }])
+  })
+  it("another user still sees no team rows", async () => {
+    expect(await as(B, "SELECT * FROM team_members")).toHaveLength(0)
+    expect(await as("anon", "SELECT * FROM team_members")).toHaveLength(0)
+  })
+  it("the server's own key (service role) can still write team rows, which is how invites and removals work", async () => {
+    await as("service", "INSERT INTO team_members (owner_id, member_email, status) VALUES ($1, 'invited@example.test', 'pending')", [A.id])
+    await as("service", "UPDATE team_members SET status = 'active' WHERE member_email = 'invited@example.test'")
+    expect(await truth("SELECT status FROM team_members WHERE member_email = 'invited@example.test'")).toEqual([{ status: "active" }])
+    await as("service", "DELETE FROM team_members WHERE member_email = 'invited@example.test'")
+    expect(await truth("SELECT count(*)::int AS n FROM team_members WHERE member_email = 'invited@example.test'")).toEqual([{ n: 0 }])
+  })
+  it("a paid-access check still counts an active member (the project limits are unchanged)", async () => {
+    expect(await as("service", "SELECT public.user_has_paid_access($1) AS paid", [C.id])).toEqual([{ paid: true }])
+  })
+  it("the policy set is exactly the two read rules", async () => {
+    const rows = await truth<{ policyname: string; cmd: string }>("SELECT policyname, cmd FROM pg_policies WHERE schemaname = 'public' AND tablename = 'team_members' ORDER BY 1")
+    expect(rows).toEqual([
+      { policyname: "team_members_member_read", cmd: "SELECT" },
+      { policyname: "team_members_owner_read", cmd: "SELECT" },
+    ])
+  })
+  it("running the migration a second time is harmless", async () => {
+    await db.exec(sql(V11))
+    expect((await truth("SELECT policyname FROM pg_policies WHERE schemaname = 'public' AND tablename = 'team_members'")).length).toBe(2)
+  })
+  it("the forward file contains no rollback: its only statements create the two read rules", async () => {
+    const statements = sql(V11)
+      .replace(/\r\n/g, "\n")
+      .split("\n")
+      .filter((l) => !l.trim().startsWith("--"))
+      .join("\n")
+      .split(";")
+      .map((x) => x.trim().replace(/\s+/g, " "))
+      .filter(Boolean)
+    expect(statements).toEqual([
+      "BEGIN",
+      'DROP POLICY IF EXISTS "team_members_owner" ON team_members',
+      'DROP POLICY IF EXISTS "team_members_owner_read" ON team_members',
+      'CREATE POLICY "team_members_owner_read" ON team_members FOR SELECT USING (owner_id = auth.uid())',
+      "COMMIT",
+    ])
+    expect(sql(V11)).not.toMatch(/FOR ALL/i)
+    expect(sql(V11)).not.toMatch(/ROLLBACK-BEGIN/)
+  })
+  it("the separate rollback file restores the earlier owner rule, and only then", async () => {
+    await db.exec(sql(V11)) // start from the forward state
+    const rows = () => truth<{ policyname: string; cmd: string }>("SELECT policyname, cmd FROM pg_policies WHERE schemaname = 'public' AND tablename = 'team_members' ORDER BY 1")
+    expect(await rows()).toEqual([
+      { policyname: "team_members_member_read", cmd: "SELECT" },
+      { policyname: "team_members_owner_read", cmd: "SELECT" },
+    ])
+    expect(await fails(() => as(A, "INSERT INTO team_members (owner_id, member_email, status) VALUES ($1, 'before-rollback@example.test', 'active')", [A.id]))).toBe(true)
+    await db.exec(sql("supabase-migration-v11-ROLLBACK-restore-owner-writes.sql"))
+    expect(await rows()).toEqual([
+      { policyname: "team_members_member_read", cmd: "SELECT" },
+      { policyname: "team_members_owner", cmd: "ALL" },
+    ])
+    // owners can write again, as before v11
+    await as(A, "INSERT INTO team_members (owner_id, member_email, status) VALUES ($1, 'rollback@example.test', 'active')", [A.id])
+    expect(await truth("SELECT count(*)::int AS n FROM team_members WHERE member_email = 'rollback@example.test'")).toEqual([{ n: 1 }])
+  })
+})
