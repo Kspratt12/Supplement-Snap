@@ -1,4 +1,5 @@
 import { supabase } from "./supabase"
+import { photoPathsForCaptures, removePhotoFiles } from "./storage-paths"
 
 const STORAGE_BUCKET = "test-uploads"
 
@@ -71,13 +72,11 @@ export async function uploadPhotosWithRetry(
 
 /**
  * Clean up orphaned files from Supabase Storage when a capture save fails.
+ * Returns the files the storage service did not confirm removing (empty when everything was removed), so a caller can say so
+ * instead of presenting the cleanup as done.
  */
-export async function cleanupOrphanedUploads(urls: string[]) {
-  const filePaths = urls
-    .map((url) => url.match(/test-uploads\/(.+)$/)?.[1])
-    .filter((p): p is string => !!p)
-
-  if (filePaths.length > 0) {
-    await supabase.storage.from(STORAGE_BUCKET).remove(filePaths)
-  }
+export async function cleanupOrphanedUploads(urls: string[]): Promise<string[]> {
+  const filePaths = photoPathsForCaptures([{ image_urls: urls }])
+  const { notConfirmed } = await removePhotoFiles(supabase.storage.from(STORAGE_BUCKET), filePaths)
+  return notConfirmed
 }

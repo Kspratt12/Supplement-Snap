@@ -10,6 +10,7 @@ const db = vi.hoisted(() => ({
   rows: {} as Record<string, unknown[]>,
   failWrites: false,
   denyDeletes: false,
+  denyUpdates: false,
   removeCalls: [] as string[][],
   removeResult: null as unknown,
   writes: [] as Array<{ table: string; op: string; payload: unknown }>,
@@ -21,6 +22,7 @@ vi.mock("../lib/supabase", () => {
       if (op !== "select") db.writes.push({ table, op, payload })
       if (op !== "select" && db.failWrites) return { data: null, error: { message: "network down" } }
       if (op === "delete" && db.denyDeletes) return { data: [], error: null }
+      if (op === "update" && db.denyUpdates) return { data: [], error: null }
       const rows = db.rows[table] ?? []
       return { data: rows, error: null, count: rows.length }
     }
@@ -124,6 +126,7 @@ describe("dashboard smoke test (stand-in database)", () => {
     db.rows = { projects: [], captures: [], team_members: [] }
     db.failWrites = false
     db.denyDeletes = false
+    db.denyUpdates = false
     db.removeCalls = []
     db.removeResult = null
     db.writes = []
@@ -313,6 +316,173 @@ describe("dashboard smoke test (stand-in database)", () => {
     expect(saved[0]).toMatch(/Report.pdf$/)
     expect(errors.mock.calls.filter((c) => String(c[0]).includes("PDF generation failed"))).toHaveLength(0)
     errors.mockRestore()
+  })
+
+
+  // Writes the database refuses (no error, no rows changed) and writes it accepts, for the project's owner and for a team member.
+  // The database is a stand-in that returns the answers set in each test, so this shows what the page does with those answers,
+  // not what the live Supabase returns.
+  const finding = () => ({ id: "c1", project_id: "p1", image_url: "", damage_type: "Decking", roof_area: "Front", field_note: "Soft decking", status: "Captured", created_at: "2026-10-02T00:00:00Z" })
+  const ownerProject = () => { db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]; db.rows.captures = [finding()] }
+  const memberProject = () => { db.rows.projects = [project({ id: "p1", user_id: "owner-9" }), project({ id: "p2", project_name: "Mine" })]; db.rows.captures = [finding()] }
+  const updates = () => db.writes.filter((w) => w.op === "update" && (w.table === "captures" || w.table === "projects"))
+
+  it("an owner's status change is saved and stays on screen", async () => {
+    ownerProject()
+    render(<AppPage />)
+    await pickProject("p1")
+    fireEvent.change((await screen.findByDisplayValue("Captured")) as HTMLSelectElement, { target: { value: "Needs Review" } })
+    expect(((await screen.findByDisplayValue("Needs Review")) as HTMLSelectElement).value).toBe("Needs Review")
+    expect(updates().some((w) => w.table === "captures")).toBe(true)
+    expect(screen.queryByText(/was not saved/)).toBeNull()
+  })
+
+  it("a refused status change is not shown as saved: the dropdown goes back and the person is told", async () => {
+    ownerProject()
+    db.denyUpdates = true
+    render(<AppPage />)
+    await pickProject("p1")
+    const select = (await screen.findByDisplayValue("Captured")) as HTMLSelectElement
+    fireEvent.change(select, { target: { value: "Needs Review" } })
+    expect(await screen.findByText(/This change was not saved/)).toBeTruthy()
+    expect(select.value).toBe("Captured")
+  })
+
+  it("an owner's claim status change is kept, and a refused one goes back with a clear message", async () => {
+    ownerProject()
+    render(<AppPage />)
+    await pickProject("p1")
+    const claim = (await screen.findByLabelText("Claim status")) as HTMLSelectElement
+    fireEvent.change(claim, { target: { value: "Approved" } })
+    await waitFor(() => expect(claim.value).toBe("Approved"))
+    expect(screen.queryByText(/This change was not saved/)).toBeNull()
+    db.denyUpdates = true
+    fireEvent.change(claim, { target: { value: "Denied" } })
+    expect(await screen.findByText(/This change was not saved/)).toBeTruthy()
+    expect(claim.value).toBe("Approved") // the last status that was really saved
+  })
+
+  it("editing a finding: an owner's save closes the form, a refused save keeps it open and says nothing was saved", async () => {
+    ownerProject()
+    render(<AppPage />)
+    await pickProject("p1")
+    fireEvent.click(await screen.findByRole("button", { name: "Edit Capture" }))
+    fireEvent.change(await screen.findByLabelText("Field note"), { target: { value: "Soft decking, three sheets" } })
+    db.denyUpdates = true
+    fireEvent.click(screen.getByRole("button", { name: "Save changes" }))
+    expect(await screen.findByText(/This change was not saved/)).toBeTruthy()
+    expect(screen.getByLabelText("Field note")).toBeTruthy() // the form is still open with the person's text
+    db.denyUpdates = false
+    fireEvent.click(screen.getByRole("button", { name: "Save changes" }))
+    await waitFor(() => expect(screen.queryByLabelText("Field note")).toBeNull())
+    expect(await screen.findByText("Saved.")).toBeTruthy()
+  })
+
+  it("a team member sees the owner's project as view only, with an explanation and without the edit, add or delete controls", async () => {
+    memberProject()
+    render(<AppPage />)
+    await pickProject("p1")
+    expect(await screen.findByTestId("read-only-notice")).toBeTruthy()
+    expect(screen.getByText("View only")).toBeTruthy()
+    expect(screen.getByText(/Projects you create yourself belong to you and are not visible to the team owner/)).toBeTruthy()
+    for (const name of ["Delete Capture", "Edit Capture", "Save Capture", "Edit"]) expect(screen.queryByRole("button", { name }), name).toBeNull()
+    expect(screen.queryByText("New Capture")).toBeNull()
+    expect(screen.queryByDisplayValue("Captured")).toBeNull() // the finding's status is a label, not a dropdown
+    expect((screen.getByLabelText("Claim status") as HTMLSelectElement).disabled).toBe(true)
+    expect(screen.getByRole("button", { name: /Generate Project Report/ })).toBeTruthy() // viewing and reporting stay
+  })
+
+  it("an owner still sees every edit control and no read-only notice", async () => {
+    ownerProject()
+    render(<AppPage />)
+    await pickProject("p1")
+    expect(await screen.findByRole("button", { name: "Edit Capture" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Delete Capture" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Save Capture" })).toBeTruthy()
+    expect(screen.queryByTestId("read-only-notice")).toBeNull()
+    expect(screen.queryByText("View only")).toBeNull()
+  })
+
+  it("a team member can still build the PDF, and the report flow does not try to save anything to the owner's project", async () => {
+    memberProject()
+    const errors = vi.spyOn(console, "error").mockImplementation(() => {})
+    saved.length = 0
+    render(<AppPage />)
+    await pickProject("p1")
+    fireEvent.click(await screen.findByRole("button", { name: /Generate Project Report/ }))
+    fireEvent.click(await screen.findByRole("button", { name: /Download PDF/ }))
+    await waitFor(() => expect(saved.length).toBeGreaterThan(0), { timeout: 20000 })
+    expect(updates()).toHaveLength(0)
+    errors.mockRestore()
+  })
+
+  it("for the owner, the same report flow does save the statuses, and says so if the database refuses them", async () => {
+    ownerProject()
+    const errors = vi.spyOn(console, "error").mockImplementation(() => {})
+    render(<AppPage />)
+    await pickProject("p1")
+    db.denyUpdates = true
+    fireEvent.click(await screen.findByRole("button", { name: /Generate Project Report/ }))
+    expect(await screen.findByText(/Some finding statuses could not be saved/, undefined, { timeout: 20000 })).toBeTruthy()
+    errors.mockRestore()
+  })
+
+
+  // The label on the project draft. Generating a draft is not saving it. The database here is a stand-in that returns the answers
+  // set in each test, so this shows what the page does with those answers, not what the live Supabase returns.
+  async function withGeneratedDraft(run: () => Promise<void>) {
+    const original = vi.mocked(authFetch).getMockImplementation()
+    vi.mocked(authFetch).mockImplementation((async (url: string) =>
+      String(url).includes("generate-project-draft")
+        ? { ok: true, json: async () => ({ draft: "Fictional draft text for a sample roof." }) }
+        : { ok: true, json: async () => ({}) }) as never)
+    try {
+      await run()
+    } finally {
+      if (original) vi.mocked(authFetch).mockImplementation(original)
+    }
+  }
+
+  it("a generated draft says 'Draft generated', not 'Saved', while the database has not confirmed the write", async () => {
+    ownerProject()
+    db.denyUpdates = true // the save is refused: no error and no row changed
+    await withGeneratedDraft(async () => {
+      render(<AppPage />)
+      await pickProject("p1")
+      fireEvent.click(await screen.findByRole("button", { name: /Generate Project Draft/ }))
+      expect(await screen.findByText("Draft generated")).toBeTruthy()
+      await waitFor(() => expect(updates().length).toBeGreaterThan(0)) // the save was attempted
+      expect(screen.queryByText("Saved")).toBeNull()
+    })
+  })
+
+  it("the label becomes 'Saved' only once the database confirms the write", async () => {
+    ownerProject()
+    await withGeneratedDraft(async () => {
+      render(<AppPage />)
+      await pickProject("p1")
+      fireEvent.click(await screen.findByRole("button", { name: /Generate Project Draft/ }))
+      expect(await screen.findByText("Saved")).toBeTruthy()
+      expect(screen.queryByText("Draft generated")).toBeNull()
+    })
+  })
+
+  it("a draft that was already stored on the project is 'Saved', and a team member's own generated draft is not", async () => {
+    db.rows.projects = [project({ id: "p1", last_draft: "Stored draft text." }), project({ id: "p2", project_name: "Other" })]
+    db.rows.captures = [finding()]
+    render(<AppPage />)
+    await pickProject("p1")
+    expect(await screen.findByText("Saved")).toBeTruthy()
+    cleanup()
+    db.rows.projects = [project({ id: "p1", user_id: "owner-9" }), project({ id: "p2", project_name: "Mine" })]
+    await withGeneratedDraft(async () => {
+      render(<AppPage />)
+      await pickProject("p1")
+      fireEvent.click(await screen.findByRole("button", { name: /Generate Project Draft/ }))
+      expect(await screen.findByText("Draft generated")).toBeTruthy()
+      expect(screen.queryByText("Saved")).toBeNull()
+      expect(updates()).toHaveLength(0) // nothing was attempted for a project this account can only view
+    })
   })
 
   it("tells the user when the microphone is blocked instead of failing silently", async () => {

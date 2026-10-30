@@ -24,8 +24,8 @@ const STARTER_FEATURES = [
 
 const TEAM_FEATURES = [
   "Everything in Starter, plus:",
-  "Up to 3 team members",
-  "Team access for crew and office",
+  "3 users total, including the owner",
+  "Team access to view owner projects and prepare reports",
   "Adjuster email open tracking",
   "Xactimate-style CSV export (starting line items)",
   "PDF reports & email",
@@ -33,7 +33,7 @@ const TEAM_FEATURES = [
 
 const PRO_FEATURES = [
   "Everything in Team, plus:",
-  "Up to 5 team members",
+  "5 users total, including the owner",
   "Priority email replies",
   "Setup walkthrough for your team",
   "Custom branding",
@@ -46,7 +46,7 @@ const FAQ = [
   },
   {
     q: "What's the difference between the plans?",
-    a: "Starter is for solo contractors (1 user). Team is for small crews of 2-3 people who need shared access, email tracking, and an Xactimate-style CSV export. Pro is for larger operations with up to 5 users, priority email replies, a setup walkthrough for your team, and custom branding.",
+    a: "Starter is for solo contractors (1 user). Team is for small crews of 2-3 people who need team logins that can view the owner's projects and send reports, email tracking, and an Xactimate-style CSV export. Pro is for larger operations with up to 5 users, priority email replies, a setup walkthrough for your team, and custom branding.",
   },
   {
     q: "Can I upgrade from Starter to Pro later?",

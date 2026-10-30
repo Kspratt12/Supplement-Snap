@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useRef, useState, useSyncExternalStore } from "react"
 import { authFetch } from "../../lib/auth-fetch"
 import { photoPathsForCaptures, removePhotoFiles } from "../../lib/storage-paths"
+import { NOT_SAVED_NO_PERMISSION, writeOutcome } from "../../lib/write-result"
 import { uploadQueuedCapture } from "../../lib/sync-capture"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
@@ -72,6 +73,7 @@ const ROOF_AREAS = [
 ] as const
 
 type Project = {
+  user_id?: string
   id: string
   project_name: string
   property_address: string
@@ -244,6 +246,7 @@ function Home() {
 
   // Project draft state
   const [projectDraft, setProjectDraft] = useState("")
+  const [savedProjectDraft, setSavedProjectDraft] = useState("") // the draft text the database confirmed holding
   const [projectDraftLoading, setProjectDraftLoading] = useState(false)
   const [projectDraftError, setProjectDraftError] = useState("")
   const [projectDraftCopied, setProjectDraftCopied] = useState(false)
@@ -455,6 +458,7 @@ function Home() {
     if (!selectedProjectId) {
       setCaptures([])
       setProjectDraft("")
+      setSavedProjectDraft("")
     }
     setDrafts({})
     setDraftLoading({})
@@ -473,7 +477,9 @@ function Home() {
     window.scrollTo({ top: 0 })
     loadCaptures(selectedProjectId)
     supabase.from("projects").select("last_draft").eq("id", selectedProjectId).single().then(({ data }) => {
-      setProjectDraft(cleanAi(data?.last_draft || ""))
+      const stored = cleanAi(data?.last_draft || "")
+      setProjectDraft(stored)
+      setSavedProjectDraft(stored)
     })
   }, [selectedProjectId])
 
@@ -509,9 +515,12 @@ function Home() {
       setAddressEditing(false)
       return
     }
-    const { error: addressErr } = await supabase.from("projects").update({ property_address: address }).eq("id", selectedProject.id)
-    if (addressErr) {
-      showNotice("The address was not saved. Check your connection and try again.")
+    const addressOutcome = writeOutcome(await supabase.from("projects").update({ property_address: address }).eq("id", selectedProject.id).select("id"))
+    if (addressOutcome !== "ok") {
+      // Show the last saved address again, not the text that was just typed
+      setAddressEditing(false)
+      setAddressSearch(selectedProject.property_address || "")
+      showNotice(addressOutcome === "refused" ? NOT_SAVED_NO_PERMISSION : "The address was not saved. Check your connection and try again.")
       return
     }
     setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, property_address: address } : p))
@@ -741,9 +750,10 @@ function Home() {
   }
 
   async function updateCaptureStatus(captureId: string, newStatus: CaptureStatus) {
-    const { error: statusErr } = await supabase.from("captures").update({ status: newStatus }).eq("id", captureId)
-    if (statusErr) {
-      showNotice("The status was not saved. Check your connection and try again.")
+    const statusOutcome = writeOutcome(await supabase.from("captures").update({ status: newStatus }).eq("id", captureId).select("id"))
+    if (statusOutcome !== "ok") {
+      // The list keeps the last saved status, so the dropdown goes back to it
+      showNotice(statusOutcome === "refused" ? NOT_SAVED_NO_PERMISSION : "The status was not saved. Check your connection and try again.")
       return
     }
     setCaptures((prev) =>
@@ -767,12 +777,14 @@ function Home() {
   }
 
   async function bulkUpdateStatus(captureIds: string[], newStatus: CaptureStatus) {
+    const saved: string[] = []
     for (const id of captureIds) {
-      await supabase.from("captures").update({ status: newStatus }).eq("id", id)
+      const outcome = writeOutcome(await supabase.from("captures").update({ status: newStatus }).eq("id", id).select("id"))
+      if (outcome === "ok") saved.push(id)
     }
-    setCaptures((prev) =>
-      prev.map((c) => (captureIds.includes(c.id) ? { ...c, status: newStatus } : c))
-    )
+    // Only findings whose new status was really saved change on screen
+    setCaptures((prev) => prev.map((c) => (saved.includes(c.id) ? { ...c, status: newStatus } : c)))
+    if (saved.length < captureIds.length) showNotice("Some finding statuses could not be saved, so they were left as they were.")
   }
 
   async function generateProjectDraft() {
@@ -822,8 +834,13 @@ function Home() {
       const draft = cleanAi(rawDraft)
       setProjectDraft(draft)
       setDraftExpanded(true)
-      // Persist project draft
-      supabase.from("projects").update({ last_draft: draft }).eq("id", selectedProjectId).then(() => {})
+      // Persist project draft (not for a project this account can only view)
+      if (!readOnly) {
+        supabase.from("projects").update({ last_draft: draft }).eq("id", selectedProjectId).select("id").then(
+          (res) => { if (writeOutcome(res) === "ok") setSavedProjectDraft(draft) },
+          () => {}
+        )
+      }
 
       // Log activity
       authFetch("/api/activity-log", {
@@ -867,10 +884,10 @@ function Home() {
       const { draft: rawDraft } = await res.json()
       const draft = cleanAi(rawDraft)
       setDrafts((prev) => ({ ...prev, [c.id]: draft }))
-      // Persist draft to capture record
-      supabase.from("captures").update({ draft: draft }).eq("id", c.id).then(() => {})
+      // Persist draft to capture record (not for a project this account can only view)
+      if (!readOnly) supabase.from("captures").update({ draft: draft }).eq("id", c.id).then(() => {})
       // Auto-update status to "Needs Review"
-      if (!c.status || c.status === "Captured") {
+      if (!readOnly && (!c.status || c.status === "Captured")) {
         updateCaptureStatus(c.id, "Needs Review")
       }
     } catch (err) {
@@ -905,7 +922,7 @@ function Home() {
       const draft = cleanAi(rawDraft)
           setDrafts((prev) => ({ ...prev, [c.id]: draft }))
           // Persist the draft so the report reads the same next time it is generated
-          supabase.from("captures").update({ draft: draft }).eq("id", c.id).then(() => {})
+          if (!readOnly) supabase.from("captures").update({ draft: draft }).eq("id", c.id).then(() => {})
         }
       } catch {
         // Continue generating remaining drafts even if one fails
@@ -914,7 +931,7 @@ function Home() {
 
     // Auto-update all captures to "Ready to Send"
     const toUpdate = captures.filter((c) => c.status !== "Sent").map((c) => c.id)
-    if (toUpdate.length > 0) {
+    if (toUpdate.length > 0 && !readOnly) {
       bulkUpdateStatus(toUpdate, "Ready to Send")
     }
 
@@ -1534,7 +1551,7 @@ function Home() {
       }).catch(() => {})
 
       // Auto-update all captures to "Sent"
-      bulkUpdateStatus(captures.map((c) => c.id), "Sent")
+      if (!readOnly) bulkUpdateStatus(captures.map((c) => c.id), "Sent")
     } catch (err) {
       setEmailStatus("error")
       setEmailError(err instanceof Error ? err.message : "Failed to send email")
@@ -1553,8 +1570,8 @@ function Home() {
     setSavingClaimStatus(true)
     setProjects((prev) => prev.map((p) => (p.id === project.id ? { ...p, claim_status: next } : p)))
     try {
-      const { error } = await supabase.from("projects").update({ claim_status: next }).eq("id", project.id)
-      if (error) throw error
+      const outcome = writeOutcome(await supabase.from("projects").update({ claim_status: next }).eq("id", project.id).select("id"))
+      if (outcome !== "ok") throw new Error(outcome)
       if (!opts.silent && user) {
         authFetch("/api/activity-log", {
           method: "POST",
@@ -1562,9 +1579,9 @@ function Home() {
           body: JSON.stringify({ userId: user.id, projectId: project.id, action: "Claim status changed", details: `${normalizeClaimStatus(previous)} to ${next}` }),
         }).catch(() => {})
       }
-    } catch {
+    } catch (err) {
       setProjects((prev) => prev.map((p) => (p.id === project.id ? { ...p, claim_status: previous } : p)))
-      setClaimStatusError("Could not save the status. Please try again.")
+      setClaimStatusError(err instanceof Error && err.message === "refused" ? NOT_SAVED_NO_PERMISSION : "Could not save the status. Please try again.")
     } finally {
       setSavingClaimStatus(false)
     }
@@ -1847,7 +1864,8 @@ function Home() {
 
     if (insertError) {
       // Clean up orphaned uploads since DB insert failed
-      await cleanupOrphanedUploads(uploadedUrls)
+      const notConfirmed = await cleanupOrphanedUploads(uploadedUrls)
+      if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The capture was not saved")
       setStatus(`Save failed: ${insertError.message}`)
       setSaving(false)
       return
@@ -1903,13 +1921,16 @@ function Home() {
       const all = [...existing, ...urls]
       const prevMeta = Array.isArray(c.photo_metadata) ? c.photo_metadata : []
       const nextMeta = [...prevMeta, ...meta]
-      let { error } = await supabase.from("captures").update({ image_url: all[0], image_urls: all, photo_metadata: nextMeta }).eq("id", c.id)
-      if (error?.message?.includes("schema cache")) {
-        ;({ error } = await supabase.from("captures").update({ image_url: all[0], image_urls: all }).eq("id", c.id))
+      let res = await supabase.from("captures").update({ image_url: all[0], image_urls: all, photo_metadata: nextMeta }).eq("id", c.id).select("id")
+      if (res.error?.message?.includes("schema cache")) {
+        res = await supabase.from("captures").update({ image_url: all[0], image_urls: all }).eq("id", c.id).select("id")
       }
-      if (error) {
-        await cleanupOrphanedUploads(urls)
-        throw new Error(error.message)
+      const outcome = writeOutcome(res)
+      if (outcome !== "ok") {
+        // Remove only the photos uploaded for this attempt, and say so if that could not be confirmed
+        const notConfirmed = await cleanupOrphanedUploads(urls)
+        if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The photo was not added")
+        throw new Error(outcome === "refused" ? NOT_SAVED_NO_PERMISSION : res.error?.message || "Could not add the photo.")
       }
       setCaptures((prev) => prev.map((x) => (x.id === c.id ? { ...x, image_url: all[0], image_urls: all, photo_metadata: nextMeta } : x)))
       say(failedIndexes.length > 0 ? `${urls.length} added, ${failedIndexes.length} failed. You can try those again.` : urls.length > 1 ? "Photos added." : "Photo added.")
@@ -1931,11 +1952,12 @@ function Home() {
     const all = existing.filter((_, i) => i !== idx)
     const prevMeta = Array.isArray(c.photo_metadata) ? c.photo_metadata : []
     const nextMeta = prevMeta.length === existing.length ? prevMeta.filter((_, i) => i !== idx) : prevMeta
-    let { error } = await supabase.from("captures").update({ image_url: all[0] || "", image_urls: all, photo_metadata: nextMeta }).eq("id", c.id)
-    if (error?.message?.includes("schema cache")) {
-      ;({ error } = await supabase.from("captures").update({ image_url: all[0] || "", image_urls: all }).eq("id", c.id))
+    let res = await supabase.from("captures").update({ image_url: all[0] || "", image_urls: all, photo_metadata: nextMeta }).eq("id", c.id).select("id")
+    if (res.error?.message?.includes("schema cache")) {
+      res = await supabase.from("captures").update({ image_url: all[0] || "", image_urls: all }).eq("id", c.id).select("id")
     }
-    if (error) { say(`Could not remove the photo: ${error.message}`); return }
+    const outcome = writeOutcome(res)
+    if (outcome !== "ok") { say(outcome === "refused" ? NOT_SAVED_NO_PERMISSION : `Could not remove the photo: ${res.error?.message}`); return }
     const { notConfirmed } = await removePhotoFiles(supabase.storage.from("test-uploads"), photoPathsForCaptures([{ image_url: url }]))
     setCaptures((prev) => prev.map((x) => (x.id === c.id ? { ...x, image_url: all[0] || "", image_urls: all, photo_metadata: nextMeta } : x)))
     if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The photo was removed from the finding")
@@ -1967,9 +1989,10 @@ function Home() {
       unit: editForm.unit || null,
     }
     setCardBusy((prev) => ({ ...prev, [c.id]: true }))
-    const { error } = await supabase.from("captures").update(patch).eq("id", c.id)
+    const res = await supabase.from("captures").update(patch).eq("id", c.id).select("id")
     setCardBusy((prev) => ({ ...prev, [c.id]: false }))
-    if (error) { say(`Could not save: ${error.message}`); return }
+    const outcome = writeOutcome(res)
+    if (outcome !== "ok") { say(outcome === "refused" ? NOT_SAVED_NO_PERMISSION : `Could not save: ${res.error?.message}`); return }
     setCaptures((prev) => prev.map((x) => (x.id === c.id ? { ...x, ...patch } : x)))
     setEditingCaptureId(null)
     say(drafts[c.id] ? "Saved. Regenerate the draft so it matches your changes." : "Saved.")
@@ -1979,8 +2002,9 @@ function Home() {
   // ---- Edit the AI drafts by hand
   async function saveCaptureDraftEdit(c: Capture) {
     const text = cleanAi(editingDraftText)
-    const { error } = await supabase.from("captures").update({ draft: text }).eq("id", c.id)
-    if (error) { setCardMsg((prev) => ({ ...prev, [c.id]: `Could not save: ${error.message}` })); return }
+    const res = await supabase.from("captures").update({ draft: text }).eq("id", c.id).select("id")
+    const outcome = writeOutcome(res)
+    if (outcome !== "ok") { setCardMsg((prev) => ({ ...prev, [c.id]: outcome === "refused" ? NOT_SAVED_NO_PERMISSION : `Could not save: ${res.error?.message}` })); return }
     setDrafts((prev) => ({ ...prev, [c.id]: text }))
     setEditingDraftId(null)
   }
@@ -1988,9 +2012,11 @@ function Home() {
   async function saveProjectDraftEdit() {
     if (!selectedProjectId) return
     const text = cleanAi(editingDraftText)
-    const { error } = await supabase.from("projects").update({ last_draft: text }).eq("id", selectedProjectId)
-    if (error) { setProjectDraftError(`Could not save: ${error.message}`); return }
+    const res = await supabase.from("projects").update({ last_draft: text }).eq("id", selectedProjectId).select("id")
+    const outcome = writeOutcome(res)
+    if (outcome !== "ok") { setProjectDraftError(outcome === "refused" ? NOT_SAVED_NO_PERMISSION : `Could not save: ${res.error?.message}`); return }
     setProjectDraft(text)
+    setSavedProjectDraft(text)
     setEditingDraftId(null)
   }
 
@@ -2027,6 +2053,8 @@ function Home() {
   }
 
   const selectedProject = projects.find((p) => p.id === selectedProjectId)
+  // A project that belongs to someone else (a team owner's) can be viewed, but only its owner can change it
+  const readOnly = !!selectedProject && !!selectedProject.user_id && !!user && selectedProject.user_id !== user.id
   const filteredProjects = filterProjects(projects, projectQuery, claimFilter)
   const listedProjects =
     selectedProject && !filteredProjects.some((p) => p.id === selectedProject.id) ? [selectedProject, ...filteredProjects] : filteredProjects
@@ -2258,7 +2286,8 @@ function Home() {
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-500">
               {!editingClaim ? (
                 <>
-                  <ClaimStatusSelect value={selectedProject.claim_status} onChange={(n) => updateClaimStatus(n)} saving={savingClaimStatus} error={claimStatusError} />
+                  {readOnly && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">View only</span>}
+                  <ClaimStatusSelect readOnly={readOnly} value={selectedProject.claim_status} onChange={(n) => updateClaimStatus(n)} saving={savingClaimStatus} error={claimStatusError} />
                   {selectedProject.insurance_company && (
                     <span><span className="font-medium text-zinc-600">Ins:</span> {selectedProject.insurance_company}</span>
                   )}
@@ -2271,7 +2300,7 @@ function Home() {
                   {selectedProject.adjuster_name && (
                     <span><span className="font-medium text-zinc-600">Adj:</span> {selectedProject.adjuster_name}</span>
                   )}
-                  <button
+                  {!readOnly && <button
                     type="button"
                     onClick={() => {
                       setEditClaimData({
@@ -2287,7 +2316,7 @@ function Home() {
                     className="-my-2 px-2 py-2 font-medium text-indigo-600 hover:text-indigo-500"
                   >
                     {selectedProject.insurance_company || selectedProject.claim_number ? "Edit" : "+ Add Claim Info"}
-                  </button>
+                  </button>}
                 </>
               ) : (
                 <div className="w-full space-y-2 pt-1">
@@ -2304,16 +2333,17 @@ function Home() {
                       type="button"
                       onClick={async () => {
                         setClaimSaveError("")
-                        const { error: claimErr } = await supabase.from("projects").update({
+                        const claimRes = await supabase.from("projects").update({
                           insurance_company: editClaimData.insurance_company || null,
                           claim_number: editClaimData.claim_number || null,
                           adjuster_name: editClaimData.adjuster_name || null,
                           policy_number: editClaimData.policy_number || null,
                           adjuster_email: editClaimData.adjuster_email || null,
                           date_of_loss: editClaimData.date_of_loss || null,
-                        }).eq("id", selectedProject.id)
-                        if (claimErr) {
-                          setClaimSaveError("Could not save the claim details. Check your connection and try again.")
+                        }).eq("id", selectedProject.id).select("id")
+                        const claimOutcome = writeOutcome(claimRes)
+                        if (claimOutcome !== "ok") {
+                          setClaimSaveError(claimOutcome === "refused" ? NOT_SAVED_NO_PERMISSION : "Could not save the claim details. Check your connection and try again.")
                           return
                         }
                         setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, ...editClaimData } : p))
@@ -2341,11 +2371,12 @@ function Home() {
                     </svg>
                     View Roof Diagram
                   </a>
-                  <button
+                  {!readOnly && <button
                     type="button"
                     onClick={async () => {
                       if (!confirm("Remove this diagram?")) return
-                      await supabase.from("projects").update({ diagram_url: null }).eq("id", selectedProject.id)
+                      const outcome = writeOutcome(await supabase.from("projects").update({ diagram_url: null }).eq("id", selectedProject.id).select("id"))
+                      if (outcome !== "ok") { showNotice(outcome === "refused" ? NOT_SAVED_NO_PERMISSION : "The diagram was not removed. Check your connection and try again."); return }
                       setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, diagram_url: undefined } : p))
                     }}
                     className="inline-flex items-center justify-center h-5 w-5 rounded-full hover:bg-red-50 text-zinc-500 hover:text-red-500"
@@ -2354,9 +2385,9 @@ function Home() {
                     <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
-                  </button>
+                  </button>}
                 </div>
-              ) : (
+              ) : !readOnly ? (
                 <>
                   <input
                     id="diagram-input"
@@ -2373,7 +2404,14 @@ function Home() {
                         const { error: uploadError } = await supabase.storage.from("test-uploads").upload(fileName, file)
                         if (uploadError) throw uploadError
                         const { data: urlData } = supabase.storage.from("test-uploads").getPublicUrl(fileName)
-                        await supabase.from("projects").update({ diagram_url: urlData.publicUrl }).eq("id", selectedProject.id)
+                        const outcome = writeOutcome(await supabase.from("projects").update({ diagram_url: urlData.publicUrl }).eq("id", selectedProject.id).select("id"))
+                        if (outcome !== "ok") {
+                          // Remove only the diagram uploaded for this attempt, and say so if that could not be confirmed
+                          const notConfirmed = await cleanupOrphanedUploads([urlData.publicUrl])
+                          if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The diagram was not saved")
+                          else showNotice(outcome === "refused" ? NOT_SAVED_NO_PERMISSION : "The diagram was not saved. Check your connection and try again.")
+                          return
+                        }
                         setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, diagram_url: urlData.publicUrl } : p))
                       } catch (err) {
                         console.error("Diagram upload failed:", err)
@@ -2395,7 +2433,7 @@ function Home() {
                     {diagramUploading ? "Uploading..." : "Upload Roof Diagram / EagleView"}
                   </button>
                 </>
-              )}
+              ) : null}
             </div>
             {/* Map preview */}
             {showMap && (
@@ -2430,6 +2468,7 @@ function Home() {
                     <input
                       type="text"
                       aria-label="Property address"
+                      readOnly={readOnly}
                       value={addressEditing ? addressSearch : (selectedProject.property_address || "")}
                       onChange={(e) => { setAddressEditing(true); searchAddress(e.target.value) }}
                       onKeyDown={async (e) => {
@@ -2443,13 +2482,13 @@ function Home() {
                       placeholder="Search address..."
                       className="flex-1 rounded border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400"
                     />
-                    <button
+                    {!readOnly && <button
                       type="button"
                       onClick={() => { if (addressSearch.trim()) selectAddress(addressSearch.trim()) }}
                       className="rounded bg-indigo-600 px-3 py-2.5 text-xs font-medium text-white hover:bg-indigo-500"
                     >
                       Update
-                    </button>
+                    </button>}
                   </div>
                   {/* Autocomplete suggestions dropdown */}
                   {addressSuggestions.length > 0 && (
@@ -2537,7 +2576,9 @@ function Home() {
                   <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
                     Project Supplement Draft
                   </p>
-                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-green-700">Saved</span>
+                  {projectDraft && projectDraft === savedProjectDraft
+                    ? <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-green-700">Saved</span>
+                    : <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-medium text-zinc-600">Draft generated</span>}
                 </div>
                 <svg className={`h-4 w-4 text-zinc-500 transition-transform ${draftExpanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -2609,7 +2650,7 @@ function Home() {
                 >
                   Regenerate
                 </button>
-                {editingDraftId !== "project" && (
+                {editingDraftId !== "project" && !readOnly && (
                   <button
                     type="button"
                     onClick={() => { setEditingDraftId("project"); setEditingDraftText(projectDraft) }}
@@ -2854,12 +2895,12 @@ function Home() {
                           className="h-24 w-auto rounded-lg border border-zinc-200 object-cover dark:border-zinc-700 cursor-pointer"
                           onClick={() => openViewer(urls, j)}
                         />
-                        <button
+                        {!readOnly && <button
                           onClick={() => { if (isFreeUser) { setShowUpgradeModal(true); return }; setAnnotateUrl(url); setAnnotateOpen(true) }}
                           className="absolute bottom-1 right-1 rounded-md bg-black/60 px-1.5 py-2 text-[10px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           Annotate
-                        </button>
+                        </button>}
                       </div>
                     ))}
                   </div>
@@ -2871,7 +2912,17 @@ function Home() {
       )}
 
       {/* Capture form — only show when a project is selected */}
-      {selectedProjectId ? (
+      {selectedProjectId && readOnly ? (
+        <div data-testid="read-only-notice" role="note" className="mb-10 rounded-xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-900 dark:bg-amber-950/30">
+          <h2 className="text-sm font-semibold text-amber-900 dark:text-amber-200">You can view this project, but only its owner can change it</h2>
+          <p className="mt-1 text-xs leading-relaxed text-amber-900 dark:text-amber-200">
+            You have team access to this project. You can open its findings and photos, build the PDF report, email it, and export the CSV on plans that include it. Adding or editing findings, notes, photos and claim details is done by the owner. Drafts you generate here are used for your report and are not saved to the project.
+          </p>
+          <p className="mt-2 text-xs leading-relaxed text-amber-900 dark:text-amber-200">
+            Projects you create yourself belong to you and are not visible to the team owner.
+          </p>
+        </div>
+      ) : selectedProjectId ? (
         <form onSubmit={handleSave} className="mb-10 space-y-5 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-500">New Capture</h2>
 
@@ -3224,6 +3275,7 @@ function Home() {
                 {(() => {
                 const urls = (c.image_urls && c.image_urls.length > 0 ? c.image_urls : c.image_url ? [c.image_url] : []).filter(Boolean)
                 if (urls.length === 0) {
+                  if (readOnly) return <div className="border-b border-dashed border-zinc-200 bg-zinc-50 py-10 text-center text-sm text-zinc-500">No photos added</div>
                   return (
                     <label className="flex cursor-pointer flex-col items-center gap-2 border-b border-dashed border-zinc-200 bg-zinc-50 py-10 text-zinc-500 hover:bg-zinc-100">
                       <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -3255,7 +3307,7 @@ function Home() {
                       style={{ maxHeight: "280px" }}
                       onClick={() => openViewer(urls, 0)}
                     />
-                    <button type="button" onClick={() => removePhotoFromCapture(c, urls[0])} aria-label="Remove this photo" title="Remove this photo" className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm font-bold text-white hover:bg-red-600">&times;</button>
+                    {!readOnly && <button type="button" onClick={() => removePhotoFromCapture(c, urls[0])} aria-label="Remove this photo" title="Remove this photo" className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm font-bold text-white hover:bg-red-600">&times;</button>}
                   </div>
                 ) : (
                   <div className="grid grid-cols-3 gap-1 p-1">
@@ -3267,7 +3319,7 @@ function Home() {
                           className="aspect-square w-full rounded-lg object-cover cursor-pointer"
                           onClick={() => openViewer(urls, i)}
                         />
-                        <button type="button" onClick={() => removePhotoFromCapture(c, url)} aria-label="Remove this photo" title="Remove this photo" className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm font-bold text-white hover:bg-red-600">&times;</button>
+                        {!readOnly && <button type="button" onClick={() => removePhotoFromCapture(c, url)} aria-label="Remove this photo" title="Remove this photo" className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm font-bold text-white hover:bg-red-600">&times;</button>}
                       </div>
                     ))}
                   </div>
@@ -3277,6 +3329,9 @@ function Home() {
                   {/* Status + tags row */}
                   <div className="flex items-center justify-between">
                     <div className="flex flex-wrap gap-1.5">
+                      {readOnly ? (
+                        <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[c.status as CaptureStatus || "Captured"]}`}>{c.status || "Captured"}</span>
+                      ) : (
                       <select
                         value={c.status || "Captured"}
                         onChange={(e) => updateCaptureStatus(c.id, e.target.value as CaptureStatus)}
@@ -3287,6 +3342,7 @@ function Home() {
                           <option key={s} value={s}>{s}</option>
                         ))}
                       </select>
+                      )}
                       <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">
                         {c.damage_type}
                       </span>
@@ -3484,7 +3540,7 @@ function Home() {
                         </svg>
                         {copied[c.id] ? "Copied!" : "Copy Draft"}
                       </button>
-                      {editingDraftId !== c.id && (
+                      {editingDraftId !== c.id && !readOnly && (
                         <button
                           type="button"
                           onClick={() => { setEditingDraftId(c.id); setEditingDraftText(drafts[c.id]) }}
@@ -3498,7 +3554,7 @@ function Home() {
 
                   {/* Delete */}
                   <div className="flex flex-wrap items-center gap-4 border-t border-zinc-100 pt-3 dark:border-zinc-800">
-                    {editingCaptureId !== c.id && (
+                    {editingCaptureId !== c.id && !readOnly && (
                       <button
                         type="button"
                         onClick={() => startEditCapture(c)}
@@ -3507,7 +3563,7 @@ function Home() {
                         Edit Capture
                       </button>
                     )}
-                    {((c.image_urls && c.image_urls.length > 0 ? c.image_urls : c.image_url ? [c.image_url] : []).filter(Boolean).length > 0) && (
+                    {!readOnly && ((c.image_urls && c.image_urls.length > 0 ? c.image_urls : c.image_url ? [c.image_url] : []).filter(Boolean).length > 0) && (
                       <label className="cursor-pointer text-xs font-medium text-indigo-600 hover:text-indigo-500">
                         {cardBusy[c.id] ? "Uploading..." : "Add Photos"}
                         <input
@@ -3523,13 +3579,13 @@ function Home() {
                         />
                       </label>
                     )}
-                    <button
+                    {!readOnly && <button
                       type="button"
                       onClick={() => deleteCapture(c)}
                       className="rounded px-3 py-3 text-xs font-medium text-zinc-600 hover:text-red-600"
                     >
                       Delete Capture
-                    </button>
+                    </button>}
                   </div>
                 </div>
               </div>
