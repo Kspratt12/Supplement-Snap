@@ -32,7 +32,7 @@ const homepageFaqSchema = {
     { "@type": "Question", name: "How long does it take to set up?", acceptedAnswer: { "@type": "Answer", text: "A few minutes. Create an account, start a project, and your crew can begin capturing damage from any phone." } },
     { "@type": "Question", name: "Does it work without cell service?", acceptedAnswer: { "@type": "Answer", text: "Photos and typed notes are saved on your phone when there is no signal, and they upload automatically once you are back online. Voice notes and the AI supplement draft need a connection, because speech-to-text and drafting happen online." } },
     { "@type": "Question", name: "Do I need special equipment?", acceptedAnswer: { "@type": "Answer", text: "No. Any smartphone with a camera works. Your crew is already carrying everything they need." } },
-    { "@type": "Question", name: "Can my office staff see what the crew captures?", acceptedAnswer: { "@type": "Answer", text: "Yes. Everything is saved to the cloud by project. On the Team and Pro plans each person gets their own login (up to 3 or 5 people), and office staff can see all captures, notes and reports from any device. The Starter plan is one login." } },
+    { "@type": "Question", name: "Can my office staff see what the crew captures?", acceptedAnswer: { "@type": "Answer", text: "Yes. Once a capture has uploaded, it is saved to your account by project. Photos and typed notes taken without signal wait on the phone and upload when you are back online. On the Team and Pro plans each person gets their own login (up to 3 or 5 people), and office staff can see all captures, notes and reports from any device. The Starter plan is one login." } },
     { "@type": "Question", name: "Is $99/month worth it for one crew?", acceptedAnswer: { "@type": "Answer", text: "Depending on your claims, recovering one missed line item may offset the monthly cost. There are no setup fees. Results vary by claim and are not guaranteed." } },
   ],
 }
@@ -46,9 +46,9 @@ const softwareSchema = {
   description: "Roofing supplement software that helps contractors capture hidden damage during tear-off, generate AI supplement drafts, and send adjuster-ready PDF reports in minutes.",
   url: "https://supplementsnap.io",
   offers: [
-    { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free", description: "Demo project plus 1 project of your own" },
+    { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free", description: "Demo project plus 1 project of your own (up to 3 findings per project)" },
     { "@type": "Offer", price: "99", priceCurrency: "USD", name: "Starter", description: "Unlimited projects, 1 user, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "99", priceCurrency: "USD" } },
-    { "@type": "Offer", price: "199", priceCurrency: "USD", name: "Team", description: "Up to 3 users, Xactimate export, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "199", priceCurrency: "USD" } },
+    { "@type": "Offer", price: "199", priceCurrency: "USD", name: "Team", description: "Up to 3 users, Xactimate-style CSV export, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "199", priceCurrency: "USD" } },
     { "@type": "Offer", price: "299", priceCurrency: "USD", name: "Pro", description: "Up to 5 users, priority email replies, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "299", priceCurrency: "USD" } },
   ],
   author: { "@type": "Organization", name: "Supplement Snap", url: "https://supplementsnap.io" },
@@ -370,7 +370,7 @@ export default function LandingPage() {
               <div className="space-y-3">
                 {[
                   "Crew captures labeled photos from the roof",
-                  "Voice notes auto-transcribed (any language)",
+                  "Voice notes in Spanish and other supported languages",
                   "AI generates professional supplement narrative",
                   "PDF report emailed to adjuster the same day",
                   "Photos and notes go to the adjuster with every finding",
@@ -607,7 +607,7 @@ export default function LandingPage() {
                 icon: "M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z",
               },
               {
-                title: "Xactimate Pricing",
+                title: "Xactimate-Style CSV",
                 desc: "CSV export lists suggested line items with approximate unit pricing for you to review and adjust in your estimate.",
                 icon: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z",
               },
@@ -667,7 +667,7 @@ export default function LandingPage() {
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">2</div>
               <h3 className="text-base font-semibold">Tag and note</h3>
               <p className="mt-2 text-sm leading-relaxed text-zinc-500">
-                Select the damage type and roof area, add a quick field note. Everything is organized by project and saved to the cloud instantly.
+                Select the damage type and roof area, add a quick field note. Everything is organized by project and saved to your account when the phone is online, or kept on the phone until it is.
               </p>
             </div>
             <div className="rounded-xl border border-zinc-200 bg-white p-6">
@@ -793,7 +793,7 @@ export default function LandingPage() {
               </div>
               <p className="mt-1 text-sm text-zinc-500">No credit card required</p>
               <div className="mt-5 flex-1 space-y-2.5">
-                {["Demo project plus 1 project of your own", "Damage photo capture", "AI supplement draft", "Voice notes", "See sample PDF"].map((f) => (
+                {["Demo project plus 1 project of your own (up to 3 findings per project)", "Damage photo capture", "AI supplement draft", "Voice notes", "See sample report"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
                     <svg className="h-4 w-4 flex-shrink-0 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                     <span className="text-sm text-zinc-700">{f}</span>
@@ -836,7 +836,7 @@ export default function LandingPage() {
               </div>
               <p className="mt-1 text-sm text-zinc-500">14-day free trial, card required, cancel anytime</p>
               <div className="mt-5 flex-1 space-y-2.5">
-                {["Everything in Starter", "Up to 3 team members", "PDF reports & email", "Xactimate CSV export", "Email open tracking"].map((f) => (
+                {["Everything in Starter", "Up to 3 team members", "PDF reports & email", "Xactimate-style CSV export", "Email open tracking"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
                     <svg className="h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                     <span className="text-sm text-zinc-700">{f}</span>
@@ -894,7 +894,7 @@ export default function LandingPage() {
               },
               {
                 q: "Can my office staff see what the crew captures?",
-                a: "Yes. Everything is saved to the cloud by project. On the Team and Pro plans each person gets their own login (up to 3 or 5 people), and office staff can see all captures, notes and reports from any device. The Starter plan is one login."
+                a: "Yes. Once a capture has uploaded, it is saved to your account by project. Photos and typed notes taken without signal wait on the phone and upload when you are back online. On the Team and Pro plans each person gets their own login (up to 3 or 5 people), and office staff can see all captures, notes and reports from any device. The Starter plan is one login."
               },
               {
                 q: "Is $99/month worth it for one crew?",

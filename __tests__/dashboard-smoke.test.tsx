@@ -9,6 +9,9 @@ vi.setConfig({ testTimeout: 30000 })
 const db = vi.hoisted(() => ({
   rows: {} as Record<string, unknown[]>,
   failWrites: false,
+  denyDeletes: false,
+  removeCalls: [] as string[][],
+  removeResult: null as unknown,
   writes: [] as Array<{ table: string; op: string; payload: unknown }>,
 }))
 
@@ -17,6 +20,7 @@ vi.mock("../lib/supabase", () => {
     const result = () => {
       if (op !== "select") db.writes.push({ table, op, payload })
       if (op !== "select" && db.failWrites) return { data: null, error: { message: "network down" } }
+      if (op === "delete" && db.denyDeletes) return { data: [], error: null }
       const rows = db.rows[table] ?? []
       return { data: rows, error: null, count: rows.length }
     }
@@ -44,7 +48,7 @@ vi.mock("../lib/supabase", () => {
   return {
     supabase: {
       from: (table: string) => chain(table),
-      storage: { from: () => ({ remove: async () => ({ data: [], error: null }), upload: async () => ({ data: {}, error: null }), getPublicUrl: () => ({ data: { publicUrl: "" } }) }) },
+      storage: { from: () => ({ remove: async (paths: string[]) => { db.removeCalls.push(paths); return db.removeResult ?? { data: [], error: null } }, upload: async () => ({ data: {}, error: null }), getPublicUrl: () => ({ data: { publicUrl: "" } }) }) },
       auth: { getSession: async () => ({ data: { session: null } }), onAuthStateChange: () => ({ data: { subscription: { unsubscribe() {} } } }) },
     },
   }
@@ -92,6 +96,7 @@ vi.mock("../app/dashboard/feedback-box", () => ({ FeedbackBox: () => null }))
 vi.mock("../app/dashboard/photo-annotator", () => ({ PhotoAnnotator: () => null }))
 
 import AppPage from "../app/app/page"
+import { authFetch } from "../lib/auth-fetch"
 
 const project = (over: Record<string, unknown>) => ({
   id: "p1",
@@ -118,6 +123,9 @@ describe("dashboard smoke test (stand-in database)", () => {
   beforeEach(() => {
     db.rows = { projects: [], captures: [], team_members: [] }
     db.failWrites = false
+    db.denyDeletes = false
+    db.removeCalls = []
+    db.removeResult = null
     db.writes = []
     plan.paid = true
     window.localStorage.clear()
@@ -201,6 +209,70 @@ describe("dashboard smoke test (stand-in database)", () => {
     }
     expect(await screen.findByText(/could not be deleted, so it was put back/)).toBeTruthy()
     expect(await screen.findByRole("button", { name: "Delete Capture" })).toBeTruthy()
+  })
+
+
+  // These four tests check what the page does with the answers it gets. The database and the photo storage here are
+  // stand-ins that return the answers set in each test, so they do not prove what the real Supabase returns.
+  const photoUrl = (name: string) => `https://abc.supabase.co/storage/v1/object/public/test-uploads/${name}`
+  const findingWithPhotos = () => ({ id: "c1", project_id: "p1", image_url: photoUrl("a-0.jpg"), image_urls: [photoUrl("a-0.jpg"), photoUrl("a-1.jpg")], damage_type: "Decking", roof_area: "Front", field_note: "Soft decking", status: "Captured", created_at: "2026-10-02T00:00:00Z" })
+  async function deleteFirstFinding() {
+    const del = await screen.findByRole("button", { name: "Delete Capture" })
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    try {
+      fireEvent.click(del)
+      await vi.advanceTimersByTimeAsync(8500)
+    } finally {
+      vi.useRealTimers()
+    }
+  }
+
+  it("does not count a delete the database refused (no error, no rows removed) as a deletion, and leaves the photos alone", async () => {
+    db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
+    db.rows.captures = [findingWithPhotos()]
+    db.denyDeletes = true
+    render(<AppPage />)
+    await pickProject("p1")
+    await deleteFirstFinding()
+    expect(await screen.findByText(/was not deleted, so it was put back/)).toBeTruthy()
+    expect(await screen.findByRole("button", { name: "Delete Capture" })).toBeTruthy()
+    expect(db.removeCalls).toEqual([])
+  })
+
+  it("removes every photo of a deleted finding and raises no warning when all of them are confirmed", async () => {
+    db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
+    db.rows.captures = [findingWithPhotos()]
+    db.removeResult = { data: [{ name: "a-0.jpg" }, { name: "a-1.jpg" }], error: null }
+    render(<AppPage />)
+    await pickProject("p1")
+    await deleteFirstFinding()
+    await waitFor(() => expect(db.removeCalls).toHaveLength(1))
+    expect([...db.removeCalls[0]].sort()).toEqual(["a-0.jpg", "a-1.jpg"])
+    expect(screen.queryByText(/could not be confirmed removed/)).toBeNull()
+    expect(screen.queryByRole("button", { name: "Delete Capture" })).toBeNull()
+  })
+
+  it("says so, and writes a record, when the storage service confirms only some of the photos", async () => {
+    db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
+    db.rows.captures = [findingWithPhotos()]
+    db.removeResult = { data: [{ name: "a-0.jpg" }], error: null }
+    vi.mocked(authFetch).mockClear()
+    render(<AppPage />)
+    await pickProject("p1")
+    await deleteFirstFinding()
+    expect(await screen.findByText(/The finding was deleted, but 1 photo file could not be confirmed removed/)).toBeTruthy()
+    const logged = vi.mocked(authFetch).mock.calls.find((c) => String(c[0]).includes("activity-log"))
+    expect(String(logged?.[1]?.body)).toContain("a-1.jpg")
+  })
+
+  it("says so when the storage service returns an error for the removal", async () => {
+    db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
+    db.rows.captures = [findingWithPhotos()]
+    db.removeResult = { data: null, error: { message: "storage unavailable" } }
+    render(<AppPage />)
+    await pickProject("p1")
+    await deleteFirstFinding()
+    expect(await screen.findByText(/The finding was deleted, but 2 photo files could not be confirmed removed/)).toBeTruthy()
   })
 
   it("asks free-plan users to upgrade instead of sending a report, and does not email anything", async () => {

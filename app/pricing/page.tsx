@@ -46,7 +46,7 @@ const FAQ = [
   },
   {
     q: "What's the difference between the plans?",
-    a: "Starter is for solo contractors (1 user). Team is for small crews of 2-3 people who need shared access, email tracking, and Xactimate export. Pro is for larger operations with up to 5 users, priority email replies, a setup walkthrough for your team, and custom branding.",
+    a: "Starter is for solo contractors (1 user). Team is for small crews of 2-3 people who need shared access, email tracking, and an Xactimate-style CSV export. Pro is for larger operations with up to 5 users, priority email replies, a setup walkthrough for your team, and custom branding.",
   },
   {
     q: "Can I upgrade from Starter to Pro later?",
@@ -58,7 +58,7 @@ const FAQ = [
   },
   {
     q: "What if my crew speaks Spanish?",
-    a: "Voice notes are automatically translated to English. Your crew speaks in their language, and the system converts it for the supplement report.",
+    a: "Voice notes can be recorded in English, Spanish, Portuguese, French, Polish, Russian, Ukrainian, Vietnamese or Chinese, depending on what your phone's browser supports, and they are translated to English for the supplement report. Spanish has a built-in roofing vocabulary list. Read the English text before you send it.",
   },
   {
     q: "Is it worth the investment?",
@@ -128,7 +128,7 @@ export default function PricingPage() {
             <p className="mt-1 text-sm text-zinc-500">No credit card required</p>
 
             <div className="mt-6 border-t border-zinc-100 pt-6 space-y-2.5">
-              {["Demo project plus 1 project of your own", "Capture damage photos", "Voice-to-note documentation", "AI supplement draft", "See sample PDF report"].map((f) => (
+              {["Demo project plus 1 project of your own (up to 3 findings per project)", "Capture damage photos", "Voice-to-note documentation", "AI supplement draft", "See sample report"].map((f) => (
                 <div key={f} className="flex items-start gap-2.5">
                   <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -280,11 +280,11 @@ export default function PricingPage() {
                   ["Projects", "1", "Unlimited", "Unlimited", "Unlimited"],
                   ["Captures per project", "3", "Unlimited", "Unlimited", "Unlimited"],
                   ["Damage photo capture", true, true, true, true],
-                  ["Voice notes (any language)", true, true, true, true],
+                  ["Voice notes (Spanish and other supported languages)", true, true, true, true],
                   ["AI supplement drafts", true, true, true, true],
                   ["PDF reports", false, true, true, true],
                   ["Email to adjusters", false, true, true, true],
-                  ["Xactimate CSV export", false, false, true, true],
+                  ["Xactimate-style CSV export", false, false, true, true],
                   ["Users", "1", "1", "Up to 3", "Up to 5"],
                   ["Team access", false, false, true, true],
                   ["Email open tracking", false, false, true, true],

@@ -3,7 +3,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import type { User } from "@supabase/supabase-js"
 import { supabase } from "./supabase"
-import { clearGuideVisit } from "./guide-state"
 
 type SubscriptionStatus = "active" | "trialing" | "past_due" | "canceled" | "inactive"
 type SubscriptionPlan = "starter" | "team" | "pro" | "enterprise" | "none"
@@ -139,7 +138,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   async function signOut() {
-    clearGuideVisit()
     await supabase.auth.signOut()
     setUser(null)
     setSubscriptionStatus("inactive")
@@ -148,7 +146,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // "global" revokes the login on every device, not just this one
   async function signOutEverywhere() {
-    clearGuideVisit()
     await supabase.auth.signOut({ scope: "global" })
     setUser(null)
     setSubscriptionStatus("inactive")

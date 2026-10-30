@@ -2,6 +2,8 @@
 
 import { Suspense, useEffect, useRef, useState, useSyncExternalStore } from "react"
 import { authFetch } from "../../lib/auth-fetch"
+import { photoPathsForCaptures, removePhotoFiles } from "../../lib/storage-paths"
+import { uploadQueuedCapture } from "../../lib/sync-capture"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { jsPDF } from "jspdf"
@@ -21,7 +23,6 @@ import {
   syncPendingCaptures,
   getPendingCount,
   fileToArrayBuffer,
-  arrayBufferToFile,
   type PendingCapture,
 } from "../../lib/offline-queue"
 
@@ -315,38 +316,8 @@ function Home() {
       // Auto-sync pending captures when connection returns
       setSyncing(true)
       try {
-        const synced = await syncPendingCaptures(async (capture: PendingCapture) => {
-          try {
-            // Convert ArrayBuffers back to Files
-            const files = capture.photos.map((buf, i) =>
-              arrayBufferToFile(buf, capture.photoNames[i] || `photo-${i}.jpg`)
-            )
-            // Compress
-            const compressed = await Promise.all(files.map((f) => compressImage(f)))
-            // Upload with retry
-            const { urls } = await uploadPhotosWithRetry(compressed)
-            if (urls.length === 0) return false
-
-            // Insert capture record
-            const { error } = await supabase
-              .from("captures")
-              .insert({
-                project_id: capture.projectId,
-                image_url: urls[0],
-                image_urls: urls,
-                damage_type: capture.damageType,
-                roof_area: capture.roofArea,
-                field_note: capture.fieldNote,
-                status: "Captured",
-                quantity: capture.quantity,
-                unit: capture.unit || null,
-                photo_metadata: capture.photoMetadata,
-              })
-            return !error
-          } catch {
-            return false
-          }
-        })
+        // Photos are uploaded and then the record is saved; if the record cannot be saved the photos are removed again
+        const synced = await syncPendingCaptures((capture: PendingCapture) => uploadQueuedCapture(capture, compressImage))
         if (synced > 0) setSavedFlash(true)
         if (synced > 0 && selectedProjectId) {
           await loadCaptures(selectedProjectId)
@@ -731,23 +702,42 @@ function Home() {
   }
 
   async function finalizeDelete(c: Capture) {
-    // Delete all associated images from storage
-    const urls = (c.image_urls && c.image_urls.length > 0 ? c.image_urls : [c.image_url]).filter(Boolean)
-    const filePaths = urls
-      .map((url) => url.match(/test-uploads\/(.+)$/)?.[1])
-      .filter((p): p is string => !!p)
+    // Every photo of the finding, in both the list and the single-photo field
+    const filePaths = photoPathsForCaptures([{ image_url: c.image_url, image_urls: c.image_urls }])
+
+    const putBack = (message: string) => {
+      setCaptures((prev) => (prev.some((cap) => cap.id === c.id) ? prev : [...prev, c].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())))
+      showNotice(message)
+    }
 
     // Remove the record first. If that fails the capture comes back with its photos, instead of a record pointing at deleted files.
-    const { error: deleteErr } = await supabase.from("captures").delete().eq("id", c.id)
+    const { data: removedRows, error: deleteErr } = await supabase.from("captures").delete().eq("id", c.id).select("id")
     if (deleteErr) {
-      setCaptures((prev) => (prev.some((cap) => cap.id === c.id) ? prev : [...prev, c].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())))
-      showNotice("The capture could not be deleted, so it was put back. Check your connection and try again.")
+      putBack("The capture could not be deleted, so it was put back. Check your connection and try again.")
       return
     }
-    if (filePaths.length > 0) {
-      await supabase.storage.from("test-uploads").remove(filePaths)
+    // A request the database refuses to apply (a team member can view an owner's findings but not delete them) comes back
+    // without an error and with no rows removed. That is not a deletion, and the photos must be left alone.
+    if (!removedRows || removedRows.length === 0) {
+      putBack("This finding was not deleted, so it was put back. Your account may not have permission to delete it, or it may already be deleted. Refresh to check.")
+      return
     }
     setCaptures((prev) => prev.filter((cap) => cap.id !== c.id))
+
+    // Then the photo files. Say so if the storage service did not confirm removing them, and keep a record of which ones.
+    const { notConfirmed } = await removePhotoFiles(supabase.storage.from("test-uploads"), filePaths)
+    if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The finding was deleted")
+  }
+
+  // Photo files stay reachable by their link until the file itself is removed, so a removal that was not confirmed is
+  // shown to the person and written to the activity log, where it can be found and cleaned up by hand.
+  function reportUnremovedFiles(paths: string[], projectId: string | null, lead: string) {
+    showNotice(`${lead}, but ${paths.length} photo file${paths.length === 1 ? "" : "s"} could not be confirmed removed from storage. Email support@supplementsnap.io so we can remove ${paths.length === 1 ? "it" : "them"}.`)
+    authFetch("/api/activity-log", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ projectId, action: "Photo files not confirmed removed", details: paths.join(", ").slice(0, 1500) }),
+    }).catch(() => {})
   }
 
   async function updateCaptureStatus(captureId: string, newStatus: CaptureStatus) {
@@ -1946,10 +1936,10 @@ function Home() {
       ;({ error } = await supabase.from("captures").update({ image_url: all[0] || "", image_urls: all }).eq("id", c.id))
     }
     if (error) { say(`Could not remove the photo: ${error.message}`); return }
-    const path = url.match(/test-uploads\/(.+)$/)?.[1]
-    if (path) await supabase.storage.from("test-uploads").remove([path])
+    const { notConfirmed } = await removePhotoFiles(supabase.storage.from("test-uploads"), photoPathsForCaptures([{ image_url: url }]))
     setCaptures((prev) => prev.map((x) => (x.id === c.id ? { ...x, image_url: all[0] || "", image_urls: all, photo_metadata: nextMeta } : x)))
-    say(all.length === 0 ? "Photo removed. Tap the box to add the right one." : "Photo removed.")
+    if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The photo was removed from the finding")
+    say(all.length === 0 ? "Photo removed. Tap the box to add the right one." : notConfirmed.length > 0 ? "Photo removed from the finding." : "Photo removed.")
     setTimeout(() => setCardMsg((prev) => ({ ...prev, [c.id]: "" })), 5000)
   }
 
@@ -2115,7 +2105,7 @@ function Home() {
       )}
 
       {user && projects.length > 0 && (
-        <StartHere userId={user.id} onlyDemoOrNone={isFirstRun(projects)} onCreateProject={() => setShowNewProject(true)} isFreeUser={isFreeUser} freeCaptureLimit={FREE_CAPTURE_LIMIT} />
+        <StartHere key={user.id} userId={user.id} hiddenOnAccount={user.user_metadata?.ss_start_here_hidden === true} onlyDemoOrNone={isFirstRun(projects)} onCreateProject={() => setShowNewProject(true)} isFreeUser={isFreeUser} freeCaptureLimit={FREE_CAPTURE_LIMIT} />
       )}
 
       {/* Project selector */}
@@ -2797,7 +2787,7 @@ function Home() {
                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                 </svg>
-                Xactimate CSV
+                Xactimate-style CSV
               </button>
             </div>
           </div>
@@ -3794,7 +3784,7 @@ function Home() {
             </div>
             <h2 className="text-lg font-bold text-zinc-900 text-center">Upgrade to unlock</h2>
             <p className="mt-2 text-sm text-zinc-500 text-center leading-relaxed">
-              You&apos;ve seen what Supplement Snap can do. Upgrade to get unlimited projects, PDF downloads, email reports to adjusters, and Xactimate CSV export.
+              You&apos;ve seen what Supplement Snap can do. Upgrade to get unlimited projects, PDF downloads, email reports to adjusters, and an Xactimate-style CSV export.
             </p>
             <div className="mt-2 rounded-lg bg-green-50 border border-green-200 px-3 py-2 text-center">
               <p className="text-xs font-medium text-green-700">Cancel anytime from your account page.</p>

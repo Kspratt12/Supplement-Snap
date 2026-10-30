@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { hasCreatedProject, hideGuideThisVisit, isGuideHiddenThisVisit, shouldShowStartGuide } from "../../lib/guide-state"
+import { hasCreatedProject, hideGuide, isGuideHidden, shouldShowStartGuide } from "../../lib/guide-state"
 import {
   CLAIM_STATUSES,
   CLAIM_STATUS_STYLES,
@@ -141,7 +141,7 @@ export function ClaimStatusSelect({
 /**
  * A short guide for accounts that have no project of their own yet.
  * It never shows once the person has created a project, even if they later delete it.
- * Hide only lasts for this visit: it comes back the next time they log in, until they create a project.
+ * Hide is remembered for that person (see lib/guide-state.ts), so it stays hidden after a refresh, a new visit or a login.
  */
 export function StartHere({
   userId,
@@ -149,21 +149,25 @@ export function StartHere({
   onCreateProject,
   isFreeUser,
   freeCaptureLimit,
+  hiddenOnAccount,
 }: {
   userId: string
+  /** The Hide choice saved on the person's account, if any */
+  hiddenOnAccount?: boolean
   onlyDemoOrNone: boolean
   onCreateProject: () => void
   isFreeUser: boolean
   freeCaptureLimit: number
 }) {
   // This only renders after the dashboard has loaded the user's projects in the browser, so storage can be read directly.
-  const [hidden, setHidden] = useState(() => isGuideHiddenThisVisit())
+  // Hide closes the panel at once, even if the choice cannot be saved (for example when browser storage is blocked).
+  const [justHidden, setJustHidden] = useState(false)
 
-  if (!shouldShowStartGuide({ onlyDemoOrNone, createdBefore: hasCreatedProject(userId), hiddenThisVisit: hidden })) return null
+  if (!shouldShowStartGuide({ onlyDemoOrNone, createdBefore: hasCreatedProject(userId), hidden: justHidden || isGuideHidden(userId, hiddenOnAccount) })) return null
 
   const dismiss = () => {
-    setHidden(true)
-    hideGuideThisVisit()
+    setJustHidden(true)
+    hideGuide(userId)
   }
 
   const steps = [
