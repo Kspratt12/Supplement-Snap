@@ -1,11 +1,13 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useRef, useState } from "react"
 import type { User } from "@supabase/supabase-js"
 import { supabase } from "./supabase"
 
 type SubscriptionStatus = "active" | "trialing" | "past_due" | "canceled" | "inactive"
 type SubscriptionPlan = "starter" | "team" | "pro" | "enterprise" | "none"
+
+type SubscriptionResult = { status: string; plan: string; viaOwner: boolean; hasBilling: boolean; admin: boolean }
 
 type AuthContextType = {
   user: User | null
@@ -48,13 +50,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [subscriptionHasBilling, setSubscriptionHasBilling] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
 
-  async function loadSubscription(userId: string, silent = false) {
-    if (!silent) setSubscriptionLoading(true)
-    let status: string | undefined
-    let plan: string | undefined
-    let viaOwner = false
-    let hasBilling = false
-    let admin = false
+  // Which account's subscription is being tracked, and the bookkeeping that keeps overlapping requests apart.
+  // Everything here is reset when the account changes or signs out, so nothing earlier can land afterwards.
+  const accountRef = useRef<string | null>(null)
+  const epochRef = useRef(0)
+  const seqRef = useRef(0)
+  const appliedSeqRef = useRef(0) // the newest request whose answer is on screen
+  const pendingRef = useRef<Set<number>>(new Set())
+  const heldRef = useRef<{ seq: number; result: SubscriptionResult } | null>(null) // a success waiting on a newer request
+
+  function applyResult(result: SubscriptionResult | null) {
+    setSubscriptionStatus((result?.status as SubscriptionStatus) || "inactive")
+    setSubscriptionPlan((result?.plan as SubscriptionPlan) || "none")
+    setSubscriptionViaOwner(!!result?.viaOwner)
+    setSubscriptionHasBilling(!!result?.hasBilling)
+    setIsAdmin(!!result?.admin)
+    setSubscriptionLoading(false)
+  }
+
+  /** Invalidates every earlier request and forgets the account (sign-out, or before another account loads) */
+  function resetAccount(next: string | null) {
+    epochRef.current++
+    accountRef.current = next
+    appliedSeqRef.current = 0
+    pendingRef.current.clear()
+    heldRef.current = null
+    applyResult(null)
+    setSubscriptionLoading(next !== null)
+  }
+
+  /**
+   * Asks the server for the plan. Returns null when the request FAILED, which says nothing about access.
+   * A completed answer is returned even when it is "no access".
+   *  - /api/subscription 200 with a status: authoritative (including inactive and canceled)
+   *  - /api/subscription 401/403/429/5xx, a network error, or a 200 without a status: failed, so the direct
+   *    lookup is tried
+   *  - the direct lookup finding a row: used; finding no row or erroring: failed
+   */
+  async function requestSubscription(userId: string): Promise<SubscriptionResult | null> {
     try {
       // The server also covers team members who inherit their owner's plan
       const { data: { session } } = await supabase.auth.getSession()
@@ -64,34 +97,73 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
       if (res.ok) {
         const json = await res.json()
-        status = json.status
-        plan = json.plan
-        viaOwner = !!json.viaOwner
-        hasBilling = !!json.hasBilling
-        admin = !!json.isAdmin
+        if (json.status) {
+          return { status: json.status, plan: json.plan, viaOwner: !!json.viaOwner, hasBilling: !!json.hasBilling, admin: !!json.isAdmin }
+        }
       }
     } catch {
       // fall through to the direct lookup below
     }
-    if (!status) {
-      const { data } = await supabase
+    try {
+      const { data, error } = await supabase
         .from("subscriptions")
         .select("status, plan, stripe_customer_id")
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle()
-      status = data?.status
-      plan = data?.plan
-      hasBilling = !!data?.stripe_customer_id
+      if (!error && data?.status) {
+        return { status: data.status, plan: data.plan, viaOwner: false, hasBilling: !!data.stripe_customer_id, admin: false }
+      }
+    } catch {
+      // failed
+    }
+    return null
+  }
+
+  async function loadSubscription(userId: string, silent = false) {
+    if (accountRef.current !== userId) resetAccount(userId)
+    const epoch = epochRef.current
+    const seq = ++seqRef.current
+    pendingRef.current.add(seq)
+    if (!silent) setSubscriptionLoading(true)
+
+    const result = await requestSubscription(userId)
+
+    // The account changed or signed out while this was waiting: nothing about it is current any more
+    if (epoch !== epochRef.current) return
+    pendingRef.current.delete(seq)
+    const newerPending = [...pendingRef.current].some((s) => s > seq)
+
+    if (result) {
+      if (seq < appliedSeqRef.current) return // a newer answer is already on screen
+      if (newerPending) {
+        // Keep it in case the newer request fails; the newer answer replaces it if it succeeds
+        if (!heldRef.current || heldRef.current.seq < seq) heldRef.current = { seq, result }
+        return
+      }
+      heldRef.current = null
+      appliedSeqRef.current = seq
+      applyResult(result)
+      return
     }
 
-    setSubscriptionStatus((status as SubscriptionStatus) || "inactive")
-    setSubscriptionPlan((plan as SubscriptionPlan) || "none")
-    setSubscriptionViaOwner(viaOwner)
-    setSubscriptionHasBilling(hasBilling)
-    setIsAdmin(admin)
-    setSubscriptionLoading(false)
+    // The request failed
+    if (pendingRef.current.size > 0) return // another request for this account is still to answer
+    const held = heldRef.current
+    heldRef.current = null
+    if (held && held.seq > appliedSeqRef.current) {
+      appliedSeqRef.current = held.seq
+      applyResult(held.result)
+      return
+    }
+    if (appliedSeqRef.current > 0) {
+      // Something for this account is already on screen: a failed refresh leaves it as it is
+      setSubscriptionLoading(false)
+      return
+    }
+    // Nothing succeeded for this account: no access is shown until a request succeeds
+    applyResult(null)
   }
 
   useEffect(() => {
@@ -113,7 +185,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(session?.user ?? null)
       setLoading(false)
       if (session?.user) {
-        loadSubscription(session.user.id)
+        loadSubscription(session.user.id, session.user.id === accountRef.current)
       } else {
         setSubscriptionLoading(false)
       }
@@ -125,11 +197,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Only reload subscription on real auth changes, not token refreshes (prevents tab-switch flicker)
       if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
         if (session?.user) {
-          loadSubscription(session.user.id)
+          // The same account again (the library reports SIGNED_IN whenever a hidden tab is shown) refreshes in the
+          // background so the dashboard stays mounted; a different account starts clean
+          loadSubscription(session.user.id, session.user.id === accountRef.current)
         } else {
-          setSubscriptionStatus("inactive")
-          setSubscriptionPlan("none")
-          setSubscriptionLoading(false)
+          resetAccount(null)
         }
       }
     })
@@ -139,17 +211,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function signOut() {
     await supabase.auth.signOut()
+    resetAccount(null)
     setUser(null)
-    setSubscriptionStatus("inactive")
-    setSubscriptionPlan("none")
   }
 
   // "global" revokes the login on every device, not just this one
   async function signOutEverywhere() {
     await supabase.auth.signOut({ scope: "global" })
+    resetAccount(null)
     setUser(null)
-    setSubscriptionStatus("inactive")
-    setSubscriptionPlan("none")
   }
 
   return (
