@@ -4,16 +4,9 @@ import { createClient } from "@supabase/supabase-js"
 import { getAuthenticatedUser } from "../../../lib/auth-utils"
 import { rateLimited } from "../../../lib/rate-limit"
 import { getAccess, can } from "../../../lib/plan"
+import { escapeHtml } from "../../../lib/escape-html"
+import { automaticFollowUpsEnabled } from "../../../lib/followup-gate"
 
-// User-typed text is placed in the email as plain text, so it cannot add markup or links of its own
-function escapeHtml(value: unknown): string {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;")
-}
 
 export async function POST(request: Request) {
   try {
@@ -72,7 +65,8 @@ export async function POST(request: Request) {
           user_id: userId || null,
           recipient_email: to,
           subject: subject,
-          follow_up_at: followUpDays ? new Date(Date.now() + followUpDays * 86400000).toISOString() : null,
+          // Automatic follow-ups are paused: whatever an old client sends, nothing is scheduled while the gate is off
+          follow_up_at: automaticFollowUpsEnabled() && followUpDays ? new Date(Date.now() + followUpDays * 86400000).toISOString() : null,
         })
         .select("tracking_token")
         .single()

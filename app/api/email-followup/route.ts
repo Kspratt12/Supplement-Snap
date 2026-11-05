@@ -1,6 +1,8 @@
 import { Resend } from "resend"
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { escapeHtml } from "../../../lib/escape-html"
+import { automaticFollowUpsEnabled } from "../../../lib/followup-gate"
 
 // This endpoint can be called by a Vercel Cron Job (see vercel.json)
 // It finds emails that haven't been opened and are past their follow_up_at date,
@@ -10,6 +12,12 @@ export async function GET(request: Request) {
   // Vercel Cron sends `Authorization: Bearer $CRON_SECRET` when CRON_SECRET is set
   if (!process.env.CRON_SECRET || request.headers.get("authorization") !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  // Containment: automatic follow-ups run only when the gate is exactly "true". Checked before any record is selected
+  // or any email is sent, and after the cron authorization above.
+  if (!automaticFollowUpsEnabled()) {
+    return NextResponse.json({ sent: 0, paused: true })
   }
 
   try {
@@ -55,7 +63,7 @@ export async function GET(request: Request) {
             <div style="font-family: -apple-system, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px;">
               <p style="font-size: 15px; color: #3f3f46; line-height: 1.7;">
                 Hi,<br><br>
-                Just following up on the supplement documentation I sent over a few days ago regarding the subject: <strong>${record.subject}</strong>.<br><br>
+                Just following up on the supplement documentation I sent over a few days ago regarding the subject: <strong>${escapeHtml(record.subject)}</strong>.<br><br>
                 Please let me know if you need any additional documentation or photos to review the supplement request.<br><br>
                 Thank you for your time.
               </p>

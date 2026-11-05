@@ -289,7 +289,6 @@ function Home() {
   const [emailSending, setEmailSending] = useState(false)
   const [emailStatus, setEmailStatus] = useState<"" | "sent" | "error">("")
   const [emailError, setEmailError] = useState("")
-  const [emailFollowUp, setEmailFollowUp] = useState(true)
 
   // Photo viewer keyboard navigation
   useEffect(() => {
@@ -1525,7 +1524,6 @@ function Home() {
           projectId: selectedProjectId,
           userId: user?.id,
           companyName: companyName || "",
-          followUpDays: emailFollowUp ? 3 : 0,
         }),
       })
 
@@ -3688,15 +3686,9 @@ function Home() {
                     The PDF report with all findings and photos will be attached automatically.
                   </div>
 
-                  <label className="flex items-center gap-2.5 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={emailFollowUp}
-                      onChange={(e) => setEmailFollowUp(e.target.checked)}
-                      className="h-4 w-4 rounded border-zinc-300 text-indigo-600"
-                    />
-                    <span className="text-sm text-zinc-600">Send automatic follow-up in 3 days if not opened</span>
-                  </label>
+                  <p className="text-xs text-zinc-500">
+                    Automatic follow-up emails are temporarily unavailable. Sending this report will not schedule an automatic follow-up.
+                  </p>
 
                   {emailStatus === "error" && (
                     <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
