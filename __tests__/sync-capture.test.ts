@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => ({
   upload: vi.fn(),
   remove: vi.fn(),
   insert: vi.fn(),
+  lookup: vi.fn(),
 }))
 
 vi.mock("../lib/supabase", () => ({
@@ -17,7 +18,7 @@ vi.mock("../lib/supabase", () => ({
         getPublicUrl: (name: string) => ({ data: { publicUrl: `https://abc.supabase.co/storage/v1/object/public/test-uploads/${name}` } }),
       }),
     },
-    from: () => ({ insert: mocks.insert }),
+    from: () => ({ insert: mocks.insert, select: () => ({ eq: () => ({ maybeSingle: mocks.lookup }) }) }),
   },
 }))
 
@@ -47,6 +48,7 @@ describe("saving a capture that was queued while offline", () => {
     mocks.upload.mockReset().mockResolvedValue({ error: null })
     mocks.remove.mockReset().mockResolvedValue({ data: [], error: null })
     mocks.insert.mockReset().mockResolvedValue({ error: null })
+    mocks.lookup.mockReset().mockResolvedValue({ data: null, error: null }) // nothing saved on the server yet
   })
 
   it("uploads the photos, saves the record and removes nothing", async () => {
@@ -79,11 +81,12 @@ describe("saving a capture that was queued while offline", () => {
 
   it("saves nothing and removes nothing when no photo could be uploaded", async () => {
     mocks.upload.mockResolvedValue({ error: { message: "network down" } })
-    vi.useFakeTimers()
+    vi.useFakeTimers({ toFake: ["setTimeout"] })
     try {
-      const pending = uploadQueuedCapture(queued(1), compress)
-      await vi.runAllTimersAsync()
-      expect(await pending).toBe(false)
+      let result: boolean | undefined
+      uploadQueuedCapture(queued(1), compress).then((r) => { result = r })
+      for (let i = 0; i < 60 && result === undefined; i++) await vi.advanceTimersByTimeAsync(1000)
+      expect(result).toBe(false)
     } finally {
       vi.useRealTimers()
     }
