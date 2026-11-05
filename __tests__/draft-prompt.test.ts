@@ -90,6 +90,54 @@ describe("buildDraftPrompt", () => {
     }
   })
 
+  describe("timing of discovery", () => {
+    // These check the text sent to the model. They do not show how a live model behaves.
+    const UNCONDITIONAL_TIMING = /State that the damage was discovered|was not visible prior to shingle removal\.?\s*$|found during roof tear-off/im
+    const noTimingNote = "Rotted decking along the eave, about 3 sheets, soft underfoot"
+
+    it("gives the model no instruction to assert timing when the note supplies none", () => {
+      const { prompt, minimal } = buildDraftPrompt({ ...input, fieldNote: noTimingNote })
+      expect(minimal).toBe(false)
+      expect(prompt).not.toMatch(UNCONDITIONAL_TIMING)
+      expect(prompt).toMatch(/Do NOT state or imply when the damage was discovered/)
+      expect(prompt).toMatch(/hidden, concealed or not visible before tear-off or shingle removal/)
+    })
+
+    it("does not infer timing from tear-off or hidden-damage context in the damage type or roof area", () => {
+      const { prompt } = buildDraftPrompt({ damageType: "Hidden damage found at tear-off", roofArea: "Tear-off, rear slope", fieldNote: noTimingNote })
+      expect(prompt).not.toMatch(UNCONDITIONAL_TIMING)
+      expect(prompt).not.toMatch(/\n- State that/)
+      expect(prompt).toMatch(/Do not infer timing from the damage type, the roof area, photos or the general context of a roof replacement/)
+    })
+
+    it("lets the model repeat timing the contractor supplied, attributed and not presented as verified", () => {
+      const note = "Step flashing corroded, appears it was not visible until the shingles were removed."
+      const { prompt } = buildDraftPrompt({ damageType: "Flashing", roofArea: "Chimney", fieldNote: note })
+      expect(prompt).toContain(`The contractor's field note states: "${note}"`)
+      expect(prompt).toMatch(/Only if the field note itself states when or how the damage was found or seen/)
+      expect(prompt).toMatch(/attributed to the contractor/)
+      expect(prompt).toMatch(/keep any uncertainty the note expresses/)
+      expect(prompt).toMatch(/Do not present it as independently verified/)
+      expect(prompt).not.toMatch(UNCONDITIONAL_TIMING)
+    })
+
+    it.each(NOTES_WITH_NO_DETAIL)("the placeholder prompt for %s says nothing about timing or tear-off", (_label, note) => {
+      const { prompt, minimal } = buildDraftPrompt({ ...input, fieldNote: note })
+      expect(minimal).toBe(true)
+      expect(prompt).not.toMatch(/during tear-off/i)
+      expect(prompt).not.toMatch(UNCONDITIONAL_TIMING)
+      expect(prompt).toMatch(/Do NOT say when the damage became visible/)
+    })
+
+    it("no prompt, for any note, contains an instruction to state timing", () => {
+      for (const [, note] of [...NOTES_WITH_NO_DETAIL, ...NOTES_WITH_DETAIL]) {
+        const { prompt } = buildDraftPrompt({ ...input, fieldNote: note as string })
+        expect(prompt).not.toMatch(/^- State that/m)
+        expect(prompt).not.toMatch(UNCONDITIONAL_TIMING)
+      }
+    })
+  })
+
   it("trims the note and keeps the damage type and roof area", () => {
     const { prompt } = buildDraftPrompt({ damageType: "Flashing", roofArea: "Chimney", fieldNote: "   Step flashing rusted through at the chimney   " })
     expect(prompt).toContain('"Step flashing rusted through at the chimney"')
