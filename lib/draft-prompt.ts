@@ -67,18 +67,18 @@ Roof area: ${roofArea}
 
 Rules:
 - Write exactly one sentence, in plain text with no markdown.
-- The sentence may state only the damage type, the roof area and that the contractor documented it during tear-off.
+- The sentence may state only the damage type, the roof area and that the contractor documented it.
 - Do NOT describe any condition, cause, measurement or quantity.
 - Do NOT say that anything must be repaired or replaced.
 - Do NOT cite any building code, standard or manufacturer requirement.
-- Do NOT say the damage was hidden or not visible before tear-off.
+- Do NOT say when the damage became visible, and do NOT say it was hidden or not visible before tear-off or shingle removal.
 - After the sentence, add this exact text on the same line: ${MINIMAL_DRAFT_PLACEHOLDER}`,
     }
   }
 
   return {
     minimal: false,
-    prompt: `You are a roofing insurance supplement documentation assistant. Write a short, professional supplement-ready paragraph for an insurance claim based on damage found during roof tear-off.
+    prompt: `You are a roofing insurance supplement documentation assistant. Write a short, professional supplement-ready paragraph for an insurance claim based on the contractor's field note below.
 
 Damage type: ${damageType}
 Roof area: ${roofArea}
@@ -88,7 +88,8 @@ Rules:
 - Write 2-4 sentences maximum, in plain text with no markdown, asterisks or headings.
 - Use professional, insurance-friendly language and a factual, non-adversarial tone.
 - Use only facts given above. Do NOT invent measurements, dimensions, quantities, causes or conditions that the field note does not state.
-- State that the damage was discovered during tear-off and was not visible prior to shingle removal.
+- Do NOT state or imply when the damage was discovered, or that it was hidden, concealed or not visible before tear-off or shingle removal. Do not infer timing from the damage type, the roof area, photos or the general context of a roof replacement.
+- Only if the field note itself states when or how the damage was found or seen, you may repeat that, attributed to the contractor (for example "The contractor's field note reports that..."), and keep any uncertainty the note expresses ("appears", "possibly"). Do not present it as independently verified.
 - Describe the remedy as a request, for example "we are requesting that the cost of removing and replacing the flashing be included in the scope". Do NOT state that something is required by code unless the field note says so.
 - You may cite a building code only when the damage type clearly supports it (for example IRC R905.2.8.2 for ice barrier, IRC R903.2 for flashing, IRC R906.1 for ventilation). If you cite one, say the contractor should verify it against the locally adopted code.
 - Do NOT reference Xactimate codes.
