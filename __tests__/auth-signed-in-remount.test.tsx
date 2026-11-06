@@ -322,6 +322,25 @@ describe("AuthProvider: the first load overlaps another request", () => {
     }
     return calls
   }
+  // The provider adds its visibilitychange listener in an effect, after React commits the signed-in user. The first
+  // request goes out in the same step as setUser, so it can be seen before that commit. An event dispatched in that gap
+  // reaches nobody, and no second request follows. These two hooks count the listener additions so a test can wait for
+  // the registration itself before dispatching.
+  let visibilityListenerAdds = 0
+  let addListenerSpy: { mockRestore: () => void } | undefined
+  beforeEach(() => {
+    visibilityListenerAdds = 0
+    const realAdd = document.addEventListener.bind(document)
+    addListenerSpy = vi.spyOn(document, "addEventListener").mockImplementation(((type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions) => {
+      if (type === "visibilitychange") visibilityListenerAdds++
+      realAdd(type, listener, options)
+    }) as typeof document.addEventListener)
+  })
+  afterEach(() => {
+    addListenerSpy?.mockRestore()
+    addListenerSpy = undefined
+  })
+
   const hide = () => {
     Object.defineProperty(document, "visibilityState", { configurable: true, get: () => "visible" })
     return act(async () => { document.dispatchEvent(new Event("visibilitychange")) })
@@ -396,8 +415,10 @@ describe("AuthProvider: the first load overlaps another request", () => {
 
   async function initialPlusSilent() {
     const calls = manual()
+    const addsBefore = visibilityListenerAdds
     mountProbe()
     await waitFor(() => expect(calls).toHaveLength(1))
+    await waitFor(() => expect(visibilityListenerAdds).toBeGreaterThan(addsBefore)) // the listener really exists now
     await hide() // visibilitychange: silent refresh of the same user
     await waitFor(() => expect(calls).toHaveLength(2))
     return calls
