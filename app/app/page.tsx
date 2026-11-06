@@ -5,6 +5,7 @@ import { authFetch } from "../../lib/auth-fetch"
 import { photoPathsForCaptures, removePhotoFiles } from "../../lib/storage-paths"
 import { NOT_SAVED_NO_PERMISSION, writeOutcome } from "../../lib/write-result"
 import { quantityLabel } from "../../lib/quantity-label"
+import { PDF_FOOTER_LINES, DEFAULT_REPORT_EMAIL_MESSAGE } from "../../lib/report-wording"
 import { uploadQueuedCapture } from "../../lib/sync-capture"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
@@ -1435,9 +1436,9 @@ function Home() {
     doc.setFontSize(8)
     doc.setFont("helvetica", "normal")
     doc.setTextColor(100, 100, 110)
-    doc.text("This supplement documentation was prepared based on concealed conditions discovered", margin, y)
+    doc.text(PDF_FOOTER_LINES[0], margin, y)
     y += 4
-    doc.text("during tear-off operations and represents findings not visible during the initial inspection.", margin, y)
+    doc.text(PDF_FOOTER_LINES[1], margin, y)
     y += 8
 
     doc.setFont("helvetica", "bold")
@@ -1526,7 +1527,7 @@ function Home() {
     if (!selectedProject) return
     setEmailTo(selectedProject.adjuster_email || "")
     setEmailSubject(`Supplement Request – ${selectedProject.project_name}`)
-    setEmailMessage(`Hello,\n\nDuring tear-off operations on this roofing claim, concealed damage was discovered that was not visible during the initial inspection.\n\nPlease see the attached supplement documentation and supporting photos.\n\nThank you.`)
+    setEmailMessage(DEFAULT_REPORT_EMAIL_MESSAGE)
     if (withDraft && projectDraft.trim()) {
       setEmailMessage("Hello," + String.fromCharCode(10, 10) + projectDraft.trim() + String.fromCharCode(10, 10) + "Please see the attached report and supporting photos." + String.fromCharCode(10, 10) + "Thank you.")
     }
