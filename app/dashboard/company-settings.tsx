@@ -9,6 +9,8 @@ export function CompanySettings({ userId }: { userId: string }) {
   const [logoUrl, setLogoUrl] = useState("")
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [saveError, setSaveError] = useState("")
+  const editsRef = useRef(0) // counts edits, so a save that finishes after newer typing is not shown as covering it
   const [uploading, setUploading] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -25,15 +27,34 @@ export function CompanySettings({ userId }: { userId: string }) {
     return () => { cancelled = true }
   }, [userId])
 
+  // "Saved" is shown only once the server has accepted the change. On any failure the typed name and logo stay as they are.
   async function handleSave() {
     setSaving(true)
-    await authFetch("/api/company-settings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, companyName, logoUrl }),
-    })
-    setSaving(false)
-    setSaved(true)
+    setSaveError("")
+    const editsAtStart = editsRef.current
+    try {
+      const res = await authFetch("/api/company-settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, companyName, logoUrl }),
+      })
+      if (res.ok) {
+        if (editsRef.current === editsAtStart) setSaved(true)
+      } else {
+        const data = await res.json().catch(() => null)
+        setSaveError(
+          typeof data?.error === "string" && data.error
+            ? data.error
+            : res.status === 503
+              ? "We couldn't check your plan right now. Please try again in a moment."
+              : "Your branding could not be saved. Please try again.",
+        )
+      }
+    } catch {
+      setSaveError("Your branding could not be saved. Check your connection and try again.")
+    } finally {
+      setSaving(false)
+    }
   }
 
   async function handleLogoUpload(file: File) {
@@ -44,7 +65,9 @@ export function CompanySettings({ userId }: { userId: string }) {
     if (!error) {
       const { data } = supabase.storage.from("test-uploads").getPublicUrl(filename)
       setLogoUrl(data.publicUrl)
+      editsRef.current++
       setSaved(false)
+      setSaveError("")
     }
     setUploading(false)
   }
@@ -92,7 +115,7 @@ export function CompanySettings({ userId }: { userId: string }) {
           <label className="text-xs font-medium text-zinc-500">Company Name</label>
           <input
             value={companyName}
-            onChange={(e) => { setCompanyName(e.target.value); setSaved(false) }}
+            onChange={(e) => { setCompanyName(e.target.value); editsRef.current++; setSaved(false); setSaveError("") }}
             placeholder="Smith Roofing LLC"
             className="mt-1 block w-full rounded-lg border border-zinc-300 px-3 min-h-[44px] text-sm text-zinc-900 placeholder:text-zinc-400"
           />
@@ -109,6 +132,11 @@ export function CompanySettings({ userId }: { userId: string }) {
         >
           {saving ? "Saving..." : saved ? "Branding Saved!" : "Save Branding"}
         </button>
+        {saveError && (
+          <p role="alert" className="text-xs font-medium text-red-600">
+            {saveError}
+          </p>
+        )}
       </div>
     </div>
   )
