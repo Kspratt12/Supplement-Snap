@@ -4,6 +4,7 @@ import { Suspense, useEffect, useRef, useState, useSyncExternalStore } from "rea
 import { authFetch } from "../../lib/auth-fetch"
 import { photoPathsForCaptures, removePhotoFiles } from "../../lib/storage-paths"
 import { NOT_SAVED_NO_PERMISSION, writeOutcome } from "../../lib/write-result"
+import { quantityLabel } from "../../lib/quantity-label"
 import { uploadQueuedCapture } from "../../lib/sync-capture"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
@@ -806,7 +807,7 @@ function Home() {
 
     setProjectDraftLoading(true)
     setProjectDraftError("")
-    setProjectDraft("")
+    // The draft already on screen stays until a new, finished one replaces it, so a failed regeneration loses nothing
 
     try {
       // Re-fetch fresh captures from Supabase to ensure we have the latest data
@@ -920,6 +921,12 @@ function Home() {
     // Generate drafts for any captures that don't have one yet
     const missing = captures.filter((c) => !drafts[c.id] && !draftLoading[c.id])
 
+    // A finding is only marked Ready to Send when it has a finished draft that is saved. Findings that already had a
+    // draft keep it. A draft that failed, was cut off or could not be saved leaves that finding as it was.
+    const hasSavedDraft = new Set(captures.filter((c) => !!drafts[c.id]).map((c) => c.id))
+    const notDrafted: string[] = []
+    let firstProblem = ""
+
     for (const c of missing) {
       try {
         const res = await authFetch("/api/generate-draft", {
@@ -931,22 +938,45 @@ function Home() {
             field_note: c.field_note,
           }),
         })
-        if (res.ok) {
-          const { draft: rawDraft } = await res.json()
-      const draft = cleanAi(rawDraft)
-          setDrafts((prev) => ({ ...prev, [c.id]: draft }))
-          // Persist the draft so the report reads the same next time it is generated
-          if (!readOnly) supabase.from("captures").update({ draft: draft }).eq("id", c.id).then(() => {})
+        if (!res.ok) {
+          const data = await res.json().catch(() => null)
+          if (!firstProblem) firstProblem = data?.error || `Request failed (${res.status})`
+          notDrafted.push(c.id)
+          continue
+        }
+        const { draft: rawDraft } = await res.json()
+        const draft = cleanAi(rawDraft)
+        if (!draft) {
+          if (!firstProblem) firstProblem = "The AI returned an empty draft. Please try again."
+          notDrafted.push(c.id)
+          continue
+        }
+        setDrafts((prev) => ({ ...prev, [c.id]: draft }))
+        if (readOnly) continue
+        // Persist the draft so the report reads the same next time it is generated, and only count it once it is saved
+        const saveRes = await supabase.from("captures").update({ draft: draft }).eq("id", c.id).select("id")
+        if (writeOutcome(saveRes) === "ok") {
+          hasSavedDraft.add(c.id)
+        } else {
+          if (!firstProblem) firstProblem = "A draft could not be saved."
+          notDrafted.push(c.id)
         }
       } catch {
         // Continue generating remaining drafts even if one fails
+        if (!firstProblem) firstProblem = "The AI draft request failed. Check your connection and try again."
+        notDrafted.push(c.id)
       }
     }
 
-    // Auto-update all captures to "Ready to Send"
-    const toUpdate = captures.filter((c) => c.status !== "Sent").map((c) => c.id)
+    // Auto-update to "Ready to Send" only the findings that have a finished, saved draft
+    const toUpdate = captures.filter((c) => c.status !== "Sent" && hasSavedDraft.has(c.id)).map((c) => c.id)
     if (toUpdate.length > 0 && !readOnly) {
       bulkUpdateStatus(toUpdate, "Ready to Send")
+    }
+    if (notDrafted.length > 0) {
+      showNotice(
+        `${firstProblem} ${notDrafted.length} finding${notDrafted.length !== 1 ? "s were" : " was"} not marked Ready to Send. Use "Generate Supplement Draft" on ${notDrafted.length !== 1 ? "them" : "it"} to try again.`,
+      )
     }
 
     setReportLoading(false)
@@ -1210,7 +1240,10 @@ function Home() {
       doc.setFontSize(8)
       doc.setFont("helvetica", "normal")
       doc.setTextColor(150, 150, 160)
-      doc.text(`Documented: ${new Date(c.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`, margin + 10, y)
+      const documentedParts = [`Documented: ${new Date(c.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`]
+      const quantityText = quantityLabel(c.quantity, c.unit) // only the saved quantity and unit; nothing is added or converted
+      if (quantityText) documentedParts.push(quantityText)
+      doc.text(documentedParts.join("  |  "), margin + 10, y)
       y += 6
 
       // Field note (label stays on the same page as its text)
