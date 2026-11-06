@@ -487,6 +487,7 @@ export default function DashboardPage() {
                     <input
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
+                      aria-label="Search projects"
                       placeholder="Search projects..."
                       className="w-full sm:w-48 rounded-lg border border-zinc-300 bg-white pl-9 pr-3 min-h-[44px] text-sm text-zinc-900 placeholder:text-zinc-400"
                     />
