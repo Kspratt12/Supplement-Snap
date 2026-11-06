@@ -1,7 +1,7 @@
 import "fake-indexeddb/auto"
 import { describe, it, expect, beforeEach } from "vitest"
 import { openDB } from "idb"
-import { queueCapture, getPendingCount, getPendingCaptures, syncPendingCaptures, markUploading, type PendingCapture } from "../lib/offline-queue"
+import { queueCapture, getPendingCount, getPendingCaptures, getCappedCount, syncPendingCaptures, markUploading, RETRY_CAP, type PendingCapture } from "../lib/offline-queue"
 
 const make = (id: string): Omit<PendingCapture, "status" | "retryCount"> => ({
   id,
@@ -79,5 +79,90 @@ describe("offline capture queue", () => {
     }
     await Promise.all([syncPendingCaptures(slow), syncPendingCaptures(slow)])
     expect(uploads).toBe(1)
+  })
+})
+
+describe("manual retry of captures that used up their automatic retries", () => {
+  const cap = async (id: string) => {
+    await queueCapture(make(id))
+    for (let i = 0; i < RETRY_CAP; i++) await syncPendingCaptures(async () => false)
+  }
+
+  it("automatic syncs still skip a capped capture, and never upload it", async () => {
+    await cap("a")
+    let uploads = 0
+    expect(await syncPendingCaptures(async () => (uploads++, true))).toBe(0)
+    expect(uploads).toBe(0)
+    expect(await getCappedCount()).toBe(1)
+    expect(await getPendingCount()).toBe(1) // kept
+  })
+
+  it("a manual sync uploads a capped capture and removes it only after the upload succeeds", async () => {
+    await cap("a")
+    expect(await syncPendingCaptures(async () => true, { includeCapped: true })).toBe(1)
+    expect(await getPendingCount()).toBe(0)
+    expect(await getCappedCount()).toBe(0)
+  })
+
+  it("a manual sync that fails keeps the capture, still capped, and does not retry it by itself afterwards", async () => {
+    await cap("a")
+    expect(await syncPendingCaptures(async () => false, { includeCapped: true })).toBe(0)
+    expect(await getPendingCount()).toBe(1)
+    expect(await getCappedCount()).toBe(1)
+    let uploads = 0
+    await syncPendingCaptures(async () => (uploads++, true)) // automatic
+    expect(uploads).toBe(0)
+  })
+
+  it("a manual sync that throws keeps the capture", async () => {
+    await cap("a")
+    await syncPendingCaptures(async () => { throw new Error("network") }, { includeCapped: true })
+    expect(await getPendingCount()).toBe(1)
+    expect(await getCappedCount()).toBe(1)
+  })
+
+  it("two manual syncs started together upload the capture once", async () => {
+    await cap("a")
+    let uploads = 0
+    const slow = async () => {
+      uploads++
+      await new Promise((r) => setTimeout(r, 30))
+      return true
+    }
+    await Promise.all([syncPendingCaptures(slow, { includeCapped: true }), syncPendingCaptures(slow, { includeCapped: true })])
+    expect(uploads).toBe(1)
+    expect(await getPendingCount()).toBe(0)
+  })
+
+  it("a manual sync started during an automatic one does not run beside it", async () => {
+    await cap("a")
+    let uploads = 0
+    const slow = async () => {
+      uploads++
+      await new Promise((r) => setTimeout(r, 30))
+      return true
+    }
+    const auto = syncPendingCaptures(slow)
+    const manual = await syncPendingCaptures(slow, { includeCapped: true })
+    await auto
+    expect(manual).toBe(0)
+    expect(uploads).toBe(0) // the automatic one skipped the capped capture and the manual one was refused while it ran
+    expect(await getPendingCount()).toBe(1)
+  })
+
+  it("running a manual sync again after it succeeded finds nothing left to upload", async () => {
+    await cap("a")
+    await syncPendingCaptures(async () => true, { includeCapped: true })
+    let uploads = 0
+    expect(await syncPendingCaptures(async () => (uploads++, true), { includeCapped: true })).toBe(0)
+    expect(uploads).toBe(0)
+  })
+
+  it("a manual sync also takes the ordinary waiting captures", async () => {
+    await cap("a")
+    await queueCapture(make("b"))
+    const sent: string[] = []
+    expect(await syncPendingCaptures(async (c) => (sent.push(c.id), true), { includeCapped: true })).toBe(2)
+    expect(sent.sort()).toEqual(["a", "b"])
   })
 })

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { getAuthenticatedUser } from "../auth-utils"
-import { getAccess, can } from "../plan"
+import { getAccess, can, planUnavailable } from "../plan"
 import { rateLimited } from "../rate-limit"
 
 /**
@@ -12,6 +12,7 @@ export async function requireGapAccess(request: Request, limitKey: string, perHo
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
   const access = await getAccess(user.id, user.email)
+  if (access.unavailable) return planUnavailable()
   if (!can.estimateGap(access)) {
     return NextResponse.json({ error: "The Insurance Estimate Gap Detector is not available on your plan." }, { status: 403, headers: { "Cache-Control": "no-store" } })
   }

@@ -19,10 +19,12 @@ import { ensureSpace, drawLabeledText, drawSectionLabel } from "../../lib/pdf-la
 import { extractAllExifData, type PhotoMetadata } from "../../lib/exif-utils"
 import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang, fetchAccountSpeechLang } from "../../lib/speech-langs"
 import { uploadPhotosWithRetry, cleanupOrphanedUploads } from "../../lib/upload-utils"
+import { OfflineSyncBanner } from "./offline-sync-banner"
 import {
   queueCapture,
   syncPendingCaptures,
   getPendingCount,
+  getCappedCount,
   fileToArrayBuffer,
   type PendingCapture,
 } from "../../lib/offline-queue"
@@ -271,6 +273,7 @@ function Home() {
 
   // Offline queue state
   const [pendingQueueCount, setPendingQueueCount] = useState(0)
+  const [cappedQueueCount, setCappedQueueCount] = useState(0)
   const [syncing, setSyncing] = useState(false)
   // Shows "Saved" for a few seconds after a capture is stored or queued captures finish syncing
   const [savedFlash, setSavedFlash] = useState(false)
@@ -312,14 +315,14 @@ function Home() {
   useEffect(() => {
     // Load initial pending count
     getPendingCount().then(setPendingQueueCount).catch(() => {})
+    getCappedCount().then(setCappedQueueCount).catch(() => {})
 
-    async function handleOnline() {
-      setIsOnline(true)
-      // Auto-sync pending captures when connection returns
+    // Automatic syncs leave captures that used up their retries alone; a manual one (Sync Now) tries them once more.
+    async function runSync(manual: boolean) {
       setSyncing(true)
       try {
         // Photos are uploaded and then the record is saved; if the record cannot be saved the photos are removed again
-        const synced = await syncPendingCaptures((capture: PendingCapture) => uploadQueuedCapture(capture, compressImage))
+        const synced = await syncPendingCaptures((capture: PendingCapture) => uploadQueuedCapture(capture, compressImage), { includeCapped: manual })
         if (synced > 0) setSavedFlash(true)
         if (synced > 0 && selectedProjectId) {
           await loadCaptures(selectedProjectId)
@@ -327,7 +330,17 @@ function Home() {
       } finally {
         setSyncing(false)
         getPendingCount().then(setPendingQueueCount).catch(() => {})
+        getCappedCount().then(setCappedQueueCount).catch(() => {})
       }
+    }
+
+    function handleOnline() {
+      setIsOnline(true)
+      void runSync(false)
+    }
+
+    function handleManualSync() {
+      void runSync(true)
     }
 
     function handleOffline() {
@@ -335,9 +348,11 @@ function Home() {
     }
 
     window.addEventListener("online", handleOnline)
+    window.addEventListener("ss-manual-sync", handleManualSync)
     window.addEventListener("offline", handleOffline)
     return () => {
       window.removeEventListener("online", handleOnline)
+      window.removeEventListener("ss-manual-sync", handleManualSync)
       window.removeEventListener("offline", handleOffline)
     }
   }, [selectedProjectId])
@@ -2118,16 +2133,8 @@ function Home() {
           Syncing offline captures...
         </div>
       )}
-      {pendingQueueCount > 0 && isOnline && !syncing && (
-        <div className="mb-4 flex items-center justify-between rounded-lg bg-blue-50 border border-blue-200 px-4 py-3 text-sm text-blue-700">
-          <span>{pendingQueueCount} capture{pendingQueueCount !== 1 ? "s" : ""} waiting to sync</span>
-          <button
-            onClick={() => window.dispatchEvent(new Event("online"))}
-            className="text-xs font-semibold text-blue-700 underline hover:text-blue-900"
-          >
-            Sync Now
-          </button>
-        </div>
+      {isOnline && !syncing && (
+        <OfflineSyncBanner waiting={pendingQueueCount} stuck={cappedQueueCount} onSyncNow={() => window.dispatchEvent(new Event("ss-manual-sync"))} />
       )}
 
       {user && projects.length > 0 && (

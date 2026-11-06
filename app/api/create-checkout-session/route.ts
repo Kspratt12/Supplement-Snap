@@ -1,7 +1,7 @@
 import Stripe from "stripe"
 import { NextResponse } from "next/server"
 import { getAuthenticatedUser } from "../../../lib/auth-utils"
-import { getAccess, isPlanPurchasable } from "../../../lib/plan"
+import { getAccess, isPlanPurchasable, planUnavailable } from "../../../lib/plan"
 
 export async function GET() {
   const key = process.env.STRIPE_SECRET_KEY || ""
@@ -44,6 +44,8 @@ export async function POST(request: Request) {
       customerEmail = user.email || undefined
       // Starting a second subscription would bill them twice and orphan the first one
       const access = await getAccess(user.id, user.email)
+      // If the plan could not be checked, do not start a purchase that might double-bill an existing plan
+      if (access.unavailable) return planUnavailable()
       if (access.active && !access.viaOwner) {
         return NextResponse.json(
           { error: "You already have an active plan. Use Manage billing on your account page to change or cancel it, so you are not billed twice." },

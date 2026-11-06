@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server"
 import { getAuthenticatedUser } from "../../../lib/auth-utils"
-import { getAccess, can } from "../../../lib/plan"
+import { getAccess, can, planUnavailable } from "../../../lib/plan"
 import { buildXactimateCsv } from "../../../lib/xactimate-csv"
 
 export async function POST(request: Request) {
   const user = await getAuthenticatedUser(request)
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  if (!can.xactimateExport(await getAccess(user.id, user.email))) {
+  const access = await getAccess(user.id, user.email)
+  if (access.unavailable) return planUnavailable()
+  if (!can.xactimateExport(access)) {
     return NextResponse.json({ error: "Xactimate export is available on the Team and Pro plans." }, { status: 403 })
   }
 

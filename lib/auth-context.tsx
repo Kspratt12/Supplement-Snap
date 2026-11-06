@@ -15,6 +15,12 @@ type AuthContextType = {
   subscriptionStatus: SubscriptionStatus
   subscriptionPlan: SubscriptionPlan
   subscriptionLoading: boolean
+  /**
+   * The latest check of this account's plan failed (server and direct lookup both), so the status shown is either empty
+   * or the last answer that did succeed for the same account. It says nothing about whether the plan is inactive.
+   * Cleared when a check succeeds, and whenever the account changes or signs out.
+   */
+  subscriptionUnverified: boolean
   /** access comes from a team owner's plan */
   subscriptionViaOwner: boolean
   /** this account has its own Stripe billing */
@@ -32,6 +38,7 @@ const AuthContext = createContext<AuthContextType>({
   subscriptionStatus: "inactive",
   subscriptionPlan: "none",
   subscriptionLoading: true,
+  subscriptionUnverified: false,
   subscriptionViaOwner: false,
   subscriptionHasBilling: false,
   isAdmin: false,
@@ -46,6 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus>("inactive")
   const [subscriptionPlan, setSubscriptionPlan] = useState<SubscriptionPlan>("none")
   const [subscriptionLoading, setSubscriptionLoading] = useState(true)
+  const [subscriptionUnverified, setSubscriptionUnverified] = useState(false)
   const [subscriptionViaOwner, setSubscriptionViaOwner] = useState(false)
   const [subscriptionHasBilling, setSubscriptionHasBilling] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
@@ -66,6 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSubscriptionHasBilling(!!result?.hasBilling)
     setIsAdmin(!!result?.admin)
     setSubscriptionLoading(false)
+    setSubscriptionUnverified(false)
   }
 
   /** Invalidates every earlier request and forgets the account (sign-out, or before another account loads) */
@@ -160,10 +169,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (appliedSeqRef.current > 0) {
       // Something for this account is already on screen: a failed refresh leaves it as it is
       setSubscriptionLoading(false)
+      setSubscriptionUnverified(true)
       return
     }
     // Nothing succeeded for this account: no access is shown until a request succeeds
     applyResult(null)
+    setSubscriptionUnverified(true)
   }
 
   useEffect(() => {
@@ -223,7 +234,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, subscriptionStatus, subscriptionPlan, subscriptionLoading, subscriptionViaOwner, subscriptionHasBilling, isAdmin, signOut, signOutEverywhere, refreshSubscription }}>
+    <AuthContext.Provider value={{ user, loading, subscriptionStatus, subscriptionPlan, subscriptionLoading, subscriptionUnverified, subscriptionViaOwner, subscriptionHasBilling, isAdmin, signOut, signOutEverywhere, refreshSubscription }}>
       {children}
     </AuthContext.Provider>
   )

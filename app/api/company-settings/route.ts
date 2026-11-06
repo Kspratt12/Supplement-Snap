@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { getUserId, getAuthenticatedUser } from "../../../lib/auth-utils"
-import { getAccess, can } from "../../../lib/plan"
+import { getAccess, can, planUnavailable } from "../../../lib/plan"
 
 const supabase = () => createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -33,7 +33,9 @@ export async function POST(request: Request) {
     if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
     const authed = await getAuthenticatedUser(request)
-    if (!authed || !can.customBranding(await getAccess(authed.id, authed.email))) {
+    const access = authed ? await getAccess(authed.id, authed.email) : null
+    if (access?.unavailable) return planUnavailable()
+    if (!authed || !access || !can.customBranding(access)) {
       return NextResponse.json({ error: "Custom branding is available on the Pro plan." }, { status: 403 })
     }
 

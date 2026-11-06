@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 
 export type Plan = "free" | "starter" | "team" | "pro" | "enterprise"
@@ -13,6 +14,11 @@ export type Access = {
   /** true when this account has its own Stripe customer (so a billing portal exists) */
   hasBilling: boolean
   ownerId?: string
+  /**
+   * true when a database read failed and no live plan was found, so the answer is "could not check", NOT "no plan".
+   * Everything in `can` stays false for it; callers should answer with planUnavailable() instead of "upgrade" or "inactive".
+   */
+  unavailable?: boolean
 }
 
 const admin = () =>
@@ -32,13 +38,17 @@ export const normPlan = (p?: string | null): Plan => (p === "team" || p === "pro
 export async function getAccess(userId: string, email?: string | null): Promise<Access> {
   const db = admin()
 
-  const { data: own } = await db
+  let failed = false // a read or write that should have answered did not; a row that is simply missing is not a failure
+
+  const { data: own, error: ownError } = await db
     .from("subscriptions")
     .select("status, plan, stripe_customer_id")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle()
+
+  if (ownError) failed = true
 
   if (own && isLive(own.status)) {
     return { plan: normPlan(own.plan), status: own.status as SubStatus, active: true, viaOwner: false, hasBilling: !!own.stripe_customer_id }
@@ -48,26 +58,31 @@ export async function getAccess(userId: string, email?: string | null): Promise<
     const lower = email.toLowerCase()
 
     // An invited person has now signed in: turn their pending invites into active ones
-    await db
+    const { error: inviteError } = await db
       .from("team_members")
       .update({ status: "active", member_user_id: userId, accepted_at: new Date().toISOString() })
       .eq("member_email", lower)
       .eq("status", "pending")
 
-    const { data: memberships } = await db
+    if (inviteError) failed = true
+
+    const { data: memberships, error: membersError } = await db
       .from("team_members")
       .select("owner_id")
       .eq("member_email", lower)
       .eq("status", "active")
 
+    if (membersError) failed = true
+
     for (const m of memberships || []) {
-      const { data: ownerSub } = await db
+      const { data: ownerSub, error: ownerError } = await db
         .from("subscriptions")
         .select("status, plan")
         .eq("user_id", m.owner_id)
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle()
+      if (ownerError) failed = true
       if (ownerSub && isLive(ownerSub.status)) {
         return { plan: normPlan(ownerSub.plan), status: ownerSub.status as SubStatus, active: true, viaOwner: true, hasBilling: false, ownerId: m.owner_id }
       }
@@ -80,7 +95,13 @@ export async function getAccess(userId: string, email?: string | null): Promise<
     active: false,
     viaOwner: false,
     hasBilling: false,
+    ...(failed ? { unavailable: true } : {}),
   }
+}
+
+/** The answer when a plan could not be checked: temporary, retryable, and never "inactive" or "upgrade". */
+export function planUnavailable() {
+  return NextResponse.json({ error: "We couldn't check your plan right now. Please try again in a moment.", code: "plan-unavailable" }, { status: 503 })
 }
 
 /**
