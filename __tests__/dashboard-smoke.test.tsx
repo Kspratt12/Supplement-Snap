@@ -418,6 +418,8 @@ describe("dashboard smoke test (stand-in database)", () => {
 
   it("for the owner, the same report flow does save the statuses, and says so if the database refuses them", async () => {
     ownerProject()
+    // A finding is only marked Ready to Send once it has a finished saved draft, so this one already has one
+    db.rows.captures = (db.rows.captures as Array<Record<string, unknown>>).map((c) => ({ ...c, draft: "A saved draft." }))
     const errors = vi.spyOn(console, "error").mockImplementation(() => {})
     render(<AppPage />)
     await pickProject("p1")

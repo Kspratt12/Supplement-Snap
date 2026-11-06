@@ -4,6 +4,7 @@ import { getAuthenticatedUser } from "../../../lib/auth-utils"
 import { rateLimited } from "../../../lib/rate-limit"
 import { getAccess } from "../../../lib/plan"
 import { buildDraftPrompt } from "../../../lib/draft-prompt"
+import { evaluateDraftReply, describeReplyForLog } from "../../../lib/draft-outcome"
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -31,20 +32,24 @@ export async function POST(request: Request) {
     // condition, and the full supplement paragraph when it does (see lib/draft-prompt.ts).
     const { prompt } = buildDraftPrompt({ damageType: damage_type, roofArea: roof_area, fieldNote: field_note })
 
+    // This model thinks before it answers, and that thinking counts against max_tokens. A 600 token allowance left
+    // too little for the paragraph itself, so replies stopped mid-sentence. A short paragraph needs little thinking
+    // (effort "low") and a larger allowance. Worst case at this size is 1,500 output tokens per request.
     const message = await anthropic.messages.create({
       model: "claude-sonnet-5-5",
-      max_tokens: 600,
+      max_tokens: 1500,
+      output_config: { effort: "low" },
       messages: [{ role: "user", content: prompt }],
     })
 
-    // Read every text block: the first block is not always text
-    const draft = message.content.filter((b) => b.type === "text").map((b) => b.text).join("")
-    if (!draft.trim()) {
-      console.error("Claude returned no text", { stop_reason: message.stop_reason, blocks: message.content.map((b) => b.type) })
-      return NextResponse.json({ error: "The AI returned an empty draft. Please try again." }, { status: 502 })
+    // Only a reply the model finished on its own is a draft. A reply cut off at the token limit is not saved or shown.
+    const outcome = evaluateDraftReply(message)
+    if (!outcome.ok) {
+      console.error("Draft not usable", { code: outcome.code, ...describeReplyForLog(message) })
+      return NextResponse.json({ error: outcome.error, code: outcome.code }, { status: 502 })
     }
 
-    return NextResponse.json({ draft })
+    return NextResponse.json({ draft: outcome.draft })
   } catch (err) {
     console.error("Claude API error:", err)
     const message =

@@ -85,11 +85,15 @@ describe("POST /api/generate-draft", () => {
     expect(prompt).toMatch(/2-4 sentences/)
     expect(prompt).toMatch(/Describe the remedy as a request/)
     expect(sent.model).toBe("claude-sonnet-5-5")
-    expect(sent.max_tokens).toBe(600)
+    // The thinking the model does before it answers counts against max_tokens, so a short paragraph gets low effort and a
+    // larger allowance. Worst case is 1,500 output tokens per request.
+    expect(sent.max_tokens).toBe(1500)
+    expect(sent.output_config).toEqual({ effort: "low" })
   })
 
   it("returns the draft text from every text block of the model reply", async () => {
     mockCreate.mockResolvedValue({
+      stop_reason: "end_turn",
       content: [{ type: "thinking", thinking: "..." }, { type: "text", text: "First. " }, { type: "text", text: "Second." }],
     })
     const res = await post({ damage_type: "Decking", roof_area: "Front", field_note: "Rotted decking along the eave" })
@@ -100,6 +104,28 @@ describe("POST /api/generate-draft", () => {
     mockCreate.mockResolvedValue({ content: [], stop_reason: "end_turn" })
     const res = await post({ damage_type: "Decking", roof_area: "Front", field_note: "Rotted decking along the eave" })
     expect(res.status).toBe(502)
+    expect((await res.json()).code).toBe("empty")
+  })
+
+  it("does not return a reply that stopped at the token limit as a draft", async () => {
+    // The live failure: text that ends in the middle of a sentence, with stop reason max_tokens
+    mockCreate.mockResolvedValue({
+      stop_reason: "max_tokens",
+      content: [{ type: "thinking", thinking: "..." }, { type: "text", text: "We are requesting that the cost of removing and" }],
+      usage: { output_tokens: 600, input_tokens: 400 },
+    })
+    const res = await post({ damage_type: "Soft decking", roof_area: "Main roof", field_note: "ZZ account separation fixture" })
+    const body = await res.json()
+    expect(res.status).toBe(502)
+    expect(body.draft).toBeUndefined()
+    expect(body.code).toBe("cut-off")
+    expect(body.error).toMatch(/cut off/)
+  })
+
+  it("makes only one model call for one request, even when the reply is unusable", async () => {
+    mockCreate.mockResolvedValue({ stop_reason: "max_tokens", content: [{ type: "text", text: "half" }] })
+    await post({ damage_type: "Decking", roof_area: "Front", field_note: "Rotted decking along the eave" })
+    expect(mockCreate).toHaveBeenCalledTimes(1)
   })
 
   it("returns a 500 with a message when the model call fails", async () => {
