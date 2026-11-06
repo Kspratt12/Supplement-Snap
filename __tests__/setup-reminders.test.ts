@@ -85,7 +85,9 @@ describe("account setup reminder route", () => {
     const res = await call()
     expect(await res.json()).toEqual({ sent: 1 })
     expect(world.sent).toEqual([{ to: ["crystal@example.com"], subject: "Your Supplement Snap plan is ready: choose your password", replyTo: "support@supplementsnap.io" }])
-    expect(world.metaUpdates[0].meta).toMatchObject({ setup_reminders_sent: 1, full_name: "Crystal Reyes" })
+    // Only the two keys the job owns are sent; the account service merges them into the rest of the person's metadata
+    expect(Object.keys(world.metaUpdates[0].meta).sort()).toEqual(["setup_reminder_last", "setup_reminders_sent"])
+    expect(world.metaUpdates[0].meta).toMatchObject({ setup_reminders_sent: 1 })
   })
   it("leaves alone people who have signed in, people who have not paid, and brand new accounts", async () => {
     world.users = [

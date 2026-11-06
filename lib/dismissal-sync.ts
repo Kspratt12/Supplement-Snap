@@ -102,17 +102,36 @@ export type SaveResult = "ok" | "error" | "rejected"
  * lib/dismissal-keys.ts); the values are fixed on the server.
  */
 export async function saveDismissalToAccount(userId: string, patch: Record<string, unknown>): Promise<SaveResult> {
+  const result = await postToRoute({ userId, keys: Object.keys(patch) })
+  if (result === "ok") {
+    const hit = reads.get(userId)
+    if (hit && hit.result.ok) reads.set(userId, { at: hit.at, result: { ok: true, metadata: { ...hit.result.metadata, ...patch } } })
+  }
+  return result
+}
+
+/**
+ * Saves a checklist Minimize or Expand for userId through the same server route, so it is bound to the verified login in
+ * the same way: a save meant for one person is refused, before anything is written, if the browser is signed in as
+ * someone else by the time it is sent. It is best effort and is not queued or retried, as before.
+ */
+export async function saveChecklistState(userId: string, mode: "free" | "paid", state: "minimized" | ""): Promise<SaveResult> {
+  const result = await postToRoute({ userId, checklist: { mode, state } })
+  if (result === "ok") {
+    const hit = reads.get(userId)
+    if (hit && hit.result.ok) reads.delete(userId) // the cached copy no longer matches the account; the next read asks again
+  }
+  return result
+}
+
+async function postToRoute(body: Record<string, unknown>): Promise<SaveResult> {
   try {
     const res = await authFetch("/api/onboarding-dismissal", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, keys: Object.keys(patch) }),
+      body: JSON.stringify(body),
     })
-    if (res.ok) {
-      const hit = reads.get(userId)
-      if (hit && hit.result.ok) reads.set(userId, { at: hit.at, result: { ok: true, metadata: { ...hit.result.metadata, ...patch } } })
-      return "ok"
-    }
+    if (res.ok) return "ok"
     if (res.status === 429 || res.status >= 500) return "error"
     return "rejected"
   } catch {

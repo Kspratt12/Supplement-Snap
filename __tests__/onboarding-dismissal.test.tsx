@@ -65,9 +65,10 @@ vi.mock("@supabase/supabase-js", () => ({
           if (auth.adminMode === "throw") throw new Error("service down")
           if (auth.adminMode === "error") return { error: { message: "refused" } }
           auth.adminWrites.push({ id, metadata: attrs.user_metadata })
-          auth.accounts[id] = attrs.user_metadata
+          auth.accounts[id] = { ...(auth.accounts[id] ?? {}), ...attrs.user_metadata } // merged key by key, as the service does
           return { error: null }
         },
+        getUserById: async (id: string) => ({ data: { user: { id, user_metadata: auth.accounts[id] ?? {} } }, error: null }),
       },
     },
   }),
@@ -126,7 +127,7 @@ describe("Start here", () => {
     expect(startHere()).toBeNull()
     await flush()
     expect(window.localStorage.getItem("ss-start-here-hidden:u1")).toBe("1")
-    expect(auth.adminWrites).toEqual([{ id: "u1", metadata: { full_name: "Roofer One", ss_start_here_hidden: true } }])
+    expect(auth.adminWrites).toEqual([{ id: "u1", metadata: { ss_start_here_hidden: true } }])
     unmount()
     render(<StartHere {...startBase} />)
     expect(startHere()).toBeNull()
@@ -239,7 +240,7 @@ describe("Start here", () => {
     window.localStorage.setItem("ss-start-here-hidden:u1", "1")
     render(<StartHere {...startBase} />)
     await flush()
-    expect(auth.adminWrites).toEqual([{ id: "u1", metadata: { full_name: "Roofer One", ss_start_here_hidden: true } }])
+    expect(auth.adminWrites).toEqual([{ id: "u1", metadata: { ss_start_here_hidden: true } }])
   })
 
   it("with browser storage unavailable but the account dismissed, it stays hidden without reading the server", async () => {
@@ -318,7 +319,7 @@ describe("Getting Started checklist", () => {
     fireEvent.click(screen.getAllByRole("button", { name: "Dismiss checklist" })[0])
     expect(checklistTitle()).toBeNull()
     await flush()
-    expect(auth.adminWrites).toEqual([{ id: "u1", metadata: { full_name: "Roofer One", ss_onboarding_free: "dismissed", ss_onboarding_paid: "dismissed" } }])
+    expect(auth.adminWrites).toEqual([{ id: "u1", metadata: { ss_onboarding_free: "dismissed", ss_onboarding_paid: "dismissed" } }])
     expect(window.localStorage.getItem("ss_onboarding:u1:paid")).toBe("dismissed")
     expect(window.localStorage.getItem("ss_onboarding:u1:free")).toBe("dismissed")
     unmount()
@@ -404,11 +405,12 @@ describe("Getting Started checklist", () => {
     fireEvent.click(screen.getByRole("button", { name: "Minimize checklist" }))
     expect(screen.getByRole("button", { name: "Expand checklist" })).toBeTruthy()
     await flush()
-    expect(auth.directUpdates).toEqual([{ ss_onboarding_paid: "minimized" }]) // saved as before, not through the dismissal route
-    expect(auth.requests).toBe(0)
+    expect(auth.adminWrites).toEqual([{ id: "u1", metadata: { ss_onboarding_paid: "minimized" } }]) // only its own key, through the server route
+    expect(auth.requests).toBe(1)
+    expect(auth.directUpdates).toEqual([]) // nothing is saved from the browser directly any more
     expect(window.localStorage.getItem("ss_onboarding:u1:paid")).toBe("minimized")
     expect(window.localStorage.getItem("ss_onboarding:u1:free")).toBeNull()
-    expect(hasUnsynced("u1")).toBe(false) // a minimize is not a dismissal and is not queued
+    expect(hasUnsynced("u1")).toBe(false) // a minimize is not a dismissal and is not queued for retry
     unmount()
 
     render(<OnboardingChecklist {...checklist} savedState="minimized" />) // the login session now carries it
@@ -416,6 +418,62 @@ describe("Getting Started checklist", () => {
     expect(screen.getByRole("button", { name: "Expand checklist" })).toBeTruthy()
     fireEvent.click(screen.getByRole("button", { name: "Expand checklist" }))
     expect(screen.getByText("Create your first project")).toBeTruthy()
+    await flush()
+    expect(auth.adminWrites).toEqual([
+      { id: "u1", metadata: { ss_onboarding_paid: "minimized" } },
+      { id: "u1", metadata: { ss_onboarding_paid: "" } }, // Expand goes through the same route, key only
+    ])
+  })
+
+  it("an account switch while the checklist stays on screen drops the previous person's Minimize: the next person sees the full list and nothing is written for them", async () => {
+    const { rerender } = render(<OnboardingChecklist {...checklist} userId="u1" />)
+    await flush()
+    fireEvent.click(screen.getByRole("button", { name: "Minimize checklist" }))
+    expect(screen.getByRole("button", { name: "Expand checklist" })).toBeTruthy()
+    await flush()
+    expect(auth.adminWrites).toEqual([{ id: "u1", metadata: { ss_onboarding_paid: "minimized" } }])
+
+    auth.signedIn = "u2" // the signed-in person changes without the component being remounted
+    rerender(<OnboardingChecklist {...checklist} userId="u2" savedState={null} />)
+    await flush()
+    expect(screen.queryByRole("button", { name: "Expand checklist" })).toBeNull()
+    expect(screen.getByRole("button", { name: "Minimize checklist" })).toBeTruthy() // u2 sees the full list
+    expect(window.localStorage.getItem("ss_onboarding:u2:paid")).toBeNull()
+    expect(auth.adminWrites).toHaveLength(1) // nothing was written for u2
+    expect(auth.accounts.u2).toEqual({ full_name: "Roofer Two" })
+
+    // and going back to u1, their own choice is still theirs (browser copy), never u2's
+    auth.signedIn = "u1"
+    rerender(<OnboardingChecklist {...checklist} userId="u1" savedState={null} />)
+    await flush()
+    expect(screen.getByRole("button", { name: "Expand checklist" })).toBeTruthy()
+  })
+
+  it("a Minimize clicked after the browser's login has already become B's is refused by the server, so it changes nothing for either person", async () => {
+    render(<OnboardingChecklist {...checklist} userId="u1" />)
+    await flush()
+    auth.signedIn = "u2" // the switch lands just before the save is sent
+    fireEvent.click(screen.getByRole("button", { name: "Minimize checklist" }))
+    await flush()
+    expect(auth.requests).toBe(1)
+    expect(auth.adminWrites).toEqual([])
+    expect(auth.accounts.u2).toEqual({ full_name: "Roofer Two" })
+    expect(auth.accounts.u1).toEqual({ full_name: "Roofer One" })
+  })
+
+  it("a failed Minimize save is not retried later and cannot reach another account", async () => {
+    auth.adminMode = "error"
+    render(<OnboardingChecklist {...checklist} userId="u1" />)
+    await flush()
+    fireEvent.click(screen.getByRole("button", { name: "Minimize checklist" }))
+    await flush()
+    expect(auth.requests).toBe(1)
+    auth.adminMode = "ok"
+    auth.signedIn = "u2"
+    await act(async () => { await vi.advanceTimersByTimeAsync(120_000) })
+    expect(auth.requests).toBe(1) // no retry
+    expect(auth.adminWrites).toEqual([])
+    expect(hasUnsynced("u1")).toBe(false)
   })
 
   it("a minimized checklist can still be dismissed", async () => {

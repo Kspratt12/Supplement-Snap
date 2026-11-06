@@ -79,8 +79,11 @@ export async function GET(request: Request) {
           continue
         }
 
+        // Send only the two keys this job owns. The account service merges user_metadata key by key, and the list this loop
+        // started from can be minutes old by now (an email was sent in between), so resending the whole object would put back
+        // older copies of keys that changed since, such as an onboarding choice.
         await admin.auth.admin.updateUserById(u.id, {
-          user_metadata: { ...(u.user_metadata || {}), setup_reminders_sent: (meta.setup_reminders_sent ?? 0) + 1, setup_reminder_last: new Date().toISOString() },
+          user_metadata: { setup_reminders_sent: (meta.setup_reminders_sent ?? 0) + 1, setup_reminder_last: new Date().toISOString() },
         })
         sent++
       }
