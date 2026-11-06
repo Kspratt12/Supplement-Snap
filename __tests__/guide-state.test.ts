@@ -1,15 +1,18 @@
 import { describe, it, expect, afterEach, beforeEach, vi } from "vitest"
 
 // The account setting is a call to Supabase. Here it is a stand-in, so nothing is sent anywhere.
-const updateUser = vi.hoisted(() => vi.fn())
-vi.mock("../lib/supabase", () => ({ supabase: { auth: { updateUser } } }))
+const authFetch = vi.hoisted(() => vi.fn())
+vi.mock("../lib/supabase", () => ({ supabase: { auth: {} } }))
+vi.mock("../lib/auth-fetch", () => ({ authFetch }))
 
+import { resetDismissalSyncForTests } from "../lib/dismissal-sync"
 import { GUIDE_HIDDEN_SETTING, hasCreatedProject, hideGuide, isGuideHidden, markProjectCreated, shouldShowStartGuide } from "../lib/guide-state"
 
 beforeEach(() => {
-  updateUser.mockReset().mockResolvedValue({ error: null })
+  authFetch.mockReset().mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200 }))
 })
 afterEach(() => {
+  resetDismissalSyncForTests()
   vi.restoreAllMocks()
   window.localStorage.clear()
   window.sessionStorage.clear()
@@ -42,16 +45,18 @@ describe("guide state", () => {
     expect(isGuideHidden("a", undefined)).toBe(false)
   })
 
-  it("also saves the choice on the account", () => {
+  it("also saves the choice on the account, by asking the server to record the Hide key for this person", async () => {
     hideGuide("a")
-    expect(updateUser).toHaveBeenCalledTimes(1)
-    expect(updateUser).toHaveBeenCalledWith({ data: { [GUIDE_HIDDEN_SETTING]: true } })
+    await vi.waitFor(() => expect(authFetch).toHaveBeenCalledTimes(1))
+    const [url, init] = authFetch.mock.calls[0]
+    expect(url).toBe("/api/onboarding-dismissal")
+    expect(JSON.parse(init.body)).toEqual({ userId: "a", keys: [GUIDE_HIDDEN_SETTING] })
   })
 
   it("does not break when saving on the account fails or throws", () => {
-    updateUser.mockRejectedValue(new Error("offline"))
+    authFetch.mockRejectedValue(new Error("offline"))
     expect(() => hideGuide("a")).not.toThrow()
-    updateUser.mockImplementation(() => {
+    authFetch.mockImplementation(() => {
       throw new Error("sync failure")
     })
     expect(() => hideGuide("a")).not.toThrow()

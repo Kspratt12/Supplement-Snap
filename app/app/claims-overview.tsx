@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { hasCreatedProject, hideGuide, isGuideHidden, shouldShowStartGuide } from "../../lib/guide-state"
+import { hasCreatedProject, shouldShowStartGuide, START_HERE_SPEC } from "../../lib/guide-state"
+import { PreferenceUnavailable, useDismissal } from "../../lib/use-dismissal"
 import {
   CLAIM_STATUSES,
   CLAIM_STATUS_STYLES,
@@ -145,7 +145,8 @@ export function ClaimStatusSelect({
 /**
  * A short guide for accounts that have no project of their own yet.
  * It never shows once the person has created a project, even if they later delete it.
- * Hide is remembered for that person (see lib/guide-state.ts), so it stays hidden after a refresh, a new visit or a login.
+ * Hide is remembered for that person (see lib/guide-state.ts and lib/use-dismissal.tsx), so it stays hidden after a refresh, a new
+ * visit or a login. Nothing shows until the person's saved choice is known.
  */
 export function StartHere({
   userId,
@@ -163,16 +164,16 @@ export function StartHere({
   isFreeUser: boolean
   freeCaptureLimit: number
 }) {
-  // This only renders after the dashboard has loaded the user's projects in the browser, so storage can be read directly.
-  // Hide closes the panel at once, even if the choice cannot be saved (for example when browser storage is blocked).
-  const [justHidden, setJustHidden] = useState(false)
+  // This only renders after the dashboard has loaded the user's projects in the browser. The guide needs no account lookup unless
+  // it would otherwise show; until the saved choice is known it shows nothing, and Hide closes it at once.
+  const eligible = shouldShowStartGuide({ onlyDemoOrNone, createdBefore: hasCreatedProject(userId), hidden: false })
+  const preference = useDismissal({ userId, spec: START_HERE_SPEC, sessionDismissed: hiddenOnAccount === true, enabled: eligible })
 
-  if (!shouldShowStartGuide({ onlyDemoOrNone, createdBefore: hasCreatedProject(userId), hidden: justHidden || isGuideHidden(userId, hiddenOnAccount) })) return null
+  if (!eligible) return null
+  if (preference.status === "unavailable") return <PreferenceUnavailable onRetry={preference.retry} />
+  if (preference.status !== "show") return null
 
-  const dismiss = () => {
-    setJustHidden(true)
-    hideGuide(userId)
-  }
+  const dismiss = preference.dismiss
 
   const steps = [
     { n: "1", title: "Start a project for a real job", text: "A name and the property address is enough. You can add the claim details later." },
