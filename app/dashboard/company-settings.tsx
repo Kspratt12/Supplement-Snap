@@ -112,10 +112,11 @@ export function CompanySettings({ userId }: { userId: string }) {
 
         {/* Company Name */}
         <div>
-          <label className="text-xs font-medium text-zinc-500">Company Name</label>
+          <label htmlFor="company-name" className="text-xs font-medium text-zinc-500">Company Name</label>
           <input
             value={companyName}
             onChange={(e) => { setCompanyName(e.target.value); editsRef.current++; setSaved(false); setSaveError("") }}
+            id="company-name"
             placeholder="Smith Roofing LLC"
             className="mt-1 block w-full rounded-lg border border-zinc-300 px-3 min-h-[44px] text-sm text-zinc-900 placeholder:text-zinc-400"
           />

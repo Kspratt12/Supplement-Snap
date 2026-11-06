@@ -161,7 +161,7 @@ export default function LandingPage() {
         <div className="grid gap-6 sm:grid-cols-3">
           {/* Card 1 — Dashboard */}
           <div className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm hover:shadow-md">
-            <div className="relative bg-gradient-to-br from-indigo-50 to-zinc-50 p-4">
+            <div aria-hidden="true" className="relative bg-gradient-to-br from-indigo-50 to-zinc-50 p-4">
               {/* Browser frame */}
               <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
                 <div className="flex items-center gap-1 border-b border-zinc-100 bg-zinc-50 px-2.5 py-1.5">
@@ -210,7 +210,7 @@ export default function LandingPage() {
 
           {/* Card 2 — Capture */}
           <div className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm hover:shadow-md">
-            <div className="relative bg-gradient-to-br from-indigo-50 to-zinc-50 p-4">
+            <div aria-hidden="true" className="relative bg-gradient-to-br from-indigo-50 to-zinc-50 p-4">
               <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
                 <div className="flex items-center gap-1 border-b border-zinc-100 bg-zinc-50 px-2.5 py-1.5">
                   <span className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
@@ -250,7 +250,7 @@ export default function LandingPage() {
 
           {/* Card 3 — Report */}
           <div className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm hover:shadow-md">
-            <div className="relative bg-gradient-to-br from-indigo-50 to-zinc-50 p-4">
+            <div aria-hidden="true" className="relative bg-gradient-to-br from-indigo-50 to-zinc-50 p-4">
               <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
                 <div className="bg-indigo-600 px-3 py-1.5">
                   <p className="text-[7px] font-semibold text-white">Supplement Snap | Project Report</p>
