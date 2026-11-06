@@ -98,6 +98,7 @@ vi.mock("../app/dashboard/photo-annotator", () => ({ PhotoAnnotator: () => null 
 
 import AppPage from "../app/app/page"
 import { authFetch } from "../lib/auth-fetch"
+import { PDF_FOOTER_LINES } from "../lib/report-wording"
 const mockAuthFetch = vi.mocked(authFetch)
 // Only the AI draft routes are scripted per test; every other call the page makes (such as the activity log) answers 200
 const ai = (fn: () => Promise<Response>) => mockAuthFetch.mockImplementation(async (url) => (String(url).includes("/api/generate") ? fn() : reply(200, {})))
@@ -244,5 +245,20 @@ describe("PDF quantity and unit", () => {
     await downloadPdf()
     expect(pdf.texts.some((t) => /Quantity:/.test(t))).toBe(false)
     expect(pdf.texts.some((t) => /^Documented: /.test(t))).toBe(true)
+  })
+
+  it("prints only neutral fixed wording at the bottom, and never claims the damage was concealed or discovered at tear-off", async () => {
+    // The finding says nothing about concealment or timing, so the report must not say it on the finding's behalf
+    db.rows.captures = [capture({ draft: "Existing complete draft.", field_note: "Soft decking along the eave" })]
+    await openProject()
+    await downloadPdf()
+    for (const line of PDF_FOOTER_LINES) expect(pdf.texts).toContain(line)
+    const everything = pdf.texts.join("\n")
+    expect(everything).not.toMatch(/concealed/i)
+    expect(everything).not.toMatch(/not visible/i)
+    expect(everything).not.toMatch(/discovered/i)
+    // the finding's own explanation and note are still printed as written
+    expect(pdf.texts).toContain("Existing complete draft.")
+    expect(pdf.texts).toContain("Soft decking along the eave")
   })
 })
