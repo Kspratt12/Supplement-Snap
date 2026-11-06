@@ -51,7 +51,7 @@ vi.mock("../lib/supabase", () => {
     supabase: {
       from: (table: string) => chain(table),
       storage: { from: () => ({ remove: async (paths: string[]) => { db.removeCalls.push(paths); return db.removeResult ?? { data: [], error: null } }, upload: async () => ({ data: {}, error: null }), getPublicUrl: () => ({ data: { publicUrl: "" } }) }) },
-      auth: { getSession: async () => ({ data: { session: null } }), onAuthStateChange: () => ({ data: { subscription: { unsubscribe() {} } } }) },
+      auth: { getSession: async () => ({ data: { session: null } }), getUser: async () => ({ data: { user: { id: "u1", user_metadata: {} } }, error: null }), onAuthStateChange: () => ({ data: { subscription: { unsubscribe() {} } } }) },
     },
   }
 })

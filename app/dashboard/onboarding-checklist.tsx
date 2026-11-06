@@ -3,6 +3,8 @@
 import { useState, useSyncExternalStore } from "react"
 import Link from "next/link"
 import { supabase } from "../../lib/supabase"
+import type { DismissalSpec } from "../../lib/dismissal-sync"
+import { PreferenceUnavailable, useDismissal } from "../../lib/use-dismissal"
 
 type Step = { label: string; description: string; href: string; cta: string }
 
@@ -32,9 +34,19 @@ type Props = {
 
 type Saved = "" | "minimized" | "dismissed"
 
+// Dismissing hides the checklist for good on every plan, so it is recorded for both modes. Minimize stays separate: it is kept
+// per mode and never counts as a dismissal.
+const CHECKLIST_SPEC: DismissalSpec = {
+  localKeys: (userId) => [`ss_onboarding:${userId}:free`, `ss_onboarding:${userId}:paid`],
+  localValue: "dismissed",
+  accountPatch: { ss_onboarding_free: "dismissed", ss_onboarding_paid: "dismissed" },
+  isDismissedInMetadata: (m) => !!m && [m.ss_onboarding_paid, m.ss_onboarding_free, m.ss_onboarding].includes("dismissed"),
+}
+
 export function OnboardingChecklist({ mode, done, userId, savedState }: Props) {
   const steps = mode === "free" ? FREE_STEPS : PAID_STEPS
   const completedCount = done.filter(Boolean).length
+  const preference = useDismissal({ userId, spec: CHECKLIST_SPEC, sessionDismissed: savedState === "dismissed", enabled: !done.every(Boolean) })
 
   // Free and paid have different steps, so each remembers its own dismiss
   const storageKey = `ss_onboarding:${userId}:${mode}`
@@ -63,7 +75,13 @@ export function OnboardingChecklist({ mode, done, userId, savedState }: Props) {
   // The account setting wins; then what was just chosen; then the browser copy
   const state: Saved = chosen ?? ((savedState as Saved) || local)
 
+  // Dismiss goes through useDismissal, which saves it for both modes through the server and tries again if that fails.
+  // Minimize and expand are unchanged: saved per mode, in this browser and on the account.
   function persist(next: Saved) {
+    if (next === "dismissed") {
+      preference.dismiss()
+      return
+    }
     setChosen(next)
     try {
       if (next) localStorage.setItem(storageKey, next)
@@ -72,13 +90,13 @@ export function OnboardingChecklist({ mode, done, userId, savedState }: Props) {
       // storage unavailable
     }
     // Save on the account so it follows this person to every device
-    const data = next === "dismissed" ? { ss_onboarding_free: next, ss_onboarding_paid: next } : { [`ss_onboarding_${mode}`]: next }
-    supabase.auth.updateUser({ data }).catch(() => {})
+    supabase.auth.updateUser({ data: { [`ss_onboarding_${mode}`]: next } }).catch(() => {})
   }
 
   if (!loaded) return null
-  if (state === "dismissed") return null
   if (done.every(Boolean)) return null
+  if (preference.status === "unavailable") return <PreferenceUnavailable onRetry={preference.retry} />
+  if (preference.status !== "show") return null // loading (not known yet) or dismissed
 
   if (state === "minimized") {
     return (
