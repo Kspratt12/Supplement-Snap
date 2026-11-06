@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { getAuthenticatedUser } from "../../../lib/auth-utils"
 import { rateLimited } from "../../../lib/rate-limit"
-import { getAccess, can } from "../../../lib/plan"
+import { getAccess, can, planUnavailable } from "../../../lib/plan"
 import { escapeHtml } from "../../../lib/escape-html"
 import { automaticFollowUpsEnabled } from "../../../lib/followup-gate"
 
@@ -36,6 +36,7 @@ export async function POST(request: Request) {
     }
     const access = await getAccess(user.id, user.email)
     const emailingSelf = to.toLowerCase() === (user.email || "").toLowerCase()
+    if (access.unavailable && !emailingSelf) return planUnavailable()
     if (!access.active && !emailingSelf) {
       return NextResponse.json({ error: "An active plan is required to email reports to adjusters." }, { status: 403 })
     }

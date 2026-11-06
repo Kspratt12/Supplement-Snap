@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { getUserId, getAuthenticatedUser } from "../../../../lib/auth-utils"
-import { getAccess, can } from "../../../../lib/plan"
+import { getAccess, can, planUnavailable } from "../../../../lib/plan"
 
 const supabase = () => createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -14,7 +14,9 @@ export async function GET(request: Request) {
   const projectId = searchParams.get("projectId")
   const authed = await getAuthenticatedUser(request)
   if (!authed || !projectId) return NextResponse.json({ records: [] })
-  if (!can.emailTracking(await getAccess(authed.id, authed.email))) {
+  const access = await getAccess(authed.id, authed.email)
+  if (access.unavailable) return planUnavailable()
+  if (!can.emailTracking(access)) {
     return NextResponse.json({ records: [], locked: true })
   }
   const userId = authed.id

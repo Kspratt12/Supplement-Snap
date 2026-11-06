@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest"
 
 // A tiny in-memory database standing in for Supabase, enough for the queries in lib/plan.ts.
 type Row = Record<string, unknown>
-const store = vi.hoisted(() => ({ tables: {} as Record<string, Row[]>, updates: [] as Array<{ table: string; patch: Row; filters: Array<[string, unknown]> }>, authUsers: {} as Record<string, { email: string; email_confirmed_at: string | null }> }))
+const store = vi.hoisted(() => ({ tables: {} as Record<string, Row[]>, updates: [] as Array<{ table: string; patch: Row; filters: Array<[string, unknown]> }>, authUsers: {} as Record<string, { email: string; email_confirmed_at: string | null }>, failing: new Set<string>() }))
 
 vi.mock("@supabase/supabase-js", () => ({
   createClient: () => ({
@@ -11,6 +11,7 @@ vi.mock("@supabase/supabase-js", () => ({
     from: (table: string) => {
       const filters: Array<[string, unknown]> = []
       let patch: Row | null = null
+      const failure = () => (store.failing.has(patch ? table + ":update" : table) ? { message: "database unavailable" } : null)
       const rows = () => (store.tables[table] ?? []).filter((r) => filters.every(([k, v]) => (v === undefined ? r[k] == null : r[k] === v)))
       const builder: Record<string, unknown> = {
         select: () => builder,
@@ -19,10 +20,10 @@ vi.mock("@supabase/supabase-js", () => ({
         order: () => builder,
         limit: () => builder,
         update: (p: Row) => ((patch = p), builder),
-        maybeSingle: async () => ({ data: rows()[0] ?? null, error: null }),
+        maybeSingle: async () => (failure() ? { data: null, error: failure() } : { data: rows()[0] ?? null, error: null }),
         then: (res: (v: unknown) => unknown) => {
           if (patch) store.updates.push({ table, patch, filters: [...filters] })
-          return Promise.resolve({ data: rows(), error: null }).then(res)
+          return Promise.resolve(failure() ? { data: null, error: failure() } : { data: rows(), error: null }).then(res)
         },
       }
       return builder
@@ -38,6 +39,7 @@ beforeEach(() => {
   store.tables = { subscriptions: [], team_members: [] }
   store.updates = []
   store.authUsers = {}
+  store.failing.clear()
 })
 
 describe("what each plan can do", () => {
@@ -189,5 +191,57 @@ describe("getAccess", () => {
     store.tables.subscriptions = [{ id: "s1", user_id: null, status: "active", plan: "pro", stripe_customer_id: "cus_1", stripe_customer_email: "crystal@example.com" }]
     expect(await getAccess("u1", "crystal@example.com")).toMatchObject({ plan: "free", active: false })
     expect(store.updates.filter((u) => u.table === "subscriptions")).toHaveLength(0)
+  })
+})
+
+describe("getAccess: a failed check is not an inactive plan", () => {
+  const paying = [{ user_id: "u1", status: "active", plan: "pro", stripe_customer_id: "cus_1" }]
+
+  it("a failed read of the user's own subscription is 'unavailable', never 'inactive', and unlocks nothing", async () => {
+    store.tables.subscriptions = paying
+    store.failing.add("subscriptions")
+    const a = await getAccess("u1", "a@b.com")
+    expect(a.unavailable).toBe(true)
+    expect(a.active).toBe(false)
+    expect(a.plan).toBe("free")
+    expect(can.emailReports(a)).toBe(false)
+    expect(can.customBranding(a)).toBe(false)
+  })
+
+  it("a legitimately missing row is 'inactive' and NOT unavailable", async () => {
+    store.tables.subscriptions = []
+    const a = await getAccess("u1", "a@b.com")
+    expect(a.unavailable).toBeUndefined()
+    expect(a).toMatchObject({ plan: "free", status: "inactive", active: false })
+  })
+
+  it("a cancelled subscription is a verified 'canceled', not unavailable", async () => {
+    store.tables.subscriptions = [{ user_id: "u1", status: "canceled", plan: "pro", stripe_customer_id: "cus_1" }]
+    const a = await getAccess("u1", "a@b.com")
+    expect(a.unavailable).toBeUndefined()
+    expect(a.status).toBe("canceled")
+  })
+
+  it("a failed membership lookup leaves a team member 'unavailable', not locked out as inactive", async () => {
+    store.tables.subscriptions = [{ user_id: "owner", status: "active", plan: "team", stripe_customer_id: "cus_o" }]
+    store.tables.team_members = [{ owner_id: "owner", member_email: "m@b.com", status: "active" }]
+    store.failing.add("team_members")
+    const a = await getAccess("m1", "m@b.com")
+    expect(a.unavailable).toBe(true)
+    expect(a.active).toBe(false)
+  })
+
+  it("a failed invite activation is also reported as unavailable", async () => {
+    store.tables.team_members = [{ owner_id: "owner", member_email: "m@b.com", status: "pending" }]
+    store.failing.add("team_members:update")
+    expect((await getAccess("m1", "m@b.com")).unavailable).toBe(true)
+  })
+
+  it("a failure elsewhere does not hide a live plan that was found", async () => {
+    store.tables.subscriptions = paying
+    store.failing.add("team_members")
+    const a = await getAccess("u1", "a@b.com")
+    expect(a).toMatchObject({ plan: "pro", active: true })
+    expect(a.unavailable).toBeUndefined()
   })
 })

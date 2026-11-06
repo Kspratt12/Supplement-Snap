@@ -1,16 +1,35 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import Link from "next/link"
-import { useAuth } from "../../lib/auth-context"
+import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { trackEvent } from "../../lib/analytics"
 
 export default function SuccessPage() {
-  const { user, loading } = useAuth()
+  const { user, loading, subscriptionStatus, subscriptionLoading, subscriptionUnverified, refreshSubscription } = useAuth()
 
+  // What this page can honestly say comes only from the plan the server reports for the signed-in account, never from
+  // the fact that someone opened /success.
+  const state: "signed-out" | "checking" | "unverified" | "active" | "trial" | "none" = !user
+    ? "signed-out"
+    : subscriptionLoading
+      ? "checking"
+      : subscriptionUnverified
+        ? "unverified"
+        : subscriptionStatus === "trialing"
+          ? "trial"
+          : hasActiveSubscription(subscriptionStatus)
+            ? "active"
+            : "none"
+
+  // Counted only when the account really has an active or trial plan, and once per visit
+  const tracked = useRef(false)
   useEffect(() => {
-    trackEvent("subscription_active")
-  }, [])
+    if ((state === "active" || state === "trial") && !tracked.current) {
+      tracked.current = true
+      trackEvent("subscription_active")
+    }
+  }, [state])
 
   if (loading) return null
 
@@ -42,18 +61,54 @@ export default function SuccessPage() {
             Welcome to Supplement Snap
           </h1>
 
-          <p className="mt-4 text-base leading-relaxed text-zinc-500">
-            Your account setup is in progress. We&apos;ll have everything ready for your team shortly.
-          </p>
-
-          <div className="mt-6 rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
-            Payment received successfully.
-          </div>
+          {state === "active" && (
+            <div role="status" className="mt-6 rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+              Your plan is active.
+            </div>
+          )}
+          {state === "trial" && (
+            <div role="status" className="mt-6 rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+              Your free trial is active.
+            </div>
+          )}
+          {state === "checking" && (
+            <p role="status" className="mt-6 text-sm text-zinc-500">
+              Checking your plan…
+            </p>
+          )}
+          {state === "unverified" && (
+            <div role="status" className="mt-6 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">
+              <p className="font-medium">We couldn&apos;t check your plan right now.</p>
+              <p className="mt-1">This doesn&apos;t mean anything is wrong with your account. Please try again in a moment.</p>
+              <button
+                type="button"
+                onClick={() => void refreshSubscription()}
+                className="mt-3 rounded-lg border border-amber-300 bg-white px-4 py-2 text-sm font-semibold text-amber-900 hover:bg-amber-100"
+              >
+                Check again
+              </button>
+            </div>
+          )}
+          {state === "none" && (
+            <div role="status" className="mt-6 rounded-lg bg-zinc-50 px-4 py-3 text-sm text-zinc-700">
+              <p className="font-medium">This account doesn&apos;t show an active plan.</p>
+              <p className="mt-1">
+                If you just finished checkout, it can take a minute to appear. You can check again, or contact support if it still doesn&apos;t show.
+              </p>
+              <button
+                type="button"
+                onClick={() => void refreshSubscription()}
+                className="mt-3 rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100"
+              >
+                Check again
+              </button>
+            </div>
+          )}
 
           {user ? (
             <>
               <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-6">
-                <p className="text-sm font-semibold text-zinc-700">Your account is ready to use</p>
+                <p className="text-sm font-semibold text-zinc-700">Your account</p>
                 <p className="mt-1 text-sm text-zinc-500">
                   Start capturing damage and generating reports. Need a walkthrough? Book a free onboarding call.
                 </p>
@@ -76,9 +131,9 @@ export default function SuccessPage() {
           ) : (
             <>
               <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-6">
-                <p className="text-sm font-semibold text-zinc-700">Create your account</p>
+                <p className="text-sm font-semibold text-zinc-700">Log in to see your plan</p>
                 <p className="mt-1 text-sm text-zinc-500">
-                  Set up your login so you can access your projects and start capturing damage.
+                  Log in, or create your account, so you can see your plan and access your projects.
                 </p>
               </div>
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">

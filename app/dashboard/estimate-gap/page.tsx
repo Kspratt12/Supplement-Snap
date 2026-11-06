@@ -55,6 +55,7 @@ export default function EstimateGapPage() {
     authFetch("/api/estimate-gap/status")
       .then(async (r) => {
         if (cancelled) return
+        if (r.status === 503) { setStatusError("Could not check your plan. Please reload the page."); return } // not the same as "not on your plan"
         if (!r.ok) { setAvailable(false); return }
         setAvailable(!!(await r.json()).available)
       })
