@@ -12,6 +12,7 @@ const world = vi.hoisted(() => ({
   tokens: {} as Record<string, { id: string; user_metadata: Record<string, unknown> }>,
   checkedTokens: [] as string[],
   writes: [] as Array<{ id: string; user_metadata: Record<string, unknown> }>,
+  stored: {} as Record<string, Record<string, unknown>>,
 }))
 
 vi.mock("@supabase/supabase-js", () => ({
@@ -25,8 +26,10 @@ vi.mock("@supabase/supabase-js", () => ({
       admin: {
         updateUserById: async (id: string, attrs: { user_metadata: Record<string, unknown> }) => {
           world.writes.push({ id, user_metadata: attrs.user_metadata })
+          world.stored[id] = { ...(world.stored[id] ?? {}), ...attrs.user_metadata } // merged key by key, as the service does
           return { error: null }
         },
+        getUserById: async (id: string) => ({ data: { user: { id, user_metadata: world.stored[id] ?? {} } }, error: null }),
       },
     },
   }),
@@ -55,12 +58,14 @@ beforeEach(() => {
   }
   world.checkedTokens = []
   world.writes = []
+  world.stored = { [A]: { full_name: "Alice Example" }, [B]: { full_name: "Bob Example" } }
 })
 
 describe("which login the route accepts", () => {
   it("a bearer token for A changes A", async () => {
     expect((await send({ Authorization: "Bearer token-a" }, A)).status).toBe(200)
-    expect(world.writes).toEqual([{ id: A, user_metadata: { full_name: "Alice Example", ss_start_here_hidden: true } }])
+    expect(world.writes).toEqual([{ id: A, user_metadata: { ss_start_here_hidden: true } }]) // only the changed key is sent
+    expect(world.stored[A]).toEqual({ full_name: "Alice Example", ss_start_here_hidden: true })
   })
 
   it("a valid session cookie with no bearer header is refused, and the cookie is never even checked", async () => {

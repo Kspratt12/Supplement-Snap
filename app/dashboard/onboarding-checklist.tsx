@@ -2,8 +2,7 @@
 
 import { useState, useSyncExternalStore } from "react"
 import Link from "next/link"
-import { supabase } from "../../lib/supabase"
-import type { DismissalSpec } from "../../lib/dismissal-sync"
+import { saveChecklistState, type DismissalSpec } from "../../lib/dismissal-sync"
 import { PreferenceUnavailable, useDismissal } from "../../lib/use-dismissal"
 
 type Step = { label: string; description: string; href: string; cta: string }
@@ -65,24 +64,27 @@ export function OnboardingChecklist({ mode, done, userId, savedState }: Props) {
   )
   // False while the page is being prepared on the server, so nothing flashes before the real state is known
   const loaded = useSyncExternalStore(() => () => {}, () => true, () => false)
-  // What the person just chose on this page. A newer account setting replaces it.
-  const [chosen, setChosen] = useState<Saved | null>(null)
-  const [seenSaved, setSeenSaved] = useState(savedState)
-  if (seenSaved !== savedState) {
-    setSeenSaved(savedState)
-    setChosen(null)
+  // What the person just chose on this page. A newer account setting replaces it, and it belongs to one person only: if the
+  // signed-in person changes while this stays on screen, the previous person's choice is dropped, never shown to the next.
+  const [choice, setChoice] = useState<{ userId: string; value: Saved } | null>(null)
+  const [seen, setSeen] = useState({ userId, savedState })
+  if (seen.userId !== userId || seen.savedState !== savedState) {
+    setSeen({ userId, savedState })
+    setChoice(null)
   }
+  const chosen = choice && choice.userId === userId ? choice.value : null
   // The account setting wins; then what was just chosen; then the browser copy
   const state: Saved = chosen ?? ((savedState as Saved) || local)
 
   // Dismiss goes through useDismissal, which saves it for both modes through the server and tries again if that fails.
-  // Minimize and expand are unchanged: saved per mode, in this browser and on the account.
+  // Minimize and expand are saved per mode, in this browser and on the account, through the same server route (so a save
+  // meant for one person cannot land on another), best effort and not retried.
   function persist(next: Saved) {
     if (next === "dismissed") {
       preference.dismiss()
       return
     }
-    setChosen(next)
+    setChoice({ userId, value: next })
     try {
       if (next) localStorage.setItem(storageKey, next)
       else localStorage.removeItem(storageKey)
@@ -90,7 +92,7 @@ export function OnboardingChecklist({ mode, done, userId, savedState }: Props) {
       // storage unavailable
     }
     // Save on the account so it follows this person to every device
-    supabase.auth.updateUser({ data: { [`ss_onboarding_${mode}`]: next } }).catch(() => {})
+    void saveChecklistState(userId, mode, next === "minimized" ? "minimized" : "")
   }
 
   if (!loaded) return null

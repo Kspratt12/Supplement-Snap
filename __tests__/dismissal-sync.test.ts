@@ -55,9 +55,10 @@ vi.mock("@supabase/supabase-js", () => ({
           if (auth.adminMode === "throw") throw new Error("service down")
           if (auth.adminMode === "error") return { error: { message: "refused" } }
           auth.adminWrites.push({ id, metadata: attrs.user_metadata })
-          auth.accounts[id] = attrs.user_metadata
+          auth.accounts[id] = { ...(auth.accounts[id] ?? {}), ...attrs.user_metadata } // merged key by key, as the service does
           return { error: null }
         },
+        getUserById: async (id: string) => ({ data: { user: { id, user_metadata: auth.accounts[id] ?? {} } }, error: null }),
       },
     },
   }),
@@ -82,6 +83,7 @@ import {
   queueUnsynced,
   readLocalDismissal,
   resetDismissalSyncForTests,
+  saveChecklistState,
   saveDismissalToAccount,
   writeLocalDismissal,
   type DismissalSpec,
@@ -109,9 +111,10 @@ afterEach(() => {
 })
 
 describe("saving to the account", () => {
-  it("changes the verified person\x27s account, adds only the dismissal key, and leaves the rest of the metadata alone", async () => {
+  it("changes the verified person\x27s account, sends only the dismissal key, and leaves the rest of the metadata alone", async () => {
     expect(await saveDismissalToAccount("u1", PATCH)).toBe("ok")
-    expect(auth.adminWrites).toEqual([{ id: "u1", metadata: { full_name: "Roofer One", ss_speech_lang: "es-MX", ss_start_here_hidden: true } }])
+    expect(auth.adminWrites).toEqual([{ id: "u1", metadata: { ss_start_here_hidden: true } }]) // only the key it owns is sent
+    expect(auth.accounts.u1).toEqual({ full_name: "Roofer One", ss_speech_lang: "es-MX", ss_start_here_hidden: true })
     expect(auth.accounts.u2).toEqual({ full_name: "Roofer Two" })
   })
 
@@ -154,6 +157,29 @@ describe("saving to the account", () => {
     auth.signedIn = "u1"
     await saveDismissalToAccount("u1", PATCH)
     expect(auth.adminWrites.map((w) => w.id)).toEqual(["u1"])
+  })
+})
+
+describe("saving a checklist Minimize or Expand", () => {
+  it("changes only that mode's key for the verified person, and a later Expand sets it back to empty", async () => {
+    expect(await saveChecklistState("u1", "paid", "minimized")).toBe("ok")
+    expect(auth.adminWrites).toEqual([{ id: "u1", metadata: { ss_onboarding_paid: "minimized" } }])
+    expect(await saveChecklistState("u1", "paid", "")).toBe("ok")
+    expect(auth.adminWrites[1]).toEqual({ id: "u1", metadata: { ss_onboarding_paid: "" } })
+    expect(auth.accounts.u1).toEqual({ full_name: "Roofer One", ss_speech_lang: "es-MX", ss_onboarding_paid: "" })
+  })
+
+  it("is refused, with no change anywhere, when the browser is signed in as someone else", async () => {
+    auth.signedIn = "u2"
+    expect(await saveChecklistState("u1", "paid", "minimized")).toBe("rejected")
+    expect(auth.adminWrites).toEqual([])
+    expect(auth.accounts.u2).toEqual({ full_name: "Roofer Two" })
+  })
+
+  it("reports a server failure as worth retrying but never queues it", async () => {
+    auth.adminMode = "error"
+    expect(await saveChecklistState("u1", "free", "minimized")).toBe("error")
+    expect(hasUnsynced("u1")).toBe(false)
   })
 })
 
@@ -251,12 +277,11 @@ describe("a dismissal that has not reached the account yet", () => {
     await vi.advanceTimersByTimeAsync(5_000)
     expect(auth.adminWrites).toHaveLength(1)
     expect(auth.adminWrites[0].metadata).toEqual({
-      full_name: "Roofer One",
-      ss_speech_lang: "es-MX",
       ss_start_here_hidden: true,
       ss_onboarding_free: "dismissed",
       ss_onboarding_paid: "dismissed",
     })
+    expect(auth.accounts.u1).toEqual({ full_name: "Roofer One", ss_speech_lang: "es-MX", ss_start_here_hidden: true, ss_onboarding_free: "dismissed", ss_onboarding_paid: "dismissed" })
   })
 
   it("keeps a waiting dismissal when the browser cannot store it, for as long as the page is open", async () => {
