@@ -2012,6 +2012,7 @@ const ARTICLES: Article[] = [
     "metaDescription": "How overhead and profit works on roofing claims: when O&P applies, how to document multiple trades, what carriers push back on and how to respond.",
     "publishedDate": "2026-10-22",
     "midCtaAfter": 1,
+    "updatedDate": "2026-11-07",
     "midCtaTitle": "Capture this on the roof, not from memory.",
     "midCtaBody": "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     "related": [
@@ -2071,11 +2072,11 @@ const ARTICLES: Article[] = [
     "sections": [
       {
         "heading": "What overhead and profit means on a claim",
-        "content": "Overhead covers the general contractor's cost of running a job: coordinating trades, scheduling, supervising, insurance, office staff and similar business costs. Profit is the margin for taking on the risk of the project. In an insurance estimate, both are usually added as percentages on top of the direct costs of labor and materials.\n\nO&P matters because it can be a meaningful part of a claim, and because it is one of the items carriers most often question. Getting it right starts with understanding when it applies."
+        "content": "Overhead covers the general contractor's cost of running a job: coordinating trades, scheduling, supervising, insurance, office staff and similar business costs. Profit is the margin for taking on the risk of the project. In an insurance estimate, both are usually added as percentages on top of the direct costs of labor and materials.\n\nO&P matters because it can be a meaningful part of a claim, and because it is one of the items carriers most often question. Getting it right starts with understanding when it applies.\n\nOne point of framing: the insurance claim belongs to the policyholder, and the carrier decides what it will pay under the policy. A contractor can document why a general contractor is needed and prepare the request, but cannot make O&P payable. Who may speak to the carrier for the homeowner varies by state; see <a href='/blog/can-a-roofer-talk-to-the-insurance-company'>can a roofer talk to the insurance company</a>."
       },
       {
         "heading": "When O&P is typically requested",
-        "content": "O&P is most often requested when a repair needs a general contractor to coordinate several trades. A roof replacement that also needs gutters, siding, paint, drywall or electrical work is a typical example.\n\nIt is commonly discussed as a 10 percent overhead and 10 percent profit combination, but that figure is a convention and not a rule. The right amount for your claim depends on the policy, the carrier and your state. A single-trade roof replacement with no coordination is much harder to justify."
+        "content": "O&P is most often requested when a repair needs a general contractor to coordinate several trades. A roof replacement that also needs gutters, siding, paint, drywall or electrical work is a typical example.\n\nIt is commonly discussed as a 10 percent overhead and 10 percent profit combination, but that figure is a convention and not a rule. The right amount for your claim depends on the policy, the carrier and your state. A single-trade roof replacement with no coordination is much harder to justify.\n\nYou may also hear a rule of thumb that O&P applies once three or more trades are involved. That is an industry shorthand, not a legal standard. Carriers, state regulators and courts take different positions on when a general contractor is reasonably likely to be needed, and on whether O&P is included in the first payment or only once it is incurred. Check your state's rules, and your policy, before you argue the point. The <a href='https://content.naic.org/state-insurance-departments' target='_blank' rel='noopener noreferrer'>NAIC list of state insurance departments</a> is a place to start.\n\nA hypothetical example of the arithmetic only: suppose the direct cost of labor and materials on an estimate is $20,000. Ten percent overhead calculated on that $20,000 is $2,000, and ten percent profit calculated separately on the same $20,000 is another $2,000, so the two additions combine to $4,000. This is an arithmetic illustration, not a typical claim, an entitlement or a universal estimating method. Carriers and estimating software differ on the base and on how they calculate and display O&P, so use the method your actual estimate and policy support."
       },
       {
         "heading": "How carriers push back, and what supports your request",
@@ -2116,6 +2117,7 @@ const ARTICLES: Article[] = [
     "metaDescription": "How code upgrades work in roofing claims: what Ordinance and Law coverage is, which roof items it can cover, and how to document them for adjusters.",
     "publishedDate": "2026-10-22",
     "midCtaAfter": 1,
+    "updatedDate": "2026-11-07",
     "midCtaTitle": "Capture this on the roof, not from memory.",
     "midCtaBody": "Supplement Snap lets your crew take photos and voice notes at tear-off and drafts a report you review before sending. Your first project is free.",
     "related": [
@@ -2128,6 +2130,14 @@ const ARTICLES: Article[] = [
       {
         "text": "International Code Council",
         "url": "https://www.iccsafe.org"
+      },
+      {
+        "text": "Triple-I: Am I covered? (ordinance or law, replacement cost)",
+        "url": "https://www.iii.org/article/am-i-covered"
+      },
+      {
+        "text": "Sample ISO HO 00 03 10 00 homeowners form (Insurance Information Institute)",
+        "url": "https://www.iii.org/sites/default/files/docs/pdf/HO3_sample.pdf"
       },
       {
         "text": "NRCA Roofing Manual and Standards",
@@ -2185,11 +2195,11 @@ const ARTICLES: Article[] = [
       },
       {
         "heading": "What Ordinance and Law coverage means",
-        "content": "Ordinance or law coverage is an optional or built-in part of many property policies. In general terms, it addresses the extra cost of meeting building codes when a covered loss is repaired. It often has a separate limit, sometimes expressed as a percentage of the dwelling coverage.\n\nWhat your client's policy includes can vary widely. Some policies include it, some exclude it and some limit it. Ask the carrier or read the declarations and endorsements. Do not assume a code requirement automatically means payment."
+        "content": "Ordinance or law coverage is an optional or built-in part of many property policies. In general terms, it addresses the extra cost of meeting building codes when a covered loss is repaired. It often has a separate limit, sometimes expressed as a percentage of the dwelling coverage.\n\nWhat your client's policy includes can vary widely. Some policies include it, some exclude it and some limit it. Ask the carrier or read the declarations and endorsements. Do not assume a code requirement automatically means payment.\n\nFor context, the Insurance Information Institute publishes a sample ISO homeowners form, HO 00 03 10 00 (an older edition, shown only as an example and not any carrier's actual policy). Under Section I, Additional Coverages, item E.11, it provides limited ordinance or law coverage: up to 10 percent of the Coverage A limit for increased costs the insured incurs because an ordinance or law is enforced when the damaged part of the building is repaired. That 10 percent figure belongs to that sample form and is not universal. Other policies use different wording, a different limit or none, and some offer higher limits or broader terms by endorsement. The Institute's consumer FAQ describes the standard form as excluding code-driven costs and says an Ordinance or Law endorsement can cover them, which is a simpler summary than the sample form's own text. Neither source tells you what a particular policy pays: the actual terms, limits, exclusions and endorsements control, so read the declarations page and the policy itself."
       },
       {
         "heading": "Roof items commonly tied to code requirements",
-        "content": "These are items contractors often raise as code-driven. Whether each applies depends on the local code and the policy.\n\n• Drip edge: Required in many jurisdictions at eaves and rakes.\n• Ice and water barrier: Required in many cold-weather areas at eaves and valleys.\n• Underlayment: Type and number of layers may be specified.\n• Ventilation: Minimum airflow requirements for the attic.\n• Flashing and step flashing: Specific requirements at walls and chimneys.\n• Decking thickness or fastening: Some areas specify minimums.\n\nAlways verify the current requirement with the local building department."
+        "content": "These are items contractors often raise as code-driven. Whether each applies depends on the local code and the policy.\n\n• Drip edge: Required in many jurisdictions at eaves and rakes.\n• Ice and water barrier: Required in many cold-weather areas at eaves and valleys.\n• Underlayment: Type and number of layers may be specified.\n• Ventilation: Minimum airflow requirements for the attic.\n• Flashing and step flashing: Specific requirements at walls and chimneys.\n• Decking thickness or fastening: Some areas specify minimums.\n\nAlways verify the current requirement with the local building department.\n\nModel codes from groups such as the International Code Council only apply where a state or local government has adopted them, often with amendments, and the adopted edition can differ from place to place. A manufacturer's installation instructions are a separate source from the building code, so label which one you are citing."
       },
       {
         "heading": "How to document a code upgrade supplement",
@@ -3561,7 +3571,7 @@ const ARTICLES: Article[] = [
     metaTitle: "Roofing Supplement Companies vs. In-House Software",
     metaDescription: "Roofing supplement companies, in-house work or software? What each option involves, how pricing models differ, and the questions to ask before you choose.",
     publishedDate: "2026-10-23",
-    updatedDate: "2026-10-23",
+    updatedDate: "2026-11-07",
     externalLinks: [
       { text: "NAIC: Consumer insurance resources", url: "https://content.naic.org" },
     ],
@@ -3587,7 +3597,7 @@ const ARTICLES: Article[] = [
     sections: [
       {
         heading: "The short answer",
-        content: "You have three realistic ways to handle roofing supplements: do them by hand in-house, use software to speed up the in-house work, or hire a supplement company to do it for you. The right choice depends on your volume, your office capacity, how much control you want and how a company would be paid.\n\nThere is no single best answer. A small crew handling a few claims a month may do fine by hand. A busy company may value outsourcing. Software sits between them. This guide compares them neutrally so you can decide.",
+        content: "You have three realistic ways to handle roofing supplements: do them by hand in-house, use software to speed up the in-house work, or hire a supplement company to do it for you. The right choice depends on your volume, your office capacity, how much control you want and how a company would be paid.\n\nThere is no single best answer. A small crew handling a few claims a month may do fine by hand. A busy company may value outsourcing. Software sits between them. This guide tries to compare them fairly so you can decide.\n\nDisclosure: Supplement Snap publishes this article and sells in-house documentation software, so we have a commercial interest in one of the three options. We have not tested or priced any supplement company here, and the comparison describes common patterns rather than any named provider.",
       },
       {
         heading: "The three options at a glance",
@@ -3603,7 +3613,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "When in-house with software makes sense",
-        content: "Doing it in-house with software suits companies that want to keep control and speed up the writing. The software handles capture, organization and report building. Your team still reviews every finding and decides what goes out.\n\nCompare it honestly against the other two options: what does a month of software cost against your staff time, and against a company's fees on your actual claims? <a href='/roofing-supplement-software'>Supplement Snap</a> is one tool built for that in-house workflow. See <a href='/roofing-supplement-software-vs-spreadsheets'>software vs. spreadsheets</a> for the by-hand comparison, and the <a href='/roofing-supplement-report-example'>sample report</a> for the output.",
+        content: "Doing it in-house with software suits companies that want to keep control and speed up the writing. The software handles capture, organization and report building. Your team still reviews every finding and decides what goes out.\n\nThat also means its limits are real. Supplement Snap does include AI-drafted narratives for each finding and a PDF report built from your photos and notes, and it can email the report from the project. It is software, not a service: it has no staff who write supplements for you, it does not prepare the estimate or negotiate with the adjuster, it does not represent you on a claim, and it does not decide coverage. Someone in your office still has to capture the findings, review and edit every draft, send the report and follow up, so it will not help a company with no office capacity. Outsourcing may fit better in that case, and doing it by hand may be enough at very low volume.\n\nCompare it honestly against the other two options: what does a month of software cost against your staff time, and against a company's fees on your actual claims? <a href='/roofing-supplement-software'>Supplement Snap</a> is one tool built for that in-house workflow. See <a href='/roofing-supplement-software-vs-spreadsheets'>software vs. spreadsheets</a> for the by-hand comparison, and the <a href='/roofing-supplement-report-example'>sample report</a> for the output.",
       },
       {
         heading: "How to decide",
@@ -3818,8 +3828,9 @@ const ARTICLES: Article[] = [
     metaTitle: "Does Insurance Cover Roof Replacement? A Contractor Guide",
     metaDescription: "When homeowners insurance may pay for a new roof, when it usually does not, and how contractors can explain coverage without promising an outcome.",
     publishedDate: "2026-10-23",
-    updatedDate: "2026-10-23",
+    updatedDate: "2026-11-07",
     externalLinks: [
+      { text: "Triple-I: Am I covered? (actual cash value vs. replacement cost)", url: "https://www.iii.org/article/am-i-covered" },
       { text: "Insurance Information Institute (iii.org)", url: "https://www.iii.org" },
       { text: "NAIC: Consumer insurance resources", url: "https://content.naic.org" },
     ],
@@ -3856,7 +3867,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Policy details that change the outcome",
-        content: "Several policy details change what a homeowner receives. Replacement cost coverage and actual cash value coverage pay differently. Some policies include a separate wind or hail deductible, often a percentage of the home's insured value. Some limit coverage for older roofs through a schedule, and some exclude cosmetic damage.\n\nA homeowner should read their own policy or ask their agent. A contractor should avoid interpreting policy language for them. The checklist above is a good list of questions to hand over.",
+        content: "Several policy details change what a homeowner receives. Replacement cost coverage and actual cash value coverage pay differently: the Insurance Information Institute describes actual cash value as replacement cost minus depreciation, so an older, more worn roof can mean a larger deduction from the payment. How depreciation is calculated, and whether withheld depreciation can be recovered later, depends on the policy and sometimes the state. Some policies include a separate wind or hail deductible, often a percentage of the home's insured value. Some limit coverage for older roofs through a schedule, and some exclude cosmetic damage.\n\nA homeowner should read their own policy or ask their agent. A contractor should avoid interpreting policy language for them. The checklist above is a good list of questions to hand over.",
       },
       {
         heading: "How contractors can help without overpromising",
@@ -6159,7 +6170,7 @@ const ARTICLES: Article[] = [
     metaTitle: "Roof Tear-Off Findings Log Template (Free)",
     metaDescription: "What to capture during roof tear-off: decking, layers, flashing and more. A free findings log and checklist your crew can use on the roof.",
     publishedDate: "2026-10-25",
-    updatedDate: "2026-10-25",
+    updatedDate: "2026-11-07",
     downloads: "roof-tear-off-findings-log",
     externalLinks: [
       { text: "NRCA", url: "https://www.nrca.net" },
@@ -6202,10 +6213,6 @@ const ARTICLES: Article[] = [
         content: "Use the checklist: close and wide photos, scale in the picture, photo numbers recorded, quantities measured, and the office informed. Five minutes here prevents a return trip.",
       },
       {
-        heading: "From log to supplement",
-        content: "The log feeds the findings in your supplement. Each row becomes a numbered finding with photos and a quantity. See our guide to writing a supplement for the full package.",
-      },
-      {
         heading: "A sample log entry (fictional)",
         content: "# 3. Where: rear slope, along the eave near the left corner. What was found: decking soft and deteriorated when walked, dark staining on the underside. Quantity: 4 sheets, each 4 ft by 8 ft, 128 sq ft. Photos: 14 to 17. Found at: 10:20 AM after shingles and underlayment were removed.\n\nThe entry is invented. It shows the level of detail that lets the office build a finding without calling the roof.",
       },
@@ -6219,7 +6226,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "From the log to the supplement",
-        content: "In the office, turn each log line into a finding: a short description, the location, the quantity and the photo numbers. Keep the log with the claim file in case someone asks what was written on the roof. If a number in the log differs from the number in the supplement, explain why.",
+        content: "In the office, turn each log line into a finding: a short description, the location, the quantity and the photo numbers. Keep the log with the claim file in case someone asks what was written on the roof. If a number in the log differs from the number in the supplement, explain why. See <a href='/blog/how-to-write-a-roofing-supplement'>how to write a roofing supplement</a> for the full package.",
       },
     ],
     faq: [
@@ -8634,7 +8641,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
       "@type": "Person",
       name: "Kelvin Spratt",
       jobTitle: "Founder",
-      url: "https://supplementsnap.io",
+      url: "https://supplementsnap.io/about",
       worksFor: {
         "@type": "Organization",
         name: "Supplement Snap",
@@ -8883,10 +8890,11 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
             <p className="mt-1 text-lg font-bold text-zinc-900">Kelvin Spratt</p>
             <p className="mt-0.5 text-sm text-zinc-500">Founder, Supplement Snap</p>
             <p className="mt-2 text-sm leading-relaxed text-zinc-600">
-              Kelvin builds software for roofing contractors who are tired of
-              leaving supplement money on the table. His background in software
-              development and insurance restoration workflows drives everything
-              Supplement Snap does.
+              Kelvin builds Supplement Snap, the roofing documentation software
+              this site promotes. Articles are published by Supplement Snap,
+              which has a commercial interest in the topics covered. They are
+              general information, not legal, insurance or claims advice.{" "}
+              <Link href="/about" className="text-indigo-600 underline hover:text-indigo-800">About Supplement Snap</Link>
             </p>
           </div>
         </div>
