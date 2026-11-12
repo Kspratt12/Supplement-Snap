@@ -98,7 +98,9 @@ describe("POST /api/create-checkout-session: plans and double billing", () => {
     mockGetAccess.mockResolvedValue({ active: true, viaOwner: false, plan: "starter" })
     const res = await buy("team")
     expect(res.status).toBe(409)
-    expect((await res.json()).error).toMatch(/billed twice/)
+    const message = (await res.json()).error as string
+    expect(message).toMatch(/second one can't be started/)
+    expect(message).toMatch(/support@supplementsnap\.io/)
     expect(mockSessionsCreate).not.toHaveBeenCalled()
   })
   it("lets a team member who only inherits their owner's plan buy their own, and lets a cancelled customer come back", async () => {
