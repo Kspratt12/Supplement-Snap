@@ -1507,7 +1507,7 @@ function Home() {
             damage_type: c.damage_type,
             roof_area: c.roof_area,
             field_note: c.field_note,
-            quantity: c.quantity || 1,
+            quantity: c.quantity ?? null,
             unit: c.unit || "",
           })),
         }),

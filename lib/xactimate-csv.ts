@@ -108,6 +108,7 @@ export function buildXactimateCsv(input: { projectName?: string | null; property
         unit = enteredUnit
         if (!hasQty) review = "No usable quantity was entered. Enter the quantity, item code and unit price."
         else if (!enteredUnit) review = "No unit was selected. Enter the unit, item code and unit price."
+        else if (qtyNumber === 1) review = "Quantity is 1, which is also the app's default: confirm it was measured. Enter the item code and unit price from your own price list."
       }
 
       rows.push([

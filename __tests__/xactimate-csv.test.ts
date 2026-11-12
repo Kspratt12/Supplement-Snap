@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest"
+import { readFileSync } from "fs"
 import { buildXactimateCsv, CSV_HEADERS, CSV_REVIEW_NOTE, SUGGESTED_ITEMS } from "../lib/xactimate-csv"
 
 // Reads the CSV back into rows of cells (handles quoted cells and doubled quotes)
@@ -143,5 +144,31 @@ describe("Xactimate CSV: what the crew entered is carried over unchanged", () =>
   it("no downstream totals exist: a quantity can no longer produce a dollar figure", () => {
     const csv = buildXactimateCsv({ captures: [{ damage_type: "Flashing", quantity: 1000000, unit: "LF" }] })
     expect(csv).not.toMatch(/\d+\.\d\d/)
+  })
+})
+
+describe("Xactimate CSV: a quantity of 1 is not presented as measured", () => {
+  it("flags a quantity of exactly 1 as possibly the app default, and keeps the value", () => {
+    const [row] = exportRows([{ damage_type: "Drip Edge", quantity: 1, unit: "LF" }])
+    expect(row[col("Quantity")]).toBe("1")
+    expect(row[col("Review Needed")]).toMatch(/Quantity is 1, which is also the app's default: confirm it was measured/)
+  })
+
+  it("does not flag other quantities", () => {
+    const [row] = exportRows([{ damage_type: "Drip Edge", quantity: 2, unit: "LF" }])
+    expect(row[col("Review Needed")]).not.toMatch(/default/)
+  })
+
+  it("a missing quantity is exported blank, not turned into 1", () => {
+    for (const quantity of [null, undefined, 0]) {
+      const [row] = exportRows([{ damage_type: "Drip Edge", quantity: quantity as never, unit: "LF" }])
+      expect(row[col("Quantity")]).toBe("")
+    }
+  })
+
+  it("the app no longer substitutes 1 for a missing quantity when it calls the export", () => {
+    const src = readFileSync("app/app/page.tsx", "utf8")
+    expect(src).toMatch(/quantity: c\.quantity \?\? null,/)
+    expect(src).not.toMatch(/quantity: c\.quantity \|\| 1/)
   })
 })
