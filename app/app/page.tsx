@@ -262,6 +262,16 @@ function Home() {
   const [projectDraftCopied, setProjectDraftCopied] = useState(false)
   const [draftExpanded, setDraftExpanded] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  // Which action opened the upgrade modal: a fixed list, sent with the analytics event (no account, project or claim data)
+  const upgradeSource = useRef<"pdf" | "email" | "csv" | "annotate" | "project_limit" | "capture_limit">("pdf")
+  function openUpgradeModal(source: "pdf" | "email" | "csv" | "annotate" | "project_limit" | "capture_limit") {
+    upgradeSource.current = source
+    setShowUpgradeModal(true)
+  }
+  // Counted once each time the modal goes from hidden to visible, not on every render
+  useEffect(() => {
+    if (showUpgradeModal) trackEvent("upgrade_modal_viewed", { source: upgradeSource.current })
+  }, [showUpgradeModal])
   const [editingClaim, setEditingClaim] = useState(false)
   const [editClaimData, setEditClaimData] = useState({ insurance_company: "", claim_number: "", policy_number: "", adjuster_name: "", adjuster_email: "", date_of_loss: "" })
 
@@ -668,7 +678,7 @@ function Home() {
         .select("*", { count: "exact", head: true })
         .eq("user_id", user?.id)
       if ((count || 0) >= FREE_PROJECT_LIMIT) {
-        setShowUpgradeModal(true)
+        openUpgradeModal("project_limit")
         return
       }
     }
@@ -1478,7 +1488,7 @@ function Home() {
   }
 
   async function downloadPdf() {
-    if (isFreeUser) { setShowUpgradeModal(true); return }
+    if (isFreeUser) { openUpgradeModal("pdf"); return }
     if (!selectedProject || captures.length === 0) return
     setPdfGenerating(true)
     try {
@@ -1497,7 +1507,7 @@ function Home() {
   }
 
   async function exportXactimate() {
-    if (!isProUser) { setShowUpgradeModal(true); return }
+    if (!isProUser) { openUpgradeModal("csv"); return }
     if (!selectedProject || captures.length === 0) return
     try {
       const res = await authFetch("/api/export-xactimate", {
@@ -1542,7 +1552,7 @@ function Home() {
   }
 
   function openEmailModal(withDraft = false) {
-    if (isFreeUser) { setShowUpgradeModal(true); return }
+    if (isFreeUser) { openUpgradeModal("email"); return }
     if (!selectedProject) return
     setEmailTo(selectedProject.adjuster_email || "")
     setEmailSubject(`Supplement Request – ${selectedProject.project_name}`)
@@ -1790,7 +1800,7 @@ function Home() {
         .select("*", { count: "exact", head: true })
         .eq("project_id", selectedProjectId)
       if ((count || 0) >= FREE_CAPTURE_LIMIT) {
-        setShowUpgradeModal(true)
+        openUpgradeModal("capture_limit")
         return
       }
     }
@@ -2959,7 +2969,7 @@ function Home() {
                           onClick={() => openViewer(urls, j)}
                         />
                         {!readOnly && <button
-                          onClick={() => { if (isFreeUser) { setShowUpgradeModal(true); return }; void signedPhotoUrl(url, selectedProject?.id).then((link) => { if (!link) { showNotice("The photo could not be loaded, so it cannot be marked up right now. Try again in a moment."); return } setAnnotateUrl(link); setAnnotateOpen(true) }) }}
+                          onClick={() => { if (isFreeUser) { openUpgradeModal("annotate"); return }; void signedPhotoUrl(url, selectedProject?.id).then((link) => { if (!link) { showNotice("The photo could not be loaded, so it cannot be marked up right now. Try again in a moment."); return } setAnnotateUrl(link); setAnnotateOpen(true) }) }}
                           className="absolute bottom-1 right-1 rounded-md bg-black/60 px-1.5 py-2 text-[10px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           Annotate

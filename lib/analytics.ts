@@ -14,6 +14,7 @@ type AnalyticsEvent =
   | "cta_click"
   | "project_created"
   | "pdf_downloaded"
+  | "upgrade_modal_viewed"
 
 type EventProps = Record<string, string | number | boolean>
 
