@@ -145,10 +145,15 @@ export default function AccountPage() {
                     {portalLoading ? "Opening..." : "Manage billing or cancel"}
                   </button>
                 )}
-                {!subscriptionViaOwner && planKey !== "pro" && planKey !== "enterprise" && (
+                {!subscriptionViaOwner && planKey === "none" && (
                   <Link href="/pricing" className="rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
-                    {planKey === "none" ? "See plans" : "Change plan"}
+                    See plans
                   </Link>
+                )}
+                {!subscriptionViaOwner && planKey !== "none" && planKey !== "pro" && planKey !== "enterprise" && (
+                  <a href="mailto:support@supplementsnap.io?subject=Plan%20change%20request" className="rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
+                    Request a plan change
+                  </a>
                 )}
               </div>
             )}

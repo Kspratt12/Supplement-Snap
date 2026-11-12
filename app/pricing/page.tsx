@@ -49,8 +49,8 @@ const FAQ = [
     a: "Starter is for solo contractors (1 user). Team is for small crews of 2-3 people who need team logins that can view the owner's projects and send reports, email tracking, and an Xactimate-style CSV export. Pro is for larger operations with up to 5 users, priority email replies, a setup walkthrough for your team, and custom branding.",
   },
   {
-    q: "Can I upgrade from Starter to Pro later?",
-    a: "Yes. Contact us and we'll move you to Pro. Your projects and data stay exactly the same.",
+    q: "Can I change plans later?",
+    a: "Plan changes aren't available through the billing portal yet. Email support@supplementsnap.io from your account email to request a change. We'll confirm the available options and any billing impact before making changes.",
   },
   {
     q: "Do I need special equipment?",
