@@ -81,7 +81,8 @@ export async function POST(request: Request) {
     }
 
     // Use company branding if available
-    const safeCompany = typeof companyName === "string" ? companyName.replace(/[\r\n<>"]/g, " ").trim().slice(0, 120) : ""
+    // The company name in the email header is a custom-branding feature: it is used only while the plan includes it, whatever the request says
+    const safeCompany = can.customBranding(access) && typeof companyName === "string" ? companyName.replace(/[\r\n<>"]/g, " ").trim().slice(0, 120) : ""
     const brandName = escapeHtml(safeCompany || "Supplement Snap")
     const headerTitle = safeCompany ? `${escapeHtml(safeCompany)} – Supplement Report` : "Supplement Snap – Project Report"
     const footerText = safeCompany ? `Sent by ${escapeHtml(safeCompany)} via Supplement Snap` : "Sent via Supplement Snap"

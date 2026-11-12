@@ -16,7 +16,7 @@ vi.mock("../lib/auth-utils", () => ({ getAuthenticatedUser: (...a: unknown[]) =>
 vi.mock("../lib/plan", async () => ({
   ...(await vi.importActual<typeof import("../lib/plan")>("../lib/plan")),
   getAccess: (...a: unknown[]) => mockGetAccess(...a),
-  can: { emailTracking: () => false },
+  can: { emailTracking: () => false, customBranding: () => false },
 }))
 vi.mock("../lib/rate-limit", () => ({ rateLimited: () => false }))
 vi.mock("stripe", () => ({

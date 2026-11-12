@@ -61,7 +61,7 @@ const mockGetAccess = vi.fn()
 vi.mock("../lib/auth-utils", () => ({ getAuthenticatedUser: (...a: unknown[]) => mockGetUser(...a) }))
 vi.mock("../lib/plan", () => ({
   getAccess: (...a: unknown[]) => mockGetAccess(...a),
-  can: { emailTracking: () => true },
+  can: { emailTracking: () => true, customBranding: () => true },
 }))
 vi.mock("../lib/rate-limit", () => ({ rateLimited: () => false }))
 

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { escapeHtml } from "../../../lib/escape-html"
 import { automaticFollowUpsEnabled } from "../../../lib/followup-gate"
+import { getAccess, can } from "../../../lib/plan"
 
 // This endpoint can be called by a Vercel Cron Job (see vercel.json)
 // It finds emails that haven't been opened and are past their follow_up_at date,
@@ -40,7 +41,7 @@ export async function GET(request: Request) {
       .lte("follow_up_at", new Date().toISOString())
       .is("opened_at", null)
       .is("followed_up_at", null)
-      .limit(20)
+      .limit(100)
 
     if (!pending || pending.length === 0) {
       return NextResponse.json({ sent: 0 })
@@ -48,12 +49,18 @@ export async function GET(request: Request) {
 
     let sent = 0
     for (const record of pending) {
+      if (sent >= 20) break
       try {
         let senderEmail: string | undefined
         if (record.user_id) {
           const { data: sender } = await supabase.auth.admin.getUserById(record.user_id)
           senderEmail = sender?.user?.email || undefined
         }
+        // Follow-ups belong to open tracking (Team and above): a row for an account without the plan, or whose plan could not be
+        // checked, is skipped and left exactly as it is. Nothing is sent and nothing is deleted or changed.
+        if (!record.user_id) continue
+        const access = await getAccess(record.user_id, senderEmail)
+        if (access.unavailable || !can.emailTracking(access)) continue
         await resend.emails.send({
           from: fromEmail,
           to: record.recipient_email,
