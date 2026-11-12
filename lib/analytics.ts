@@ -12,6 +12,8 @@ type AnalyticsEvent =
   | "waitlist_joined"
   | "checklist_printed"
   | "cta_click"
+  | "project_created"
+  | "pdf_downloaded"
 
 type EventProps = Record<string, string | number | boolean>
 
@@ -24,9 +26,17 @@ declare global {
   }
 }
 
+/**
+ * Sends one event to Plausible. Never throws: analytics being blocked, missing or broken must not affect the app.
+ * Callers pass no personal data (no names, emails, claim details, project ids, photo links or document contents).
+ */
 export function trackEvent(event: AnalyticsEvent, props?: EventProps) {
-  if (typeof window !== "undefined" && window.plausible) {
-    if (props) window.plausible(event, { props })
-    else window.plausible(event)
+  try {
+    if (typeof window !== "undefined" && window.plausible) {
+      if (props) window.plausible(event, { props })
+      else window.plausible(event)
+    }
+  } catch {
+    // ignore: analytics must never block the app
   }
 }

@@ -5,6 +5,7 @@ import { authFetch } from "../../lib/auth-fetch"
 import { supabase } from "../../lib/supabase"
 import { extractAllExifData } from "../../lib/exif-utils"
 import { uploadPhotosWithRetry } from "../../lib/upload-utils"
+import { trackEvent } from "../../lib/analytics"
 
 import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang, fetchAccountSpeechLang } from "../../lib/speech-langs"
 
@@ -45,6 +46,7 @@ function useProjects(userId: string, open: boolean) {
       .select("id, project_name")
       .single()
     if (data) {
+      trackEvent("project_created")
       setProjects((p) => [data, ...p])
       setSelectedProjectId(data.id)
       setNewProjectName("")
