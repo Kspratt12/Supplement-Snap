@@ -108,7 +108,12 @@ async function syncSkippingWaits() {
   try {
     let result: number | undefined
     sync().then((r) => { result = r })
-    for (let i = 0; i < 120 && result === undefined; i++) await vi.advanceTimersByTimeAsync(1000)
+    // Wait on real time as well as fake time: on a busy machine the queue's real async work needs more than a fixed number of turns
+    const started = Date.now()
+    while (result === undefined && Date.now() - started < 20000) {
+      await vi.advanceTimersByTimeAsync(1000)
+      await new Promise((r) => setImmediate(r))
+    }
     expect(result).not.toBeUndefined()
     return result as number
   } finally {
