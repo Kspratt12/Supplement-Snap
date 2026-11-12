@@ -40,6 +40,7 @@ describe("Xactimate CSV: compatibility with the earlier file layout", () => {
     expect(CSV_REVIEW_NOTE).toMatch(/starting list only/i)
     expect(CSV_REVIEW_NOTE).toMatch(/intentionally left blank/i)
     expect(CSV_REVIEW_NOTE).toMatch(/Review every row/i)
+    expect(CSV_REVIEW_NOTE).toMatch(/Category value \(RFG\) is also unverified/)
     expect(CSV_REVIEW_NOTE).toMatch(/not been tested through an Xactimate import/i)
     expect(CSV_REVIEW_NOTE).not.toMatch(/compatible|imports? directly|native/i)
   })

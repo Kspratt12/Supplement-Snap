@@ -68,7 +68,7 @@ export const CSV_HEADERS = [
 ]
 
 export const CSV_REVIEW_NOTE =
-  "NOTE: This is a starting list only. Item codes and unit prices are intentionally left blank because they have not been verified against Xactimate's price list: enter them from your own price list. Descriptions are general suggestions. Review every row before you use it. This file has not been tested through an Xactimate import."
+  "NOTE: This is a starting list only. Item codes and unit prices are intentionally left blank because they have not been verified against Xactimate's price list: enter them from your own price list. The Category value (RFG) is also unverified, as are the descriptions, which are general suggestions. Review every row before you use it. This file has not been tested through an Xactimate import."
 
 export type ExportCapture = {
   damage_type?: string | null
