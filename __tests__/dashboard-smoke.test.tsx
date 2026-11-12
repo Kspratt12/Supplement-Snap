@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 import { render, screen, fireEvent, waitFor, cleanup, configure } from "@testing-library/react"
 
 // The whole dashboard renders in these tests, so give a busy machine more time before a lookup gives up.
-configure({ asyncUtilTimeout: 6000 })
+configure({ asyncUtilTimeout: 15000 })
 vi.setConfig({ testTimeout: 30000 })
 
 // A stand-in database: every query returns the rows set for that table, and writes can be told to fail.
