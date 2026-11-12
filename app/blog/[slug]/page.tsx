@@ -521,32 +521,19 @@ const ARTICLES: Article[] = [
   {
     slug: "xactimate-codes-for-roofing-supplements",
     title: "Xactimate Codes for Roofing Supplements: Quick Reference",
-    metaTitle: "Xactimate Roofing Supplement List: Codes and Units",
-    metaDescription: "Quick-reference Xactimate roofing supplement codes for decking, flashing, ice & water shield, pipe boots and drip edge, with units and proof tips.",
+    metaTitle: "Xactimate Roofing Supplement Items and Proof",
+    metaDescription: "Common roofing supplement items (decking, flashing, ice & water shield, pipe boots, drip edge), how each is counted, and the proof to attach. Item codes and prices are not listed.",
     publishedDate: "2026-01-20",
     externalLinks: [
       { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
       { text: "NRCA Roofing Standards", url: "https://www.nrca.net" },
     ],
-    highlight: { label: "Most Used Code", value: "RFG SHTHN", subtext: "Sheathing replacement. One of the most common supplement line items on tear-offs." },
     midCtaAfter: 0,
-    visuals: {
-      0: { type: "codes", data: [
-        { code: "RFG SHTHN", href: "#decking-and-sheathing-codes", desc: "Sheathing, plywood/OSB, R&R", unit: "SF", price: "$2.18" },
-        { code: "RFG RFLT30", href: "#decking-and-sheathing-codes", desc: "Roofing felt, 30#", unit: "SF", price: "$0.52" },
-        { code: "RFG FLSH", href: "#flashing-codes", desc: "Step/counter flashing, aluminum", unit: "LF", price: "$8.75" },
-        { code: "RFG I&WS", href: "#ice-and-water-shield-codes", desc: "Ice & water shield membrane", unit: "SF", price: "$1.85" },
-        { code: "RFG VENT", href: "#vent-and-pipe-boot-codes", desc: "Pipe jack/boot, R&R", unit: "EA", price: "$85.00" },
-        { code: "RFG DRIP", href: "#drip-edge-codes", desc: "Drip edge, aluminum, R&R", unit: "LF", price: "$4.25" },
-        { code: "RFG TEAR", href: "#additional-layer-removal-codes", desc: "Remove additional layer", unit: "SQ", price: "$45.00" },
-        { code: "RFG HAUL", href: "#additional-layer-removal-codes", desc: "Haul debris, additional layer", unit: "SQ", price: "$22.50" },
-      ]},
-    },
     updatedDate: "2026-10-23",
     related: ["drip-edge-roofing-supplement", "steep-roof-charge-roofing-supplement", "what-can-you-supplement-on-a-roof-claim", "xactimate-roofing-estimate-example","xactimate-roofing-software-explained","xactimate-roofing-estimate-approved","roofing-supplement-template", "best-roofing-supplement-software"],
     faq: [
       {
-        "q": "Do I need an Xactimate license to use these codes?",
+        "q": "Do I need an Xactimate license to reference line items in a supplement?",
         "a": "You do not need a license to reference item names in a written supplement, but you need the software to build a native Xactimate estimate. Many contractors submit a clearly formatted document that mirrors Xactimate items."
       },
       {
@@ -565,7 +552,7 @@ const ARTICLES: Article[] = [
     sections: [
       {
         heading: "Xactimate roofing supplement list: quick reference",
-        content: "This is the short list of line items that come up most often on roofing supplements, with the unit each one is measured in. The prices shown are national-average examples for illustration. Your price list, region and date will differ, so always use the price list named on the adjuster's estimate.\n\nThe sections below explain when each item applies and what proof to attach. If you are assembling a package, run it against the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a> before you send it. To see these items laid out in a full package, read the <a href='/blog/xactimate-roofing-estimate-example'>Xactimate roofing estimate example</a>, and for how estimating software and documentation tools fit together, see <a href='/blog/xactimate-roofing-software-explained'>Xactimate roofing software explained</a>.",
+        content: "These are common line items that come up on roofing supplements, and how each is usually counted (by area, by length or individually). This page does not list Xactimate item codes or prices: we could not verify them against Xactimate's own price list, and both vary by price list, region and date. Use the item and price from the price list named on the adjuster's estimate.\n\nThe sections below explain when each item applies and what proof to attach. If you are assembling a package, run it against the <a href='/free-roofing-supplement-checklist'>free supplement checklist</a> before you send it. To see these items laid out in a full package, read the <a href='/blog/xactimate-roofing-estimate-example'>Xactimate roofing estimate example</a>, and for how estimating software and documentation tools fit together, see <a href='/blog/xactimate-roofing-software-explained'>Xactimate roofing software explained</a>.",
       },
       {
         heading: "Why Xactimate codes matter for supplements",
@@ -573,31 +560,31 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Decking and sheathing codes",
-        content: "When rotted or damaged decking is found during tear-off:\n\n• RFG SHTHN — Sheathing, plywood/OSB, 1/2\" CDX — used for replacing damaged decking. Measured in SF (square feet). Illustrative price: ~$2.18/SF\n• RFG RFLT30 — Roofing felt, 30# — underlayment that goes over new decking. Measured in SF. Illustrative price: ~$0.52/SF\n\nAlways measure the actual area of damaged decking. Count sheets if possible; a standard sheet is 4x8 (32 SF). Include photos showing the rotted wood with context of where it sits on the roof."
+        content: "When rotted or damaged decking is found during tear-off:\n\n• Sheathing (plywood/OSB) replacement: used for replacing damaged decking. Counted by area.\n• Felt underlayment: goes over new decking. Counted by area.\n\nAlways measure the actual area of damaged decking. Count sheets if possible; a standard sheet is 4x8 (32 SF). Include photos showing the rotted wood with context of where it sits on the roof."
       },
       {
         heading: "Flashing codes",
-        content: "For failed or corroded flashing:\n\n• RFG FLSH — Flashing, step/counter, aluminum — remove and replace. Measured in LF (linear feet). Illustrative price: ~$8.75/LF\n• RFG FLSHC — Flashing, counter/cap — remove and replace. Measured in LF. Illustrative price: ~$6.50/LF\n\nDocument the type of flashing (step, counter, valley), the material (aluminum, galvanized), and the location (chimney, wall, skylight). Photograph both the removed flashing and the area it was protecting."
+        content: "For failed or corroded flashing:\n\n• Step/counter flashing: remove and replace. Counted by length.\n• Counter/cap flashing: remove and replace. Counted by length.\n\nDocument the type of flashing (step, counter, valley), the material (aluminum, galvanized), and the location (chimney, wall, skylight). Photograph both the removed flashing and the area it was protecting."
       },
       {
         heading: "Ice and water shield codes",
-        content: "For missing or deteriorated ice and water membrane:\n\n• RFG I&WS — Ice & water shield membrane, install. Measured in SF. Illustrative price: ~$1.85/SF\n\nThis is one of the most common supplement items because many older roofs were installed without ice and water shield in areas where current building codes now require it (valleys, eaves, around penetrations). Always reference the applicable building code in your supplement narrative."
+        content: "For missing or deteriorated ice and water membrane:\n\n• Ice & water shield membrane: install. Counted by area.\n\nThis comes up as a supplement item because many older roofs were installed without ice and water shield in areas where current building codes now require it (valleys, eaves, around penetrations). Always reference the applicable building code in your supplement narrative."
       },
       {
         heading: "Vent and pipe boot codes",
-        content: "For damaged pipe boots and roof vents:\n\n• RFG VENT — Roof vent, pipe jack/boot, remove and replace. Measured in EA (each). Illustrative price: ~$85.00/EA\n\nPipe boots deteriorate over time and are often cracked or separated when discovered during tear-off. Document each pipe boot individually with photos."
+        content: "For damaged pipe boots and roof vents:\n\n• Roof vents and pipe jacks/boots: remove and replace. Counted individually. Vents and pipe boots can be separate items in a price list, so check which one applies.\n\nPipe boots deteriorate over time and are often cracked or separated when discovered during tear-off. Document each pipe boot individually with photos."
       },
       {
         heading: "Drip edge codes",
-        content: "For missing or damaged drip edge:\n\n• RFG DRIP — Drip edge, aluminum, remove and replace. Measured in LF (linear feet). Illustrative price: ~$4.25/LF\n\nDrip edge is required by many building codes (check your local code) and is a common supplement item when the original installation didn't include it or it has corroded."
+        content: "For missing or damaged drip edge:\n\n• Drip edge: remove and replace. Counted by length.\n\nDrip edge is required by many building codes (check your local code) and is a common supplement item when the original installation didn't include it or it has corroded."
       },
       {
         heading: "Additional layer removal codes",
-        content: "For roofs with multiple layers:\n\n• RFG TEAR — Remove additional layer of roofing. Measured in SQ (squares, 100 SF). Illustrative price: ~$45.00/SQ\n• RFG HAUL — Haul debris, additional roofing layer. Measured in SQ. Illustrative price: ~$22.50/SQ\n\nMultiple layers are only discovered during tear-off. Document the number of layers found and photograph the cross-section showing multiple layers of shingles."
+        content: "For roofs with multiple layers:\n\n• Removal of an additional layer of roofing: counted by roof area.\n• Hauling debris from an additional layer: counted by roof area.\n\nMultiple layers are only discovered during tear-off. Document the number of layers found and photograph the cross-section showing multiple layers of shingles."
       },
       {
         heading: "How to find the right code and unit",
-        content: "Codes only help if you pick the right one. In Xactimate, roofing items live in the roofing category, and each item has a description, a unit of measure and a unit price from the price list you are working in.\n\nFollow these habits every time:\n\n1. Search by what the item does: Look for the component and the action, such as remove and replace or install only.\n2. Read the full description: Two items can sound similar but differ in material, size or what is included.\n3. Match the unit: Square feet, linear feet, squares and each are not interchangeable. Your quantity has to use the unit the item uses.\n4. Check the price list: Confirm the price list name and date matches the location and time of the loss.\n\nThe code names and prices shown in this guide are shorthand examples. Always confirm the exact item and price in your own software or with the adjuster.",
+        content: "Codes only help if you pick the right one. In Xactimate, roofing items live in the roofing category, and each item has a description, a unit of measure and a unit price from the price list you are working in.\n\nFollow these habits every time:\n\n1. Search by what the item does: Look for the component and the action, such as remove and replace or install only.\n2. Read the full description: Two items can sound similar but differ in material, size or what is included.\n3. Match the unit: Square feet, linear feet, squares and each are not interchangeable. Your quantity has to use the unit the item uses.\n4. Check the price list: Confirm the price list name and date matches the location and time of the loss.\n\nThis guide does not list item codes or prices. Always confirm the exact item, code and price in your own software or with the adjuster.",
       },
       {
         heading: "Codes and items people forget",
@@ -605,7 +592,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Understanding unit prices and price lists",
-        content: "Unit prices in Xactimate come from regional price lists that are updated regularly. The same item can carry a different price in two nearby cities, and the price for the same city changes over time.\n\nThree practical rules:\n\n• Use the price list tied to the claim: The adjuster's estimate names it. Match it so your numbers can be compared line by line.\n• Do not mix price lists: Combining items from different lists confuses review.\n• Explain exceptions: If a job needs something the price list handles poorly, such as a hard access site, add a short note and a photo instead of silently changing a price.\n\nThe example prices in the table above are national-style averages and will not match your area. Treat them as a sanity check, not a quote.",
+        content: "Unit prices in Xactimate come from regional price lists that are updated regularly. The same item can carry a different price in two nearby cities, and the price for the same city changes over time.\n\nThree practical rules:\n\n• Use the price list tied to the claim: The adjuster's estimate names it. Match it so your numbers can be compared line by line.\n• Do not mix price lists: Combining items from different lists confuses review.\n• Explain exceptions: If a job needs something the price list handles poorly, such as a hard access site, add a short note and a photo instead of silently changing a price.",
       },
       {
         heading: "Pairing codes with the right proof",
@@ -613,7 +600,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "How Supplement Snap handles Xactimate codes",
-        content: "Supplement Snap suggests a matching Xactimate line code, with sub-items and a unit price, for each damage type your crew captures. When you export the Xactimate-style CSV, each capture produces suggested line items. The crew's quantity and an approximate price from a fixed table of illustrative figures are filled in only for the first item, and only when the unit your crew chose matches the unit of that price. Other rows are left blank for you to complete. Review every row against your own price list before you send.\n\nFor example, a 'Decking' capture suggests both the sheathing replacement line (RFG SHTHN) and the felt underlayment line (RFG RFLT30). A 'Multiple Layers' capture suggests both the tear-off line (RFG TEAR) and the haul debris line (RFG HAUL).\n\nThis saves your office staff from manually looking up codes and pricing, and helps keep items from being missed in the export.\n\nFor a complete walkthrough of building an Xactimate estimate, see our <a href='/blog/xactimate-roof-estimate-supplements'>Xactimate roof estimate guide</a>."
+        content: "Supplement Snap's Xactimate-style CSV is a starting list for your own review. For each damage type your crew captures, it lists suggested items. The item codes and unit prices in it come from a fixed table that has not been verified against Xactimate's price list, and the file has not been tested through an Xactimate import. A quantity and an approximate price are filled in only for the first item, and only when the unit your crew chose matches that item's unit; other rows are left blank for you to complete. Check every row against your own price list before you rely on it.\n\nThis can save your office staff some lookup time and helps keep items from being missed, but it does not replace entering the items and prices in Xactimate yourself.\n\nFor a complete walkthrough of building an Xactimate estimate, see our <a href='/blog/xactimate-roof-estimate-supplements'>Xactimate roof estimate guide</a>."
       },
     ],
   },
