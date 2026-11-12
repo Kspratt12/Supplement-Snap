@@ -13,6 +13,9 @@ import { jsPDF } from "jspdf"
 import { supabase } from "../../lib/supabase"
 import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { PhotoAnnotator } from "../dashboard/photo-annotator"
+import { SignedImg } from "../../lib/signed-img"
+import { signedPhotoUrl, openStoredFile } from "../../lib/photo-access"
+import { describeMissingPdfAssets, noMissingPdfAssets } from "../../lib/pdf-assets"
 import { ClaimsOverview, ClaimStatusSelect, StartHere } from "./claims-overview"
 import { normalizeClaimStatus, filterProjects, statusAfterSend, isFirstRun, isDemoProject, type ClaimStatus } from "../../lib/claim-status"
 import { hasCreatedProject, markProjectCreated } from "../../lib/guide-state"
@@ -210,6 +213,8 @@ function Home() {
   const [translated, setTranslated] = useState(false)
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
   const pendingDeletes = useRef<Record<string, ReturnType<typeof setTimeout>>>({})
+  // Pictures the report asked for and could not get, so a report is never quietly saved or sent without them
+  const pdfMissing = useRef(noMissingPdfAssets())
   const [undoCapture, setUndoCapture] = useState<Capture | null>(null)
   const demoCreatedFor = useRef<string | null>(null) // stops two concurrent loads both creating the demo project
 
@@ -1017,8 +1022,10 @@ function Home() {
     try {
       if (!url || url === "") return null
 
-      // Fetch as blob
-      const res = await fetch(url)
+      // Fetch as blob (through a short-lived link when the file is in our storage)
+      const link = await signedPhotoUrl(url, selectedProject?.id)
+      if (!link) return null
+      const res = await fetch(link)
       if (!res.ok) return null
       const blob = await res.blob()
 
@@ -1049,6 +1056,10 @@ function Home() {
   async function fetchImageDataUrl(url: string): Promise<string | null> {
     try {
       if (!url || url === "") return null
+      // The logo and diagram live in the same storage; use a short-lived link when the file is ours
+      const link = await signedPhotoUrl(url, selectedProject?.id)
+      if (!link) return null
+      url = link
 
       // Method 1: fetch as blob (works for same-origin and CORS-enabled)
       try {
@@ -1097,6 +1108,7 @@ function Home() {
 
   async function buildPdfDoc(includePhotos = true) {
     if (!selectedProject || captures.length === 0) return null
+    if (includePhotos) pdfMissing.current = noMissingPdfAssets()
 
     const doc = new jsPDF({ unit: "mm", format: "a4" })
     const pageWidth = doc.internal.pageSize.getWidth()
@@ -1146,6 +1158,7 @@ function Home() {
             logoImg.src = logoDataUrl
           })
         } else {
+          pdfMissing.current.logo = true
           doc.setTextColor(255, 255, 255)
           doc.setFontSize(10)
           doc.setFont("helvetica", "bold")
@@ -1273,7 +1286,7 @@ function Home() {
           try {
             // Use compressed fetcher to keep PDF memory under control
             const dataUrl = await fetchImageForPdf(url, 800)
-            if (!dataUrl) continue
+            if (!dataUrl) { pdfMissing.current.photos++; continue }
             const fmt = getImageFormat(dataUrl)
             const imgProps = doc.getImageProperties(dataUrl)
             const ratio = imgProps.height / imgProps.width
@@ -1411,6 +1424,7 @@ function Home() {
           doc.addImage(diagramDataUrl, fmt, margin, y, imgW, cappedH)
           y += cappedH + 4
         } else {
+          pdfMissing.current.diagram = true
           doc.setFontSize(8)
           doc.setFont("helvetica", "italic")
           doc.setTextColor(150, 150, 160)
@@ -1468,6 +1482,8 @@ function Home() {
     try {
       const doc = await buildPdfDoc()
       if (!doc) return
+      const missing = describeMissingPdfAssets(pdfMissing.current, "download")
+      if (missing) { showNotice(missing); return }
       const safeName = selectedProject.project_name.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, "-")
       doc.save(`${safeName}-Report.pdf`)
     } catch (err) {
@@ -1546,6 +1562,8 @@ function Home() {
       // Build PDF with photos for adjuster review
       const doc = await buildPdfDoc(true)
       if (!doc) throw new Error("Failed to generate PDF")
+      const missingAssets = describeMissingPdfAssets(pdfMissing.current, "email")
+      if (missingAssets) throw new Error(missingAssets)
 
       // Get base64 PDF content (strip the data:... prefix)
       let pdfBase64 = doc.output("datauristring").split(",")[1]
@@ -2404,7 +2422,7 @@ function Home() {
             <div className="flex items-center gap-2 pt-1">
               {selectedProject.diagram_url ? (
                 <div className="flex items-center gap-2">
-                  <a href={selectedProject.diagram_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-500">
+                  <a href={selectedProject.diagram_url} onClick={(e) => { e.preventDefault(); void openStoredFile(selectedProject.diagram_url as string, selectedProject.id).then((ok) => { if (!ok) showNotice("The diagram could not be opened. Try again in a moment.") }) }} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-500">
                     <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
@@ -2927,15 +2945,15 @@ function Home() {
                   <div className="mt-3 ml-9 flex gap-2 overflow-x-auto">
                     {urls.map((url, j) => (
                       <div key={j} className="relative flex-shrink-0 group">
-                        <img
+                        <SignedImg
+                          projectId={selectedProject?.id}
                           src={url}
                           alt={`Finding ${i + 1} photo ${j + 1}`}
-                          onError={(e) => { (e.currentTarget.parentElement as HTMLElement).style.display = "none" }}
                           className="h-24 w-auto rounded-lg border border-zinc-200 object-cover dark:border-zinc-700 cursor-pointer"
                           onClick={() => openViewer(urls, j)}
                         />
                         {!readOnly && <button
-                          onClick={() => { if (isFreeUser) { setShowUpgradeModal(true); return }; setAnnotateUrl(url); setAnnotateOpen(true) }}
+                          onClick={() => { if (isFreeUser) { setShowUpgradeModal(true); return }; void signedPhotoUrl(url, selectedProject?.id).then((link) => { if (!link) { showNotice("The photo could not be loaded, so it cannot be marked up right now. Try again in a moment."); return } setAnnotateUrl(link); setAnnotateOpen(true) }) }}
                           className="absolute bottom-1 right-1 rounded-md bg-black/60 px-1.5 py-2 text-[10px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           Annotate
@@ -3339,7 +3357,8 @@ function Home() {
                 }
                 return urls.length === 1 ? (
                   <div className="relative">
-                    <img
+                    <SignedImg
+                      projectId={selectedProject?.id}
                       src={urls[0]}
                       alt={`${c.damage_type} - ${c.roof_area}`}
                       className="w-full object-cover cursor-pointer"
@@ -3352,7 +3371,8 @@ function Home() {
                   <div className="grid grid-cols-3 gap-1 p-1">
                     {urls.map((url, i) => (
                       <div key={i} className="relative">
-                        <img
+                        <SignedImg
+                          projectId={selectedProject?.id}
                           src={url}
                           alt={`${c.damage_type} - ${c.roof_area} (${i + 1})`}
                           className="aspect-square w-full rounded-lg object-cover cursor-pointer"
@@ -3838,7 +3858,8 @@ function Home() {
               }
             }}
           >
-            <img
+            <SignedImg
+              projectId={selectedProject?.id}
               src={viewerPhotos[viewerIndex]}
               alt={`Photo ${viewerIndex + 1}`}
               className="max-h-full max-w-full object-contain select-none"
