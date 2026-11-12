@@ -1,4 +1,5 @@
--- PROPOSED. NOT RUN on the live database. Review it, then run it once in the Supabase SQL editor. Nothing here deletes data.
+-- LIVE STATE CONFIRMED (read-only catalog check, Supabase SQL editor, production, 2026-11-12): public.team_members has exactly two policies, both SELECT: team_members_member_read and team_members_owner_read (no INSERT/UPDATE/DELETE policy, so owners cannot write team rows directly); projects and captures keep owner ALL plus team-member SELECT-only policies. This matches the 'Check afterwards' result expected below. The previous line saying this file was NOT RUN was wrong about the live state.
+-- When and how this file was run is NOT recorded: no migration runner or history table exists. Only the resulting live definitions were checked.
 -- SupplementSnap migration v11 (FORWARD): owners can read their team list, but no longer write it directly.
 --
 -- This file changes the database in one direction only. It contains no undo statements. The undo is a separate file,

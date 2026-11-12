@@ -1,3 +1,5 @@
+-- LIVE STATE CONFIRMED (read-only catalog check, Supabase SQL editor, production, 2026-11-12): public.user_has_paid_access treats active, trialing and past_due subscriptions (own or via an active team owner) as paid.
+-- When and how this file was run is NOT recorded: no migration runner or history table exists. Only the resulting live definitions were checked.
 -- SupplementSnap Migration v8: keep access during a failed-payment retry window
 -- Run in Supabase Dashboard > SQL Editor AFTER v7. Safe to run more than once.
 --

@@ -1,3 +1,5 @@
+-- LIVE STATE CONFIRMED (read-only catalog check, Supabase SQL editor, production, 2026-11-12): triggers trg_free_project_limit (projects, BEFORE INSERT) and trg_free_capture_limit (captures, BEFORE INSERT) exist and call enforce_free_project_limit / enforce_free_capture_limit; the capture function limits free accounts to 3 captures per project. The project limit and paid-access function were later replaced (see v8, v9).
+-- When and how this file was run is NOT recorded: no migration runner or history table exists. Only the resulting live definitions were checked.
 -- SupplementSnap Migration v7: enforce Free plan limits in the database
 -- Run in Supabase Dashboard > SQL Editor AFTER v0 through v6.
 --
