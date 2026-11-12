@@ -145,16 +145,14 @@ export default function DashboardPage() {
       setReportCount(sc)
     }
 
-    // Check email opens (scoped to user)
+    // Email opens come from the server, which only answers on plans that include open tracking
     try {
-      const { count } = await supabase
-        .from("email_tracking")
-        .select("*", { count: "exact", head: true })
-        .eq("user_id", user!.id)
-        .gt("open_count", 0)
-      setEmailOpens(count || 0)
+      const res = await authFetch("/api/email-track/status?projectId=all")
+      const json = await res.json()
+      const records: Array<{ open_count?: number | null }> = Array.isArray(json?.records) ? json.records : []
+      setEmailOpens(records.filter((r) => (r.open_count || 0) > 0).length)
     } catch {
-      // email_tracking table may not exist yet
+      // no count shown if the server could not answer
     }
 
     setLoadingProjects(false)

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
-import { getUserId, getAuthenticatedUser } from "../../../../lib/auth-utils"
+import { getAuthenticatedUser } from "../../../../lib/auth-utils"
 import { getAccess, can, planUnavailable } from "../../../../lib/plan"
 
 const supabase = () => createClient(
@@ -35,8 +35,15 @@ export async function GET(request: Request) {
 // POST — create a tracking record when email is sent
 export async function POST(request: Request) {
   try {
-    const userId = await getUserId(request)
-    if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    const authed = await getAuthenticatedUser(request)
+    if (!authed) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    // Open tracking is a Team and Pro feature: a tracking record (and its pixel token) is only issued with the plan
+    const access = await getAccess(authed.id, authed.email)
+    if (access.unavailable) return planUnavailable()
+    if (!can.emailTracking(access)) {
+      return NextResponse.json({ error: "Email open tracking is available on the Team and Pro plans." }, { status: 403 })
+    }
+    const userId = authed.id
     const { projectId, recipientEmail, subject } = await request.json()
 
     const { data, error } = await supabase()
