@@ -1,0 +1,33 @@
+-- NOT APPLIED. Do not run on the live database until the owner has explicitly approved this exact step, and not before the
+-- release that adds /api/photo-urls (signed links) is deployed and checked. This file is the proposed record of the step.
+--
+-- Live state verified read-only on 2026-11-12 (Supabase SQL editor, project "Supplement Snap", PRODUCTION):
+--   storage.buckets: one bucket, test-uploads, public = true, file_size_limit 15728640, allowed types jpeg/png/webp/heic/heif/pdf.
+--   storage.objects policies (all for role authenticated, none for anon): test_uploads_insert (INSERT, bucket check only),
+--   test_uploads_select_own / test_uploads_update_own / test_uploads_delete_own (owner_id = auth.uid()).
+--   These match supabase-migration-v10-storage-and-function-hardening.sql, so no policy change is needed.
+--
+-- WHAT THIS CHANGES
+-- Files in test-uploads stop being readable from their plain address (".../object/public/test-uploads/<name>") by anyone.
+-- They are then readable only through a short-lived signed link, which /api/photo-urls issues after checking that the person
+-- may already see the project the file belongs to (owner, or an active team member, using the existing row rules).
+-- Uploading, deleting and the saved addresses in the database are unaffected (the saved address still names the file).
+--
+-- WHAT THIS CANNOT UNDO
+-- Anyone who already holds a copy of a photo, an emailed or downloaded PDF (it contains the picture itself), or a saved page keeps it.
+-- Plain addresses that were shared or cached stop working after this runs; that is the intended effect, and it also stops any
+-- legitimate use of such an address outside the app.
+--
+-- ORDER (see the release handoff): 1) deploy the code, 2) check signed links work with the bucket still public, 3) run the
+-- statement below, 4) run the acceptance checks, 5) only then change the privacy wording.
+--
+-- Pre-check (read-only): select id, public from storage.buckets where id = 'test-uploads';   -- expect public = true
+
+update storage.buckets set public = false where id = 'test-uploads';
+
+-- Post-check (read-only): select id, public from storage.buckets where id = 'test-uploads';   -- expect public = false
+--
+-- IF SOMETHING GOES WRONG AFTER THIS RUNS
+-- Do NOT set public = true again as a reflex: that restores the exposure for every file. Fix forward in the app first
+-- (signed links are independent of the bucket flag). Restoring public access needs the owner's explicit approval, and is
+-- done with:   update storage.buckets set public = true where id = 'test-uploads';

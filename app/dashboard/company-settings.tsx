@@ -3,10 +3,13 @@
 import { useState, useEffect, useRef } from "react"
 import { authFetch } from "../../lib/auth-fetch"
 import { supabase } from "../../lib/supabase"
+import { SignedImg } from "../../lib/signed-img"
 
 export function CompanySettings({ userId }: { userId: string }) {
   const [companyName, setCompanyName] = useState("")
   const [logoUrl, setLogoUrl] = useState("")
+  // A just-uploaded logo is not on the saved settings yet, so it is shown from the chosen file until the page is reloaded
+  const [localLogoPreview, setLocalLogoPreview] = useState("")
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [saveError, setSaveError] = useState("")
@@ -65,6 +68,7 @@ export function CompanySettings({ userId }: { userId: string }) {
     if (!error) {
       const { data } = supabase.storage.from("test-uploads").getPublicUrl(filename)
       setLogoUrl(data.publicUrl)
+      setLocalLogoPreview((prev) => { if (prev) URL.revokeObjectURL(prev); return URL.createObjectURL(file) })
       editsRef.current++
       setSaved(false)
       setSaveError("")
@@ -84,7 +88,10 @@ export function CompanySettings({ userId }: { userId: string }) {
           <div className="mt-1.5 flex items-center gap-3">
             {logoUrl ? (
               <div className="h-12 w-12 rounded-lg border border-zinc-200 overflow-hidden bg-white flex items-center justify-center">
-                <img src={logoUrl} alt="Logo" className="h-full w-full object-contain" />
+                {localLogoPreview
+                  // eslint-disable-next-line @next/next/no-img-element
+                  ? <img src={localLogoPreview} alt="Logo" className="h-full w-full object-contain" />
+                  : <SignedImg src={logoUrl} alt="Logo" className="h-full w-full object-contain" />}
               </div>
             ) : (
               <div className="h-12 w-12 rounded-lg border border-dashed border-zinc-300 bg-zinc-50 flex items-center justify-center">
