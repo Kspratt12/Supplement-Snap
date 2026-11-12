@@ -1,3 +1,5 @@
+-- LIVE STATE CONFIRMED (read-only catalog check, Supabase SQL editor, production, 2026-11-12): public.enforce_free_project_limit raises its error at 2 projects (the demo plus one of the user's own).
+-- When and how this file was run is NOT recorded: no migration runner or history table exists. Only the resulting live definitions were checked.
 -- SupplementSnap Migration v9: let a free account start one real project
 -- Run in Supabase Dashboard > SQL Editor AFTER v8. Safe to run more than once.
 --
