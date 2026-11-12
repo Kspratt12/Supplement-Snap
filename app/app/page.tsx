@@ -24,6 +24,7 @@ import { ensureSpace, drawLabeledText, drawSectionLabel } from "../../lib/pdf-la
 import { extractAllExifData, type PhotoMetadata } from "../../lib/exif-utils"
 import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang, fetchAccountSpeechLang } from "../../lib/speech-langs"
 import { uploadPhotosWithRetry, cleanupOrphanedUploads } from "../../lib/upload-utils"
+import { trackEvent } from "../../lib/analytics"
 import { OfflineSyncBanner } from "./offline-sync-banner"
 import {
   queueCapture,
@@ -692,6 +693,7 @@ function Home() {
 
     if (!error && data) {
       if (user) markProjectCreated(user.id)
+      trackEvent("project_created")
       setProjects((prev) => [data, ...prev])
       setSelectedProjectId(data.id)
       setNewProjectName("")
@@ -1486,6 +1488,7 @@ function Home() {
       if (missing) { showNotice(missing); return }
       const safeName = selectedProject.project_name.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, "-")
       doc.save(`${safeName}-Report.pdf`)
+      trackEvent("pdf_downloaded")
     } catch (err) {
       console.error("PDF generation failed:", err)
     } finally {
