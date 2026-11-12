@@ -1,54 +1,53 @@
 /**
  * Builds the Xactimate-style CSV starting list.
  *
- * The codes and unit prices below are a fixed table of illustrative figures with no documented source. They have not been checked
- * against any contractor's Xactimate price list and the file has not been tested through an Xactimate import, so every
- * row needs the contractor's review.
+ * The earlier version of this file suggested item codes and unit prices from a fixed table. Neither the codes nor the prices
+ * could be verified against Xactimate's own price list, so they are no longer suggested: those cells are left blank for the
+ * contractor to fill from their own price list. Descriptions are general, and the crew's own quantity, unit, roof area and notes
+ * are carried over unchanged. The file has not been tested through an Xactimate import.
  *
- * A dollar amount is only calculated when the crew's quantity is in the same unit the table price is for. Otherwise the
- * price and total are left blank, because multiplying a quantity in one unit by a price for another gives a wrong number.
+ * A price or total is never calculated and a missing value is never turned into 0.
  */
 
-export type PriceItem = { code: string; description: string; unit: string; unitPrice: number | null }
+export type SuggestedItem = { description: string; unit: string }
 
-export const XACTIMATE_CODES: Record<string, { items: PriceItem[] }> = {
+export const SUGGESTED_ITEMS: Record<string, { items: SuggestedItem[] }> = {
   "Decking": {
     items: [
-      { code: "RFG SHTHN", description: "Sheathing - plywood/OSB - 1/2\" CDX", unit: "SF", unitPrice: 2.18 },
-      { code: "RFG RFLT30", description: "Roofing felt - 30# - install only", unit: "SF", unitPrice: 0.52 },
+      { description: "Sheathing - plywood/OSB", unit: "SF" },
+      { description: "Roofing felt (underlayment)", unit: "SF" },
     ],
   },
   "Flashing": {
     items: [
-      { code: "RFG FLSH", description: "Flashing - step/counter - aluminum", unit: "LF", unitPrice: 8.75 },
-      { code: "RFG FLSHC", description: "Flashing - counter/cap - remove & replace", unit: "LF", unitPrice: 6.50 },
+      { description: "Flashing - step/counter", unit: "LF" },
+      { description: "Flashing - counter/cap", unit: "LF" },
     ],
   },
   "Vent / Pipe Boot": {
     items: [
-      { code: "RFG VENT", description: "Roof vent - pipe jack/boot - remove & replace", unit: "EA", unitPrice: 85.00 },
+      { description: "Roof vent / pipe jack (boot)", unit: "EA" },
     ],
   },
   "Drip Edge": {
     items: [
-      { code: "RFG DRIP", description: "Drip edge - aluminum - remove & replace", unit: "LF", unitPrice: 4.25 },
+      { description: "Drip edge", unit: "LF" },
     ],
   },
   "Ice & Water": {
     items: [
-      { code: "RFG I&WS", description: "Ice & water shield membrane - install", unit: "SF", unitPrice: 1.85 },
+      { description: "Ice & water shield membrane", unit: "SF" },
     ],
   },
   "Multiple Layers": {
     items: [
-      { code: "RFG TEAR", description: "Remove additional layer of roofing", unit: "SQ", unitPrice: 45.00 },
-      { code: "RFG HAUL", description: "Haul debris - additional roofing layer", unit: "SQ", unitPrice: 22.50 },
+      { description: "Remove additional layer of roofing", unit: "SQ" },
+      { description: "Haul debris - additional roofing layer", unit: "SQ" },
     ],
   },
   "Other": {
-    // No suggested price: the contractor enters their own
     items: [
-      { code: "RFG MISC", description: "Roofing - miscellaneous supplement item", unit: "EA", unitPrice: null },
+      { description: "Roofing - other supplement item", unit: "EA" },
     ],
   },
 }
@@ -69,7 +68,7 @@ export const CSV_HEADERS = [
 ]
 
 export const CSV_REVIEW_NOTE =
-  "NOTE: Suggested item codes and unit prices are a starting list only. They come from a fixed table of illustrative prices that is not from a documented Xactimate price source and has not been checked against your Xactimate price list. Review every row and price it yourself. A blank price or total means one could not be worked out safely."
+  "NOTE: This is a starting list only. Item codes and unit prices are intentionally left blank because they have not been verified against Xactimate's price list: enter them from your own price list. The Category value (RFG) is also unverified, as are the descriptions, which are general suggestions. Review every row before you use it. This file has not been tested through an Xactimate import."
 
 export type ExportCapture = {
   damage_type?: string | null
@@ -88,7 +87,7 @@ export function buildXactimateCsv(input: { projectName?: string | null; property
 
   for (const capture of input.captures) {
     if (!capture || typeof capture !== "object") continue
-    const mapping = XACTIMATE_CODES[capture.damage_type || ""] || XACTIMATE_CODES["Other"]
+    const mapping = SUGGESTED_ITEMS[capture.damage_type || ""] || SUGGESTED_ITEMS["Other"]
     const qtyNumber = Number(capture.quantity)
     const hasQty = capture.quantity !== null && capture.quantity !== undefined && capture.quantity !== "" && Number.isFinite(qtyNumber) && qtyNumber > 0
     const enteredUnit = (capture.unit || "").trim().toUpperCase()
@@ -99,38 +98,27 @@ export function buildXactimateCsv(input: { projectName?: string | null; property
       const description = text(`${item.description}${roofArea ? ` - ${roofArea}` : ""}`)
       let quantity = ""
       let unit = item.unit
-      let unitPrice = ""
-      let total = ""
-      let review = "Review the code and price before use."
+      let review = "Enter the item code and unit price from your own price list."
 
       if (index > 0) {
         // The crew counted the finding once. It is not safe to say the same quantity applies to every related item.
-        review = "Related item that may also apply to this finding. Enter your own quantity and price."
+        review = "Related item that may also apply to this finding. Enter your own quantity, item code and price."
       } else {
         quantity = hasQty ? String(qtyNumber) : ""
         unit = enteredUnit
-        if (!hasQty) {
-          review = "No usable quantity was entered, so no price or total was calculated."
-        } else if (!enteredUnit) {
-          review = "No unit was selected, so no price or total was calculated."
-        } else if (enteredUnit !== item.unit) {
-          review = `Quantity is in ${enteredUnit} but the suggested price is per ${item.unit}, so no price or total was calculated.`
-        } else if (item.unitPrice === null) {
-          review = "No suggested price for this item. Enter your own price."
-        } else {
-          unitPrice = item.unitPrice.toFixed(2)
-          total = (Math.round(qtyNumber * item.unitPrice * 100) / 100).toFixed(2)
-        }
+        if (!hasQty) review = "No usable quantity was entered. Enter the quantity, item code and unit price."
+        else if (!enteredUnit) review = "No unit was selected. Enter the unit, item code and unit price."
+        else if (qtyNumber === 1) review = "Quantity is 1, which is also the app's default: confirm it was measured. Enter the item code and unit price from your own price list."
       }
 
       rows.push([
         "RFG",
-        item.code,
+        "",
         description,
         quantity,
         unit,
-        unitPrice,
-        total,
+        "",
+        "",
         text(roofArea),
         note,
         project,

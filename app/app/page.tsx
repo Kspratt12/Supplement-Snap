@@ -1510,7 +1510,7 @@ function Home() {
             damage_type: c.damage_type,
             roof_area: c.roof_area,
             field_note: c.field_note,
-            quantity: c.quantity || 1,
+            quantity: c.quantity ?? null,
             unit: c.unit || "",
           })),
         }),
@@ -2891,6 +2891,9 @@ function Home() {
                 Xactimate-style CSV
               </button>
             </div>
+            <p className="mt-1.5 max-w-xs text-[11px] leading-snug text-zinc-500" data-testid="csv-note">
+              A starting list: item codes and prices are left blank, and the Category value (RFG) is unverified. Complete and check them against your own price list. Not tested for Xactimate import.
+            </p>
           </div>
 
           {/* Findings */}
