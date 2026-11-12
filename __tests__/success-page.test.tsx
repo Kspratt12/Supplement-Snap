@@ -84,6 +84,9 @@ describe("/success page messaging", () => {
   it("an active plan says the plan is active and records the analytics event once", async () => {
     open()
     expect(await screen.findByText("Your plan is active.")).toBeTruthy()
+    await waitFor(() => expect(h.events).toEqual(["subscription_active"]))
+    // and still exactly once after a short settle (the event is sent from an effect, a moment after the text appears)
+    await act(async () => { await new Promise((r) => setTimeout(r, 50)) })
     expect(h.events).toEqual(["subscription_active"])
   })
 
@@ -92,6 +95,9 @@ describe("/success page messaging", () => {
     open()
     expect(await screen.findByText("Your free trial is active.")).toBeTruthy()
     expect(page()).not.toMatch(/payment/i)
+    await waitFor(() => expect(h.events).toEqual(["subscription_active"]))
+    // and still exactly once after a short settle (the event is sent from an effect, a moment after the text appears)
+    await act(async () => { await new Promise((r) => setTimeout(r, 50)) })
     expect(h.events).toEqual(["subscription_active"])
   })
 
@@ -119,6 +125,9 @@ describe("/success page messaging", () => {
     fireEvent.click(screen.getByRole("button", { name: "Check again" }))
     expect(await screen.findByText("Your plan is active.")).toBeTruthy()
     expect(page()).not.toMatch(/couldn't check/)
+    await waitFor(() => expect(h.events).toEqual(["subscription_active"]))
+    // and still exactly once after a short settle (the event is sent from an effect, a moment after the text appears)
+    await act(async () => { await new Promise((r) => setTimeout(r, 50)) })
     expect(h.events).toEqual(["subscription_active"])
   })
 
