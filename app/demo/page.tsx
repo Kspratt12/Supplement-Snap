@@ -1,33 +1,6 @@
-"use client"
-
 import Link from "next/link"
-import { useEffect } from "react"
-
-const CALENDLY_URL = "https://calendly.com/kelvin-sprattenterprise/30min"
 
 export default function DemoPage() {
-  useEffect(() => {
-    // The Calendly widget is ~3 MB. Load it on first interaction (or after 3s)
-    // so it does not compete with the page's own first paint.
-    let script: HTMLScriptElement | null = null
-    const events = ["pointerdown", "scroll", "keydown", "touchstart"] as const
-    const load = () => {
-      if (script) return
-      events.forEach((e) => window.removeEventListener(e, load))
-      script = document.createElement("script")
-      script.src = "https://assets.calendly.com/assets/external/widget.js"
-      script.async = true
-      document.body.appendChild(script)
-    }
-    events.forEach((e) => window.addEventListener(e, load, { passive: true, once: true }))
-    const timer = window.setTimeout(load, 3000)
-    return () => {
-      window.clearTimeout(timer)
-      events.forEach((e) => window.removeEventListener(e, load))
-      if (script && script.parentNode) script.parentNode.removeChild(script)
-    }
-  }, [])
-
   return (
     <div className="min-h-screen bg-zinc-50">
       {/* Nav */}
@@ -49,12 +22,12 @@ export default function DemoPage() {
       <main className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
         {/* Hero */}
         <div className="mb-10 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Free 15-Minute Walkthrough</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">Explore on your own</p>
           <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl">
             See Supplement Snap in Action
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-500">
-            Pick a time below. I&apos;ll screen share and walk you through how your crew captures hidden damage and sends adjuster-ready reports, all from the field.
+            No call needed. Try the interactive demo, read a sample report, or start a free project and see how your crew captures hidden damage and builds adjuster-ready reports from the field.
           </p>
         </div>
 
@@ -69,7 +42,7 @@ export default function DemoPage() {
                   "Voice notes auto-transcribed (works in Spanish)",
                   "AI generates professional supplement narrative",
                   "PDF report emailed to adjuster in one click",
-                  "Xactimate-style CSV export of suggested line items",
+                  "Xactimate-style CSV starting list (item codes and prices are left for you to enter)",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2">
                     <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -82,10 +55,8 @@ export default function DemoPage() {
             </div>
 
             <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
-              <h2 className="text-sm font-semibold text-zinc-900">No pitch, just a demo</h2>
-              <p className="mt-2 text-xs leading-relaxed text-zinc-500">
-                This is a 15-minute screen share where I walk you through the tool on a real project. You&apos;ll see exactly how it works and can ask questions. No pressure, no sales pitch.
-              </p>
+              <h2 className="text-sm font-semibold text-zinc-900">Try it at your own pace</h2>
+              <p className="mt-2 text-xs leading-relaxed text-zinc-500">The interactive demo walks through a job in four steps. The sample report shows what an adjuster receives. A free project lets you try your own photos and notes: the free plan covers the demo project plus one project of your own, and PDF download and email are on paid plans.</p>
             </div>
 
             <div className="rounded-xl border border-green-200 bg-green-50 p-5">
@@ -94,14 +65,21 @@ export default function DemoPage() {
             </div>
           </div>
 
-          {/* Right: Calendly embed */}
+          {/* Right: self-service ways to see the product */}
           <div className="lg:col-span-2">
-            <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
-              <div
-                className="calendly-inline-widget"
-                data-url={`${CALENDLY_URL}?hide_gdpr_banner=1&background_color=ffffff&text_color=27272a&primary_color=4f46e5`}
-                style={{ minWidth: "320px", height: "660px" }}
-              />
+            <div className="space-y-3">
+              <Link href="/#see-it-in-action" className="block rounded-xl border border-zinc-200 bg-white p-5 shadow-sm hover:border-indigo-300">
+                <p className="text-sm font-semibold text-zinc-900">Interactive demo</p>
+                <p className="mt-1 text-sm text-zinc-600">From roof to report in four steps, on the homepage.</p>
+              </Link>
+              <Link href="/roofing-supplement-report-example" className="block rounded-xl border border-zinc-200 bg-white p-5 shadow-sm hover:border-indigo-300">
+                <p className="text-sm font-semibold text-zinc-900">Sample report</p>
+                <p className="mt-1 text-sm text-zinc-600">See what the finished supplement documentation looks like.</p>
+              </Link>
+              <Link href="/signup?trial=1" className="block rounded-xl bg-indigo-600 p-5 shadow-sm hover:bg-indigo-500">
+                <p className="text-sm font-semibold text-white">Start a free project</p>
+                <p className="mt-1 text-sm text-indigo-100">Demo project plus one project of your own. No card needed.</p>
+              </Link>
             </div>
           </div>
         </div>

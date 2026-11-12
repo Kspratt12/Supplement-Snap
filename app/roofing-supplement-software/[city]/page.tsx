@@ -241,7 +241,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             Ready to recover more supplement revenue in {city.name}?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
-            Book a free 15-minute walkthrough. I&apos;ll screen share and show you how Supplement Snap works on a real project. No pitch, just a demo.
+            See a sample report, or start a free project and try it on a real job. The free plan covers the demo project plus one project of your own.
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link href="/roofing-supplement-report-example" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
