@@ -110,7 +110,7 @@ export default function SuccessPage() {
               <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-6">
                 <p className="text-sm font-semibold text-zinc-700">Your account</p>
                 <p className="mt-1 text-sm text-zinc-500">
-                  Start capturing damage and generating reports. Need a walkthrough? Book a free onboarding call.
+                  Start capturing damage and generating reports. Questions getting started? Email support@supplementsnap.io.
                 </p>
               </div>
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
