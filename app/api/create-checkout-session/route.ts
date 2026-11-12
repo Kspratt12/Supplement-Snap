@@ -48,7 +48,7 @@ export async function POST(request: Request) {
       if (access.unavailable) return planUnavailable()
       if (access.active && !access.viaOwner) {
         return NextResponse.json(
-          { error: "You already have an active plan. Use Manage billing on your account page to change or cancel it, so you are not billed twice." },
+          { error: "You already have an active plan, so a second one can't be started. Plan changes aren't available through the billing portal yet. Email support@supplementsnap.io from your account email to request a change. We'll confirm the available options and any billing impact before making changes. Use Manage billing to update your card, view invoices or cancel." },
           { status: 409 }
         )
       }
