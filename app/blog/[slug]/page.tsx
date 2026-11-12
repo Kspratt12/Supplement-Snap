@@ -8858,8 +8858,8 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
             Supplement Snap helps your crew capture hidden damage during tear-off and generate adjuster-ready reports in minutes.
           </p>
           <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <TrackedLink location="article-bottom-start-trial" href="/pricing" className="rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500">
-              Start Free Trial
+            <TrackedLink location="article-bottom-start-trial" href="/signup?trial=1" className="rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500">
+              Start a free project
             </TrackedLink>
             <TrackedLink location="article-bottom-pricing" href="/pricing" className="rounded-lg border border-zinc-300 bg-white px-6 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
               See Pricing
