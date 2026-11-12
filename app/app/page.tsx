@@ -2888,6 +2888,9 @@ function Home() {
                 Xactimate-style CSV
               </button>
             </div>
+            <p className="mt-1.5 max-w-xs text-[11px] leading-snug text-zinc-500" data-testid="csv-note">
+              A starting list: item codes and prices are left blank. Complete them from your own price list. Not tested for Xactimate import.
+            </p>
           </div>
 
           {/* Findings */}
