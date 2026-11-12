@@ -1,4 +1,10 @@
+import type { Metadata } from "next"
 import Link from "next/link"
+
+// Without this the 404 page inherited the home page title. Next.js already sends noindex for this page.
+export const metadata: Metadata = {
+  title: "Page not found | Supplement Snap",
+}
 
 export default function NotFound() {
   return (
