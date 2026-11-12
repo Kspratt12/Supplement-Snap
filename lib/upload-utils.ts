@@ -31,7 +31,7 @@ export async function uploadPhotosWithRetry(
     let uploaded = false
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
-      // An unpredictable name: the photo address is public, so it must not be guessable
+      // An unpredictable name: the bucket is private, but the name stays unpredictable as defence in depth
       const fileName = `${Date.now()}-${crypto.randomUUID()}-photo-${i}.jpg`
 
       try {

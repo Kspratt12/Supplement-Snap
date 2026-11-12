@@ -7259,7 +7259,7 @@ const ARTICLES: Article[] = [
         headers: ["How Supplement Snap answers (see our privacy policy)"],
         rows: [
           { feature: "Where data is stored", values: ["Account data and projects in Supabase, a managed database; uploaded images in Supabase Storage"] },
-          { feature: "Who can read it", values: ["Project records: only the signed-in account that owns them, and team members the owner invites. We tested that a visitor with no login can read none of the tables. Photos: each file has a long, hard-to-guess web address, and anyone who has the exact link can open it, so do not post report photo links publicly."] },
+          { feature: "Who can read it", values: ["Project records: only the signed-in account that owns them, and team members the owner invites. We tested that a visitor with no login can read none of the tables. Photos: stored in private storage with no public web address. The app issues a temporary link (about one hour) only to signed-in people allowed to see that project. Until it expires, anyone holding an active link can open it, so do not post report photo links publicly."] },
           { feature: "AI drafting", values: ["The drafting step sends the written notes and details to an AI service (Anthropic). Photos are not part of that request as the app is built today."] },
           { feature: "Payments", values: ["Handled by Stripe. We do not store card numbers."] },
           { feature: "Deleting your account", values: ["Deletion is by request, not automatic: email privacy@supplementsnap.io. Per our privacy policy we then delete your account information, project records and photos from our own systems and cancel any subscription, aiming to finish within 30 days. Copies held by our providers, such as backups, follow their own schedules."] },
@@ -7279,7 +7279,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Where it is stored and who can see it",
-        content: "Ask: where is the data stored, and who inside the company can access it? Ask how accounts are separated from each other. For us, project records live in Supabase and are tied to your login, and we tested that a person with no login cannot read the tables. Photos are different: they are stored as files with long, hard-to-guess web addresses, and anyone who has the exact address can open the photo without logging in. That is a common design, but you should know it. We cannot claim a system is impossible to breach, and no honest vendor can.",
+        content: "Ask: where is the data stored, and who inside the company can access it? Ask how accounts are separated from each other. For us, project records live in Supabase and are tied to your login, and we tested that a person with no login cannot read the tables. Photos are stored as files in private storage, with no public web address. When a signed-in person who is allowed to see a project opens it, the app issues a temporary link that works for about one hour. Anyone who is given an active link can open it until it expires, and we cannot recall copies someone has already saved, so you should know that. We cannot claim a system is impossible to breach, and no honest vendor can.",
       },
       {
         heading: "AI and your information",
