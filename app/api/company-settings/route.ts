@@ -15,6 +15,13 @@ export async function GET(request: Request) {
   const userId = await getUserId(request, paramUserId)
   if (!userId) return NextResponse.json({ settings: null })
 
+  // Custom branding is a Pro feature. A saved row is only used while the account has the plan, so a row that was written
+  // earlier (or written around the plan check) does not put a logo or company name on anyone's reports.
+  const authed = await getAuthenticatedUser(request)
+  const access = authed ? await getAccess(authed.id, authed.email) : null
+  if (access?.unavailable) return planUnavailable()
+  if (!authed || !access || !can.customBranding(access)) return NextResponse.json({ settings: null, locked: true })
+
   const { data } = await supabase()
     .from("company_settings")
     .select("*")
