@@ -8,11 +8,11 @@ import { CheckoutButton } from "./pricing/checkout-button"
 
 export const metadata: Metadata = {
   title: "Roofing Supplement Software for Documenting Tear-Off Damage",
-  description: "Capture tear-off photos, notes and hidden damage on any phone, draft supplement language, and email an adjuster-ready PDF report. Start your first project free.",
+  description: "Capture tear-off photos, notes and hidden damage on any phone and draft supplement language. Try one project free; PDF reports and email are on paid plans.",
   alternates: { canonical: "https://supplementsnap.io" },
   openGraph: {
     title: "Roofing Supplement Software for Documenting Tear-Off Damage",
-    description: "Capture tear-off photos, notes and hidden damage on any phone, draft supplement language, and email an adjuster-ready PDF report. Start your first project free.",
+    description: "Capture tear-off photos, notes and hidden damage on any phone and draft supplement language. Try one project free; PDF reports and email are on paid plans.",
     siteName: "Supplement Snap",
     type: "website",
     locale: "en_US",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Roofing Supplement Software for Documenting Tear-Off Damage",
-    description: "Capture tear-off photos, notes and hidden damage on any phone, draft supplement language, and email an adjuster-ready PDF report. Start your first project free.",
+    description: "Capture tear-off photos, notes and hidden damage on any phone and draft supplement language. Try one project free; PDF reports and email are on paid plans.",
   },
 }
 
