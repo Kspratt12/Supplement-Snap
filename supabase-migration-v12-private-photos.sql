@@ -1,5 +1,8 @@
--- NOT APPLIED. Do not run on the live database until the owner has explicitly approved this exact step, and not before the
--- release that adds /api/photo-urls (signed links) is deployed and checked. This file is the proposed record of the step.
+-- APPLIED MANUALLY on 2026-11-12 (owner-approved): the single statement below was run once in the Supabase SQL Editor
+-- (project "Supplement Snap", PRODUCTION). No migration runner or migration-history table recorded it; this file is the record.
+-- Result shown: "Success. No rows returned." Afterwards the old public address answered "Bucket not found" and signed links
+-- worked in the app (photo display and PDF generation). It is safe to run again (it only sets the flag), but it is not needed.
+-- Public access is not restored automatically as a rollback. The comments below describe the state BEFORE the change.
 --
 -- Live state verified read-only on 2026-11-12 (Supabase SQL editor, project "Supplement Snap", PRODUCTION):
 --   storage.buckets: one bucket, test-uploads, public = true, file_size_limit 15728640, allowed types jpeg/png/webp/heic/heif/pdf.
