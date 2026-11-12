@@ -2135,7 +2135,7 @@ function Home() {
             S
           </div>
           <div>
-            <h1 className="whitespace-nowrap text-lg font-bold tracking-tight sm:text-2xl">Supplement Snap</h1>
+            <h1 className="whitespace-nowrap text-base font-bold tracking-tight sm:text-2xl">Supplement Snap</h1>
             <p className="hidden text-sm text-zinc-500 sm:block">
               Capture roof damage during tear-off and generate supplement drafts
             </p>
@@ -2144,7 +2144,7 @@ function Home() {
         <div className="flex flex-none items-center gap-2 whitespace-nowrap sm:gap-3">
           <Link
             href="/dashboard"
-            className="inline-flex min-h-10 items-center px-1 text-xs font-medium text-zinc-600 hover:text-zinc-800"
+            className="hidden min-h-10 items-center px-1 text-xs font-medium text-zinc-600 hover:text-zinc-800 sm:inline-flex"
           >
             Dashboard
           </Link>
