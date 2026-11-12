@@ -1274,7 +1274,7 @@ const ARTICLES: Article[] = [
       ]}},
       10: { type: "tip", data: { type: "info", title: "Verify before you buy", text: "Features, plans and prices change often, and any comparison page, including this one, can be out of date. We left prices and feature checklists out on purpose, because we cannot confirm them for you. Check each vendor's site and run a trial." } },
     },
-    related: ["best-roof-estimating-software", "roofing-software-comparison", "best-roofing-supplement-software", "companycam-alternative-roofing-supplements"],
+    related: ["best-roof-estimating-software", "roofing-software-comparison", "supplement-snap-vs-acculynx-supplements", "best-roofing-supplement-software"],
     faq: [
       { q: "What is the best CRM for a roofing company?", a: "There is no single best one. JobNimbus is often chosen for simple setup, AccuLynx for a broader business platform, Roofr for small residential crews that want measurements and proposals together, and ServiceTitan by larger operations. Pick by your crew size and how you sell, then trial one real job." },
       { q: "What is the best affordable CRM for a solo roofing business?", a: "A solo roofer often does best with the lightest tool that tracks leads and sends proposals, either a roofing tool with a small plan or a general CRM. Compare current plan prices, check for free tiers or trials, and avoid paying for features you will not use in your first year." },
@@ -2232,7 +2232,7 @@ const ARTICLES: Article[] = [
     metaDescription: "Five CompanyCam alternatives for roofers compared: Manifold, LibreCam, Roof Report Pro, Supplement Snap and your CRM's photos. What each does and costs as listed.",
     publishedDate: "2026-10-22",
     updatedDate: "2026-10-26",
-    related: ["best-app-to-document-roof-damage-for-insurance", "best-roofing-supplement-software", "roofing-photo-documentation-checklist", "roofing-software-comparison", "best-roofing-crm"],
+    related: ["best-app-to-document-roof-damage-for-insurance", "best-roofing-supplement-software", "supplement-snap-vs-roof-report-pro", "roofing-photo-documentation-checklist", "roofing-software-comparison", "best-roofing-crm"],
     externalLinks: [
       { text: "CompanyCam pricing (public page)", url: "https://www.companycam.com/pricing" },
       { text: "Manifold for roofing contractors", url: "https://www.scanmanifold.com/roofing-contractors" },
@@ -3642,7 +3642,7 @@ const ARTICLES: Article[] = [
         a: "No. Approval depends on the claim, the policy and the carrier, not on who prepares the package.",
       },
     ],
-    related: ["can-a-roofer-talk-to-the-insurance-company", "supplemental-roofing-estimate-explained", "roofing-supplement-follow-up-log", "xactimate-roofing-software-explained", "how-roofing-contractors-work-insurance-claims", "roofing-supplement-software-cost", "ai-roofing-supplement-tools-compared", "roofing-supplement-software-for-small-roofing-companies"],
+    related: ["supplement-snap-vs-acculynx-supplements", "supplement-snap-vs-roof-report-pro", "supplemental-roofing-estimate-explained", "roofing-supplement-follow-up-log", "can-a-roofer-talk-to-the-insurance-company", "xactimate-roofing-software-explained", "how-roofing-contractors-work-insurance-claims", "roofing-supplement-software-cost", "ai-roofing-supplement-tools-compared", "roofing-supplement-software-for-small-roofing-companies"],
   },
   {
     slug: "best-roofing-supplement-software",
