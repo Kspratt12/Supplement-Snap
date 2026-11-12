@@ -301,7 +301,7 @@ export default function LandingPage() {
       </section>
 
       {/* Interactive Walkthrough */}
-      <section className="mx-auto max-w-3xl px-6 pb-20">
+      <section id="see-it-in-action" className="mx-auto max-w-3xl px-6 pb-20">
         <div className="mb-8 text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-indigo-600">See It In Action</p>
           <h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
@@ -853,7 +853,7 @@ export default function LandingPage() {
               </div>
               <p className="mt-1 text-sm text-zinc-500">14-day free trial, card required, cancel anytime</p>
               <div className="mt-5 flex-1 space-y-2.5">
-                {["Everything in Team", "5 users total, including the owner", "Priority email replies", "Setup walkthrough for your team", "Custom branding"].map((f) => (
+                {["Everything in Team", "5 users total, including the owner", "Email support", "In-app Start guide and sample project", "Custom branding"].map((f) => (
                   <div key={f} className="flex items-center gap-2.5">
                     <svg className="h-4 w-4 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                     <span className="text-sm text-zinc-700">{f}</span>

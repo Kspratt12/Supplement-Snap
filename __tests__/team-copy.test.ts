@@ -64,7 +64,7 @@ describe("wording about team members matches how teams work", () => {
     expect(pricing).toContain('"3 users total, including the owner",')
     const home = read("app/page.tsx")
     expect(home).toContain('"3 users total, including the owner", "PDF reports & email"')
-    expect(home).toContain('"5 users total, including the owner", "Priority email replies"')
+    expect(home).toContain('"5 users total, including the owner", "Email support"')
     for (const text of [pricing, home]) {
       expect(text).not.toMatch(/Up to 3 team members/)
       expect(text).not.toMatch(/Up to 5 team members/)

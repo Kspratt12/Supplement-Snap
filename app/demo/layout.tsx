@@ -2,14 +2,14 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
-  title: "Book a Demo | Supplement Snap",
+  title: "See Supplement Snap in Action | Supplement Snap",
   description:
-    "Book a free 15-minute walkthrough of Supplement Snap. See how roofing crews capture hidden damage during tear-off and generate adjuster-ready supplement reports.",
+    "Try the interactive demo, read a sample report or start a free project to see how roofing crews capture hidden damage during tear-off and build supplement reports.",
   openGraph: {
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Supplement Snap" }],
-    title: "Book a Demo | Supplement Snap",
+    title: "See Supplement Snap in Action | Supplement Snap",
     description:
-      "Book a free 15-minute walkthrough of Supplement Snap. See how roofing crews capture hidden damage and generate supplement reports.",
+      "Try the interactive demo, read a sample report or start a free project.",
   },
 }
 
