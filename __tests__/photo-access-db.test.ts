@@ -12,8 +12,9 @@ import { decidePhotoAccess, type PhotoReader } from "../lib/photo-access-core"
  * What this proves: with the same three reads the route makes (project, its findings, own company settings) run AS each
  * user, the owner and an active team member are allowed their project's files, and a stranger, a pending member and a
  * signed-out caller are denied, including when they ask for the exact file name.
- * What it does NOT prove: that the live database has the same rules (migration v10 was confirmed live on 2026-11-12 for
- * the storage rules; the table rules are assumed to match these files), the storage service's own signing, or expiry.
+ * Live check (2026-11-12, production catalog): the text of all 9 policies on projects, captures, team_members and
+ * company_settings is identical to what migrations v0-v11 build here, and the 4 storage policies match v10, so these cases
+ * use the same rules production has. What it does NOT prove: the storage service's own signing, or link expiry.
  * All people, files and projects here are made up.
  */
 
@@ -30,6 +31,8 @@ const ORDER = [
   "supabase-migration-v7-plan-limits.sql",
   "supabase-migration-v8-past-due-grace.sql",
   "supabase-migration-v9-free-project-allowance.sql",
+  "supabase-migration-v10-storage-and-function-hardening.sql",
+  "supabase-migration-v11-team-members-owner-read-only.sql",
 ]
 
 const A = { id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", email: "alice@example.test" } // owner

@@ -5,12 +5,15 @@ import path from "node:path"
 
 /**
  * A guard, not a behaviour test: the dashboard page is too large to render in a unit test, so this checks that every place that
- * shows or fetches a stored photo, diagram or logo goes through the signed-link helper, and that the places that must keep the
- * saved address (deleting, saving, queueing) still read it as before. The real behaviour is covered by the acceptance steps.
+ * shows or fetches a stored photo, diagram or logo goes through the signed-link helper, that a missing link is treated as
+ * "unavailable" (never as permission to use the plain address), and that the places that must keep the saved address
+ * (deleting, saving, queueing) still read it as before. Real behaviour is covered by the acceptance steps.
  */
-const read = (f: string) => fs.readFileSync(path.resolve(__dirname, "..", f), "utf8")
+// Source files may use Windows line endings; match on one form
+const read = (f: string) => fs.readFileSync(path.resolve(__dirname, "..", f), "utf8").replace(/\r\n/g, "\n")
 const page = read("app/app/page.tsx")
 const settings = read("app/dashboard/company-settings.tsx")
+const helper = read("lib/photo-access.ts")
 
 describe("the dashboard goes through signed links", () => {
   it("shows stored photos with SignedImg and no plain <img> on a saved address", () => {
@@ -20,21 +23,35 @@ describe("the dashboard goes through signed links", () => {
     expect(page).not.toMatch(/<img\s+src=\{viewerPhotos/)
   })
 
-  it("fetches stored files for the PDF only through a signed link", () => {
-    // the photo helper signs inside the fetch call itself
-    expect(page).toContain("await fetch(await signedPhotoUrl(url, selectedProject?.id))")
-    // the logo/diagram helper replaces `url` with the signed link first, and only then fetches `url`: no other bare fetch(url) may exist
+  it("no longer hides a photo that fails to load; the failure is shown instead", () => {
+    expect(page).not.toContain('(e.currentTarget.parentElement as HTMLElement).style.display = "none"')
+  })
+
+  it("fetches stored files for the PDF only through a signed link, and treats a missing link as a missing picture", () => {
+    expect(page).toContain("const link = await signedPhotoUrl(url, selectedProject?.id)\n      if (!link) return null\n      const res = await fetch(link)")
     const bare = [...page.matchAll(/await fetch\(url\)/g)]
     expect(bare).toHaveLength(1)
-    const signLine = page.indexOf("url = await signedPhotoUrl(url, selectedProject?.id)")
+    const signLine = page.indexOf("url = link")
     expect(signLine).toBeGreaterThan(0)
     expect(bare[0].index!).toBeGreaterThan(signLine)
     expect(bare[0].index! - signLine).toBeLessThan(400)
   })
 
-  it("opens the diagram and the annotator through signed links, not the saved address", () => {
+  it("never quietly saves or sends a report that is missing pictures", () => {
+    expect(page).toContain("pdfMissing.current.photos++")
+    expect(page).toContain("pdfMissing.current.logo = true")
+    expect(page).toContain("pdfMissing.current.diagram = true")
+    expect(page).toContain('describeMissingPdfAssets(pdfMissing.current, "download")')
+    expect(page).toContain('describeMissingPdfAssets(pdfMissing.current, "email")')
+    // the check comes before the file is saved and before the email request is made
+    expect(page.indexOf('describeMissingPdfAssets(pdfMissing.current, "download")')).toBeLessThan(page.indexOf("doc.save(`${safeName}-Report.pdf`)"))
+    expect(page.indexOf('describeMissingPdfAssets(pdfMissing.current, "email")')).toBeLessThan(page.indexOf('authFetch("/api/send-report"'))
+  })
+
+  it("opens the diagram and the annotator through signed links, and says so when they cannot be opened", () => {
     expect(page).toContain("openStoredFile(selectedProject.diagram_url")
-    expect(page).toMatch(/signedPhotoUrl\(url, selectedProject\?\.id\)\.then\(\(link\) => \{ setAnnotateUrl\(link\)/)
+    expect(page).toContain("The diagram could not be opened")
+    expect(page).toMatch(/signedPhotoUrl\(url, selectedProject\?\.id\)\.then\(\(link\) => \{ if \(!link\)/)
     expect(page).not.toMatch(/setAnnotateUrl\(url\)/)
   })
 
@@ -46,5 +63,10 @@ describe("the dashboard goes through signed links", () => {
   it("shows the logo through a signed link, or from the chosen file right after upload", () => {
     expect(settings).toContain("<SignedImg src={logoUrl}")
     expect(settings).toContain("URL.createObjectURL(file)")
+  })
+
+  it("the helper has no path that returns a stored file's plain address when signing failed", () => {
+    expect(helper).toContain("w.resolve(link || null)")
+    expect(helper).not.toMatch(/resolve\(link \|\| w\.url\)/)
   })
 })

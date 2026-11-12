@@ -7,18 +7,20 @@ import { storagePathFromUrl } from "./storage-paths"
  * The address saved on a finding stays exactly as it is (it identifies the file and is what deletion reads). Only
  * what is shown or fetched is swapped for a short-lived link from /api/photo-urls.
  *
- * It never throws. If a link cannot be had (offline, signed out, not allowed, server error) the original address is
- * returned, so nothing that worked before stops working; once the bucket is private that original simply will not load.
+ * It never throws and it never quietly falls back to the plain public address. For one of our stored files it returns
+ * the link, or null when no link could be had (offline, signed out, not allowed, server error). Callers must treat null as
+ * "unavailable" and tell the person, so a missing photo is never mistaken for a photo that is not there.
+ * Anything that is not one of our stored files (a chosen file's preview, a data address) is returned unchanged.
  */
 
 const REFRESH_MARGIN_MS = 5 * 60 * 1000
 const FALLBACK_TTL_MS = 3600 * 1000
 
 type Entry = { link: string; expiresAt: number }
-type Waiter = { url: string; resolve: (link: string) => void }
+type Waiter = { url: string; resolve: (link: string | null) => void }
 
 const cache = new Map<string, Entry>()
-const inFlight = new Map<string, Promise<string>>()
+const inFlight = new Map<string, Promise<string | null>>()
 const queues = new Map<string, { waiters: Waiter[]; timer: ReturnType<typeof setTimeout> | null }>()
 
 const key = (projectId: string | undefined, url: string) => `${projectId || ""}|${url}`
@@ -55,25 +57,26 @@ async function flush(projectId: string | undefined) {
       if (typeof json.expiresIn === "number" && json.expiresIn > 0) expiresInMs = json.expiresIn * 1000
     }
   } catch {
-    // fall through: every waiter gets its original address
+    // every waiter below gets null: unavailable
   }
   for (const w of q.waiters) {
     const link = signed[w.url]
     // Only a granted link is remembered; a refusal or failure is asked again next time
     if (link) cache.set(key(projectId, w.url), { link, expiresAt: Date.now() + expiresInMs })
-    w.resolve(link || w.url)
+    w.resolve(link || null)
   }
 }
 
-export function signedPhotoUrl(url: string, projectId?: string): Promise<string> {
+export function signedPhotoUrl(url: string, projectId?: string, opts: { force?: boolean } = {}): Promise<string | null> {
   if (!isStoredFileUrl(url)) return Promise.resolve(url)
   const k = key(projectId, url)
+  if (opts.force) cache.delete(k)
   const hit = cache.get(k)
   if (hit && hit.expiresAt - Date.now() > REFRESH_MARGIN_MS) return Promise.resolve(hit.link)
   const pending = inFlight.get(k)
   if (pending) return pending
 
-  const p = new Promise<string>((resolve) => {
+  const p = new Promise<string | null>((resolve) => {
     const qk = projectId || ""
     let q = queues.get(qk)
     if (!q) {
@@ -89,15 +92,21 @@ export function signedPhotoUrl(url: string, projectId?: string): Promise<string>
 
 /**
  * Open a stored file (for example a roof diagram) in a new tab. The tab is opened straight away, from the click, so
- * a popup blocker allows it; its address is set once the link is ready.
+ * a popup blocker allows it; its address is set once the link is ready. Returns false (and closes the empty tab) when
+ * no link could be had, so the caller can say so.
  */
-export async function openStoredFile(url: string, projectId?: string) {
+export async function openStoredFile(url: string, projectId?: string): Promise<boolean> {
   const w = window.open("", "_blank")
   const link = await signedPhotoUrl(url, projectId)
+  if (!link) {
+    w?.close()
+    return false
+  }
   if (w) {
     w.opener = null
     w.location.href = link
   } else {
     window.location.href = link
   }
+  return true
 }
