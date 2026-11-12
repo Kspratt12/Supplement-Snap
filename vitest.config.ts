@@ -9,6 +9,7 @@ export default defineConfig({
     // tripped the 5 s default and produced different failures on each run. They pass in ~1 s when idle.
     testTimeout: 30000,
     hookTimeout: 30000,
+    setupFiles: ["./vitest.setup.ts"],
   },
   resolve: {
     alias: {
