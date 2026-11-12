@@ -73,7 +73,7 @@ const supplement = {
   subtitle: "A five-part package: cover page, findings summary, findings with photos, line items, and sign-off. Send it as one PDF.",
   blocks: [
     { t: "h2", text: "1. Cover page" },
-    { t: "para", text: "Put these on the first page so the adjuster can match the document to the claim. A missing claim number is a common reason a package gets misfiled or delayed." },
+    { t: "para", text: "Put these on the first page so the adjuster can match the document to the claim. Without a claim number, the adjuster has a harder time matching the document to the claim." },
     { t: "fields", rows: [
       ["Project name", "Property address"],
       ["Policy holder name", "Claim number"],
