@@ -49,7 +49,7 @@ const softwareSchema = {
     { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free", description: "Demo project plus 1 project of your own (up to 3 findings per project)" },
     { "@type": "Offer", price: "99", priceCurrency: "USD", name: "Starter", description: "Unlimited projects, 1 user, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "99", priceCurrency: "USD" } },
     { "@type": "Offer", price: "199", priceCurrency: "USD", name: "Team", description: "Up to 3 users, Xactimate-style CSV export, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "199", priceCurrency: "USD" } },
-    { "@type": "Offer", price: "299", priceCurrency: "USD", name: "Pro", description: "Up to 5 users, priority email replies, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "299", priceCurrency: "USD" } },
+    { "@type": "Offer", price: "299", priceCurrency: "USD", name: "Pro", description: "Up to 5 users, email support, billed monthly", priceSpecification: { "@type": "PriceSpecification", price: "299", priceCurrency: "USD" } },
   ],
   author: { "@type": "Organization", name: "Supplement Snap", url: "https://supplementsnap.io" },
 }
