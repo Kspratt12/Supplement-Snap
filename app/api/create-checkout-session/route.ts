@@ -6,6 +6,12 @@ import { getAccess, isPlanPurchasable, planUnavailable } from "../../../lib/plan
 import { customerIdsForEmail, existingBillingBlock, type StoredSubscription } from "../../../lib/billing-guard"
 import { CheckoutProtectionUnavailable, SESSION_LIFETIME_SECONDS, expireOrConfirm, keepNewest, openSessions, reuseOrClear, stableCustomer } from "../../../lib/checkout-reservation"
 
+// Used when a checkout may or may not exist (a timeout, a failed re-check). It must not push the customer into a second purchase:
+// a checkout already started is reused or replaced on the next attempt, and one already completed is found and answered with
+// "manage your billing". Starting a trial charges nothing at this stage.
+const UNCERTAIN_MESSAGE =
+  "We could not confirm your checkout, and nothing has been charged. If a Stripe checkout page is already open, finish it there. Otherwise wait a minute and try again: we will reuse a checkout you already started instead of creating another."
+
 export async function GET() {
   const key = process.env.STRIPE_SECRET_KEY || ""
   return NextResponse.json({ testMode: key.startsWith("sk_test_") })
@@ -87,7 +93,7 @@ export async function POST(request: Request) {
         }
         console.error("Checkout billing check failed:", err instanceof Error ? err.name : "unknown")
         return NextResponse.json(
-          { error: "We could not check your billing right now, so no subscription was started. Please try again in a moment." },
+          { error: "We could not check your billing right now, so no checkout was started and nothing was charged. Please try again in a moment.", code: "checkout-not-started" },
           { status: 503 }
         )
       }
@@ -138,7 +144,7 @@ export async function POST(request: Request) {
     })
     } catch (err) {
       console.error("Checkout session creation failed:", err instanceof Error ? err.name : "unknown")
-      return NextResponse.json({ error: "We could not start checkout right now, so nothing was started. Please try again in a moment." }, { status: 503 })
+      return NextResponse.json({ error: UNCERTAIN_MESSAGE, code: "checkout-uncertain" }, { status: 503 })
     }
 
     if (!stripeCustomerId) return NextResponse.json({ url: session.url }) // a guest: no account to protect
@@ -163,7 +169,7 @@ export async function POST(request: Request) {
     } catch (err) {
       console.error("Checkout reconciliation failed:", err instanceof Error ? err.name : "unknown")
       try { await expireOrConfirm(stripe, session.id) } catch { /* it was never handed out; it expires on its own in about half an hour */ }
-      return NextResponse.json({ error: "We could not start checkout right now, so nothing was started. Please try again in a moment." }, { status: 503 })
+      return NextResponse.json({ error: UNCERTAIN_MESSAGE, code: "checkout-uncertain" }, { status: 503 })
     }
   } catch (err) {
     console.error("Stripe checkout error:", err)

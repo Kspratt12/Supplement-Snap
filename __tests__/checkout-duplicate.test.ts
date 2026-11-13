@@ -41,6 +41,8 @@ const w = vi.hoisted(() => ({
   rng: 1,
   onExpire: null as null | ((s: { id: string; status: string }) => void),
   afterCreate: null as null | ((s: { id: string }) => void),
+  /** the session IS created at Stripe but the call then fails (a timeout after the work was done) */
+  createThenThrow: false,
 }))
 
 const hit = (name: string) => {
@@ -119,6 +121,7 @@ vi.mock("stripe", () => ({
           const s = { id: `cs_${n}`, url: `https://checkout.stripe.example/cs_${n}`, created: w.sameCreated ? w.now : w.now + ++w.tick, status: "open", expires_at: p.expires_at, customer: p.customer, customer_email: p.customer_email, metadata: { plan: p.metadata.plan } }
           w.sessions.push(s)
           w.afterCreate?.(s)
+          if (w.createThenThrow) throw new Error("timeout after the session was created")
           return s
         },
         list: async (p: { customer: string; status: string; starting_after?: string }) => {
@@ -159,7 +162,7 @@ beforeEach(() => {
     access: { plan: "free", status: "inactive", active: false, viaOwner: false, hasBilling: false },
     stored: null, storedError: false, tableMissing: false, insertFails: false, customers: new Map(), review: [], subsByCustomer: {}, subs: {},
     emailCustomers: [], emailHasMore: false, sessions: [], now: 1_800_000_000, tick: 0, sameCreated: false, customersCreated: [], customersDeleted: [],
-    expired: [], raceWinner: null, customerKeys: new Map(), fail: null, failFrom: 0, calls: {}, pageSize: 100, jitter: false, rng: 1, onExpire: null, afterCreate: null,
+    expired: [], raceWinner: null, customerKeys: new Map(), fail: null, failFrom: 0, calls: {}, pageSize: 100, jitter: false, rng: 1, onExpire: null, afterCreate: null, createThenThrow: false,
   })
   vi.spyOn(Date, "now").mockImplementation(() => w.now * 1000)
   process.env.STRIPE_SECRET_KEY = "sk_test_dummy"
@@ -454,5 +457,93 @@ describe("no silent downgrade", () => {
     const res = await POST(post("starter", false))
     expect(res.status).toBe(200)
     expect(w.customers.size).toBe(0)
+  })
+})
+
+describe("partial failures, one by one (what exists at Stripe, and what the retry does)", () => {
+  it("BEFORE any Stripe object is created (a lookup fails): clear 'not started' answer, nothing exists, retry is safe", async () => {
+    w.fail = "customers.list"
+    const res = await POST(post("starter"))
+    const body = await res.json()
+    expect(res.status).toBe(503)
+    expect(body.code).toBe("checkout-not-started")
+    expect(w.sessions).toHaveLength(0)
+    w.fail = null
+    expect((await POST(post("starter"))).status).toBe(200)
+    expect(w.sessions).toHaveLength(1)
+  })
+
+  it("a session was created but its URL was not returned (the re-check failed and the cleanup failed too): the answer says it is uncertain, and the retry REUSES the open session", async () => {
+    w.fail = "sessions.list"
+    w.failFrom = 1
+    const failExpire = w.calls // keep reference for readability
+    void failExpire
+    // make the best-effort cleanup fail as well, so the session stays open but unreachable
+    w.onExpire = () => { throw new Error("expire failed") }
+    const res = await POST(post("starter"))
+    const body = await res.json()
+    expect(res.status).toBe(503)
+    expect(body.code).toBe("checkout-uncertain")
+    expect(body.error).toMatch(/nothing has been charged/i)
+    expect(body.error).toMatch(/reuse a checkout you already started/i)
+    expect(open()).toHaveLength(1) // it exists and could be paid if someone had its link
+    w.fail = null; w.onExpire = null
+    const retry = await (await POST(post("starter"))).json()
+    expect(retry.url).toBe(open()[0].url)
+    expect(w.sessions).toHaveLength(1) // no second session was made
+  })
+
+  it("the same uncertain state, then a DIFFERENT plan on the retry: the unreachable session is expired first", async () => {
+    w.fail = "sessions.list"
+    w.failFrom = 1
+    w.onExpire = () => { throw new Error("expire failed") }
+    await POST(post("starter"))
+    w.fail = null; w.onExpire = null
+    const retry = await POST(post("team"))
+    expect(retry.status).toBe(200)
+    expect(open()).toHaveLength(1)
+    expect(open()[0].metadata.plan).toBe("team")
+  })
+
+  it("an uncertain result after a timeout (Stripe made the session, the call failed): the retry finds and reuses it instead of making a second", async () => {
+    w.createThenThrow = true
+    const res = await POST(post("starter"))
+    const body = await res.json()
+    expect(res.status).toBe(503)
+    expect(body.code).toBe("checkout-uncertain")
+    expect(w.sessions).toHaveLength(1)
+    w.createThenThrow = false
+    const retry = await (await POST(post("starter"))).json()
+    expect(retry.url).toBe(w.sessions[0].url)
+    expect(w.sessions).toHaveLength(1)
+  })
+
+  it("a session that may have completed during the uncertainty: the retry is answered with 'manage your billing', never a second purchase", async () => {
+    w.createThenThrow = true
+    await POST(post("starter"))
+    w.createThenThrow = false
+    // the customer found the open checkout some other way and paid it
+    w.sessions[0].status = "complete"
+    w.subsByCustomer["cus_1"] = [{ id: "sub_paid", status: "trialing" }]
+    const retry = await POST(post("pro"))
+    expect(retry.status).toBe(409)
+    expect((await retry.json()).code).toBe("already_subscribed")
+    expect(w.sessions).toHaveLength(1)
+  })
+
+  it("the same, but the payment is still being processed (incomplete): the retry is told to wait, not to buy again", async () => {
+    await POST(post("starter"))
+    w.sessions[0].status = "complete"
+    w.subsByCustomer["cus_1"] = [{ id: "sub_pending", status: "incomplete" }]
+    const retry = await POST(post("starter"))
+    expect(retry.status).toBe(409)
+    expect((await retry.json()).code).toBe("payment_in_progress")
+    expect(w.sessions).toHaveLength(1)
+  })
+
+  it("no failure answer pushes the customer toward an unsafe second purchase (no 'start over' or 'try a different plan' wording)", async () => {
+    w.createThenThrow = true
+    const body = await (await POST(post("starter"))).json()
+    expect(body.error).not.toMatch(/start (over|again)|different plan|new subscription/i)
   })
 })
