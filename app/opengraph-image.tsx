@@ -79,7 +79,7 @@ export default function OGImage() {
             }}
           >
             Capture hidden damage during tear-off. Generate adjuster-ready
-            reports in minutes.
+            reports.
           </p>
         </div>
 

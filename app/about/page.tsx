@@ -83,6 +83,11 @@ export default function AboutPage() {
           <li>Contractors should see real output before they pay, which is why there is a sample report and a free project.</li>
         </ul>
 
+        <h2 className="mt-12 text-xl font-bold">Examples and contact</h2>
+        <p className="mt-3 text-sm leading-relaxed text-zinc-600">
+          The sample report is a fictional example, and worked examples in our articles are labeled as illustrative or fictional. None are customer results. Questions: support@supplementsnap.io. Privacy requests: privacy@supplementsnap.io.
+        </p>
+
         <div className="mt-12 flex flex-col gap-3 sm:flex-row">
           <TrackedLink location="about-signup" href="/signup" className="rounded-lg bg-indigo-600 px-6 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-500">
             Start Your Free Project
