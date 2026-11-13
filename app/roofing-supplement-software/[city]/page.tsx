@@ -106,7 +106,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           <span className="text-indigo-600"> for {city.name} contractors</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-500">
-          {city.name} roofing crews find hidden damage on every tear-off. Supplement Snap helps you capture it, document it, and send adjuster-ready reports before you leave the job site.
+          {city.name} roofing crews can come across hidden damage during tear-off. Supplement Snap helps you capture it, document it, and build a report you review before sending.
         </p>
         <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link href="/roofing-supplement-report-example" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
@@ -152,9 +152,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           </h2>
           <div className="mt-10 grid gap-8 sm:grid-cols-3">
             {[
-              { num: "1", title: "Snap the damage", desc: `Your crew photographs hidden damage during tear-off on ${city.name} properties (decking, flashing, pipe boots, code violations) right from their phone.` },
+              { num: "1", title: "Snap the damage", desc: `Photograph damage you find during tear-off on ${city.name} properties (decking, flashing, pipe boots, code items) right from your phone.` },
               { num: "2", title: "Tag and describe", desc: "Select the damage type and roof area, add a voice note in Spanish or another supported language. Everything is saved to your account when the phone is online, or kept on the phone until it is." },
-              { num: "3", title: "Generate and send", desc: "AI writes a professional supplement narrative. Export a PDF and email it to the adjuster, all from the field." },
+              { num: "3", title: "Generate and send", desc: "The app drafts a description for each finding and you review it. On paid plans, build a PDF and email it to the adjuster from the project." },
             ].map((step) => (
               <div key={step.num} className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
                 <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">{step.num}</div>
@@ -182,7 +182,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               "Xactimate-style CSV export with suggested line items to review",
               "Insurance claim tracking (carrier, claim #, adjuster, date of loss)",
               "Claim pipeline: track from tear-off to approval",
-              "Team access for crew, foreman, and office staff",
+              "Team and Pro logins that can view the owner's projects and send reports",
               "Upload EagleView reports and roof diagrams",
             ].map((f) => (
               <div key={f} className="flex items-start gap-3 rounded-lg border border-zinc-200 bg-white px-4 py-3">
@@ -257,7 +257,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       {/* Nearby cities */}
       <section className="border-t border-zinc-100 bg-zinc-50 py-12">
         <div className="mx-auto max-w-4xl px-6">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-zinc-500">Also serving nearby areas</p>
+          <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-zinc-500">More North Carolina city pages</p>
           <div className="flex flex-wrap gap-2">
             {city.nearby.map((nearby) => {
               const nearbyCity = CITIES.find((c) => c.name === nearby)

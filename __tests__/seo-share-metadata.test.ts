@@ -40,7 +40,7 @@ describe("share metadata does not overstate the Free plan", () => {
   it("the homepage keeps the Free versus paid wording and its structured data and CSV card name the plans", () => {
     const src = read("app/page.tsx")
     expect(metadataBlock(src)).toMatch(/Try one project free; PDF reports and email are on paid plans/)
-    expect(src).toMatch(/on paid plans, send adjuster-ready PDF reports/)
+    expect(src).toMatch(/on paid plans, build PDF reports you review before sending to the adjuster/)
     expect(src).toMatch(/On the Team and Pro plans, the CSV export lists general line-item descriptions/)
   })
 })

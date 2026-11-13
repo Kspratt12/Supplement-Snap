@@ -32,7 +32,7 @@ const homepageFaqSchema = {
     { "@type": "Question", name: "How long does it take to set up?", acceptedAnswer: { "@type": "Answer", text: "A few minutes. Create an account, start a project, and your crew can begin capturing damage from any phone." } },
     { "@type": "Question", name: "Does it work without cell service?", acceptedAnswer: { "@type": "Answer", text: "Photos and typed notes are saved on your phone when there is no signal, and they upload automatically once you are back online. Voice notes and the AI supplement draft need a connection, because speech-to-text and drafting happen online." } },
     { "@type": "Question", name: "Do I need special equipment?", acceptedAnswer: { "@type": "Answer", text: "No. Any smartphone with a camera works. Your crew is already carrying everything they need." } },
-    { "@type": "Question", name: "Can my office staff see what the crew captures?", acceptedAnswer: { "@type": "Answer", text: "Yes, for projects on the owner's account. Once a capture has uploaded, it is saved to your account by project. Photos and typed notes taken without signal wait on the phone and upload when you are back online. On the Team and Pro plans each person gets their own login (up to 3 people on Team and 5 on Pro, counting the owner). Team members can open the owner's projects from any device, build and email reports, and export the CSV, but only the owner's login can add or change findings. A project that a team member creates belongs to that member and is not visible to the owner. The Starter plan is one login." } },
+    { "@type": "Question", name: "What can team members see and do?", acceptedAnswer: { "@type": "Answer", text: "Team members can view the account owner's projects and generate or send reports, subject to the plan's permissions. Only the project owner can add or edit that project's photos, notes, and findings. Projects created by a team member are not visible to the account owner. Shared crew-to-office capture across separate logins is not currently supported. On the Team and Pro plans each person gets their own login (up to 3 people on Team and 5 on Pro, counting the owner). The Starter plan is one login. Photos and typed notes taken without signal wait on the phone and upload when you are back online." } },
     { "@type": "Question", name: "Is $99/month worth it for one crew?", acceptedAnswer: { "@type": "Answer", text: "Depending on your claims, recovering one missed line item may offset the monthly cost. There are no setup fees. Results vary by claim and are not guaranteed." } },
   ],
 }
@@ -43,7 +43,7 @@ const softwareSchema = {
   name: "Supplement Snap",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
-  description: "Roofing supplement software that helps contractors capture hidden damage during tear-off, generate AI supplement drafts, and, on paid plans, send adjuster-ready PDF reports.",
+  description: "Roofing supplement software that helps contractors capture hidden damage during tear-off, generate AI supplement drafts, and, on paid plans, build PDF reports you review before sending to the adjuster.",
   url: "https://supplementsnap.io",
   offers: [
     { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free", description: "Demo project plus 1 project of your own (up to 3 findings per project)" },
@@ -60,7 +60,7 @@ const orgSchema = {
   name: "Supplement Snap",
   url: "https://supplementsnap.io",
   logo: "https://supplementsnap.io/favicon.png",
-  description: "Roofing supplement software for contractors. Capture hidden damage, generate adjuster-ready reports.",
+  description: "Roofing supplement software for contractors. Capture findings during tear-off and build reports you review before sending.",
   founder: { "@type": "Person", name: "Kelvin Spratt" },
 }
 
@@ -142,7 +142,7 @@ export default function LandingPage() {
           </div>
         </div>
         <p className="mt-6 text-center text-sm text-zinc-500">
-          Every documented item is a line item the adjuster can approve. When damage goes undocumented, the money stays on the table. (Illustrative example, not a guarantee.)
+          A documented finding gives the adjuster something specific to review; damage that is not documented is hard to include in a request. The dollar amounts above are a fictional illustration, not a result, and nothing here guarantees approval or payment.
         </p>
       </section>
 
@@ -154,7 +154,7 @@ export default function LandingPage() {
             See Supplement Snap in action
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
-            From roof capture to adjuster-ready report.
+            From roof capture to a report you review before sending.
           </p>
         </div>
 
@@ -472,7 +472,7 @@ export default function LandingPage() {
               Roofing supplement reports with photos, findings and notes
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
-              Generate clean documentation that can be sent directly to insurance adjusters.
+              A fictional example of a report. You review the descriptions and the report before anything is sent. This is not a customer claim.
             </p>
           </div>
 
@@ -508,7 +508,7 @@ export default function LandingPage() {
                   <div>
                     <p className="text-sm font-semibold text-zinc-900">Decking: Front Slope</p>
                     <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                      During tear-off of the front slope, three sheets of rotted OSB decking were discovered along the eave edge. Wood was soft and deteriorated from prolonged moisture exposure. This damage was concealed beneath the existing shingles and underlayment.
+                      During tear-off of the front slope, three sheets of rotted OSB decking were discovered along the eave edge. Wood was soft and deteriorated from prolonged moisture exposure.
                     </p>
                   </div>
                 </div>
@@ -567,7 +567,7 @@ export default function LandingPage() {
               <div className="mt-6 rounded-lg bg-zinc-50 px-4 py-3">
                 <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Summary</p>
                 <p className="mt-2 text-xs leading-relaxed text-zinc-600">
-                  3 supplement items documented during tear-off inspection. All findings represent concealed conditions not visible during initial inspection. Documentation and supporting photos are ready for adjuster review and supplement submission.
+                  3 findings documented during tear-off. Each description is drafted from the field notes for the contractor to review and correct before the report is sent. Fictional example.
                 </p>
               </div>
 
@@ -587,7 +587,7 @@ export default function LandingPage() {
               Built for insurance restoration workflows
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
-              Track claims from tear-off to approval. Everything adjusters need, organized the way your team works.
+              Record each claim&apos;s status yourself, from tear-off to closeout, and keep photos, notes and reports together by project. Status is updated by hand; Supplement Snap is not connected to insurers.
             </p>
           </div>
 
@@ -649,7 +649,7 @@ export default function LandingPage() {
               Three steps from roof to supplement
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500">
-              Your crew captures damage on-site. The office gets a professional supplement draft, ready to submit.
+              Capture damage on-site from a phone. The app drafts a description for each finding, and you review it before building the report.
             </p>
           </div>
           <div className="mt-14 grid gap-8 sm:grid-cols-3">
@@ -657,7 +657,7 @@ export default function LandingPage() {
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">1</div>
               <h3 className="text-base font-semibold">Snap the damage</h3>
               <p className="mt-2 text-sm leading-relaxed text-zinc-500">
-                During tear-off, your crew photographs each area of damage (decking, flashing, pipe boots, code violations) right from their phone.
+                During tear-off, photograph each area of damage (decking, flashing, pipe boots, code items) right from your phone.
               </p>
             </div>
             <div className="rounded-xl border border-zinc-200 bg-white p-6">
@@ -718,7 +718,7 @@ export default function LandingPage() {
               </div>
               <h3 className="text-base font-semibold">Send cleaner reports to adjusters</h3>
               <p className="mt-2 text-sm leading-relaxed text-zinc-500">
-                Generate a professional PDF and email it to the adjuster the same day. No more waiting for the office to type it up.
+                On paid plans, build a PDF report, review it, and email it to the adjuster from the project. No retyping notes into a separate document.
               </p>
             </div>
           </div>
@@ -747,9 +747,9 @@ export default function LandingPage() {
                   "Capture hidden damage during tear-off from any phone",
                   "Document decking rot, flashing failure, and code violations",
                   "Organize findings by roof area and project address",
-                  "Generate professional supplement language instantly",
-                  "Export clean reports ready for adjuster review",
-                  "Send documentation to the office or adjuster the same day",
+                  "Draft supplement language from your notes, to review and edit",
+                  "Build PDF reports to review before sending",
+                  "Email the report to the adjuster from the project on paid plans",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-3 border-b border-zinc-200 py-3 last:border-0">
                     <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -890,8 +890,8 @@ export default function LandingPage() {
                 a: "No. Any smartphone with a camera works. Your crew is already carrying everything they need."
               },
               {
-                q: "Can my office staff see what the crew captures?",
-                a: "Yes, for projects on the owner's account. Once a capture has uploaded, it is saved to your account by project. Photos and typed notes taken without signal wait on the phone and upload when you are back online. On the Team and Pro plans each person gets their own login (up to 3 people on Team and 5 on Pro, counting the owner). Team members can open the owner's projects from any device, build and email reports, and export the CSV, but only the owner's login can add or change findings. A project that a team member creates belongs to that member and is not visible to the owner. The Starter plan is one login."
+                q: "What can team members see and do?",
+                a: "Team members can view the account owner's projects and generate or send reports, subject to the plan's permissions. Only the project owner can add or edit that project's photos, notes, and findings. Projects created by a team member are not visible to the account owner. Shared crew-to-office capture across separate logins is not currently supported. On the Team and Pro plans each person gets their own login (up to 3 people on Team and 5 on Pro, counting the owner). The Starter plan is one login. Photos and typed notes taken without signal wait on the phone and upload when you are back online."
               },
               {
                 q: "Is $99/month worth it for one crew?",

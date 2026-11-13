@@ -156,7 +156,7 @@ export default function HowRoofingSupplementsWorkPage() {
         <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 text-center">
           <h2 className="text-xl font-bold text-zinc-900">Document supplements the right way</h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-zinc-500">
-            Supplement Snap helps roofing crews capture hidden damage during tear-off and generate adjuster-ready documentation. Your first project is free with no card needed: the demo project plus one project of your own, up to 3 findings. Paid plans start with a 14-day trial that requires a card.
+            Supplement Snap helps roofing crews capture findings during tear-off and generate documentation you review before sending. Your first project is free with no card needed: the demo project plus one project of your own, up to 3 findings. Paid plans start with a 14-day trial that requires a card.
           </p>
           <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link href="/roofing-supplement-report-example" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">

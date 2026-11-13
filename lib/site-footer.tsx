@@ -62,26 +62,6 @@ export function SiteFooter() {
             </div>
           </div>
         </div>
-
-        {/* Service areas */}
-        <div className="mt-8 border-t border-zinc-100 pt-6">
-          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Roofing Supplement Software by City</p>
-          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
-            <Link href="/roofing-supplement-software/raleigh-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Raleigh, NC</Link>
-            <Link href="/roofing-supplement-software/apex-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Apex, NC</Link>
-            <Link href="/roofing-supplement-software/cary-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Cary, NC</Link>
-            <Link href="/roofing-supplement-software/durham-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Durham, NC</Link>
-            <Link href="/roofing-supplement-software/wake-forest-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Wake Forest, NC</Link>
-            <Link href="/roofing-supplement-software/fuquay-varina-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Fuquay Varina, NC</Link>
-            <Link href="/roofing-supplement-software/garner-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Garner, NC</Link>
-            <Link href="/roofing-supplement-software/chapel-hill-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Chapel Hill, NC</Link>
-            <Link href="/roofing-supplement-software/clayton-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Clayton, NC</Link>
-            <Link href="/roofing-supplement-software/holly-springs-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Holly Springs, NC</Link>
-            <Link href="/roofing-supplement-software/zebulon-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Zebulon, NC</Link>
-            <Link href="/roofing-supplement-software/dunn-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Dunn, NC</Link>
-            <Link href="/roofing-supplement-software/pittsboro-nc" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Pittsboro, NC</Link>
-          </div>
-        </div>
       </div>
     </footer>
   )

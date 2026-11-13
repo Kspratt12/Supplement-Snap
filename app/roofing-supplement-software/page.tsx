@@ -167,6 +167,11 @@ export default function RoofingSupplementSoftwarePage() {
           Plenty of roofers start with a camera roll and a spreadsheet, and that can work at low volume. The trade-offs are covered in <Link href="/roofing-supplement-software-vs-spreadsheets" className="text-indigo-600 underline hover:text-indigo-800">software vs. spreadsheets</Link> and <Link href="/blog/companycam-alternative-roofing-supplements" className="text-indigo-600 underline hover:text-indigo-800">photo apps vs. supplement tools</Link>. If you are not sure what you need yet, start with the <Link href="/free-roofing-supplement-checklist" className="text-indigo-600 underline hover:text-indigo-800">free supplement checklist</Link>.
         </p>
 
+        <h2 className="mt-14 text-xl font-bold text-zinc-900">Local reference pages</h2>
+        <p className="mt-3 text-base leading-relaxed text-zinc-600">
+          Supplement Snap is a web app you use from a phone browser anywhere. For contractors in the Raleigh area, there are local reference pages for <Link href="/roofing-supplement-software/raleigh-nc" className="text-indigo-600 underline hover:text-indigo-800">Raleigh, NC</Link> and <Link href="/roofing-supplement-software/apex-nc" className="text-indigo-600 underline hover:text-indigo-800">Apex, NC</Link>.
+        </p>
+
         <h2 className="mt-14 text-xl font-bold text-zinc-900">Learn the workflow</h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {[

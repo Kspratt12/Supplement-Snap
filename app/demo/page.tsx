@@ -54,7 +54,7 @@ export default function DemoPage() {
             See Supplement Snap in Action
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-500">
-            Pick a time below. I&apos;ll screen share and walk you through how your crew captures hidden damage and sends adjuster-ready reports, all from the field.
+            Pick a time below. I&apos;ll screen share and show you how photos and field notes are captured on a phone and organized into a report you review before sending.
           </p>
         </div>
 

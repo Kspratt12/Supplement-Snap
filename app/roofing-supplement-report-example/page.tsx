@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://supplementsnap.io/roofing-supplement-report-example" },
   title: "Roofing Supplement Report Example | Supplement Snap",
   description:
-    "See what a professional roofing supplement report looks like. Includes damage descriptions, supporting photos, and adjuster-ready documentation.",
+    "A fictional example of a roofing supplement report: findings, photo placement and explanations, and how a Supplement Snap report is built and reviewed.",
 }
 
 export default function SupplementReportExamplePage() {
@@ -42,7 +42,7 @@ export default function SupplementReportExamplePage() {
         </h1>
 
         <p className="mt-6 text-base leading-relaxed text-zinc-600">
-          A supplement report is the document roofing contractors submit to insurance adjusters when hidden damage is discovered during tear-off. A well-structured report increases the chances of approval by giving the adjuster exactly what they need to authorize additional work.
+          A supplement report is the document roofing contractors submit to insurance adjusters when hidden damage is discovered during tear-off. A clear, well-organized report gives the adjuster specific findings and photos to review. It does not guarantee coverage or approval.
         </p>
 
         <h2 className="mt-12 text-xl font-bold text-zinc-900">What a supplement report includes</h2>
@@ -51,7 +51,7 @@ export default function SupplementReportExamplePage() {
             { title: "Damage description", text: "A clear, factual explanation of what was found: the type of damage, severity, and why it was not visible before tear-off." },
             { title: "Supporting photos", text: "Photos taken during tear-off showing the exposed damage. These serve as primary evidence for the adjuster." },
             { title: "Location of damage", text: "The specific roof area where the damage was found: front slope, valley, chimney, eave edge, etc." },
-            { title: "Explanation for adjusters", text: "A professional narrative explaining that the damage was concealed and only discovered after removing existing materials." },
+            { title: "Explanation for adjusters", text: "A factual narrative of what was found and where, in the contractor's own words. Say the damage was concealed only when your notes support it." },
           ].map((item) => (
             <div key={item.title} className="rounded-lg border border-zinc-200 bg-zinc-50 p-4">
               <p className="text-sm font-semibold text-zinc-900">{item.title}</p>
@@ -62,7 +62,7 @@ export default function SupplementReportExamplePage() {
 
         <h2 className="mt-12 text-xl font-bold text-zinc-900">Sample report structure</h2>
         <p className="mt-2 text-sm leading-relaxed text-zinc-500">
-          Fictional example for illustration. Names, addresses and findings are not from a real job.
+          Demonstration report, not a customer claim. This is a web-page illustration with fictional names, addresses and findings, not an exported PDF from the app, and no insurer has reviewed or approved it.
         </p>
         <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-md">
           <div className="bg-indigo-600 px-6 py-3">
@@ -79,9 +79,9 @@ export default function SupplementReportExamplePage() {
 
             <div className="mt-4 space-y-4">
               {[
-                { num: "1", title: "Decking: Front Slope", desc: "Three sheets of rotted OSB decking discovered along the eave edge during tear-off. Wood was soft and deteriorated from prolonged moisture exposure. Damage was concealed beneath existing shingles." },
-                { num: "2", title: "Flashing: Chimney", desc: "Step flashing along the chimney wall was severely corroded with multiple separation points. Counter flashing seal had failed at the mortar joint. Not visible prior to shingle removal." },
-                { num: "3", title: "Ice & Water Shield: Valley", desc: "No ice and water shield membrane present in the main valley. Local code and the shingle maker's instructions may require installation. Condition was concealed under existing roofing materials." },
+                { num: "1", title: "Decking: Front Slope", desc: "Three sheets of rotted OSB decking discovered along the eave edge during tear-off. Wood was soft and deteriorated from prolonged moisture exposure." },
+                { num: "2", title: "Flashing: Chimney", desc: "Step flashing along the chimney wall was severely corroded with multiple separation points. Counter flashing seal had failed at the mortar joint." },
+                { num: "3", title: "Ice & Water Shield: Valley", desc: "No ice and water shield membrane present in the main valley. Local code and the shingle maker's instructions may require installation." },
               ].map((f) => (
                 <div key={f.num} className="flex items-start gap-2.5">
                   <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">{f.num}</span>
@@ -100,18 +100,22 @@ export default function SupplementReportExamplePage() {
               <div className="aspect-square rounded-lg bg-gradient-to-br from-red-100 to-red-50 border border-zinc-200" />
               <div className="aspect-square rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 border border-zinc-200" />
             </div>
-            <p className="mt-2 text-[10px] text-zinc-500">Supporting photos attached to each finding</p>
+            <p className="mt-2 text-[10px] text-zinc-500">Photos attached to each finding appear in this area (placeholder squares in this illustration)</p>
           </div>
         </div>
 
         <p className="mt-8 text-base leading-relaxed text-zinc-600">
-          Supplement Snap automatically generates reports like this from the damage captured by your crew during tear-off. AI writes the supplement narratives, photos are attached, and the report is ready to export as a PDF or email to the adjuster.
+          On paid plans, Supplement Snap builds a PDF report from the photos and field notes you capture during tear-off. The app drafts a description for each finding with AI. You review and correct it, and check photos, quantities and any code references, before you download the PDF or email it to the adjuster.
+        </p>
+
+        <p className="mt-4 text-base leading-relaxed text-zinc-600">
+          See how capture, review and sending fit together, and what each plan includes, on the <Link href="/roofing-supplement-software" className="font-medium text-indigo-600 underline hover:text-indigo-500">roofing supplement software workflow page</Link>.
         </p>
 
         <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 text-center">
-          <h2 className="text-xl font-bold text-zinc-900">Generate reports like this automatically</h2>
+          <h2 className="text-xl font-bold text-zinc-900">Build a report from your own findings</h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-zinc-500">
-            Supplement Snap turns field captures into professional supplement reports, ready to send to adjusters the same day.
+            Capture findings on a phone, review the drafted descriptions, and build a report to send when you are ready.
           </p>
           <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link href="/signup?trial=1" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">

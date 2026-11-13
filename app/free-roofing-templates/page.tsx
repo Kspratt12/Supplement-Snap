@@ -114,7 +114,7 @@ export default function FreeRoofingTemplatesPage() {
         <section className="mt-14 rounded-xl border border-indigo-200 bg-indigo-50 p-6 text-center">
           <h2 className="text-lg font-bold text-zinc-900">Found hidden damage after tear-off?</h2>
           <p className="mt-2 text-sm text-zinc-600">
-            Supplement Snap lets your crew photograph, tag and describe findings on the roof, then drafts the explanations for you to review and builds the PDF for the adjuster. Your first project is free.
+            Supplement Snap lets you photograph, tag and describe findings on the roof, drafts the explanations for you to review, and builds the PDF report. See <Link href="/roofing-supplement-software" className="font-medium text-indigo-600 underline hover:text-indigo-500">how the app captures and organizes these findings</Link>. Your first project is free.
           </p>
           <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <TrackedLink location="templates-start-free-project" href="/signup?trial=1" className="w-full rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 sm:w-auto">

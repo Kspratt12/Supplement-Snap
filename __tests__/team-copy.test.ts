@@ -13,8 +13,8 @@ const read = (f: string) => fs.readFileSync(path.join(root, f), "utf8").replace(
 describe("wording about team members matches how teams work", () => {
   const home = read("app/page.tsx")
   // The same answer is written twice: once for search engines (structured data) and once on the page.
-  const forSearch = [...home.matchAll(/text: "(Yes, for projects on the owner's account\.[^"]*)"/g)].map((m) => m[1])
-  const onPage = [...home.matchAll(/a: "(Yes, for projects on the owner's account\.[^"]*)"/g)].map((m) => m[1])
+  const forSearch = [...home.matchAll(/text: "(Team members can view the account owner's projects[^"]*)"/g)].map((m) => m[1])
+  const onPage = [...home.matchAll(/a: "(Team members can view the account owner's projects[^"]*)"/g)].map((m) => m[1])
 
   it("the homepage answer is the same in the structured data and on the page", () => {
     expect(forSearch).toHaveLength(1)
@@ -24,10 +24,11 @@ describe("wording about team members matches how teams work", () => {
 
   it("it says what members can and cannot do, and who owns a member's projects", () => {
     const a = onPage[0]
-    expect(a).toMatch(/Team members can open the owner's projects/)
-    expect(a).toMatch(/build and email reports, and export the CSV/)
-    expect(a).toMatch(/only the owner's login can add or change findings/)
-    expect(a).toMatch(/belongs to that member and is not visible to the owner/)
+    expect(a).toMatch(/Team members can view the account owner's projects and generate or send reports, subject to the plan's permissions\./)
+    expect(a).toMatch(/Only the project owner can add or edit that project's photos, notes, and findings\./)
+    expect(a).toMatch(/Projects created by a team member are not visible to the account owner\./)
+    expect(a).toMatch(/Shared crew-to-office capture across separate logins is not currently supported\./)
+    expect(a).not.toMatch(/\byet\b|only partly|share (a|your) (login|password)/i)
     expect(a).not.toMatch(/office staff can see all captures/)
   })
 
