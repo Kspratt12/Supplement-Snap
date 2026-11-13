@@ -20,7 +20,7 @@ const STEPS = [
   { num: "1", title: "Capture on the roof", desc: "Photograph the damage from a phone, tag the roof area and damage type, and add a note by typing or by voice." },
   { num: "2", title: "Annotate and organize", desc: "Mark photos with circles, arrows and labels. Findings are saved to the project so nothing ends up in a camera roll." },
   { num: "3", title: "Generate the report", desc: "Create an AI-drafted supplement narrative for each finding, then review and edit it before it goes out." },
-  { num: "4", title: "Send it to the adjuster", desc: "Export a PDF and email it from the project. Team plans can see when the adjuster opens the email." },
+  { num: "4", title: "Send it to the adjuster", desc: "Export a PDF and email it from the project. Team and Pro plans can see when the adjuster opens the email." },
 ]
 
 const FEATURES = [
@@ -29,7 +29,7 @@ const FEATURES = [
   { title: "Photo annotations", text: "Circles, arrows and labels point the adjuster to exactly what you want them to see." },
   { title: "AI-drafted narratives", text: "Get a first draft of the written description for each finding. You review and edit every one." },
   { title: "PDF reports", text: "Photos, findings and notes in one consistent document, ready to attach or email." },
-  { title: "Xactimate-style CSV export", text: "On the Team plan, export a starting list of line items to review and bring into your estimate." },
+  { title: "Xactimate-style CSV export", text: "On the Team and Pro plans, export a starting list of line items to review and bring into your estimate." },
 ]
 
 const FAQ = [
@@ -47,7 +47,7 @@ const FAQ = [
   },
   {
     q: "Does it replace Xactimate?",
-    a: "No. You still estimate and price in your own tools. The Team plan exports a starting list of line items you review and bring into your estimate.",
+    a: "No. You still estimate and price in your own tools. The Team and Pro plans export a starting list of line items you review and bring into your estimate.",
   },
   {
     q: "How much does it cost?",

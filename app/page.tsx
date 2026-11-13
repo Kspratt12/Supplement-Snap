@@ -43,7 +43,7 @@ const softwareSchema = {
   name: "Supplement Snap",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
-  description: "Roofing supplement software that helps contractors capture hidden damage during tear-off, generate AI supplement drafts, and send adjuster-ready PDF reports in minutes.",
+  description: "Roofing supplement software that helps contractors capture hidden damage during tear-off, generate AI supplement drafts, and send adjuster-ready PDF reports.",
   url: "https://supplementsnap.io",
   offers: [
     { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free", description: "Demo project plus 1 project of your own (up to 3 findings per project)" },
