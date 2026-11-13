@@ -6,6 +6,7 @@ import Link from "next/link"
 import { supabase } from "../../lib/supabase"
 import { useAuth } from "../../lib/auth-context"
 import { trackEvent } from "../../lib/analytics"
+import { afterAuthPath, parsePlanIntent, withPlan, type PlanIntent } from "../../lib/plan-intent"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -14,9 +15,11 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
+  // The plan chosen before logging in (?plan=...) is read from the address only at the moment it is needed, and only decides where to go afterwards.
+  const currentPlan = (): PlanIntent | null => parsePlanIntent(window.location.search)
 
   useEffect(() => {
-    if (!authLoading && user) router.replace("/dashboard")
+    if (!authLoading && user) router.replace(afterAuthPath(parsePlanIntent(window.location.search)))
   }, [user, authLoading, router])
 
   async function handleLogin(e: React.FormEvent) {
@@ -31,7 +34,7 @@ export default function LoginPage() {
       setLoading(false)
     } else {
       trackEvent("login_completed")
-      router.push("/dashboard")
+      router.push(afterAuthPath(currentPlan()))
     }
   }
 
@@ -97,7 +100,7 @@ export default function LoginPage() {
 
         <p className="mt-4 text-center text-sm text-zinc-500">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
+          <Link href="/signup" onClick={(e) => { e.preventDefault(); router.push(withPlan("/signup", currentPlan())) }} className="font-medium text-indigo-600 hover:text-indigo-500">
             Create account
           </Link>
         </p>

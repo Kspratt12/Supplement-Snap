@@ -51,7 +51,22 @@ export async function POST(request: Request) {
     // Someone who is signed in is tied to their own account. A visitor who is not signed in checks out as a guest,
     // and the payment is matched to an account by the email used at checkout.
     const user = await getAuthenticatedUser(request)
-    if (user) {
+    // A new subscription needs a signed-in account with a verified email, enforced here and not only on the button. Without
+    // an account there is nothing for the duplicate-subscription protections to attach to, and the plan chosen is kept by the
+    // sign-up / log-in pages and offered again afterwards.
+    if (!user) {
+      return NextResponse.json(
+        { error: "Please sign up or log in to start a plan. The plan you chose will be kept.", code: "sign-in-required" },
+        { status: 401 }
+      )
+    }
+    if (!user.email_confirmed_at) {
+      return NextResponse.json(
+        { error: "Please confirm your email address first. Check your inbox for the confirmation link, then try again.", code: "email-not-verified" },
+        { status: 403 }
+      )
+    }
+    {
       userId = user.id
       customerEmail = user.email || undefined
       // Starting a second subscription would bill them twice and orphan the first one

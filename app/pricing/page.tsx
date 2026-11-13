@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { Suspense } from "react"
-import { CheckoutButton, CancelBanner } from "./checkout-button"
+import { CheckoutButton, CancelBanner, PlanResumeBanner } from "./checkout-button"
 import { SiteFooter } from "../../lib/site-footer"
 
 export const metadata: Metadata = {
@@ -113,6 +113,7 @@ export default function PricingPage() {
 
       <Suspense fallback={null}>
         <CancelBanner />
+        <PlanResumeBanner />
       </Suspense>
 
       {/* Pricing Cards */}

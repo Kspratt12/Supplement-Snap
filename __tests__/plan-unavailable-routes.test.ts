@@ -12,7 +12,7 @@ const w = vi.hoisted(() => ({
   calls: [] as string[],
 }))
 
-vi.mock("../lib/auth-utils", () => ({ getAuthenticatedUser: async () => ({ id: "u1", email: "roofer@example.com", user_metadata: {} }), getUserId: async () => "u1" }))
+vi.mock("../lib/auth-utils", () => ({ getAuthenticatedUser: async () => ({ id: "u1", email: "roofer@example.com", email_confirmed_at: "2026-10-01T00:00:00Z", user_metadata: {} }), getUserId: async () => "u1" }))
 vi.mock("../lib/rate-limit", () => ({ rateLimited: () => false }))
 vi.mock("../lib/plan", async (orig) => ({ ...(await orig<typeof import("../lib/plan")>()), getAccess: async () => w.access }))
 vi.mock("stripe", () => ({ default: class { checkout = { sessions: { create: async () => (w.calls.push("stripe-checkout"), { url: "https://stripe.example/x" }) } } } }))

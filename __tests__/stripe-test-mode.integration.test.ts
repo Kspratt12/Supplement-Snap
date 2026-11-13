@@ -13,7 +13,7 @@ import Stripe from "stripe"
  *
  * What it deliberately does NOT do: it creates no subscriptions and completes no Checkout, because this account has an active
  * test-mode event destination that points at the production URL (supplement-snap.vercel.app/api/stripe/webhook) listening to
- * checkout.session.completed and customer.subscription.deleted. Sessions, customers, products and prices only. A completed
+ * checkout.session.completed and customer.subscription.deleted. Sessions, customers, products and prices only; a tripwire refuses to run if any enabled destination listens to an event type this run can cause. A completed
  * Checkout, a live subscription's effect on checkout, and expire-versus-completion therefore stay UNVERIFIED against real Stripe.
  *
  * Run (the key stays in your shell; it is never printed, written or committed):
@@ -36,7 +36,7 @@ let stripe: Stripe
 vi.mock("../lib/auth-utils", () => ({
   getAuthenticatedUser: async (req: Request) => {
     const id = req.headers.get("x-test-user")
-    return id ? { id, email: `${id}@example.test`, user_metadata: {} } : null
+    return id ? { id, email: `${id}@example.test`, email_confirmed_at: "2026-10-01T00:00:00Z", user_metadata: {} } : null
   },
   getUserId: async () => null,
 }))
@@ -93,9 +93,29 @@ describe.skipIf(!KEY)("Stripe TEST MODE against the candidate's real checkout co
     const balance = await stripe.balance.retrieve()
     if (balance.livemode !== false) throw new Error("this key reports livemode; refusing to run")
     process.env.STRIPE_SECRET_KEY = KEY
-    // Read-only look at the event destinations, printed as URLs only.
+    // Permissions, checked with harmless reads BEFORE anything is created. (Write permissions show up as a clear failure on the first write.)
+    const reads: Array<[string, () => Promise<unknown>]> = [
+      ["Balance: read", () => stripe.balance.retrieve()],
+      ["Webhook Endpoints: read", () => stripe.webhookEndpoints.list({ limit: 1 })],
+      ["Events: read", () => stripe.events.list({ limit: 1 })],
+      ["Customers: read", () => stripe.customers.list({ limit: 1 })],
+      ["Subscriptions: read", () => stripe.subscriptions.list({ limit: 1 })],
+      ["Products: read", () => stripe.products.list({ limit: 1 })],
+      ["Prices: read", () => stripe.prices.list({ limit: 1 })],
+      ["Checkout Sessions: read", () => stripe.checkout.sessions.list({ limit: 1 })],
+    ]
+    const missing: string[] = []
+    for (const [name, fn] of reads) { try { await fn() } catch { missing.push(name) } }
+    if (missing.length) throw new Error(`the key lacks: ${missing.join(", ")}`)
+
+    // TRIPWIRE, before anything is created. This run can only cause the event types below (creating and deleting customers,
+    // creating and archiving products and prices, creating and expiring Checkout Sessions). If ANY event destination in this
+    // account listens to one of them, or to everything, stop now: the safety of the run does not rest on looking at events afterwards.
+    const CAN_CAUSE = new Set(["customer.created", "customer.updated", "customer.deleted", "product.created", "product.updated", "price.created", "price.updated", "checkout.session.expired"])
     const endpoints = await stripe.webhookEndpoints.list({ limit: 100 })
-    console.log("TEST-MODE EVENT DESTINATIONS (read-only):", endpoints.data.map((e) => `${e.url} [${e.status}] events=${e.enabled_events.join(",")}`))
+    console.log("TEST-MODE EVENT DESTINATIONS (read-only):", endpoints.data.map((e) => `${e.id} ${e.url} [${e.status}] events=${e.enabled_events.join(",")}`))
+    const exposed = endpoints.data.filter((e) => e.status === "enabled" && e.enabled_events.some((t) => t === "*" || CAN_CAUSE.has(t)))
+    if (exposed.length) throw new Error(`refusing to run: these destinations listen to events this run can cause: ${exposed.map((e) => e.id).join(", ")}`)
     const product = await stripe.products.create({ name: `${RUN} product`, metadata: { synthetic: "true", run: RUN } })
     state.product = product.id
     for (const [env, cents] of [["STRIPE_PRICE_MONTHLY", 9900], ["STRIPE_PRICE_TEAM_MONTHLY", 19900], ["STRIPE_PRICE_PRO_MONTHLY", 29900]] as const) {
@@ -249,14 +269,13 @@ describe.skipIf(!KEY)("Stripe TEST MODE against the candidate's real checkout co
     expect(await customerIdsForEmail(stripe, `${u}@example.test`)).toContain(c)
   }, 60000)
 
-  it("a guest checkout is created (no stable customer) and is not protected by the signed-in checks; it is expired here to leave nothing open", async () => {
+  it("a visitor who is not signed in is refused before anything is created at Stripe", async () => {
+    const before = (await stripe.checkout.sessions.list({ limit: 100, created: { gte: state.startedAt } })).data.length
     const res = await call(null, "starter")
-    expect(res.status).toBe(200)
-    expect(res.body.url).toMatch(/^https:\/\/checkout\.stripe\.com\//)
-    const sessions = await stripe.checkout.sessions.list({ limit: 20, status: "open" })
-    for (const s of sessions.data.filter((x) => x.metadata?.supabase_user_id === "" && x.created >= state.startedAt)) {
-      await stripe.checkout.sessions.expire(s.id)
-    }
+    expect(res.status).toBe(401)
+    expect(res.body.code).toBe("sign-in-required")
+    const after = (await stripe.checkout.sessions.list({ limit: 100, created: { gte: state.startedAt } })).data.length
+    expect(after).toBe(before)
   }, 60000)
 
   it.skip("expiration versus completion, a completed Checkout, and a live subscription blocking checkout: NOT reproducible here without completing Checkout (which would send checkout.session.completed to the production-pointing destination). Unverified against real Stripe.", () => {})

@@ -56,7 +56,7 @@ const pause = async () => {
 }
 
 vi.mock("../lib/auth-utils", () => ({
-  getAuthenticatedUser: async (req: Request) => (req.headers.get("authorization") ? { id: "u1", email: "roofer@example.com", user_metadata: {} } : null),
+  getAuthenticatedUser: async (req: Request) => (req.headers.get("authorization") ? { id: "u1", email: "roofer@example.com", email_confirmed_at: "2026-10-01T00:00:00Z", user_metadata: {} } : null),
   getUserId: async () => "u1",
 }))
 vi.mock("../lib/plan", async (orig) => ({ ...(await orig<typeof import("../lib/plan")>()), getAccess: async () => w.access }))
@@ -452,11 +452,13 @@ describe("no silent downgrade", () => {
     expect(w.customersCreated).toHaveLength(0)
     expect(w.calls["sessions.create"]).toBeUndefined()
   })
-  it("a guest (not signed in) is unaffected and still gets a checkout with their email", async () => {
-    w.tableMissing = true
+  it("a guest (not signed in) is refused by the server: no customer, no session, no Stripe call", async () => {
     const res = await POST(post("starter", false))
-    expect(res.status).toBe(200)
-    expect(w.customers.size).toBe(0)
+    expect(res.status).toBe(401)
+    expect((await res.json()).code).toBe("sign-in-required")
+    expect(w.sessions).toHaveLength(0)
+    expect(w.customersCreated).toHaveLength(0)
+    expect(Object.keys(w.calls)).toHaveLength(0)
   })
 })
 

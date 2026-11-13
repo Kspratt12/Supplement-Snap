@@ -74,7 +74,7 @@ beforeEach(() => {
 
 describe("POST /api/create-checkout-session", () => {
   it("attaches the checkout to the signed-in user, ignoring a user id and email in the body", async () => {
-    mockGetUser.mockResolvedValue({ id: "real-user", email: "real@example.com" })
+    mockGetUser.mockResolvedValue({ id: "real-user", email: "real@example.com", email_confirmed_at: "2026-10-01T00:00:00Z" })
     const res = await checkout(json("http://localhost/api/create-checkout-session", { plan: "starter", userId: "victim-user", email: "victim@example.com" }))
     expect(res.status).toBe(200)
     const args = mockSessionsCreate.mock.calls[0][0]
@@ -87,14 +87,30 @@ describe("POST /api/create-checkout-session", () => {
     expect(args.customer_email).toBeUndefined()
   })
 
-  it("does not let a visitor who is not signed in name an account", async () => {
+  it("a visitor who is not signed in cannot start a subscription, whatever user id or email the body names (enforced on the server)", async () => {
     mockGetUser.mockResolvedValue(null)
     const res = await checkout(json("http://localhost/api/create-checkout-session", { plan: "team", userId: "victim-user", email: "victim@example.com" }))
-    expect(res.status).toBe(200)
-    const args = mockSessionsCreate.mock.calls[0][0]
-    expect(args.metadata.supabase_user_id).toBe("")
-    expect(args.subscription_data.metadata.supabase_user_id).toBe("")
-    expect(args.customer_email).toBeUndefined()
+    expect(res.status).toBe(401)
+    expect((await res.json()).code).toBe("sign-in-required")
+    expect(mockSessionsCreate).not.toHaveBeenCalled()
+    expect(mockCustomersCreate).not.toHaveBeenCalled()
+  })
+
+  it("an account whose email is not verified cannot start a subscription", async () => {
+    mockGetUser.mockResolvedValue({ id: "u1", email: "a@example.com", email_confirmed_at: null })
+    const res = await checkout(json("http://localhost/api/create-checkout-session", { plan: "starter" }))
+    expect(res.status).toBe(403)
+    expect((await res.json()).code).toBe("email-not-verified")
+    expect(mockSessionsCreate).not.toHaveBeenCalled()
+    expect(mockCustomersCreate).not.toHaveBeenCalled()
+  })
+
+  it("an existing subscriber is still refused a second subscription and is not asked to sign in again", async () => {
+    mockGetUser.mockResolvedValue({ id: "u1", email: "a@example.com", email_confirmed_at: "2026-10-01T00:00:00Z" })
+    mockGetAccess.mockResolvedValue({ active: true, viaOwner: false, plan: "starter" })
+    const res = await checkout(json("http://localhost/api/create-checkout-session", { plan: "pro" }))
+    expect(res.status).toBe(409)
+    expect(mockSessionsCreate).not.toHaveBeenCalled()
   })
 })
 
@@ -108,7 +124,7 @@ describe("POST /api/create-checkout-session: plans and double billing", () => {
   })
   it("cannot sell Enterprise while the Gap Detector is not ready, even with a Stripe price configured", async () => {
     vi.stubEnv("STRIPE_PRICE_ENTERPRISE_MONTHLY", "price_enterprise")
-    mockGetUser.mockResolvedValue({ id: "u1", email: "a@example.com" })
+    mockGetUser.mockResolvedValue({ id: "u1", email: "a@example.com", email_confirmed_at: "2026-10-01T00:00:00Z" })
     const res = await buy("enterprise")
     expect(res.status).toBe(400)
     expect((await res.json()).error).toMatch(/not available yet/)
@@ -116,13 +132,13 @@ describe("POST /api/create-checkout-session: plans and double billing", () => {
   })
   it("still sells starter, team and pro", async () => {
     vi.stubEnv("STRIPE_PRICE_PRO_MONTHLY", "price_pro")
-    mockGetUser.mockResolvedValue(null)
+    mockGetUser.mockResolvedValue({ id: "u1", email: "a@example.com", email_confirmed_at: "2026-10-01T00:00:00Z" })
     for (const p of ["starter", "team", "pro"]) expect((await buy(p)).status).toBe(200)
     expect(mockSessionsCreate.mock.calls.map((c) => c[0].line_items[0].price)).toEqual(["price_starter", "price_team", "price_pro"])
     expect(mockSessionsCreate.mock.calls.every((c) => c[0].subscription_data.trial_period_days === 14)).toBe(true)
   })
   it("does not start a second subscription for someone whose plan is already active", async () => {
-    mockGetUser.mockResolvedValue({ id: "u1", email: "a@example.com" })
+    mockGetUser.mockResolvedValue({ id: "u1", email: "a@example.com", email_confirmed_at: "2026-10-01T00:00:00Z" })
     mockGetAccess.mockResolvedValue({ active: true, viaOwner: false, plan: "starter" })
     const res = await buy("team")
     expect(res.status).toBe(409)
@@ -132,7 +148,7 @@ describe("POST /api/create-checkout-session: plans and double billing", () => {
     expect(mockSessionsCreate).not.toHaveBeenCalled()
   })
   it("lets a team member who only inherits their owner's plan buy their own, and lets a cancelled customer come back", async () => {
-    mockGetUser.mockResolvedValue({ id: "u1", email: "a@example.com" })
+    mockGetUser.mockResolvedValue({ id: "u1", email: "a@example.com", email_confirmed_at: "2026-10-01T00:00:00Z" })
     mockGetAccess.mockResolvedValue({ active: true, viaOwner: true, plan: "team" })
     expect((await buy("starter")).status).toBe(200)
     mockGetAccess.mockResolvedValue({ active: false, viaOwner: false, plan: "free" })
@@ -159,7 +175,7 @@ describe("POST /api/send-report", () => {
 
   it("sends typed text as plain text, not markup", async () => {
     mockGetAccess.mockResolvedValue({ active: true })
-    mockGetUser.mockResolvedValue({ id: "u1", email: "me@example.com" })
+    mockGetUser.mockResolvedValue({ id: "u1", email: "me@example.com", email_confirmed_at: "2026-10-01T00:00:00Z" })
     const res = await sendReport(json("http://localhost/api/send-report", body))
     expect(res.status).toBe(200)
     const sent = mockEmailSend.mock.calls[0][0]
@@ -175,7 +191,7 @@ describe("POST /api/send-report", () => {
   })
 
   it("does not email anyone else on a plan that is not active", async () => {
-    mockGetUser.mockResolvedValue({ id: "u1", email: "me@example.com" })
+    mockGetUser.mockResolvedValue({ id: "u1", email: "me@example.com", email_confirmed_at: "2026-10-01T00:00:00Z" })
     mockGetAccess.mockResolvedValue({ active: false })
     const res = await sendReport(json("http://localhost/api/send-report", body))
     expect(res.status).toBe(403)
