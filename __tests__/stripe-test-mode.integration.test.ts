@@ -84,6 +84,7 @@ const post = (user: string | null, plan: string) =>
   })
 
 const ids = new Map<string, string>()
+const made = (id: string) => { state.sessions.add(id); return id }
 // account ids are UUIDs (the reservation table is keyed by auth.users.id)
 const user = (n: string) => { if (!ids.has(n)) ids.set(n, crypto.randomUUID()); return ids.get(n)! }
 const customerOf = (u: string) => state.users.get(u)!
@@ -130,7 +131,7 @@ describe.skipIf(!KEY)("Stripe TEST MODE against the candidate's real checkout co
     // TRIPWIRE, before anything is created. This run can only cause the event types below (creating and deleting customers,
     // creating and archiving products and prices, creating and expiring Checkout Sessions). If ANY event destination in this
     // account listens to one of them, or to everything, stop now: the safety of the run does not rest on looking at events afterwards.
-    const CAN_CAUSE = new Set(["customer.created", "customer.updated", "customer.deleted", "product.created", "product.updated", "price.created", "price.updated", "checkout.session.expired"])
+    const CAN_CAUSE = new Set(["customer.created", "customer.updated", "customer.deleted", "product.created", "product.updated", "product.deleted", "price.created", "price.updated", "price.deleted", "plan.created", "plan.updated", "plan.deleted", "checkout.session.expired"])
     const endpoints = await stripe.webhookEndpoints.list({ limit: 100 })
     console.log("TEST-MODE EVENT DESTINATIONS (read-only):", endpoints.data.map((e) => `${e.id} ${e.url} [${e.status}] events=${e.enabled_events.join(",")}`))
     const exposed = endpoints.data.filter((e) => e.status === "enabled" && e.enabled_events.some((t) => t === "*" || CAN_CAUSE.has(t)))
@@ -146,23 +147,37 @@ describe.skipIf(!KEY)("Stripe TEST MODE against the candidate's real checkout co
 
   afterAll(async () => {
     if (!stripe) return
-    const report = { expiredSessions: 0, deletedCustomers: 0, archivedPrices: 0, archivedProduct: 0, problems: [] as string[] }
+    const report = { expiredSessions: 0, deletedCustomers: 0, archivedPrices: 0, archivedProduct: 0, trackedIds: state.sessions.size, problems: [] as string[] }
+    const expireIfOpen = async (id: string) => {
+      try { const s = await stripe.checkout.sessions.retrieve(id); if (s.status === "open") { await stripe.checkout.sessions.expire(id); report.expiredSessions++ } }
+      catch (e) { report.problems.push(`session ${id}: ${(e as Error).message}`) }
+    }
+    // runs whether the tests passed or failed. 1) exact ids this test created directly
+    for (const id of state.sessions) await expireIfOpen(id)
+    // 2) every page of every open session on each synthetic customer (covers sessions the route created)
     const customers = new Set<string>([...state.customers, ...state.users.values()])
     for (const c of customers) {
       try {
-        for (const s of await openFor(c)) { await stripe.checkout.sessions.expire(s.id); report.expiredSessions++ }
+        for (const s of await openFor(c)) await expireIfOpen(s.id)
         await stripe.customers.del(c); report.deletedCustomers++
       } catch (e) { report.problems.push(`customer ${c}: ${(e as Error).message}`) }
     }
     for (const p of state.prices) { try { await stripe.prices.update(p, { active: false }); report.archivedPrices++ } catch (e) { report.problems.push(`price ${p}`) } }
     if (state.product) { try { await stripe.products.update(state.product, { active: false }); report.archivedProduct++ } catch { report.problems.push("product") } }
-    // Which events did this run cause? None of these may be a type the production-pointing destination listens to.
-    const events = await stripe.events.list({ created: { gte: state.startedAt }, limit: 100 })
+    // 3) verify: no open session anywhere in the account that is ours by exact customer id, tracked id or run metadata (every page)
+    try {
+      const open = await stripe.checkout.sessions.list({ status: "open", created: { gte: state.startedAt }, limit: 100 }).autoPagingToArray({ limit: 5000 })
+      const ours = open.filter((s) => state.sessions.has(s.id) || customers.has(String(s.customer)) || s.metadata?.run === RUN)
+      report.problems.push(...ours.map((s) => `STILL OPEN: ${s.id}`))
+      console.log("OPEN SESSIONS SEEN IN THE RUN WINDOW (every page):", open.length, "ours still open:", ours.length)
+    } catch (e) { report.problems.push(`verification listing: ${(e as Error).message}`) }
+    // Which events did this run cause? Every page, so the count is not capped at 100.
+    const events = await stripe.events.list({ created: { gte: state.startedAt }, limit: 100 }).autoPagingToArray({ limit: 5000 })
     const types: Record<string, number> = {}
-    for (const e of events.data) types[e.type] = (types[e.type] ?? 0) + 1
+    for (const e of events) types[e.type] = (types[e.type] ?? 0) + 1
     console.log("CLEANUP:", JSON.stringify(report))
-    console.log("EVENT TYPES CAUSED BY THIS RUN:", JSON.stringify(types))
-  }, 300000)
+    console.log("EVENT TYPES CAUSED BY THIS RUN (all pages):", JSON.stringify(types))
+  }, 900000)
 
   it("makes no event of a type the production-pointing destination listens to (checked after the run, see afterAll output)", () => {
     expect(true).toBe(true)
@@ -222,30 +237,44 @@ describe.skipIf(!KEY)("Stripe TEST MODE against the candidate's real checkout co
     if (c) expect((await openFor(c)).length).toBeLessThanOrEqual(1)
   }, 120000)
 
-  it("paging: more than 100 open sessions for one customer are all found and expired except one", async () => {
+  it("paging: with more than 100 open sessions on the customer, the ROUTE finds and expires all of them and hands out exactly one new session", async () => {
     const u = user("paging")
-    const first = await call(u, "starter") // creates the stable customer
+    const first = await call(u, "starter") // creates the stable customer and the first canonical session
     expect(first.status).toBe(200)
     const c = customerOf(u); state.customers.add(c)
+    const firstSession = (await openFor(c))[0]
+    expect(firstSession).toBeDefined()
+    made(firstSession.id)
+    const synthetic: string[] = []
     for (let i = 0; i < 104; i++) {
-      await stripe.checkout.sessions.create({
+      const s = await stripe.checkout.sessions.create({
         mode: "subscription", customer: c, line_items: [{ price: process.env.STRIPE_PRICE_MONTHLY!, quantity: 1 }],
-        success_url: "https://example.test/ok", cancel_url: "https://example.test/no", metadata: { plan: "starter", synthetic: "true" },
+        success_url: "https://example.test/ok", cancel_url: "https://example.test/no", metadata: { plan: "starter", synthetic: "true", run: RUN },
         expires_at: Math.floor(Date.now() / 1000) + 31 * 60,
       })
+      synthetic.push(made(s.id))
     }
-    expect((await openFor(c)).length).toBeGreaterThan(100)
+    expect(synthetic).toHaveLength(104)
+    // precondition, listed across EVERY page: 105 open sessions (the route's canonical one plus 104), more than one page of 100
+    const before = await openFor(c)
+    expect(before.length).toBe(105)
+
+    // The behavior under test is the route's: a different plan forces it to clear every open session before issuing one.
     const res = await call(u, "team")
     console.log("PAGING:", `status=${res.status} code=${res.body.code ?? ""}`)
-    // either everything was cleared and one team session remains, or the request failed closed; never a silent partial result
-    if (res.status === 200) {
-      const open = await openFor(c)
-      expect(open).toHaveLength(1)
-      expect(open[0].metadata?.plan).toBe("team")
-    } else {
-      expect(res.status).toBe(503)
-    }
-  }, 600000)
+    expect(res.status).toBe(200) // fail-closed (503) would be safe but is NOT the intended result for 105 sessions (the route reads up to 5 pages)
+
+    // postcondition, again across every page: exactly one open session, it is the team plan, and it is the URL the route returned
+    const after = await openFor(c)
+    expect(after).toHaveLength(1)
+    expect(after[0].metadata?.plan).toBe("team")
+    expect(after[0].url).toBe(res.body.url)
+    state.sessions.add(after[0].id)
+    // every one of the 105 earlier sessions is no longer payable (checked by id, not by listing)
+    const stillOpen: string[] = []
+    for (const id of [firstSession.id, ...synthetic]) { if ((await stripe.checkout.sessions.retrieve(id)).status === "open") stillOpen.push(id) }
+    expect(stillOpen).toEqual([])
+  }, 900000)
 
   it("a lost response after the session was made: the next request returns the same open session", async () => {
     const u = user("lost")
@@ -265,6 +294,7 @@ describe.skipIf(!KEY)("Stripe TEST MODE against the candidate's real checkout co
       success_url: "https://example.test/ok", cancel_url: "https://example.test/no", metadata: { plan: "pro", synthetic: "true" },
       expires_at: Math.floor(Date.now() / 1000) + 31 * 60,
     })
+    made(direct.id)
     const res = await call(u, "team")
     expect(res.status).toBe(200)
     const open = await openFor(c)
