@@ -389,7 +389,7 @@ describe("dashboard smoke test (stand-in database)", () => {
     expect(screen.queryByText("New Capture")).toBeNull()
     expect(screen.queryByDisplayValue("Captured")).toBeNull() // the finding's status is a label, not a dropdown
     expect((screen.getByLabelText("Claim status") as HTMLSelectElement).disabled).toBe(true)
-    expect(screen.getByRole("button", { name: /Generate Project Report/ })).toBeTruthy() // viewing and reporting stay
+    expect(await screen.findByRole("button", { name: /Generate Project Report/ })).toBeTruthy() // viewing and reporting stay (awaited: the button renders after the findings load)
   })
 
   it("an owner still sees every edit control and no read-only notice", async () => {

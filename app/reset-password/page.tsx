@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { authFetch } from "../../lib/auth-fetch"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "../../lib/supabase"
@@ -58,22 +57,8 @@ export default function ResetPasswordPage() {
       setError(error.message)
       setLoading(false)
     } else {
-      // Send confirmation email
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user?.email) {
-        authFetch("/api/send-report", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            to: user.email,
-            subject: "Password Changed – Supplement Snap",
-            message: `Your Supplement Snap password was successfully changed on ${new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} at ${new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}.\n\nIf you did not make this change, please contact support immediately.`,
-            projectName: "Account Security",
-            propertyAddress: "",
-          }),
-        }).catch(() => {})
-      }
-
+      // The password-changed security email is sent by the sign-in provider itself (Supabase Auth, Security notifications),
+      // for every plan and only after it has recorded a real change. This page must not send it, and must not claim it was sent.
       setSuccess(true)
       setLoading(false)
       setTimeout(() => router.push("/dashboard?reset=1"), 2500)
@@ -106,7 +91,7 @@ export default function ResetPasswordPage() {
               </div>
               <h2 className="text-lg font-bold text-zinc-900">Password updated</h2>
               <p className="mt-2 text-sm text-zinc-500">
-                Your password has been changed successfully. A confirmation email has been sent.
+                Your password has been changed.
               </p>
               <p className="mt-3 text-xs text-zinc-500">Redirecting to dashboard...</p>
             </div>
