@@ -7,6 +7,7 @@ import Link from "next/link"
 import { supabase } from "../../lib/supabase"
 import { useAuth } from "../../lib/auth-context"
 import { trackEvent } from "../../lib/analytics"
+import { afterAuthPath, parsePlanIntent, withPlan, type PlanIntent } from "../../lib/plan-intent"
 
 export default function SignupPage() {
   const [name, setName] = useState("")
@@ -17,9 +18,11 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
+  // The plan chosen before signing up (?plan=...) is read from the address only at the moment it is needed, and only decides where to go afterwards.
+  const currentPlan = (): PlanIntent | null => parsePlanIntent(window.location.search)
 
   useEffect(() => {
-    if (!authLoading && user) router.replace("/dashboard")
+    if (!authLoading && user) router.replace(afterAuthPath(parsePlanIntent(window.location.search)))
   }, [user, authLoading, router])
 
   async function handleSignup(e: React.FormEvent) {
@@ -38,6 +41,8 @@ export default function SignupPage() {
       password,
       options: {
         data: { full_name: name },
+        // the confirmation link brings them back to log in with the plan still chosen
+        ...(currentPlan() ? { emailRedirectTo: `${window.location.origin}${withPlan("/login", currentPlan())}` } : {}),
       },
     })
 
@@ -74,7 +79,7 @@ export default function SignupPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ to: email, name, type: "welcome" }),
     }).catch(() => {})
-    router.push("/dashboard")
+    router.push(afterAuthPath(currentPlan()))
   }
 
   if (authLoading) return null
@@ -166,7 +171,7 @@ export default function SignupPage() {
 
         <p className="mt-4 text-center text-sm text-zinc-500">
           Already have an account?{" "}
-          <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+          <Link href="/login" onClick={(e) => { e.preventDefault(); router.push(withPlan("/login", currentPlan())) }} className="font-medium text-indigo-600 hover:text-indigo-500">
             Log in
           </Link>
         </p>

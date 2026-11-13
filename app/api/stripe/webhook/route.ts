@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { createClient, type SupabaseClient } from "@supabase/supabase-js"
 import { planFromPriceId, normPlan } from "../../../../lib/plan"
 import { findUserByEmail } from "../../../../lib/find-user"
+import { existingBillingBlock } from "../../../../lib/billing-guard"
 
 // Stripe status -> ours. Only active, trialing and past_due (Stripe is still retrying the card) keep access.
 const STATUS_MAP: Record<string, string> = {
@@ -121,6 +122,60 @@ export async function POST(request: Request) {
           userId = matched?.id || null
         }
 
+        // Tell the checkout reservation (v15) that a checkout completed for this account. A convenience only: the next checkout attempt
+        // also re-reads Stripe, so a missing table, a failure here or a webhook that arrives before or after the customer's own request
+        // cannot let a second checkout through.
+        if (userId && customerId && session.id) {
+          try {
+            await (supabaseAdmin as unknown as { rpc: (fn: string, args: Record<string, unknown>) => PromiseLike<unknown> }).rpc("checkout_complete", { p_user: userId, p_customer: customerId, p_session: session.id })
+          } catch { /* the reservation table may not exist yet; never fail the webhook for it */ }
+        }
+
+        // What Stripe says the new subscription is RIGHT NOW (trialing, active, incomplete...), not an assumption that checkout
+        // completing means it is paid. An incomplete first payment must not switch access on. If Stripe cannot be asked, throw
+        // so the event is answered with 500 and Stripe retries it.
+        let checkoutStatus = "active"
+        if (subscriptionId) {
+          const created = await stripe.subscriptions.retrieve(subscriptionId)
+          checkoutStatus = STATUS_MAP[created.status] || "inactive"
+        }
+        const checkoutIsLive = checkoutStatus === "active" || checkoutStatus === "trialing" || checkoutStatus === "past_due"
+
+        // A second paid checkout for an account that already holds a live subscription must not replace the stored
+        // subscription id: the older one would keep billing with nothing pointing at it. Keep the stored subscription, write a
+        // billing_review note so the owner can see it, and send no "your plan is active" email. This is a fallback: the
+        // checkout route is what prevents the second subscription.
+        // If Stripe cannot be asked, throw so the event is answered with 500 and Stripe retries it.
+        if (userId && subscriptionId) {
+          const { data: current } = await supabaseAdmin
+            .from("subscriptions")
+            .select("stripe_subscription_id, stripe_customer_id")
+            .eq("user_id", userId)
+            .maybeSingle()
+          if (current?.stripe_subscription_id && current.stripe_subscription_id !== subscriptionId) {
+            const block = await existingBillingBlock(stripe, current, subscriptionId)
+            if (block) {
+              console.error("Duplicate subscription for one account: stored subscription kept", {
+                stored: String(current.stripe_subscription_id).slice(-6),
+                additional: String(subscriptionId).slice(-6),
+              })
+              // A separate review record, NOT a subscriptions row: it cannot be mistaken for a canceled or non-billing
+              // subscription, no access query reads it, and later Stripe events cannot rewrite it.
+              const { error: reviewError } = await supabaseAdmin.from("billing_review").insert({
+                kind: "duplicate_subscription",
+                user_id: userId,
+                stripe_customer_id: customerId,
+                stripe_subscription_id: subscriptionId,
+                stored_subscription_id: current.stripe_subscription_id,
+                reason: "second live subscription for one account; the stored subscription was kept; the additional one may still be billing",
+              })
+              // a redelivered event hits the unique subscription id: the note already exists, which is fine
+              if (reviewError && (reviewError as { code?: string }).code !== "23505") console.error("Could not record the duplicate for review (the log line above is the only trace)")
+              break
+            }
+          }
+        }
+
         if (userId) {
           await supabaseAdmin.from("subscriptions").upsert(
             {
@@ -128,7 +183,7 @@ export async function POST(request: Request) {
               stripe_customer_id: customerId,
               stripe_subscription_id: subscriptionId,
               stripe_customer_email: customerEmail || "",
-              status: "active",
+              status: checkoutStatus,
               plan,
               updated_at: new Date().toISOString(),
             },
@@ -139,13 +194,13 @@ export async function POST(request: Request) {
             stripe_customer_id: customerId,
             stripe_subscription_id: subscriptionId,
             stripe_customer_email: customerEmail,
-            status: "active",
+            status: checkoutStatus,
             plan,
           })
         }
 
         // Send subscription activation email
-        if (userId && customerEmail && process.env.RESEND_API_KEY) {
+        if (userId && customerEmail && process.env.RESEND_API_KEY && checkoutIsLive) {
           try {
             // Look up user name if we have a userId
             let userName = ""

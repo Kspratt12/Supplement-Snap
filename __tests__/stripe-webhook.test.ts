@@ -12,6 +12,8 @@ const calls = vi.hoisted(() => ({
   subs: {} as Record<string, unknown>,
   /** the subscriptions table as the stand-in database holds it */
   rows: [] as Array<Record<string, unknown>>,
+  /** what Stripe lists for the account's customer */
+  customerSubs: [] as Array<{ id: string; status: string }>,
 }))
 
 vi.mock("stripe", () => ({
@@ -27,6 +29,7 @@ vi.mock("stripe", () => ({
         if (!(id in calls.subs)) throw new Error("No such subscription")
         return calls.subs[id]
       },
+      list: async () => ({ data: calls.customerSubs }),
     }
   },
 }))
@@ -52,10 +55,22 @@ vi.mock("@supabase/supabase-js", () => ({
     },
     from: (table: string) => ({
       select: () => ({
-        eq: (_k: string, v: unknown) => ({ maybeSingle: async () => ({ data: calls.known.has(String(v)) ? { id: "row" } : null }) }),
+        eq: (k: string, v: unknown) => ({
+          maybeSingle: async () => {
+            // a lookup by user returns that user's stored row; a lookup by subscription id answers from the "known" set
+            if (k === "user_id") return { data: calls.rows.find((r) => r.user_id === v) ?? null }
+            return { data: calls.known.has(String(v)) ? { id: "row" } : null }
+          },
+        }),
       }),
       upsert: async (row: Record<string, unknown>, opts: unknown) => (calls.writes.push({ table, op: "upsert", row, opts }), calls.known.add(String(row.stripe_subscription_id)), { error: null }),
-      insert: async (row: Record<string, unknown>) => (calls.writes.push({ table, op: "insert", row }), calls.known.add(String(row.stripe_subscription_id)), { error: null }),
+      insert: async (row: Record<string, unknown>) => {
+        // billing_review has a unique subscription id: a second note for the same subscription is refused
+        if (table === "billing_review" && calls.known.has(`review:${row.stripe_subscription_id}`)) return { error: { code: "23505" } }
+        calls.writes.push({ table, op: "insert", row })
+        calls.known.add(table === "billing_review" ? `review:${row.stripe_subscription_id}` : String(row.stripe_subscription_id))
+        return { error: null }
+      },
       update: (row: Record<string, unknown>) => {
         const filters: Array<[string, unknown]> = []
         const builder = {
@@ -84,14 +99,18 @@ const checkout = (over: Record<string, unknown> = {}) => ({
   data: { object: { customer: "cus_1", subscription: "sub_1", customer_details: { email: "crystal@example.com" }, metadata: { plan: "starter", supabase_user_id: "u1" }, ...over } },
 })
 
+// what Stripe reports for a subscription the checkout just created (default: paid and active)
+const stripeSub0 = (status: string, id: string) => ({ id, customer: "cus_1", status, items: { data: [{ price: { id: "price_starter" } }] }, metadata: {} })
+
 beforeEach(() => {
   calls.writes = []
   calls.users = []
   calls.emails = []
   calls.badSignature = false
   calls.known = new Set()
-  calls.subs = {}
+  calls.subs = { sub_1: stripeSub0("active", "sub_1"), sub_2: stripeSub0("active", "sub_2") }
   calls.rows = [{ id: "row1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1" }]
+  calls.customerSubs = []
   vi.stubEnv("STRIPE_SECRET_KEY", "sk_test_x")
   vi.stubEnv("STRIPE_WEBHOOK_SECRET", "whsec_x")
   vi.stubEnv("RESEND_API_KEY", "re_x")
@@ -314,5 +333,111 @@ describe("Stripe webhook: more than one subscription, other products, retries (m
     calls.subs["sub_new"] = stripeSub("active", "price_pro", undefined, "sub_new")
     await send({ type: "customer.subscription.updated", data: { object: { id: "sub_new", customer: "cus_1" } } })
     expect(calls.rows[0]).toMatchObject({ stripe_subscription_id: "sub_current", plan: "starter" })
+  })
+})
+
+describe("Stripe webhook: a second checkout for an account that already holds a subscription", () => {
+  const second = () => checkout({ subscription: "sub_2", customer: "cus_2", metadata: { plan: "pro", supabase_user_id: "u1" } })
+  const holdOldOne = (status: string) => {
+    calls.rows = [{ id: "row1", user_id: "u1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1", status: "active", plan: "starter" }]
+    calls.subs["sub_1"] = stripeSub(status, "price_starter")
+  }
+
+  for (const status of ["active", "trialing", "past_due", "unpaid", "incomplete"]) {
+    it(`keeps the stored subscription (Stripe says ${status}), writes a review note (not a subscription row), and sends no activation email`, async () => {
+      holdOldOne(status)
+      const res = await send(second())
+      expect(res.status).toBe(200)
+      expect(calls.writes.filter((x) => x.op === "upsert")).toHaveLength(0)
+      expect(calls.rows[0]).toMatchObject({ stripe_subscription_id: "sub_1", plan: "starter", status: "active" })
+      expect(calls.writes.filter((x) => x.table === "subscriptions")).toHaveLength(0) // access is exactly what it was
+      expect(calls.writes).toHaveLength(1)
+      const note = calls.writes[0]
+      expect(note).toMatchObject({ table: "billing_review", op: "insert" })
+      expect(note.row).toMatchObject({ kind: "duplicate_subscription", user_id: "u1", stripe_customer_id: "cus_2", stripe_subscription_id: "sub_2", stored_subscription_id: "sub_1" })
+      expect(note.row.status).toBeUndefined() // never labelled inactive, canceled or any Stripe state
+      expect(String(note.row.reason)).toContain("may still be billing")
+      expect(calls.emails).toHaveLength(0)
+    })
+  }
+
+  it("replaces the stored subscription when the old one is canceled (resubscribing works)", async () => {
+    holdOldOne("canceled")
+    await send(second())
+    const up = calls.writes.find((x) => x.op === "upsert")
+    expect(up?.row).toMatchObject({ user_id: "u1", stripe_subscription_id: "sub_2", plan: "pro", status: "active" })
+    expect(calls.emails.map((e) => e.subject)).toEqual(["Your Supplement Snap subscription is active"])
+  })
+
+  it("answers 500, and writes nothing, when Stripe cannot say what the stored subscription is, so Stripe retries", async () => {
+    calls.rows = [{ id: "row1", user_id: "u1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_gone", status: "active" }]
+    // sub_gone is not in calls.subs, so the stand-in Stripe throws
+    const res = await send(second())
+    expect(res.status).toBe(500)
+    expect(calls.writes).toHaveLength(0)
+  })
+
+  it("redelivery of the held-back checkout does not add a second note or email", async () => {
+    holdOldOne("active")
+    await send(second())
+    await send(second())
+    expect(calls.writes.filter((x) => x.op === "insert")).toHaveLength(1)
+    expect(calls.emails).toHaveLength(0)
+  })
+
+  it("the same subscription delivered again for the same account is still a no-op", async () => {
+    calls.rows = [{ id: "row1", user_id: "u1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1", status: "active" }]
+    calls.known.add("sub_1")
+    await send(checkout())
+    expect(calls.writes).toHaveLength(0)
+  })
+})
+
+describe("Stripe webhook: the account's own stable Stripe customer", () => {
+  const second = () => checkout({ subscription: "sub_2", customer: "cus_1", metadata: { plan: "pro", supabase_user_id: "u1" } })
+
+  it("does not count the subscription that just arrived against the account's earlier, canceled one (resubscribing on the same customer)", async () => {
+    calls.rows = [{ id: "row1", user_id: "u1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1", status: "canceled", plan: "starter" }]
+    calls.subs["sub_1"] = stripeSub("canceled", "price_starter")
+    calls.customerSubs = [{ id: "sub_1", status: "canceled" }, { id: "sub_2", status: "active" }] // sub_2 is the new one
+    await send(second())
+    expect(calls.writes.find((x) => x.op === "upsert")?.row).toMatchObject({ user_id: "u1", stripe_subscription_id: "sub_2", plan: "pro" })
+    expect(calls.writes.some((x) => x.table === "billing_review")).toBe(false)
+  })
+
+  it("still holds the new one when the earlier subscription on the same customer is live", async () => {
+    calls.rows = [{ id: "row1", user_id: "u1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1", status: "active", plan: "starter" }]
+    calls.subs["sub_1"] = stripeSub("active", "price_starter")
+    calls.customerSubs = [{ id: "sub_1", status: "active" }, { id: "sub_2", status: "active" }]
+    await send(second())
+    expect(calls.writes.map((x) => x.table)).toEqual(["billing_review"])
+    expect(calls.rows[0]).toMatchObject({ stripe_subscription_id: "sub_1", status: "active" })
+  })
+})
+
+describe("Stripe webhook: what Stripe says the new subscription is, not an assumption", () => {
+  it("a trial subscription is recorded as trialing (access stays on) and the customer is told it is active", async () => {
+    calls.subs["sub_1"] = stripeSub0("trialing", "sub_1")
+    await send(checkout({ metadata: { plan: "team", supabase_user_id: "u1" } }))
+    expect(calls.writes[0].row.status).toBe("trialing")
+    expect(calls.emails.map((e) => e.subject)).toEqual(["Your Supplement Snap subscription is active"])
+  })
+  it("a checkout whose first payment is still incomplete does NOT switch access on and sends no activation email", async () => {
+    calls.subs["sub_1"] = stripeSub0("incomplete", "sub_1")
+    await send(checkout({ metadata: { plan: "team", supabase_user_id: "u1" } }))
+    expect(calls.writes[0].row.status).toBe("inactive")
+    expect(calls.emails).toHaveLength(0)
+    // and the later Stripe event that finishes the payment turns it on
+    calls.rows = [{ id: "row1", user_id: "u1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1", status: "inactive" }]
+    calls.subs["sub_1"] = stripeSub("active", "price_team")
+    await send(invoice("invoice.paid"))
+    expect(calls.rows[0].status).toBe("active")
+  })
+  it("answers 500 and writes nothing when Stripe cannot say what the new subscription is, so Stripe retries", async () => {
+    delete calls.subs["sub_1"]
+    const res = await send(checkout({ metadata: { plan: "team", supabase_user_id: "u1" } }))
+    expect(res.status).toBe(500)
+    expect(calls.writes).toHaveLength(0)
+    expect(calls.emails).toHaveLength(0)
   })
 })
