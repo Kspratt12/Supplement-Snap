@@ -111,6 +111,32 @@ export default function HowRoofingSupplementsWorkPage() {
           Contractors who document damage in real time during tear-off, rather than trying to reconstruct notes later, tend to produce clearer supplement packages. Approval is never guaranteed.
         </p>
 
+        <h2 className="mt-12 text-xl font-bold text-zinc-900">When hidden damage turns up: what three insurers publish</h2>
+        <p className="mt-3 text-base leading-relaxed text-zinc-600">
+          Some insurers publish their own steps for extra costs found during repairs. These are three examples of what carriers say, not rules for every carrier or state. Your policy and your carrier&apos;s instructions come first.
+        </p>
+        <ul className="mt-4 list-disc space-y-3 pl-6 text-base leading-relaxed text-zinc-600">
+          <li>
+            <a href="https://www.ace.aaa.com/content/ace-www/en/insurance/claims/home-insurance-claims/supplements.html" className="text-indigo-600 underline hover:text-indigo-800" rel="noopener noreferrer">AAA</a> says supplements are a common part of a claim because some damage is not found until repairs start, that a re-inspection may be needed, and that you should contact your claims representative before making further repairs when additional damage is found.
+          </li>
+          <li>
+            <a href="https://www.usaa.com/support/insurance/claims/videos/home-repairs-cost-more-than-estimate/" className="text-indigo-600 underline hover:text-indigo-800" rel="noopener noreferrer">USAA</a> describes a supplement as a claim for repair costs not in the original estimate. It asks for an itemized contractor estimate, photos of the additional damage and receipts for extra costs, advises checking your policy or talking with your adjuster first because some costs may not be covered, and says its own review takes about 7 to 10 business days.
+          </li>
+          <li>
+            <a href="https://www.travelers.com/claims/guides/additional-costs-property-claim" className="text-indigo-600 underline hover:text-indigo-800" rel="noopener noreferrer">Travelers</a> says the policyholder or contractor provides an estimate, photos or receipts, and that Travelers then decides whether the additional damage is covered, noting that some items may not be eligible.
+          </li>
+        </ul>
+        <p className="mt-4 text-base leading-relaxed text-zinc-600">
+          Our general read of these examples: the carrier decides coverage, it expects evidence of the new damage, and two of the three point to talking with the adjuster before going further. Review times and steps differ by carrier, so use these as examples and follow your own carrier&apos;s process.
+        </p>
+        <p className="mt-3 text-base leading-relaxed text-zinc-600">
+          If the carrier asks for a second look or says no, see{" "}
+          <Link href="/blog/roof-claim-reinspection-request" className="text-indigo-600 underline hover:text-indigo-800">how a reinspection request works</Link> and{" "}
+          <Link href="/blog/roofing-supplement-denied-what-to-do" className="text-indigo-600 underline hover:text-indigo-800">what to do when a supplement is denied</Link>. For the paperwork itself, see{" "}
+          <Link href="/blog/how-to-write-a-roofing-supplement" className="text-indigo-600 underline hover:text-indigo-800">how to write a roofing supplement</Link>, and for timing,{" "}
+          <Link href="/blog/how-long-does-a-roofing-supplement-take" className="text-indigo-600 underline hover:text-indigo-800">how long a supplement can take</Link>.
+        </p>
+
         <h2 className="mt-12 text-xl font-bold text-zinc-900">Roofing insurance supplements: common questions</h2>
         <div className="mt-4 divide-y divide-zinc-100 rounded-xl border border-zinc-200">
           {FAQ.map((f) => (
@@ -130,7 +156,7 @@ export default function HowRoofingSupplementsWorkPage() {
         <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 text-center">
           <h2 className="text-xl font-bold text-zinc-900">Document supplements the right way</h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-zinc-500">
-            Supplement Snap helps roofing crews capture hidden damage during tear-off and generate adjuster-ready documentation in minutes.
+            Supplement Snap helps roofing crews capture hidden damage during tear-off and generate adjuster-ready documentation. Your first project is free with no card needed: the demo project plus one project of your own, up to 3 findings. Paid plans start with a 14-day trial that requires a card.
           </p>
           <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link href="/roofing-supplement-report-example" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
