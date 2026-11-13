@@ -99,13 +99,16 @@ const checkout = (over: Record<string, unknown> = {}) => ({
   data: { object: { customer: "cus_1", subscription: "sub_1", customer_details: { email: "crystal@example.com" }, metadata: { plan: "starter", supabase_user_id: "u1" }, ...over } },
 })
 
+// what Stripe reports for a subscription the checkout just created (default: paid and active)
+const stripeSub0 = (status: string, id: string) => ({ id, customer: "cus_1", status, items: { data: [{ price: { id: "price_starter" } }] }, metadata: {} })
+
 beforeEach(() => {
   calls.writes = []
   calls.users = []
   calls.emails = []
   calls.badSignature = false
   calls.known = new Set()
-  calls.subs = {}
+  calls.subs = { sub_1: stripeSub0("active", "sub_1"), sub_2: stripeSub0("active", "sub_2") }
   calls.rows = [{ id: "row1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1" }]
   calls.customerSubs = []
   vi.stubEnv("STRIPE_SECRET_KEY", "sk_test_x")
@@ -351,7 +354,7 @@ describe("Stripe webhook: a second checkout for an account that already holds a 
       expect(calls.writes).toHaveLength(1)
       const note = calls.writes[0]
       expect(note).toMatchObject({ table: "billing_review", op: "insert" })
-      expect(note.row).toMatchObject({ user_id: "u1", stripe_customer_id: "cus_2", stripe_subscription_id: "sub_2", stored_subscription_id: "sub_1" })
+      expect(note.row).toMatchObject({ kind: "duplicate_subscription", user_id: "u1", stripe_customer_id: "cus_2", stripe_subscription_id: "sub_2", stored_subscription_id: "sub_1" })
       expect(note.row.status).toBeUndefined() // never labelled inactive, canceled or any Stripe state
       expect(String(note.row.reason)).toContain("may still be billing")
       expect(calls.emails).toHaveLength(0)
@@ -409,5 +412,32 @@ describe("Stripe webhook: the account's own stable Stripe customer", () => {
     await send(second())
     expect(calls.writes.map((x) => x.table)).toEqual(["billing_review"])
     expect(calls.rows[0]).toMatchObject({ stripe_subscription_id: "sub_1", status: "active" })
+  })
+})
+
+describe("Stripe webhook: what Stripe says the new subscription is, not an assumption", () => {
+  it("a trial subscription is recorded as trialing (access stays on) and the customer is told it is active", async () => {
+    calls.subs["sub_1"] = stripeSub0("trialing", "sub_1")
+    await send(checkout({ metadata: { plan: "team", supabase_user_id: "u1" } }))
+    expect(calls.writes[0].row.status).toBe("trialing")
+    expect(calls.emails.map((e) => e.subject)).toEqual(["Your Supplement Snap subscription is active"])
+  })
+  it("a checkout whose first payment is still incomplete does NOT switch access on and sends no activation email", async () => {
+    calls.subs["sub_1"] = stripeSub0("incomplete", "sub_1")
+    await send(checkout({ metadata: { plan: "team", supabase_user_id: "u1" } }))
+    expect(calls.writes[0].row.status).toBe("inactive")
+    expect(calls.emails).toHaveLength(0)
+    // and the later Stripe event that finishes the payment turns it on
+    calls.rows = [{ id: "row1", user_id: "u1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1", status: "inactive" }]
+    calls.subs["sub_1"] = stripeSub("active", "price_team")
+    await send(invoice("invoice.paid"))
+    expect(calls.rows[0].status).toBe("active")
+  })
+  it("answers 500 and writes nothing when Stripe cannot say what the new subscription is, so Stripe retries", async () => {
+    delete calls.subs["sub_1"]
+    const res = await send(checkout({ metadata: { plan: "team", supabase_user_id: "u1" } }))
+    expect(res.status).toBe(500)
+    expect(calls.writes).toHaveLength(0)
+    expect(calls.emails).toHaveLength(0)
   })
 })

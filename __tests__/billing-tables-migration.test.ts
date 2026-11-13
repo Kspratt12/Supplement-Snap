@@ -65,10 +65,24 @@ describe("supabase-migration-v14 (proposed)", () => {
     expect(await code(as("service_role", "INSERT INTO billing_customers (user_id, stripe_customer_id) VALUES ($1, 'cus_2')", [U1]))).toBe("23505")
   })
 
-  it("a redelivered duplicate adds no second review note", async () => {
-    const add = () => as("service_role", "INSERT INTO billing_review (user_id, stripe_customer_id, stripe_subscription_id, stored_subscription_id, reason) VALUES ($1, 'cus_1', 'sub_2', 'sub_1', 'r')", [U1])
-    await add()
-    expect(await code(add())).toBe("23505")
+  it("a redelivered duplicate adds no second review note, and an unused-customer note is recorded once", async () => {
+    const dup = () => as("service_role", "INSERT INTO billing_review (kind, user_id, stripe_customer_id, stripe_subscription_id, stored_subscription_id, reason) VALUES ('duplicate_subscription', $1, 'cus_1', 'sub_2', 'sub_1', 'r')", [U1])
+    await dup()
+    expect(await code(dup())).toBe("23505")
+    const unused = () => as("service_role", "INSERT INTO billing_review (kind, user_id, stripe_customer_id, stored_customer_id, reason) VALUES ('unused_customer', $1, 'cus_lost', 'cus_1', 'r')", [U1])
+    await unused()
+    expect(await code(unused())).toBe("23505")
+  })
+
+  it("rejects an unknown kind and a note missing the id its kind needs (nothing can be recorded as an ordinary Stripe state)", async () => {
+    expect(await code(as("service_role", "INSERT INTO billing_review (kind, reason) VALUES ('inactive', 'x')"))).toBe("23514")
+    expect(await code(as("service_role", "INSERT INTO billing_review (kind, reason) VALUES ('duplicate_subscription', 'x')"))).toBe("23514")
+  })
+
+  it("the review table has no status column and is not part of any access query", async () => {
+    const cols = (await db.query("SELECT column_name FROM information_schema.columns WHERE table_name = 'billing_review'")).rows.map((r) => (r as { column_name: string }).column_name)
+    expect(cols).not.toContain("status")
+    expect(cols).not.toContain("plan")
   })
 
   it("does not touch the subscriptions table: access is exactly what it was", async () => {
@@ -77,7 +91,7 @@ describe("supabase-migration-v14 (proposed)", () => {
     expect(live.rows).toEqual([{ n: 1 }])
   })
 
-  it("rollback is clean: dropping both tables leaves nothing behind", async () => {
+  it("the pre-data rollback statement works mechanically (it must NOT be used once the tables hold rows)", async () => {
     await db.exec("DROP TABLE public.billing_review; DROP TABLE public.billing_customers;")
     const r = await db.query("SELECT count(*)::int AS n FROM pg_class WHERE relname IN ('billing_customers','billing_review')")
     expect(r.rows).toEqual([{ n: 0 }])

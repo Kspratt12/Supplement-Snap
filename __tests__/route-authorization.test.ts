@@ -10,6 +10,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest"
 const mockGetUser = vi.fn()
 const mockGetAccess = vi.fn()
 const mockSessionsCreate = vi.fn()
+const sessionsMade: Array<{ id: string; url: string; created: number; status: string; customer?: string; metadata: { plan?: string } }> = []
 const mockCustomersCreate = vi.fn()
 const mockEmailSend = vi.fn()
 
@@ -22,8 +23,21 @@ vi.mock("../lib/plan", async () => ({
 vi.mock("../lib/rate-limit", () => ({ rateLimited: () => false }))
 vi.mock("stripe", () => ({
   default: class {
-    checkout = { sessions: { create: (...a: unknown[]) => mockSessionsCreate(...a), list: async () => ({ data: [] }), expire: async () => ({}) } }
-    customers = { create: (...a: unknown[]) => mockCustomersCreate(...a), del: async () => ({}) }
+    // a small stand-in that remembers the sessions made, so the checkout's own re-check can see them
+    checkout = {
+      sessions: {
+        create: async (...a: unknown[]) => {
+          const made = (await mockSessionsCreate(...a)) as { id: string; url: string }
+          const p = a[0] as { customer?: string; metadata?: { plan?: string } }
+          sessionsMade.push({ id: made.id, url: made.url, created: sessionsMade.length + 1, status: "open", customer: p.customer, metadata: p.metadata ?? {} })
+          return made
+        },
+        list: async (p: { customer: string }) => ({ data: sessionsMade.filter((x) => x.status === "open" && x.customer === p.customer), has_more: false }),
+        retrieve: async (id: string) => sessionsMade.find((x) => x.id === id),
+        expire: async (id: string) => { const x = sessionsMade.find((y) => y.id === id); if (x) x.status = "expired"; return x },
+      },
+    }
+    customers = { create: (...a: unknown[]) => mockCustomersCreate(...a), del: async () => ({}), list: async () => ({ data: [], has_more: false }) }
     subscriptions = { retrieve: async (id: string) => ({ id, status: "canceled" }), list: async () => ({ data: [] }) }
   },
 }))
@@ -51,8 +65,9 @@ beforeEach(() => {
   process.env.STRIPE_PRICE_MONTHLY = "price_starter"
   process.env.STRIPE_PRICE_TEAM_MONTHLY = "price_team"
   process.env.RESEND_API_KEY = "re_dummy"
-  mockSessionsCreate.mockResolvedValue({ id: "cs_test", url: "https://checkout.example/session" })
+  mockSessionsCreate.mockImplementation(async () => ({ id: `cs_test_${sessionsMade.length + 1}`, url: "https://checkout.example/session" }))
   mockCustomersCreate.mockResolvedValue({ id: "cus_test" })
+  sessionsMade.length = 0
   mockEmailSend.mockResolvedValue({ error: null })
   mockGetAccess.mockResolvedValue({ active: false, viaOwner: false })
 })

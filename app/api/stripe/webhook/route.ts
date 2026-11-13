@@ -122,6 +122,16 @@ export async function POST(request: Request) {
           userId = matched?.id || null
         }
 
+        // What Stripe says the new subscription is RIGHT NOW (trialing, active, incomplete...), not an assumption that checkout
+        // completing means it is paid. An incomplete first payment must not switch access on. If Stripe cannot be asked, throw
+        // so the event is answered with 500 and Stripe retries it.
+        let checkoutStatus = "active"
+        if (subscriptionId) {
+          const created = await stripe.subscriptions.retrieve(subscriptionId)
+          checkoutStatus = STATUS_MAP[created.status] || "inactive"
+        }
+        const checkoutIsLive = checkoutStatus === "active" || checkoutStatus === "trialing" || checkoutStatus === "past_due"
+
         // A second paid checkout for an account that already holds a live subscription must not replace the stored
         // subscription id: the older one would keep billing with nothing pointing at it. Keep the stored subscription, write a
         // billing_review note so the owner can see it, and send no "your plan is active" email. This is a fallback: the
@@ -143,6 +153,7 @@ export async function POST(request: Request) {
               // A separate review record, NOT a subscriptions row: it cannot be mistaken for a canceled or non-billing
               // subscription, no access query reads it, and later Stripe events cannot rewrite it.
               const { error: reviewError } = await supabaseAdmin.from("billing_review").insert({
+                kind: "duplicate_subscription",
                 user_id: userId,
                 stripe_customer_id: customerId,
                 stripe_subscription_id: subscriptionId,
@@ -163,7 +174,7 @@ export async function POST(request: Request) {
               stripe_customer_id: customerId,
               stripe_subscription_id: subscriptionId,
               stripe_customer_email: customerEmail || "",
-              status: "active",
+              status: checkoutStatus,
               plan,
               updated_at: new Date().toISOString(),
             },
@@ -174,13 +185,13 @@ export async function POST(request: Request) {
             stripe_customer_id: customerId,
             stripe_subscription_id: subscriptionId,
             stripe_customer_email: customerEmail,
-            status: "active",
+            status: checkoutStatus,
             plan,
           })
         }
 
         // Send subscription activation email
-        if (userId && customerEmail && process.env.RESEND_API_KEY) {
+        if (userId && customerEmail && process.env.RESEND_API_KEY && checkoutIsLive) {
           try {
             // Look up user name if we have a userId
             let userName = ""

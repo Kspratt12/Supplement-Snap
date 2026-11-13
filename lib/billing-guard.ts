@@ -10,7 +10,10 @@ import type Stripe from "stripe"
  *   incomplete                  a first payment is still being processed
  *   canceled, incomplete_expired  finished: a new checkout is allowed (resubscribe / recover from a failed checkout)
  */
-export type StoredSubscription = { stripe_subscription_id?: string | null; stripe_customer_id?: string | null } | null | undefined
+export type StoredSubscription =
+  | { stripe_subscription_id?: string | null; stripe_customer_id?: string | null; /** other Stripe customers known to belong to the account */ extra_customer_ids?: string[] }
+  | null
+  | undefined
 
 export type BillingBlock = {
   httpStatus: 409
@@ -61,6 +64,21 @@ export function blockFor(status: string): BillingBlock | null {
 }
 
 /**
+ * Every Stripe customer that has the account's email. An account can have several historical customers (earlier guest
+ * checkouts each made a new one), so a live subscription on any of them must count. Fails if the list is incomplete.
+ */
+export async function customerIdsForEmail(stripe: Stripe, email?: string | null): Promise<string[]> {
+  if (!email) return []
+  const ids = new Set<string>()
+  for (const e of new Set([email, email.toLowerCase()])) {
+    const list = await stripe.customers.list({ email: e, limit: 100 })
+    if (list.has_more) throw new Error("customers could not be listed completely")
+    for (const c of list.data) ids.add(c.id)
+  }
+  return [...ids]
+}
+
+/**
  * Returns the block to show, or null when a new checkout may start. Throws if Stripe cannot be asked: the caller
  * must then NOT start a purchase (and a webhook must answer 500 so Stripe retries).
  */
@@ -71,10 +89,18 @@ export async function existingBillingBlock(stripe: Stripe, stored: StoredSubscri
     const sub = await stripe.subscriptions.retrieve(stored.stripe_subscription_id)
     seen.set(sub.id, sub.status)
   }
-  if (stored.stripe_customer_id) {
-    // Any other subscription on the same Stripe customer counts too (a stray older one is still billing)
-    const list = await stripe.subscriptions.list({ customer: stored.stripe_customer_id, status: "all", limit: 20 })
-    for (const sub of list.data) seen.set(sub.id, sub.status)
+  // Any other subscription on any customer that belongs to the account counts too (a stray older one is still billing)
+  const customers = new Set<string>([...(stored.stripe_customer_id ? [stored.stripe_customer_id] : []), ...(stored.extra_customer_ids ?? [])])
+  for (const customer of customers) {
+    let startingAfter: string | undefined
+    for (let page = 0; ; page++) {
+      if (page >= 5) throw new Error("subscriptions could not be listed completely")
+      const list = await stripe.subscriptions.list({ customer, status: "all", limit: 100, ...(startingAfter ? { starting_after: startingAfter } : {}) })
+      for (const sub of list.data) seen.set(sub.id, sub.status)
+      if (!list.has_more) break
+      startingAfter = list.data[list.data.length - 1]?.id
+      if (!startingAfter) throw new Error("subscriptions could not be listed completely")
+    }
   }
   // a webhook asks about the account's PREVIOUS subscription, so the one that just arrived is not counted against it
   if (ignoreSubscriptionId) seen.delete(ignoreSubscriptionId)

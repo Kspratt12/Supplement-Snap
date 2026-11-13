@@ -3,8 +3,8 @@ import { NextResponse } from "next/server"
 import { getAuthenticatedUser } from "../../../lib/auth-utils"
 import { createClient } from "@supabase/supabase-js"
 import { getAccess, isPlanPurchasable, planUnavailable } from "../../../lib/plan"
-import { existingBillingBlock } from "../../../lib/billing-guard"
-import { SESSION_LIFETIME_SECONDS, keepNewest, reuseOrClear, stableCustomer } from "../../../lib/checkout-reservation"
+import { customerIdsForEmail, existingBillingBlock, type StoredSubscription } from "../../../lib/billing-guard"
+import { CheckoutProtectionUnavailable, SESSION_LIFETIME_SECONDS, expireOrConfirm, keepNewest, openSessions, reuseOrClear, stableCustomer } from "../../../lib/checkout-reservation"
 
 export async function GET() {
   const key = process.env.STRIPE_SECRET_KEY || ""
@@ -28,6 +28,7 @@ export async function POST(request: Request) {
     let plan: string = "starter"
     let stripeCustomerId: string | null = null // the account's one stable Stripe customer, when it can be used
     let reuseUrl: string | null = null
+    let accountCustomers: StoredSubscription = null
     try {
       const body = await request.json()
       plan = typeof body.plan === "string" ? body.plan : "starter"
@@ -57,8 +58,9 @@ export async function POST(request: Request) {
           { status: 409 }
         )
       }
-      // Our own table can lag behind Stripe, so also ask Stripe about the subscription we hold before starting another.
-      // If that cannot be checked, nothing is started: a second subscription would bill twice.
+      // Our own table can lag behind Stripe, so Stripe is asked directly before another subscription is started.
+      // If it cannot be asked, or the protection's tables are missing, NOTHING is started: a second subscription would bill twice
+      // and this path never quietly weakens itself.
       const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "", process.env.SUPABASE_SERVICE_ROLE_KEY || "")
       const { data: stored, error: storedError } = await db
         .from("subscriptions")
@@ -68,17 +70,21 @@ export async function POST(request: Request) {
       let block = null
       try {
         if (storedError) throw new Error("subscription lookup failed")
-        // One stable Stripe customer per account, so what Stripe holds for it (subscriptions and open checkouts) can be
-        // read directly and does not wait for our webhook. Existing subscribers keep the customer they already have.
+        // One stable Stripe customer per account. Existing subscribers keep the customer they already have.
         const customer = await stableCustomer(db as never, stripe, { id: user.id, email: user.email }, stored?.stripe_customer_id)
-        stripeCustomerId = customer.degraded ? null : customer.id
-        block = await existingBillingBlock(stripe, {
-          stripe_subscription_id: stored?.stripe_subscription_id,
-          stripe_customer_id: customer.id ?? stored?.stripe_customer_id,
-        })
+        stripeCustomerId = customer.id
+        accountCustomers = { stripe_subscription_id: stored?.stripe_subscription_id, stripe_customer_id: customer.id, extra_customer_ids: [...(stored?.stripe_customer_id && stored.stripe_customer_id !== customer.id ? [stored.stripe_customer_id] : []), ...(await customerIdsForEmail(stripe, user.email))] }
+        block = await existingBillingBlock(stripe, accountCustomers)
         // The same plan reuses its open checkout; open checkouts for other plans are expired first
-        if (!block && stripeCustomerId) reuseUrl = await reuseOrClear(stripe, stripeCustomerId, plan)
+        if (!block) reuseUrl = await reuseOrClear(stripe, customer.id, plan)
       } catch (err) {
+        if (err instanceof CheckoutProtectionUnavailable) {
+          console.error("Checkout protection unavailable: apply supabase-migration-v14-billing-customers-and-review.sql, then redeploy")
+          return NextResponse.json(
+            { error: "Checkout is temporarily unavailable. Please try again later or email support@supplementsnap.io.", code: "checkout-unavailable" },
+            { status: 503 }
+          )
+        }
         console.error("Checkout billing check failed:", err instanceof Error ? err.name : "unknown")
         return NextResponse.json(
           { error: "We could not check your billing right now, so no subscription was started. Please try again in a moment." },
@@ -109,7 +115,9 @@ export async function POST(request: Request) {
       )
     }
 
-    const session = await stripe.checkout.sessions.create({
+    let session: Stripe.Checkout.Session
+    try {
+      session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
       ...(stripeCustomerId ? { customer: stripeCustomerId } : customerEmail ? { customer_email: customerEmail } : {}),
@@ -128,10 +136,35 @@ export async function POST(request: Request) {
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/pricing?canceled=true`,
     })
+    } catch (err) {
+      console.error("Checkout session creation failed:", err instanceof Error ? err.name : "unknown")
+      return NextResponse.json({ error: "We could not start checkout right now, so nothing was started. Please try again in a moment." }, { status: 503 })
+    }
 
-    // If another checkout for this account was made at the same moment, only the newest stays open
-    const url = stripeCustomerId ? await keepNewest(stripe, stripeCustomerId, { id: session.id, url: session.url }) : session.url
-    return NextResponse.json({ url })
+    if (!stripeCustomerId) return NextResponse.json({ url: session.url }) // a guest: no account to protect
+
+    // The session now exists. Check again, in this order, before handing it out; if anything fails the session is expired
+    // (best effort) and nothing is returned, so a link nobody received can never be paid.
+    try {
+      // 1. A payment may have completed while this request was working (so an expire call could have lost to a completion)
+      const late = await existingBillingBlock(stripe, accountCustomers)
+      if (late) {
+        await expireOrConfirm(stripe, session.id)
+        return NextResponse.json({ error: late.message, code: late.code, action: late.action }, { status: late.httpStatus })
+      }
+      // 2. Another checkout for this account made at the same moment: only the newest stays open
+      let url = await keepNewest(stripe, stripeCustomerId, { id: session.id, url: session.url })
+      if (!url) {
+        // a competing request expired ours; hand out the one that is open now
+        url = (await openSessions(stripe, stripeCustomerId))[0]?.url ?? null
+      }
+      if (!url) throw new Error("no open checkout session")
+      return NextResponse.json({ url })
+    } catch (err) {
+      console.error("Checkout reconciliation failed:", err instanceof Error ? err.name : "unknown")
+      try { await expireOrConfirm(stripe, session.id) } catch { /* it was never handed out; it expires on its own in about half an hour */ }
+      return NextResponse.json({ error: "We could not start checkout right now, so nothing was started. Please try again in a moment." }, { status: 503 })
+    }
   } catch (err) {
     console.error("Stripe checkout error:", err)
     const message = err instanceof Error ? err.message : "Unknown error"
