@@ -10,6 +10,8 @@ const calls = vi.hoisted(() => ({
   known: new Set<string>(),
   /** what Stripe would report right now for each subscription id */
   subs: {} as Record<string, unknown>,
+  /** the subscriptions table as the stand-in database holds it */
+  rows: [] as Array<Record<string, unknown>>,
 }))
 
 vi.mock("stripe", () => ({
@@ -54,9 +56,20 @@ vi.mock("@supabase/supabase-js", () => ({
       }),
       upsert: async (row: Record<string, unknown>, opts: unknown) => (calls.writes.push({ table, op: "upsert", row, opts }), calls.known.add(String(row.stripe_subscription_id)), { error: null }),
       insert: async (row: Record<string, unknown>) => (calls.writes.push({ table, op: "insert", row }), calls.known.add(String(row.stripe_subscription_id)), { error: null }),
-      update: (row: Record<string, unknown>) => ({
-        eq: async (k: string, v: unknown) => (calls.writes.push({ table, op: "update", row, where: [k, v] }), { error: null }),
-      }),
+      update: (row: Record<string, unknown>) => {
+        const filters: Array<[string, unknown]> = []
+        const builder = {
+          eq: (k: string, v: unknown) => (filters.push([k, v]), builder),
+          is: (k: string, v: unknown) => (filters.push([k, v]), builder),
+          select: async () => {
+            const hit = calls.rows.filter((r) => filters.every(([k, v]) => (r[k] ?? null) === v))
+            calls.writes.push({ table, op: "update", row, where: filters[0] })
+            hit.forEach((r) => Object.assign(r, row))
+            return { data: hit.map((r) => ({ id: r.id })), error: null }
+          },
+        }
+        return builder
+      },
     }),
   }),
 }))
@@ -78,6 +91,7 @@ beforeEach(() => {
   calls.badSignature = false
   calls.known = new Set()
   calls.subs = {}
+  calls.rows = [{ id: "row1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1" }]
   vi.stubEnv("STRIPE_SECRET_KEY", "sk_test_x")
   vi.stubEnv("STRIPE_WEBHOOK_SECRET", "whsec_x")
   vi.stubEnv("RESEND_API_KEY", "re_x")
@@ -108,11 +122,11 @@ describe("Stripe webhook: a new purchase", () => {
   })
   it("finds the user by email when the checkout carries no user id", async () => {
     calls.users = [{ id: "u9", email: "Crystal@Example.com" }]
-    await send(checkout({ metadata: { plan: "starter" } }))
+    await send(checkout({ metadata: { plan: "starter", supabase_user_id: "" } }))
     expect(calls.writes[0].row).toMatchObject({ user_id: "u9", status: "active", plan: "starter" })
   })
   it("still records the purchase, with no user yet, when nobody matches", async () => {
-    await send(checkout({ metadata: { plan: "starter" } }))
+    await send(checkout({ metadata: { plan: "starter", supabase_user_id: "" } }))
     expect(calls.writes[0]).toMatchObject({ op: "insert" })
     expect(calls.writes[0].row).toMatchObject({ stripe_customer_email: "crystal@example.com", status: "active" })
     expect(calls.writes[0].row.user_id).toBeUndefined()
@@ -129,8 +143,8 @@ describe("Stripe webhook: a new purchase", () => {
     expect(calls.emails).toHaveLength(1)
   })
   it("does not create a second unattached record when an unattached payment is delivered twice", async () => {
-    await send(checkout({ metadata: { plan: "starter" } }))
-    await send(checkout({ metadata: { plan: "starter" } }))
+    await send(checkout({ metadata: { plan: "starter", supabase_user_id: "" } }))
+    await send(checkout({ metadata: { plan: "starter", supabase_user_id: "" } }))
     expect(calls.writes.filter((w) => w.op === "insert")).toHaveLength(1)
     expect(calls.emails).toHaveLength(1)
   })
@@ -161,11 +175,11 @@ const invoice = (type: "invoice.paid" | "invoice.payment_failed", subscription: 
   data: { object: { customer: "cus_1", parent: subscription ? { subscription_details: { subscription } } : null } },
 })
 
-describe("Stripe webhook: renewals, changes and cancellations (matched on the Stripe customer id)", () => {
+describe("Stripe webhook: renewals, changes and cancellations (matched on the Stripe subscription id)", () => {
   it("marks the plan active when a subscription invoice is paid", async () => {
     calls.subs["sub_1"] = stripeSub("active", "price_team")
     await send(invoice("invoice.paid"))
-    expect(calls.writes[0]).toMatchObject({ table: "subscriptions", op: "update", where: ["stripe_customer_id", "cus_1"] })
+    expect(calls.writes[0]).toMatchObject({ table: "subscriptions", op: "update", where: ["stripe_subscription_id", "sub_1"] })
     expect(calls.writes[0].row).toMatchObject({ status: "active", plan: "team" })
   })
   it("marks the plan past due when a renewal payment fails and Stripe is still retrying", async () => {
@@ -200,8 +214,9 @@ describe("Stripe webhook: renewals, changes and cancellations (matched on the St
     expect(calls.writes).toHaveLength(0)
   })
   it("marks the plan cancelled when the subscription is deleted", async () => {
-    await send({ type: "customer.subscription.deleted", data: { object: { customer: "cus_1" } } })
+    await send({ type: "customer.subscription.deleted", data: { object: { id: "sub_1", customer: "cus_1", items: { data: [{ price: { id: "price_team" } }] } } } })
     expect(calls.writes[0].row.status).toBe("canceled")
+    expect(calls.rows[0].status).toBe("canceled")
   })
   it("keeps access to the end of the paid period when a customer cancels (Stripe still says active)", async () => {
     calls.subs["sub_1"] = { ...stripeSub("active", "price_team"), cancel_at_period_end: true }
@@ -233,5 +248,71 @@ describe("Stripe webhook: renewals, changes and cancellations (matched on the St
     const res = await send({ type: "customer.created", data: { object: {} } })
     expect(res.status).toBe(200)
     expect(calls.writes).toHaveLength(0)
+  })
+})
+
+describe("Stripe webhook: more than one subscription, other products, retries (matched on the subscription id)", () => {
+  const deleted = (id: string, price = "price_starter", customer = "cus_1") => ({
+    type: "customer.subscription.deleted",
+    data: { object: { id, customer, items: { data: [{ price: { id: price } }] } } },
+  })
+
+  it("cancelling an OLDER subscription of the same customer leaves the current subscription active", async () => {
+    calls.rows = [{ id: "row1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_current", status: "active", plan: "starter" }]
+    await send(deleted("sub_old"))
+    expect(calls.rows[0]).toMatchObject({ status: "active", plan: "starter", stripe_subscription_id: "sub_current" })
+  })
+  it("cancelling the CURRENT subscription cancels that row", async () => {
+    calls.rows = [{ id: "row1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_current", status: "active" }]
+    await send(deleted("sub_current"))
+    expect(calls.rows[0].status).toBe("canceled")
+  })
+  it("an update or paid event for an older subscription cannot change the current one (out of order, retried)", async () => {
+    calls.rows = [{ id: "row1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_current", status: "active", plan: "starter" }]
+    calls.subs["sub_old"] = stripeSub("canceled", "price_starter", undefined, "sub_old")
+    await send(invoice("invoice.paid", "sub_old"))
+    await send({ type: "customer.subscription.updated", data: { object: { id: "sub_old", customer: "cus_1" } } })
+    await send(invoice("invoice.payment_failed", "sub_old"))
+    expect(calls.rows[0]).toMatchObject({ status: "active", plan: "starter" })
+  })
+  it("a subscription that belongs to another product on this Stripe account changes nothing here", async () => {
+    calls.rows = [{ id: "row1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_current", status: "active", plan: "pro" }]
+    calls.subs["sub_other"] = stripeSub("canceled", "price_leaseguard", undefined, "sub_other")
+    await send({ type: "customer.subscription.updated", data: { object: { id: "sub_other", customer: "cus_1" } } })
+    await send(deleted("sub_other", "price_leaseguard"))
+    await send(invoice("invoice.paid", "sub_other"))
+    expect(calls.rows[0]).toMatchObject({ status: "active", plan: "pro" })
+  })
+  it("a checkout from another product (not created by our checkout) neither grants access nor sends our email", async () => {
+    const res = await send({
+      type: "checkout.session.completed",
+      data: { object: { customer: "cus_9", subscription: "sub_9", customer_details: { email: "someone@example.com" }, metadata: { plan: "pro" } } },
+    })
+    expect(res.status).toBe(200)
+    expect(calls.writes).toHaveLength(0)
+    expect(calls.emails).toHaveLength(0)
+  })
+  it("the same event delivered twice leaves the same final state (retries are safe)", async () => {
+    calls.subs["sub_1"] = stripeSub("past_due", "price_team")
+    await send(invoice("invoice.payment_failed"))
+    const once = { ...calls.rows[0], updated_at: undefined }
+    await send(invoice("invoice.payment_failed"))
+    expect({ ...calls.rows[0], updated_at: undefined }).toEqual(once)
+    expect(calls.rows).toHaveLength(1)
+  })
+  it("a row that never recorded a subscription id adopts it from our own price, and only from our own price", async () => {
+    calls.rows = [{ id: "row1", stripe_customer_id: "cus_1", stripe_subscription_id: null, status: "active", plan: "starter" }]
+    calls.subs["sub_x"] = stripeSub("active", "price_unknown", undefined, "sub_x")
+    await send({ type: "customer.subscription.updated", data: { object: { id: "sub_x", customer: "cus_1" } } })
+    expect(calls.rows[0].stripe_subscription_id).toBeNull()
+    calls.subs["sub_y"] = stripeSub("active", "price_team", undefined, "sub_y")
+    await send({ type: "customer.subscription.updated", data: { object: { id: "sub_y", customer: "cus_1" } } })
+    expect(calls.rows[0]).toMatchObject({ stripe_subscription_id: "sub_y", plan: "team", status: "active" })
+  })
+  it("a row that already holds a different subscription is never adopted by customer id", async () => {
+    calls.rows = [{ id: "row1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_current", status: "active", plan: "starter" }]
+    calls.subs["sub_new"] = stripeSub("active", "price_pro", undefined, "sub_new")
+    await send({ type: "customer.subscription.updated", data: { object: { id: "sub_new", customer: "cus_1" } } })
+    expect(calls.rows[0]).toMatchObject({ stripe_subscription_id: "sub_current", plan: "starter" })
   })
 })
