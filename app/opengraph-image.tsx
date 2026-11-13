@@ -78,8 +78,8 @@ export default function OGImage() {
               lineHeight: 1.5,
             }}
           >
-            Capture hidden damage during tear-off. Generate adjuster-ready
-            reports.
+            Capture findings during tear-off. Build reports you review
+            before sending.
           </p>
         </div>
 

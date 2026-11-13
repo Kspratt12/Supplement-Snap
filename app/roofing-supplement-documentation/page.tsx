@@ -110,7 +110,7 @@ export default function SupplementDocumentationPage() {
         <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 text-center">
           <h2 className="text-xl font-bold text-zinc-900">Capture supplement documentation from the field</h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-zinc-500">
-            Supplement Snap makes it easy for crews to document hidden damage during tear-off. Photos, notes, and AI-generated supplement narratives, all saved by project.
+            Supplement Snap makes it easy for crews to document hidden damage during tear-off. Photos, notes, and AI-drafted descriptions that you review, all saved by project. See <Link href="/roofing-supplement-software" className="font-medium text-indigo-600 underline hover:text-indigo-500">how the app captures and organizes these findings</Link>.
           </p>
           <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link href="/roofing-supplement-report-example" className="w-full rounded-lg bg-indigo-600 px-7 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:w-auto">
