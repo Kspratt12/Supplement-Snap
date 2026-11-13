@@ -8,6 +8,19 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://supplementsnap.io/pricing" },
   title: "Roofing Supplement Software Pricing | Supplement Snap",
   description: "Simple pricing for roofing teams: start with a free project, then Starter at $99, Team at $199 or Pro at $299 a month, with a 14-day free trial.",
+  openGraph: {
+    title: "Roofing Supplement Software Pricing | Supplement Snap",
+    description: "Simple pricing for roofing teams: start with a free project, then Starter at $99, Team at $199 or Pro at $299 a month, with a 14-day free trial.",
+    siteName: "Supplement Snap",
+    type: "website",
+    locale: "en_US",
+    url: "https://supplementsnap.io/pricing",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Roofing Supplement Software Pricing | Supplement Snap",
+    description: "Simple pricing for roofing teams: start with a free project, then Starter at $99, Team at $199 or Pro at $299 a month, with a 14-day free trial.",
+  },
 }
 
 const STARTER_FEATURES = [
