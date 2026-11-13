@@ -63,7 +63,7 @@ export default function AboutPage() {
             <p className="text-lg font-bold">Kelvin Spratt</p>
             <p className="text-sm text-zinc-500">Founder</p>
             <p className="mt-2 text-sm leading-relaxed text-zinc-600">
-              Kelvin builds software for roofing contractors who want their supplement paperwork to match the work they did on the roof. His background is in software development and insurance restoration workflows.
+              Kelvin builds software for roofing contractors who want their supplement paperwork to match the work they did on the roof.
             </p>
           </div>
         </div>
