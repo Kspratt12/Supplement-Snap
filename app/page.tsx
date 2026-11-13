@@ -337,12 +337,12 @@ export default function LandingPage() {
               </div>
               <div className="space-y-3">
                 {[
-                  "Crew texts blurry photos to the office",
-                  "Field notes scribbled on paper or forgotten",
-                  "Office spends hours writing supplement from memory",
-                  "Documentation submitted days or weeks later",
-                  "Adjuster denies supplement due to insufficient evidence",
-                  "Hidden damage never makes it into the claim file",
+                  "Crew may text blurry photos to the office",
+                  "Field notes can end up on paper, or be forgotten",
+                  "The office may have to write the supplement from memory",
+                  "Documentation can go out days or weeks later",
+                  "Thin evidence can be harder for an adjuster to review",
+                  "Hidden damage can go undocumented",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5">
                     <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -368,10 +368,10 @@ export default function LandingPage() {
                 {[
                   "Crew captures labeled photos from the roof",
                   "Voice notes in Spanish and other supported languages",
-                  "AI generates professional supplement narrative",
-                  "PDF report emailed to adjuster the same day",
+                  "AI drafts the supplement narrative for you to review",
+                  "PDF report you can email to the adjuster from the project",
                   "Photos and notes go to the adjuster with every finding",
-                  "A clearer, more complete record on every job",
+                  "A consistent record to review on every job",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5">
                     <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
