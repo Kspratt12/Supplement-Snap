@@ -1,6 +1,9 @@
 // @vitest-environment node
 import { describe, it, expect, vi, beforeAll, afterAll } from "vitest"
 import Stripe from "stripe"
+import { PGlite } from "@electric-sql/pglite"
+import fs from "node:fs"
+import path from "node:path"
 
 /**
  * INTEGRATION TEST against Stripe TEST MODE. It is skipped unless STRIPE_TEST_KEY is set in the environment of the person
@@ -32,6 +35,7 @@ const state = {
   users: new Map<string, string>(), // user id -> stable customer id (our billing_customers stand-in)
 }
 let stripe: Stripe
+let pg: PGlite // the real v15 SQL (in-memory) behind the reservation functions; Stripe is the real test-mode API
 
 vi.mock("../lib/auth-utils", () => ({
   getAuthenticatedUser: async (req: Request) => {
@@ -64,6 +68,11 @@ vi.mock("@supabase/supabase-js", () => ({
         return { error: null }
       },
     }),
+    rpc: async (fn: string, args: Record<string, unknown>) => {
+      const q = `SELECT public.${fn}(${Object.keys(args).map((_, i) => `$${i + 1}`).join(", ")}) AS r`
+      await pg.exec("SET ROLE service_role")
+      try { return { data: ((await pg.query(q, Object.values(args))).rows[0] as { r: unknown }).r, error: null } } finally { await pg.exec("RESET ROLE") }
+    },
   }),
 }))
 
@@ -74,12 +83,15 @@ const post = (user: string | null, plan: string) =>
     body: JSON.stringify({ plan }),
   })
 
-const user = (n: string) => `${RUN}-${n}`
+const ids = new Map<string, string>()
+// account ids are UUIDs (the reservation table is keyed by auth.users.id)
+const user = (n: string) => { if (!ids.has(n)) ids.set(n, crypto.randomUUID()); return ids.get(n)! }
 const customerOf = (u: string) => state.users.get(u)!
 const openFor = async (customer: string) => (await stripe.checkout.sessions.list({ customer, status: "open", limit: 100 })).data
 
 async function call(u: string | null, plan: string) {
   const { POST } = await import("../app/api/create-checkout-session/route")
+  if (u) await pg.query("INSERT INTO auth.users (id, email) VALUES ($1, $2) ON CONFLICT DO NOTHING", [u, `${u}@example.test`])
   const res = await POST(post(u, plan))
   const body = (await res.json()) as { url?: string; code?: string; error?: string }
   return { status: res.status, body }
@@ -89,6 +101,12 @@ describe.skipIf(!KEY)("Stripe TEST MODE against the candidate's real checkout co
   beforeAll(async () => {
     if (!/^(sk|rk)_test_/.test(KEY)) throw new Error("STRIPE_TEST_KEY must be a test-mode key; refusing to run")
     stripe = new Stripe(KEY)
+    const root = path.resolve(__dirname, "..")
+    pg = new PGlite()
+    await pg.exec(fs.readFileSync(path.join(root, "__tests__/fixtures/supabase-shim.sql"), "utf8"))
+    await pg.exec("ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated, service_role")
+    await pg.exec("ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT EXECUTE ON FUNCTIONS TO anon, authenticated, service_role")
+    await pg.exec(fs.readFileSync(path.join(root, "supabase-migration-v15-checkout-reservations.sql"), "utf8"))
     // A key prefix alone does not prove isolation, so ask Stripe which mode this key acts in.
     const balance = await stripe.balance.retrieve()
     if (balance.livemode !== false) throw new Error("this key reports livemode; refusing to run")
@@ -184,7 +202,7 @@ describe.skipIf(!KEY)("Stripe TEST MODE against the candidate's real checkout co
       const open = c ? await openFor(c) : []
       results.push(`round ${round}: statuses=${out.map((o) => o.status).join("/")} open=${open.length}`)
       expect(open.length).toBeLessThanOrEqual(1)
-      expect(out.every((o) => o.status === 200 || o.status === 503)).toBe(true)
+      expect(out.every((o) => o.status === 200 || o.status === 409 || o.status === 503)).toBe(true)
       // a request that returned a link: the link's session is open, or expired (never a second payable one)
     }
     console.log("BURSTS:", results)
@@ -198,7 +216,7 @@ describe.skipIf(!KEY)("Stripe TEST MODE against the candidate's real checkout co
     const byEmail = await stripe.customers.list({ email: `${u}@example.test`, limit: 100 })
     byEmail.data.forEach((x) => state.customers.add(x.id))
     console.log("RACE:", `statuses=${out.map((o) => o.status).join("/")} customersWithThisEmail=${byEmail.data.length}`)
-    expect(out.every((o) => o.status === 200 || o.status === 503)).toBe(true)
+    expect(out.every((o) => o.status === 200 || o.status === 409 || o.status === 503)).toBe(true)
     expect(byEmail.data.length).toBeLessThanOrEqual(1)
     if (c) expect((await openFor(c)).length).toBeLessThanOrEqual(1)
   }, 120000)
@@ -238,20 +256,45 @@ describe.skipIf(!KEY)("Stripe TEST MODE against the candidate's real checkout co
     expect(await openFor(c)).toHaveLength(1)
   }, 60000)
 
-  it("a session created directly at Stripe (as if the response was lost) is reused for the same plan and replaced for another", async () => {
+  it("a session created outside the app is expired and replaced, never adopted: exactly one payable session remains", async () => {
     const u = user("direct")
     await call(u, "starter"); const c = customerOf(u); state.customers.add(c)
-    for (const s of await openFor(c)) await stripe.checkout.sessions.expire(s.id)
     const direct = await stripe.checkout.sessions.create({
       mode: "subscription", customer: c, line_items: [{ price: process.env.STRIPE_PRICE_PRO_MONTHLY!, quantity: 1 }],
       success_url: "https://example.test/ok", cancel_url: "https://example.test/no", metadata: { plan: "pro", synthetic: "true" },
       expires_at: Math.floor(Date.now() / 1000) + 31 * 60,
     })
-    expect((await call(u, "pro")).body.url).toBe(direct.url)
-    expect((await call(u, "team")).status).toBe(200)
+    const res = await call(u, "team")
+    expect(res.status).toBe(200)
     const open = await openFor(c)
     expect(open).toHaveLength(1)
     expect(open[0].metadata?.plan).toBe("team")
+    expect(open.some((o) => o.id === direct.id)).toBe(false)
+  }, 90000)
+
+  it("lease takeover against real Stripe: a slow original that creates a session after its successor started never exposes it", async () => {
+    const u = user("takeover")
+    await call(u, "starter"); const c = customerOf(u); state.customers.add(c)
+    // simulate a crashed owner mid-swap: reserve as another request, then let its lease lapse
+    const owner = "99999999-9999-4999-8999-999999999999"
+    await pg.exec("SET ROLE service_role")
+    await pg.query("SELECT public.checkout_reserve($1,$2,'pro',$3,60)", [u, c, owner]).catch(() => 0)
+    await pg.exec("RESET ROLE")
+    await pg.query("UPDATE billing_checkout_reservations SET lease_until = now() - interval '1 second' WHERE user_id = $1", [u]).catch(() => 0)
+    const res = await call(u, "team")
+    expect(res.status).toBe(200)
+    // the slow original now creates its session and tries to publish: it must be refused, and its session never returned
+    const late = await stripe.checkout.sessions.create({
+      mode: "subscription", customer: c, line_items: [{ price: process.env.STRIPE_PRICE_PRO_MONTHLY!, quantity: 1 }],
+      success_url: "https://example.test/ok", cancel_url: "https://example.test/no", metadata: { plan: "pro", synthetic: "true" },
+      expires_at: Math.floor(Date.now() / 1000) + 31 * 60,
+    })
+    await pg.exec("SET ROLE service_role")
+    const published = ((await pg.query("SELECT public.checkout_publish($1,$2,$3,NULL) AS r", [u, owner, late.id])).rows[0] as { r: number }).r
+    await pg.exec("RESET ROLE")
+    expect(published).toBe(0)
+    expect(res.body.url).not.toBe(late.url)
+    await stripe.checkout.sessions.expire(late.id)
   }, 90000)
 
   it("expiring a session that is already expired: Stripe's error is handled (the helper confirms the state instead of failing)", async () => {
