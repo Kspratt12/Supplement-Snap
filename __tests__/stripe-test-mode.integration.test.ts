@@ -87,7 +87,8 @@ const ids = new Map<string, string>()
 // account ids are UUIDs (the reservation table is keyed by auth.users.id)
 const user = (n: string) => { if (!ids.has(n)) ids.set(n, crypto.randomUUID()); return ids.get(n)! }
 const customerOf = (u: string) => state.users.get(u)!
-const openFor = async (customer: string) => (await stripe.checkout.sessions.list({ customer, status: "open", limit: 100 })).data
+// every page: a single page is capped at 100, which hid sessions from both the paging test and the cleanup
+const openFor = async (customer: string) => stripe.checkout.sessions.list({ customer, status: "open", limit: 100 }).autoPagingToArray({ limit: 2000 })
 
 async function call(u: string | null, plan: string) {
   const { POST } = await import("../app/api/create-checkout-session/route")
