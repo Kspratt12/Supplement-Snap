@@ -1,7 +1,9 @@
 import Stripe from "stripe"
 import { NextResponse } from "next/server"
 import { getAuthenticatedUser } from "../../../lib/auth-utils"
+import { createClient } from "@supabase/supabase-js"
 import { getAccess, isPlanPurchasable, planUnavailable } from "../../../lib/plan"
+import { checkoutIdempotencyKey, existingBillingBlock } from "../../../lib/billing-guard"
 
 export async function GET() {
   const key = process.env.STRIPE_SECRET_KEY || ""
@@ -52,6 +54,26 @@ export async function POST(request: Request) {
           { status: 409 }
         )
       }
+      // Our own table can lag behind Stripe, so also ask Stripe about the subscription we hold before starting another.
+      // If that cannot be checked, nothing is started: a second subscription would bill twice.
+      const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "", process.env.SUPABASE_SERVICE_ROLE_KEY || "")
+      const { data: stored, error: storedError } = await db
+        .from("subscriptions")
+        .select("stripe_subscription_id, stripe_customer_id")
+        .eq("user_id", user.id)
+        .maybeSingle()
+      let block = null
+      try {
+        if (storedError) throw new Error("subscription lookup failed")
+        block = await existingBillingBlock(stripe, stored)
+      } catch (err) {
+        console.error("Checkout billing check failed:", err instanceof Error ? err.name : "unknown")
+        return NextResponse.json(
+          { error: "We could not check your billing right now, so no subscription was started. Please try again in a moment." },
+          { status: 503 }
+        )
+      }
+      if (block) return NextResponse.json({ error: block.message, code: block.code, action: block.action }, { status: block.httpStatus })
     }
 
     // Determine price ID based on plan
@@ -91,7 +113,9 @@ export async function POST(request: Request) {
       ],
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/pricing?canceled=true`,
-    })
+    },
+    // A double click or two requests at once for the same account and plan share ONE Checkout Session
+    userId ? { idempotencyKey: checkoutIdempotencyKey(userId, plan, origin) } : undefined)
 
     return NextResponse.json({ url: session.url })
   } catch (err) {

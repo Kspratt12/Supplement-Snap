@@ -27,6 +27,7 @@ vi.mock("stripe", () => ({
         if (!(id in calls.subs)) throw new Error("No such subscription")
         return calls.subs[id]
       },
+      list: async () => ({ data: [] as unknown[] }),
     }
   },
 }))
@@ -52,7 +53,13 @@ vi.mock("@supabase/supabase-js", () => ({
     },
     from: (table: string) => ({
       select: () => ({
-        eq: (_k: string, v: unknown) => ({ maybeSingle: async () => ({ data: calls.known.has(String(v)) ? { id: "row" } : null }) }),
+        eq: (k: string, v: unknown) => ({
+          maybeSingle: async () => {
+            // a lookup by user returns that user's stored row; a lookup by subscription id answers from the "known" set
+            if (k === "user_id") return { data: calls.rows.find((r) => r.user_id === v) ?? null }
+            return { data: calls.known.has(String(v)) ? { id: "row" } : null }
+          },
+        }),
       }),
       upsert: async (row: Record<string, unknown>, opts: unknown) => (calls.writes.push({ table, op: "upsert", row, opts }), calls.known.add(String(row.stripe_subscription_id)), { error: null }),
       insert: async (row: Record<string, unknown>) => (calls.writes.push({ table, op: "insert", row }), calls.known.add(String(row.stripe_subscription_id)), { error: null }),
@@ -314,5 +321,58 @@ describe("Stripe webhook: more than one subscription, other products, retries (m
     calls.subs["sub_new"] = stripeSub("active", "price_pro", undefined, "sub_new")
     await send({ type: "customer.subscription.updated", data: { object: { id: "sub_new", customer: "cus_1" } } })
     expect(calls.rows[0]).toMatchObject({ stripe_subscription_id: "sub_current", plan: "starter" })
+  })
+})
+
+describe("Stripe webhook: a second checkout for an account that already holds a subscription", () => {
+  const second = () => checkout({ subscription: "sub_2", customer: "cus_2", metadata: { plan: "pro", supabase_user_id: "u1" } })
+  const holdOldOne = (status: string) => {
+    calls.rows = [{ id: "row1", user_id: "u1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1", status: "active", plan: "starter" }]
+    calls.subs["sub_1"] = stripeSub(status, "price_starter")
+  }
+
+  for (const status of ["active", "trialing", "past_due", "unpaid", "incomplete"]) {
+    it(`keeps the stored subscription (Stripe says ${status}), records the new one unattached, and sends no activation email`, async () => {
+      holdOldOne(status)
+      const res = await send(second())
+      expect(res.status).toBe(200)
+      expect(calls.writes.filter((x) => x.op === "upsert")).toHaveLength(0)
+      expect(calls.rows[0]).toMatchObject({ stripe_subscription_id: "sub_1", plan: "starter", status: "active" })
+      const note = calls.writes.find((x) => x.op === "insert")
+      expect(note?.row).toMatchObject({ stripe_subscription_id: "sub_2", stripe_customer_id: "cus_2", status: "inactive" })
+      expect(note?.row.user_id).toBeUndefined()
+      expect(calls.emails).toHaveLength(0)
+    })
+  }
+
+  it("replaces the stored subscription when the old one is canceled (resubscribing works)", async () => {
+    holdOldOne("canceled")
+    await send(second())
+    const up = calls.writes.find((x) => x.op === "upsert")
+    expect(up?.row).toMatchObject({ user_id: "u1", stripe_subscription_id: "sub_2", plan: "pro", status: "active" })
+    expect(calls.emails.map((e) => e.subject)).toEqual(["Your Supplement Snap subscription is active"])
+  })
+
+  it("answers 500, and writes nothing, when Stripe cannot say what the stored subscription is, so Stripe retries", async () => {
+    calls.rows = [{ id: "row1", user_id: "u1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_gone", status: "active" }]
+    // sub_gone is not in calls.subs, so the stand-in Stripe throws
+    const res = await send(second())
+    expect(res.status).toBe(500)
+    expect(calls.writes).toHaveLength(0)
+  })
+
+  it("redelivery of the held-back checkout does not add a second note or email", async () => {
+    holdOldOne("active")
+    await send(second())
+    await send(second())
+    expect(calls.writes.filter((x) => x.op === "insert")).toHaveLength(1)
+    expect(calls.emails).toHaveLength(0)
+  })
+
+  it("the same subscription delivered again for the same account is still a no-op", async () => {
+    calls.rows = [{ id: "row1", user_id: "u1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1", status: "active" }]
+    calls.known.add("sub_1")
+    await send(checkout())
+    expect(calls.writes).toHaveLength(0)
   })
 })

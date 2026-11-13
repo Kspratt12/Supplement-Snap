@@ -8,10 +8,12 @@ import { authFetch } from "../../lib/auth-fetch"
 export function CheckoutButton({ plan = "starter", label = "Get Started" }: { plan?: string; label?: string }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [manageBilling, setManageBilling] = useState(false)
 
   async function handleCheckout() {
     setLoading(true)
     setError("")
+    setManageBilling(false)
     try {
       const res = await authFetch("/api/create-checkout-session", {
         method: "POST",
@@ -25,6 +27,7 @@ export function CheckoutButton({ plan = "starter", label = "Get Started" }: { pl
         window.location.href = data.url
       } else {
         setError(data.error || "Unable to start checkout right now. Please try again.")
+        setManageBilling(data.action === "manage_billing")
         setLoading(false)
       }
     } catch {
@@ -38,6 +41,9 @@ export function CheckoutButton({ plan = "starter", label = "Get Started" }: { pl
       {error && (
         <div className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-center text-sm text-red-700">
           {error}
+          {manageBilling && (
+            <a href="/account" className="mt-2 block font-semibold underline">Go to your account</a>
+          )}
         </div>
       )}
       <button

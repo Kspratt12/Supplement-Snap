@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { createClient, type SupabaseClient } from "@supabase/supabase-js"
 import { planFromPriceId, normPlan } from "../../../../lib/plan"
 import { findUserByEmail } from "../../../../lib/find-user"
+import { existingBillingBlock } from "../../../../lib/billing-guard"
 
 // Stripe status -> ours. Only active, trialing and past_due (Stripe is still retrying the card) keep access.
 const STATUS_MAP: Record<string, string> = {
@@ -119,6 +120,35 @@ export async function POST(request: Request) {
         if (!userId && customerEmail) {
           const matched = await findUserByEmail(supabaseAdmin, customerEmail)
           userId = matched?.id || null
+        }
+
+        // A second paid checkout for an account that already holds a live subscription must not replace the stored
+        // subscription id: the older one would keep billing with nothing pointing at it. Keep the stored subscription, record
+        // the new payment as an unattached row so it is visible for review, and send no "your plan is active" email.
+        // If Stripe cannot be asked, throw so the event is answered with 500 and Stripe retries it.
+        if (userId && subscriptionId) {
+          const { data: current } = await supabaseAdmin
+            .from("subscriptions")
+            .select("stripe_subscription_id, stripe_customer_id")
+            .eq("user_id", userId)
+            .maybeSingle()
+          if (current?.stripe_subscription_id && current.stripe_subscription_id !== subscriptionId) {
+            const block = await existingBillingBlock(stripe, current)
+            if (block) {
+              console.error("Duplicate subscription for one account: stored subscription kept", {
+                stored: String(current.stripe_subscription_id).slice(-6),
+                additional: String(subscriptionId).slice(-6),
+              })
+              await supabaseAdmin.from("subscriptions").insert({
+                stripe_customer_id: customerId,
+                stripe_subscription_id: subscriptionId,
+                stripe_customer_email: customerEmail || "",
+                status: "inactive",
+                plan,
+              })
+              break
+            }
+          }
         }
 
         if (userId) {

@@ -22,6 +22,7 @@ vi.mock("../lib/rate-limit", () => ({ rateLimited: () => false }))
 vi.mock("stripe", () => ({
   default: class {
     checkout = { sessions: { create: (...a: unknown[]) => mockSessionsCreate(...a) } }
+    subscriptions = { retrieve: async (id: string) => ({ id, status: "canceled" }), list: async () => ({ data: [] }) }
   },
 }))
 vi.mock("resend", () => ({
@@ -29,7 +30,10 @@ vi.mock("resend", () => ({
     emails = { send: (...a: unknown[]) => mockEmailSend(...a) }
   },
 }))
-vi.mock("@supabase/supabase-js", () => ({ createClient: () => ({}) }))
+vi.mock("@supabase/supabase-js", () => ({
+  // no stored subscription for anyone in these tests
+  createClient: () => ({ from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }) }) }) }),
+}))
 
 import { POST as checkout } from "../app/api/create-checkout-session/route"
 import { POST as sendReport } from "../app/api/send-report/route"
