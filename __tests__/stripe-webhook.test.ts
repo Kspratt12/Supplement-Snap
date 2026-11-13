@@ -12,6 +12,8 @@ const calls = vi.hoisted(() => ({
   subs: {} as Record<string, unknown>,
   /** the subscriptions table as the stand-in database holds it */
   rows: [] as Array<Record<string, unknown>>,
+  /** what Stripe lists for the account's customer */
+  customerSubs: [] as Array<{ id: string; status: string }>,
 }))
 
 vi.mock("stripe", () => ({
@@ -27,7 +29,7 @@ vi.mock("stripe", () => ({
         if (!(id in calls.subs)) throw new Error("No such subscription")
         return calls.subs[id]
       },
-      list: async () => ({ data: [] as unknown[] }),
+      list: async () => ({ data: calls.customerSubs }),
     }
   },
 }))
@@ -62,7 +64,13 @@ vi.mock("@supabase/supabase-js", () => ({
         }),
       }),
       upsert: async (row: Record<string, unknown>, opts: unknown) => (calls.writes.push({ table, op: "upsert", row, opts }), calls.known.add(String(row.stripe_subscription_id)), { error: null }),
-      insert: async (row: Record<string, unknown>) => (calls.writes.push({ table, op: "insert", row }), calls.known.add(String(row.stripe_subscription_id)), { error: null }),
+      insert: async (row: Record<string, unknown>) => {
+        // billing_review has a unique subscription id: a second note for the same subscription is refused
+        if (table === "billing_review" && calls.known.has(`review:${row.stripe_subscription_id}`)) return { error: { code: "23505" } }
+        calls.writes.push({ table, op: "insert", row })
+        calls.known.add(table === "billing_review" ? `review:${row.stripe_subscription_id}` : String(row.stripe_subscription_id))
+        return { error: null }
+      },
       update: (row: Record<string, unknown>) => {
         const filters: Array<[string, unknown]> = []
         const builder = {
@@ -99,6 +107,7 @@ beforeEach(() => {
   calls.known = new Set()
   calls.subs = {}
   calls.rows = [{ id: "row1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1" }]
+  calls.customerSubs = []
   vi.stubEnv("STRIPE_SECRET_KEY", "sk_test_x")
   vi.stubEnv("STRIPE_WEBHOOK_SECRET", "whsec_x")
   vi.stubEnv("RESEND_API_KEY", "re_x")
@@ -332,15 +341,19 @@ describe("Stripe webhook: a second checkout for an account that already holds a 
   }
 
   for (const status of ["active", "trialing", "past_due", "unpaid", "incomplete"]) {
-    it(`keeps the stored subscription (Stripe says ${status}), records the new one unattached, and sends no activation email`, async () => {
+    it(`keeps the stored subscription (Stripe says ${status}), writes a review note (not a subscription row), and sends no activation email`, async () => {
       holdOldOne(status)
       const res = await send(second())
       expect(res.status).toBe(200)
       expect(calls.writes.filter((x) => x.op === "upsert")).toHaveLength(0)
       expect(calls.rows[0]).toMatchObject({ stripe_subscription_id: "sub_1", plan: "starter", status: "active" })
-      const note = calls.writes.find((x) => x.op === "insert")
-      expect(note?.row).toMatchObject({ stripe_subscription_id: "sub_2", stripe_customer_id: "cus_2", status: "inactive" })
-      expect(note?.row.user_id).toBeUndefined()
+      expect(calls.writes.filter((x) => x.table === "subscriptions")).toHaveLength(0) // access is exactly what it was
+      expect(calls.writes).toHaveLength(1)
+      const note = calls.writes[0]
+      expect(note).toMatchObject({ table: "billing_review", op: "insert" })
+      expect(note.row).toMatchObject({ user_id: "u1", stripe_customer_id: "cus_2", stripe_subscription_id: "sub_2", stored_subscription_id: "sub_1" })
+      expect(note.row.status).toBeUndefined() // never labelled inactive, canceled or any Stripe state
+      expect(String(note.row.reason)).toContain("may still be billing")
       expect(calls.emails).toHaveLength(0)
     })
   }
@@ -374,5 +387,27 @@ describe("Stripe webhook: a second checkout for an account that already holds a 
     calls.known.add("sub_1")
     await send(checkout())
     expect(calls.writes).toHaveLength(0)
+  })
+})
+
+describe("Stripe webhook: the account's own stable Stripe customer", () => {
+  const second = () => checkout({ subscription: "sub_2", customer: "cus_1", metadata: { plan: "pro", supabase_user_id: "u1" } })
+
+  it("does not count the subscription that just arrived against the account's earlier, canceled one (resubscribing on the same customer)", async () => {
+    calls.rows = [{ id: "row1", user_id: "u1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1", status: "canceled", plan: "starter" }]
+    calls.subs["sub_1"] = stripeSub("canceled", "price_starter")
+    calls.customerSubs = [{ id: "sub_1", status: "canceled" }, { id: "sub_2", status: "active" }] // sub_2 is the new one
+    await send(second())
+    expect(calls.writes.find((x) => x.op === "upsert")?.row).toMatchObject({ user_id: "u1", stripe_subscription_id: "sub_2", plan: "pro" })
+    expect(calls.writes.some((x) => x.table === "billing_review")).toBe(false)
+  })
+
+  it("still holds the new one when the earlier subscription on the same customer is live", async () => {
+    calls.rows = [{ id: "row1", user_id: "u1", stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1", status: "active", plan: "starter" }]
+    calls.subs["sub_1"] = stripeSub("active", "price_starter")
+    calls.customerSubs = [{ id: "sub_1", status: "active" }, { id: "sub_2", status: "active" }]
+    await send(second())
+    expect(calls.writes.map((x) => x.table)).toEqual(["billing_review"])
+    expect(calls.rows[0]).toMatchObject({ stripe_subscription_id: "sub_1", status: "active" })
   })
 })

@@ -10,6 +10,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest"
 const mockGetUser = vi.fn()
 const mockGetAccess = vi.fn()
 const mockSessionsCreate = vi.fn()
+const mockCustomersCreate = vi.fn()
 const mockEmailSend = vi.fn()
 
 vi.mock("../lib/auth-utils", () => ({ getAuthenticatedUser: (...a: unknown[]) => mockGetUser(...a) }))
@@ -21,7 +22,8 @@ vi.mock("../lib/plan", async () => ({
 vi.mock("../lib/rate-limit", () => ({ rateLimited: () => false }))
 vi.mock("stripe", () => ({
   default: class {
-    checkout = { sessions: { create: (...a: unknown[]) => mockSessionsCreate(...a) } }
+    checkout = { sessions: { create: (...a: unknown[]) => mockSessionsCreate(...a), list: async () => ({ data: [] }), expire: async () => ({}) } }
+    customers = { create: (...a: unknown[]) => mockCustomersCreate(...a), del: async () => ({}) }
     subscriptions = { retrieve: async (id: string) => ({ id, status: "canceled" }), list: async () => ({ data: [] }) }
   },
 }))
@@ -32,7 +34,9 @@ vi.mock("resend", () => ({
 }))
 vi.mock("@supabase/supabase-js", () => ({
   // no stored subscription for anyone in these tests
-  createClient: () => ({ from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }) }) }) }),
+  createClient: () => ({
+    from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }) }), insert: async () => ({ error: null }) }),
+  }),
 }))
 
 import { POST as checkout } from "../app/api/create-checkout-session/route"
@@ -47,7 +51,8 @@ beforeEach(() => {
   process.env.STRIPE_PRICE_MONTHLY = "price_starter"
   process.env.STRIPE_PRICE_TEAM_MONTHLY = "price_team"
   process.env.RESEND_API_KEY = "re_dummy"
-  mockSessionsCreate.mockResolvedValue({ url: "https://checkout.example/session" })
+  mockSessionsCreate.mockResolvedValue({ id: "cs_test", url: "https://checkout.example/session" })
+  mockCustomersCreate.mockResolvedValue({ id: "cus_test" })
   mockEmailSend.mockResolvedValue({ error: null })
   mockGetAccess.mockResolvedValue({ active: false, viaOwner: false })
 })
@@ -60,7 +65,11 @@ describe("POST /api/create-checkout-session", () => {
     const args = mockSessionsCreate.mock.calls[0][0]
     expect(args.metadata.supabase_user_id).toBe("real-user")
     expect(args.subscription_data.metadata.supabase_user_id).toBe("real-user")
-    expect(args.customer_email).toBe("real@example.com")
+    // the Stripe customer is made from the SIGNED-IN user's own email and id, never from anything in the body
+    expect(mockCustomersCreate.mock.calls[0][0]).toMatchObject({ email: "real@example.com", metadata: { supabase_user_id: "real-user" } })
+    expect(JSON.stringify(mockCustomersCreate.mock.calls)).not.toContain("victim")
+    expect(args.customer).toBe("cus_test")
+    expect(args.customer_email).toBeUndefined()
   })
 
   it("does not let a visitor who is not signed in name an account", async () => {

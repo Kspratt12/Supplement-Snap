@@ -3,7 +3,8 @@ import { NextResponse } from "next/server"
 import { getAuthenticatedUser } from "../../../lib/auth-utils"
 import { createClient } from "@supabase/supabase-js"
 import { getAccess, isPlanPurchasable, planUnavailable } from "../../../lib/plan"
-import { checkoutIdempotencyKey, existingBillingBlock } from "../../../lib/billing-guard"
+import { existingBillingBlock } from "../../../lib/billing-guard"
+import { SESSION_LIFETIME_SECONDS, keepNewest, reuseOrClear, stableCustomer } from "../../../lib/checkout-reservation"
 
 export async function GET() {
   const key = process.env.STRIPE_SECRET_KEY || ""
@@ -25,6 +26,8 @@ export async function POST(request: Request) {
     let customerEmail: string | undefined
     let userId: string | undefined
     let plan: string = "starter"
+    let stripeCustomerId: string | null = null // the account's one stable Stripe customer, when it can be used
+    let reuseUrl: string | null = null
     try {
       const body = await request.json()
       plan = typeof body.plan === "string" ? body.plan : "starter"
@@ -65,7 +68,16 @@ export async function POST(request: Request) {
       let block = null
       try {
         if (storedError) throw new Error("subscription lookup failed")
-        block = await existingBillingBlock(stripe, stored)
+        // One stable Stripe customer per account, so what Stripe holds for it (subscriptions and open checkouts) can be
+        // read directly and does not wait for our webhook. Existing subscribers keep the customer they already have.
+        const customer = await stableCustomer(db as never, stripe, { id: user.id, email: user.email }, stored?.stripe_customer_id)
+        stripeCustomerId = customer.degraded ? null : customer.id
+        block = await existingBillingBlock(stripe, {
+          stripe_subscription_id: stored?.stripe_subscription_id,
+          stripe_customer_id: customer.id ?? stored?.stripe_customer_id,
+        })
+        // The same plan reuses its open checkout; open checkouts for other plans are expired first
+        if (!block && stripeCustomerId) reuseUrl = await reuseOrClear(stripe, stripeCustomerId, plan)
       } catch (err) {
         console.error("Checkout billing check failed:", err instanceof Error ? err.name : "unknown")
         return NextResponse.json(
@@ -74,6 +86,7 @@ export async function POST(request: Request) {
         )
       }
       if (block) return NextResponse.json({ error: block.message, code: block.code, action: block.action }, { status: block.httpStatus })
+      if (reuseUrl) return NextResponse.json({ url: reuseUrl })
     }
 
     // Determine price ID based on plan
@@ -99,7 +112,8 @@ export async function POST(request: Request) {
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
-      ...(customerEmail ? { customer_email: customerEmail } : {}),
+      ...(stripeCustomerId ? { customer: stripeCustomerId } : customerEmail ? { customer_email: customerEmail } : {}),
+      expires_at: Math.floor(Date.now() / 1000) + SESSION_LIFETIME_SECONDS,
       metadata: { supabase_user_id: userId || "", plan },
       subscription_data: {
         trial_period_days: 14,
@@ -113,11 +127,11 @@ export async function POST(request: Request) {
       ],
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/pricing?canceled=true`,
-    },
-    // A double click or two requests at once for the same account and plan share ONE Checkout Session
-    userId ? { idempotencyKey: checkoutIdempotencyKey(userId, plan, origin) } : undefined)
+    })
 
-    return NextResponse.json({ url: session.url })
+    // If another checkout for this account was made at the same moment, only the newest stays open
+    const url = stripeCustomerId ? await keepNewest(stripe, stripeCustomerId, { id: session.id, url: session.url }) : session.url
+    return NextResponse.json({ url })
   } catch (err) {
     console.error("Stripe checkout error:", err)
     const message = err instanceof Error ? err.message : "Unknown error"

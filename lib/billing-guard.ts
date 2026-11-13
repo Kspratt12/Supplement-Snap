@@ -64,7 +64,7 @@ export function blockFor(status: string): BillingBlock | null {
  * Returns the block to show, or null when a new checkout may start. Throws if Stripe cannot be asked: the caller
  * must then NOT start a purchase (and a webhook must answer 500 so Stripe retries).
  */
-export async function existingBillingBlock(stripe: Stripe, stored: StoredSubscription): Promise<BillingBlock | null> {
+export async function existingBillingBlock(stripe: Stripe, stored: StoredSubscription, ignoreSubscriptionId?: string): Promise<BillingBlock | null> {
   if (!stored) return null
   const seen = new Map<string, string>()
   if (stored.stripe_subscription_id) {
@@ -76,15 +76,11 @@ export async function existingBillingBlock(stripe: Stripe, stored: StoredSubscri
     const list = await stripe.subscriptions.list({ customer: stored.stripe_customer_id, status: "all", limit: 20 })
     for (const sub of list.data) seen.set(sub.id, sub.status)
   }
+  // a webhook asks about the account's PREVIOUS subscription, so the one that just arrived is not counted against it
+  if (ignoreSubscriptionId) seen.delete(ignoreSubscriptionId)
   // the most serious state wins: something billing beats something waiting beats something finished
   for (const order of ["active", "trialing", "past_due", "unpaid", "paused", "incomplete"]) {
     for (const status of seen.values()) if (status === order) return blockFor(status)
   }
   return null
-}
-
-/** Stripe idempotency key: repeated or concurrent requests for the same account and plan share one Checkout Session. */
-export function checkoutIdempotencyKey(userId: string, plan: string, origin: string, now: number = Date.now()): string {
-  const bucket = Math.floor(now / (10 * 60 * 1000)) // ten minutes
-  return `checkout:${userId}:${plan}:${origin.replace(/[^a-z0-9]/gi, "")}:${bucket}`.slice(0, 255)
 }

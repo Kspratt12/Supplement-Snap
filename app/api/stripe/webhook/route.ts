@@ -123,8 +123,9 @@ export async function POST(request: Request) {
         }
 
         // A second paid checkout for an account that already holds a live subscription must not replace the stored
-        // subscription id: the older one would keep billing with nothing pointing at it. Keep the stored subscription, record
-        // the new payment as an unattached row so it is visible for review, and send no "your plan is active" email.
+        // subscription id: the older one would keep billing with nothing pointing at it. Keep the stored subscription, write a
+        // billing_review note so the owner can see it, and send no "your plan is active" email. This is a fallback: the
+        // checkout route is what prevents the second subscription.
         // If Stripe cannot be asked, throw so the event is answered with 500 and Stripe retries it.
         if (userId && subscriptionId) {
           const { data: current } = await supabaseAdmin
@@ -133,19 +134,23 @@ export async function POST(request: Request) {
             .eq("user_id", userId)
             .maybeSingle()
           if (current?.stripe_subscription_id && current.stripe_subscription_id !== subscriptionId) {
-            const block = await existingBillingBlock(stripe, current)
+            const block = await existingBillingBlock(stripe, current, subscriptionId)
             if (block) {
               console.error("Duplicate subscription for one account: stored subscription kept", {
                 stored: String(current.stripe_subscription_id).slice(-6),
                 additional: String(subscriptionId).slice(-6),
               })
-              await supabaseAdmin.from("subscriptions").insert({
+              // A separate review record, NOT a subscriptions row: it cannot be mistaken for a canceled or non-billing
+              // subscription, no access query reads it, and later Stripe events cannot rewrite it.
+              const { error: reviewError } = await supabaseAdmin.from("billing_review").insert({
+                user_id: userId,
                 stripe_customer_id: customerId,
                 stripe_subscription_id: subscriptionId,
-                stripe_customer_email: customerEmail || "",
-                status: "inactive",
-                plan,
+                stored_subscription_id: current.stripe_subscription_id,
+                reason: "second live subscription for one account; the stored subscription was kept; the additional one may still be billing",
               })
+              // a redelivered event hits the unique subscription id: the note already exists, which is fine
+              if (reviewError && (reviewError as { code?: string }).code !== "23505") console.error("Could not record the duplicate for review (the log line above is the only trace)")
               break
             }
           }
