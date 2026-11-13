@@ -973,7 +973,7 @@ export default function LandingPage() {
             <p className="mt-2 text-center text-sm text-zinc-500">Guides for roofing contractors</p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { href: "/blog/roof-tear-off-cost", title: "Roof Tear-Off Cost in 2026", desc: "What affects tear-off cost: size, material, pitch, layers and disposal, plus hidden costs and how to document them." },
+                { href: "/blog/roof-tear-off-cost", title: "Roof Tear-Off Cost", desc: "What affects tear-off cost: size, material, pitch, layers and disposal, plus hidden costs and how to document them." },
                 { href: "/blog/best-roof-estimating-software", title: "Best Roof Estimating Software", desc: "Compare satellite measurement, estimating, CRM, and supplement tools for roofing contractors." },
                 { href: "/blog/roof-replacement-estimate-vs-final-cost", title: "Estimate vs. Final Cost", desc: "Why the final cost often differs from the first estimate, and how supplements bridge the gap." },
                 { href: "/blog/hail-damage-roof-inspection", title: "Hail Damage Roof Inspection", desc: "Hidden damage found during tear-off, and how to document it for supplements." },
