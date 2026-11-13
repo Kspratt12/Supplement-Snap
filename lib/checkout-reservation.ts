@@ -120,29 +120,3 @@ export async function expireOrConfirm(stripe: Stripe, id: string): Promise<"expi
     return "not-open"
   }
 }
-
-/** Before creating: reuse the open session for this plan, expire open sessions for other plans. */
-export async function reuseOrClear(stripe: Stripe, customer: string, plan: string): Promise<string | null> {
-  const open = await openSessions(stripe, customer)
-  let reuse: string | null = null
-  for (const session of open) {
-    if (!reuse && session.metadata?.plan === plan && session.url) {
-      reuse = session.url
-      continue
-    }
-    await expireOrConfirm(stripe, session.id)
-  }
-  return reuse
-}
-
-/**
- * After creating `mine`: if another session for the account is open too, keep only the newest (ties broken by id, so every
- * request picks the same survivor). Returns the URL to give the customer, which is the survivor's.
- */
-export async function keepNewest(stripe: Stripe, customer: string, mine: { id: string; url: string | null }): Promise<string | null> {
-  const open = await openSessions(stripe, customer)
-  if (!open.some((s) => s.id === mine.id)) return null // ours was expired by a competing request: nothing payable to hand out
-  const [survivor, ...rest] = open
-  for (const s of rest) await expireOrConfirm(stripe, s.id)
-  return survivor.id === mine.id ? mine.url : survivor.url
-}

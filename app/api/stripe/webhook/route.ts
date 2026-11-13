@@ -122,6 +122,15 @@ export async function POST(request: Request) {
           userId = matched?.id || null
         }
 
+        // Tell the checkout reservation (v15) that a checkout completed for this account. A convenience only: the next checkout attempt
+        // also re-reads Stripe, so a missing table, a failure here or a webhook that arrives before or after the customer's own request
+        // cannot let a second checkout through.
+        if (userId && customerId && session.id) {
+          try {
+            await (supabaseAdmin as unknown as { rpc: (fn: string, args: Record<string, unknown>) => PromiseLike<unknown> }).rpc("checkout_complete", { p_user: userId, p_customer: customerId, p_session: session.id })
+          } catch { /* the reservation table may not exist yet; never fail the webhook for it */ }
+        }
+
         // What Stripe says the new subscription is RIGHT NOW (trialing, active, incomplete...), not an assumption that checkout
         // completing means it is paid. An incomplete first payment must not switch access on. If Stripe cannot be asked, throw
         // so the event is answered with 500 and Stripe retries it.

@@ -50,6 +50,8 @@ vi.mock("@supabase/supabase-js", () => ({
   // no stored subscription for anyone in these tests
   createClient: () => ({
     from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }) }), insert: async () => ({ error: null }) }),
+    // the checkout reservation (v15) answers as an empty account would: acquired, and publish succeeds
+    rpc: async (fn: string) => ({ data: fn === "checkout_reserve" ? { outcome: "acquired" } : 1, error: null }),
   }),
 }))
 
