@@ -43,7 +43,7 @@ const softwareSchema = {
   name: "Supplement Snap",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
-  description: "Roofing supplement software that helps contractors capture hidden damage during tear-off, generate AI supplement drafts, and send adjuster-ready PDF reports.",
+  description: "Roofing supplement software that helps contractors capture hidden damage during tear-off, generate AI supplement drafts, and, on paid plans, send adjuster-ready PDF reports.",
   url: "https://supplementsnap.io",
   offers: [
     { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free", description: "Demo project plus 1 project of your own (up to 3 findings per project)" },
@@ -605,7 +605,7 @@ export default function LandingPage() {
               },
               {
                 title: "Xactimate-Style CSV",
-                desc: "CSV export lists general line-item descriptions with your quantities. Item codes and prices are left blank for you to enter from your own price list.",
+                desc: "On the Team and Pro plans, the CSV export lists general line-item descriptions with your quantities. Item codes and prices are left blank for you to enter from your own price list.",
                 icon: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z",
               },
               {
