@@ -44,3 +44,17 @@ describe("share metadata does not overstate the Free plan", () => {
     expect(src).toMatch(/On the Team and Pro plans, the CSV export lists general line-item descriptions/)
   })
 })
+
+describe("article text does not promise Free-plan features that need a paid plan", () => {
+  const blog = read("app/blog/[slug]/page.tsx")
+
+  it("no article says the free project includes downloading the PDF report", () => {
+    expect(blog).not.toMatch(/download the PDF report before paying/i)
+    expect(blog).toMatch(/before paying anything; PDF reports and email are on paid plans/)
+  })
+
+  it("the shared fallback call-to-action names the plans that include the CSV export", () => {
+    expect(blog).toContain("On the Team and Pro plans, Supplement Snap's Xactimate-style CSV lists general line items")
+    expect(blog).not.toMatch(/"Supplement Snap's Xactimate-style CSV lists general line items/)
+  })
+})

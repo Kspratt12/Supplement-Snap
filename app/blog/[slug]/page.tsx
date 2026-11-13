@@ -8348,7 +8348,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Where Supplement Snap fits",
-        content: "Supplement Snap's first project is free, so you can photograph a real tear-off, add notes, review the drafted explanations and download the PDF report before paying anything. Paid plans are Starter at $99 per month, Team at $199 and Pro at $299, each with a 14-day trial that requires a card.\n\nSee the <a href='/roofing-supplement-report-example'>sample report</a>, the <a href='/roofing-supplement-software'>feature walkthrough</a> and the <a href='/pricing'>pricing page</a>.",
+        content: "Supplement Snap's first project is free, so you can photograph a real tear-off, add notes and review the drafted explanations before paying anything; PDF reports and email are on paid plans. Paid plans are Starter at $99 per month, Team at $199 and Pro at $299, each with a 14-day trial that requires a card.\n\nSee the <a href='/roofing-supplement-report-example'>sample report</a>, the <a href='/roofing-supplement-software'>feature walkthrough</a> and the <a href='/pricing'>pricing page</a>.",
       },
     ],
     faq: [
@@ -8760,7 +8760,7 @@ export default async function BlogArticle({ params }: { params: Promise<{ slug: 
               {article.midCtaAfter === i && (
                 <div className="mt-6 rounded-xl border border-indigo-200 bg-indigo-50 p-5">
                   <p className="text-sm font-semibold text-zinc-900">{article.midCtaTitle || "Capture this on the roof, not from memory."}</p>
-                  <p className="mt-1 text-sm text-zinc-600">{article.midCtaBody || "Supplement Snap's Xactimate-style CSV lists general line items with the quantities your crew entered; you add item codes and prices from your own price list."}</p>
+                  <p className="mt-1 text-sm text-zinc-600">{article.midCtaBody || "On the Team and Pro plans, Supplement Snap's Xactimate-style CSV lists general line items with the quantities your crew entered; you add item codes and prices from your own price list."}</p>
                   <div className="mt-3 flex flex-col gap-2 sm:flex-row">
                     <TrackedLink location="article-mid-start-trial" href="/signup?trial=1" className="rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-indigo-500">
                       Start a free project
