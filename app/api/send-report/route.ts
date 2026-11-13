@@ -34,10 +34,11 @@ export async function POST(request: Request) {
     if (typeof to !== "string" || !/^[^\s@,;]+@[^\s@,;]+\.[^\s@,;]+$/.test(to)) {
       return NextResponse.json({ error: "A single valid recipient email is required" }, { status: 400 })
     }
+    // Emailing a report is a paid feature for every recipient, including the sender's own address.
+    // The plan is checked here, before anything is tracked or sent.
     const access = await getAccess(user.id, user.email)
-    const emailingSelf = to.toLowerCase() === (user.email || "").toLowerCase()
-    if (access.unavailable && !emailingSelf) return planUnavailable()
-    if (!access.active && !emailingSelf) {
+    if (access.unavailable) return planUnavailable()
+    if (!access.active) {
       return NextResponse.json({ error: "An active plan is required to email reports to adjusters." }, { status: 403 })
     }
     if (typeof pdfBase64 === "string" && pdfBase64.length > 14_000_000) {

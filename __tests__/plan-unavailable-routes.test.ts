@@ -77,11 +77,11 @@ describe("a failed plan check is a temporary error, not 'inactive'", () => {
     expect(w.calls).not.toContain("resend-send")
   })
 
-  it("/api/send-report to the person's own address is not refused as 503 or 403 (that never needed a plan)", async () => {
+  it("/api/send-report to the person's own address answers 503 too and sends nothing (email is paid for every recipient)", async () => {
     const { POST } = await import("../app/api/send-report/route")
     const res = await POST(post("/api/send-report", { to: "roofer@example.com", subject: "Report", html: "<p>x</p>" }))
-    expect(res.status).not.toBe(503)
-    expect(res.status).not.toBe(403)
+    await expect503(res)
+    expect(w.calls).not.toContain("resend-send")
   })
 
   it("/api/create-checkout-session does not start a purchase it cannot rule out double-billing", async () => {
