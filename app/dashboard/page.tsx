@@ -796,10 +796,7 @@ function ResetSuccessBanner() {
         </svg>
       </div>
       <p className="text-sm font-medium text-green-700">
-        Password changed successfully
-      </p>
-      <p className="mt-1 text-xs text-green-700">
-        A confirmation email has been sent to your inbox.
+        Your password has been changed.
       </p>
     </div>
   )
