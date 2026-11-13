@@ -4549,7 +4549,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Where Supplement Snap fits, and where it does not",
-        content: "Supplement Snap does not write retail estimates, measure roofs or send invoices. It is for the step after tear-off, when your crew finds damage that was not in the estimate. They photograph it on the roof, tag the damage type and roof area, add a typed or voice note, and the app drafts a written description of each finding for you to review and edit. You then export a PDF and email it to the adjuster.\n\nYour first project is free. See the <a href='/roofing-supplement-software'>feature walkthrough</a>, a <a href='/roofing-supplement-report-example'>sample report</a> and the <a href='/pricing'>pricing page</a>.",
+        content: "Supplement Snap does not write retail estimates, measure roofs or send invoices. It is for the step after tear-off, when your crew finds damage that was not in the estimate. They photograph it on the roof, tag the damage type and roof area, add a typed or voice note, and the app drafts a written description of each finding for you to review and edit. You then export a PDF and email it to the adjuster.\n\nTry your first project free. PDF reports and email are available on paid plans. See the <a href='/roofing-supplement-software'>feature walkthrough</a>, a <a href='/roofing-supplement-report-example'>sample report</a> and the <a href='/pricing'>pricing page</a>.",
       },
     ],
     faq: [
@@ -4593,7 +4593,7 @@ const ARTICLES: Article[] = [
     ],
     midCtaAfter: 1,
     midCtaTitle: "Send the evidence, not a pile of texts.",
-    midCtaBody: "Supplement Snap helps your crew capture and describe each finding on the roof, then export one PDF to attach to the email. Your first project is free.",
+    midCtaBody: "Supplement Snap helps your crew capture and describe each finding on the roof. Try your first project free. PDF reports and email are available on paid plans.",
     visuals: {
       1: { type: "matrix", data: {
         headers: ["What to include","Why it matters"],
@@ -4638,7 +4638,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Where Supplement Snap fits",
-        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps your crew photograph and tag each finding on the roof, add a typed or voice note, review the drafted description and export a PDF you attach to the email. It does not write your negotiation or decide anything about coverage. Your first project is free. See the <a href='/pricing'>pricing page</a> and the <a href='/blog/how-to-write-a-roofing-supplement'>guide to writing a supplement</a>.",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps your crew photograph and tag each finding on the roof, add a typed or voice note, review the drafted description and export a PDF you attach to the email. It does not write your negotiation or decide anything about coverage. Try your first project free. PDF reports and email are available on paid plans. See the <a href='/pricing'>pricing page</a> and the <a href='/blog/how-to-write-a-roofing-supplement'>guide to writing a supplement</a>.",
       },
     ],
     faq: [
@@ -4722,7 +4722,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Where Supplement Snap fits",
-        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> lets your crew photograph each finding on the roof, tag the damage type and roof area, add a typed or voice note, review the drafted description and export a PDF for the adjuster. It does not decide what is covered. Your first project is free. See the <a href='/pricing'>pricing page</a>.",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> lets your crew photograph each finding on the roof, tag the damage type and roof area, add a typed or voice note, review the drafted description and export a PDF for the adjuster. It does not decide what is covered. Try your first project free. PDF reports and email are available on paid plans. See the <a href='/pricing'>pricing page</a>.",
       },
     ],
     faq: [
@@ -4764,7 +4764,7 @@ const ARTICLES: Article[] = [
     ],
     midCtaAfter: 1,
     midCtaTitle: "Bring evidence to the reinspection.",
-    midCtaBody: "Supplement Snap helps your crew capture photos, notes and measurements on the roof and export one PDF you can bring or send. Your first project is free.",
+    midCtaBody: "Supplement Snap helps your crew capture photos, notes and measurements on the roof. Try your first project free. PDF reports and email are available on paid plans.",
     visuals: {
       1: { type: "matrix", data: {
         headers: ["Reinspection","Supplement"],
@@ -4804,7 +4804,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Where Supplement Snap fits",
-        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps your crew capture photos with a typed or voice note, tag each finding and roof area, and export a PDF you can bring to a reinspection or attach to an email. It does not request reinspections or decide coverage. Your first project is free. See the <a href='/pricing'>pricing page</a>.",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps your crew capture photos with a typed or voice note, tag each finding and roof area, and export a PDF you can bring to a reinspection or attach to an email. It does not request reinspections or decide coverage. Try your first project free. PDF reports and email are available on paid plans. See the <a href='/pricing'>pricing page</a>.",
       },
     ],
     faq: [
@@ -4885,7 +4885,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Where Supplement Snap fits",
-        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps your crew document what they find on the roof as a clear report with photos, notes and quantities. It does not negotiate with insurers, interpret policies or decide coverage. Check how your state treats sending documentation to a carrier before you use any tool that emails reports. Your first project is free. See the <a href='/pricing'>pricing page</a>.",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps your crew document what they find on the roof as a clear report with photos, notes and quantities. It does not negotiate with insurers, interpret policies or decide coverage. Check how your state treats sending documentation to a carrier before you use any tool that emails reports. Try your first project free. PDF reports and email are available on paid plans. See the <a href='/pricing'>pricing page</a>.",
       },
     ],
     faq: [
@@ -4968,7 +4968,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Where Supplement Snap fits",
-        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps your crew capture photos and notes on the roof so the report can be exported the same day, which shortens your side of the timeline. It cannot speed up the carrier's review or guarantee approval. Your first project is free. See the <a href='/pricing'>pricing page</a>.",
+        content: "<a href='/roofing-supplement-software'>Supplement Snap</a> helps your crew capture photos and notes on the roof so the report can be exported the same day, which shortens your side of the timeline. It cannot speed up the carrier's review or guarantee approval. Try your first project free. PDF reports and email are available on paid plans. See the <a href='/pricing'>pricing page</a>.",
       },
     ],
     faq: [
@@ -5009,7 +5009,7 @@ const ARTICLES: Article[] = [
     ],
     midCtaAfter: 1,
     midCtaTitle: "Prove the drip edge, not just ask for it.",
-    midCtaBody: "Supplement Snap helps your crew photograph edges before and after tear-off and export a report tied to each finding. Your first project is free.",
+    midCtaBody: "Supplement Snap helps your crew photograph edges before and after tear-off and record each finding. Try your first project free. PDF reports and email are available on paid plans.",
     visuals: {
       1: { type: "matrix", data: {
         headers: ["Why it matters on a claim"],
@@ -6128,7 +6128,7 @@ const ARTICLES: Article[] = [
     ],
     midCtaAfter: 1,
     midCtaTitle: "Log it on the roof, not at the kitchen table.",
-    midCtaBody: "Supplement Snap lets your crew capture findings with photos and notes on a phone, then export the report. Your first project is free.",
+    midCtaBody: "Supplement Snap lets your crew capture findings with photos and notes on a phone. Try your first project free. PDF reports and email are available on paid plans.",
     visuals: {
       1: { type: "matrix", data: {
         headers: ["Capture it when you see it"],
@@ -7844,7 +7844,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "If you tear off, document the deck",
-        content: "For roofing crews, the tear-off is the one chance to see the deck, so photograph it before anything is installed. Get wide shots of each slope, close-ups of each problem, a tape measure or marked area for scale, and short notes on where each finding is and what it affects.\n\n<a href='/roofing-supplement-software'>Supplement Snap</a> lets crews capture photos on the roof, tag each finding, add a typed or voice note, review the drafted description and export a PDF for the adjuster. It does not decide coverage or guarantee approval. Your first project is free. See a <a href='/roofing-supplement-report-example'>sample report</a>, the <a href='/blog/roofing-supplement-template'>supplement template</a> and the <a href='/pricing'>pricing page</a>.",
+        content: "For roofing crews, the tear-off is the one chance to see the deck, so photograph it before anything is installed. Get wide shots of each slope, close-ups of each problem, a tape measure or marked area for scale, and short notes on where each finding is and what it affects.\n\n<a href='/roofing-supplement-software'>Supplement Snap</a> lets crews capture photos on the roof, tag each finding, add a typed or voice note, review the drafted description and export a PDF for the adjuster. It does not decide coverage or guarantee approval. Try your first project free. PDF reports and email are available on paid plans. See a <a href='/roofing-supplement-report-example'>sample report</a>, the <a href='/blog/roofing-supplement-template'>supplement template</a> and the <a href='/pricing'>pricing page</a>.",
       },
     ],
     faq: [
@@ -7927,7 +7927,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "If the repair is part of an insurance claim",
-        content: "When a carrier is paying, the carrier's estimate sets the starting scope, and damage found after the work begins is handled through a supplement, not through your repair estimate. See our <a href='/blog/roofing-supplement-template'>roofing supplement template</a> and the <a href='/blog/roof-damage-report-template'>roof damage report template</a> for documenting it.\n\nSupplement Snap is for that second step: your crew photographs the damage on the roof, adds a note, reviews the drafted description and exports a PDF for the adjuster. Your first project is free. See the <a href='/roofing-supplement-software'>feature walkthrough</a> and the <a href='/pricing'>pricing page</a>.",
+        content: "When a carrier is paying, the carrier's estimate sets the starting scope, and damage found after the work begins is handled through a supplement, not through your repair estimate. See our <a href='/blog/roofing-supplement-template'>roofing supplement template</a> and the <a href='/blog/roof-damage-report-template'>roof damage report template</a> for documenting it.\n\nSupplement Snap is for that second step: your crew photographs the damage on the roof, adds a note, reviews the drafted description and exports a PDF for the adjuster. Try your first project free. PDF reports and email are available on paid plans. See the <a href='/roofing-supplement-software'>feature walkthrough</a> and the <a href='/pricing'>pricing page</a>.",
       },
     ],
     faq: [
@@ -8006,7 +8006,7 @@ const ARTICLES: Article[] = [
       },
       {
         heading: "Related templates and where Supplement Snap fits",
-        content: "For a single-price replacement estimate, use the <a href='/blog/roofing-estimate-template'>roofing estimate template</a>. For a limited fix, use the <a href='/blog/roof-repair-estimate-template'>roof repair estimate template</a>.\n\nSupplement Snap is for the step after tear-off: your crew photographs hidden damage on the roof, adds a note, reviews the drafted description and exports a PDF for the adjuster. Your first project is free. See the <a href='/roofing-supplement-software'>feature walkthrough</a> and the <a href='/pricing'>pricing page</a>.",
+        content: "For a single-price replacement estimate, use the <a href='/blog/roofing-estimate-template'>roofing estimate template</a>. For a limited fix, use the <a href='/blog/roof-repair-estimate-template'>roof repair estimate template</a>.\n\nSupplement Snap is for the step after tear-off: your crew photographs hidden damage on the roof, adds a note, reviews the drafted description and exports a PDF for the adjuster. Try your first project free. PDF reports and email are available on paid plans. See the <a href='/roofing-supplement-software'>feature walkthrough</a> and the <a href='/pricing'>pricing page</a>.",
       },
     ],
     faq: [

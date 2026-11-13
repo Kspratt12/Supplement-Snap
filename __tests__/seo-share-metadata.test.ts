@@ -58,3 +58,25 @@ describe("article text does not promise Free-plan features that need a paid plan
     expect(blog).not.toMatch(/"Supplement Snap's Xactimate-style CSV lists general line items/)
   })
 })
+
+describe("article calls to action keep Free and PDF/email apart", () => {
+  const blog = read("app/blog/[slug]/page.tsx")
+  const APPROVED = "Try your first project free. PDF reports and email are available on paid plans."
+  // every paragraph or short call to action (strings are split at blank lines) that says the first project is free
+  const paragraphs = blog.split("\n").flatMap((line) => line.split("\\n\\n")).filter((p) => /Your first project is free/.test(p))
+
+  it("no paragraph or call to action pairs PDF, export or email wording with the bare 'Your first project is free'", () => {
+    const offenders = paragraphs.filter((p) => /\bPDF\b|\bexport|e-?mails? reports|emails? it/i.test(p)).map((p) => p.trim().slice(-140))
+    expect(offenders).toEqual([])
+  })
+
+  it("the approved wording is used where PDF, export or email wording was paired with the free project", () => {
+    expect(blog.split(APPROVED).length - 1).toBe(13)
+  })
+
+  it("the removed phrases are gone from the short calls to action", () => {
+    for (const gone of ["then export one PDF to attach to the email. Your first project is free.", "export one PDF you can bring or send. Your first project is free.", "and export a report tied to each finding. Your first project is free.", "then export the report. Your first project is free."]) {
+      expect(blog).not.toContain(gone)
+    }
+  })
+})
