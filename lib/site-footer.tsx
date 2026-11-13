@@ -52,7 +52,7 @@ export function SiteFooter() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Popular Articles</p>
             <div className="mt-3 flex flex-col gap-2">
-              <Link href="/blog/roof-tear-off-cost" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Roof Tear-Off Cost in 2026</Link>
+              <Link href="/blog/roof-tear-off-cost" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Roof Tear-Off Cost</Link>
               <Link href="/blog/best-roof-estimating-software" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Best Roof Estimating Software</Link>
               <Link href="/blog/hail-damage-roof-inspection" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Hail Damage Roof Inspection</Link>
               <Link href="/blog/xactimate-roofing-estimate-approved" className="inline-block py-1.5 text-xs text-zinc-600 hover:text-zinc-800">Xactimate Roofing Estimate Guide</Link>
