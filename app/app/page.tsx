@@ -15,7 +15,7 @@ import { useAuth, hasActiveSubscription } from "../../lib/auth-context"
 import { PhotoAnnotator } from "../dashboard/photo-annotator"
 import { SignedImg } from "../../lib/signed-img"
 import { signedPhotoUrl, openStoredFile } from "../../lib/photo-access"
-import { describeMissingPdfAssets, noMissingPdfAssets } from "../../lib/pdf-assets"
+import { describeExportFailure, describeMissingPdfAssets, noMissingPdfAssets } from "../../lib/pdf-assets"
 import { ClaimsOverview, ClaimStatusSelect, StartHere } from "./claims-overview"
 import { normalizeClaimStatus, filterProjects, statusAfterSend, isFirstRun, isDemoProject, type ClaimStatus } from "../../lib/claim-status"
 import { hasCreatedProject, markProjectCreated } from "../../lib/guide-state"
@@ -280,6 +280,7 @@ function Home() {
   const [reportLoading, setReportLoading] = useState(false)
   const [reportCopied, setReportCopied] = useState(false)
   const [pdfGenerating, setPdfGenerating] = useState(false)
+  const csvExporting = useRef(false)
 
   // Company branding state
   const [companyName, setCompanyName] = useState("")
@@ -1501,6 +1502,7 @@ function Home() {
       trackEvent("pdf_downloaded")
     } catch (err) {
       console.error("PDF generation failed:", err)
+      showNotice(describeExportFailure("pdf"))
     } finally {
       setPdfGenerating(false)
     }
@@ -1509,6 +1511,8 @@ function Home() {
   async function exportXactimate() {
     if (!isProUser) { openUpgradeModal("csv"); return }
     if (!selectedProject || captures.length === 0) return
+    if (csvExporting.current) return // a second tap while the first export is still running does nothing
+    csvExporting.current = true
     try {
       const res = await authFetch("/api/export-xactimate", {
         method: "POST",
@@ -1548,6 +1552,9 @@ function Home() {
       }).catch(() => {})
     } catch (err) {
       console.error("Xactimate export failed:", err)
+      showNotice(describeExportFailure("csv"))
+    } finally {
+      csvExporting.current = false
     }
   }
 

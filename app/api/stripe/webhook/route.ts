@@ -31,6 +31,29 @@ function subscriptionIdOf(invoice: Stripe.Invoice): string | null {
 type Db = SupabaseClient
 
 /**
+ * Writes a change onto the ONE row that holds this Stripe subscription.
+ * A customer can hold more than one subscription (a duplicate checkout, an old cancelled one) and this Stripe
+ * account also serves other products, so an event is applied by subscription id, never by customer id alone:
+ * the cancellation of an older subscription must not switch off the one that is still current, and an event for
+ * another product's subscription matches no row here and changes nothing.
+ * Only a row that never recorded a subscription id may be adopted by customer id, and only for our own prices.
+ */
+async function writeSubscriptionState(db: Db, subscriptionId: string, customerId: string, update: Record<string, string>, isOurPrice: boolean) {
+  const { data: matched, error } = await db.from("subscriptions").update(update).eq("stripe_subscription_id", subscriptionId).select("id")
+  if (error) throw new Error(`subscription update failed: ${error.message}`)
+  if (matched && matched.length > 0) return "matched"
+  if (!isOurPrice) return "ignored"
+  const { data: adopted, error: adoptError } = await db
+    .from("subscriptions")
+    .update({ ...update, stripe_subscription_id: subscriptionId })
+    .eq("stripe_customer_id", customerId)
+    .is("stripe_subscription_id", null)
+    .select("id")
+  if (adoptError) throw new Error(`subscription update failed: ${adoptError.message}`)
+  return adopted && adopted.length > 0 ? "adopted" : "ignored"
+}
+
+/**
  * Writes a subscription's CURRENT state (as Stripe reports it now) onto our record.
  * Webhook events can arrive late, twice, or out of order, so we never trust the status carried by the event itself:
  * a late "paid" event for a subscription that has since been cancelled must not switch access back on.
@@ -41,7 +64,7 @@ async function applySubscription(db: Db, sub: Stripe.Subscription) {
   const plan = fromPrice || (sub.metadata?.plan ? normPlan(sub.metadata.plan) : undefined)
   const update: Record<string, string> = { status: STATUS_MAP[sub.status] || "inactive", updated_at: new Date().toISOString() }
   if (plan) update.plan = plan
-  await db.from("subscriptions").update(update).eq("stripe_customer_id", customerId)
+  await writeSubscriptionState(db, sub.id, customerId, update, !!fromPrice)
 }
 
 export async function POST(request: Request) {
@@ -74,6 +97,9 @@ export async function POST(request: Request) {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session
+        // This Stripe account also serves other products. Our checkout always sets supabase_user_id (empty for a guest),
+        // so a session without that key belongs to something else and must not create access or send our email.
+        if (!session.metadata || !("supabase_user_id" in session.metadata)) break
         const customerId = session.customer as string
         const subscriptionId = session.subscription as string
         const customerEmail = session.customer_details?.email
@@ -226,11 +252,15 @@ export async function POST(request: Request) {
       }
       case "customer.subscription.deleted": {
         const sub = event.data.object as Stripe.Subscription
-        const customerId = sub.customer as string
-        await supabaseAdmin
-          .from("subscriptions")
-          .update({ status: "canceled", updated_at: new Date().toISOString() })
-          .eq("stripe_customer_id", customerId)
+        const customerId = typeof sub.customer === "string" ? sub.customer : sub.customer?.id
+        // Only the row holding THIS subscription is cancelled; a newer or different subscription keeps its access
+        await writeSubscriptionState(
+          supabaseAdmin,
+          sub.id,
+          customerId,
+          { status: "canceled", updated_at: new Date().toISOString() },
+          !!planFromPriceId(sub.items?.data?.[0]?.price?.id),
+        )
         break
       }
     }
