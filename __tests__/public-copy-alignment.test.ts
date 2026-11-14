@@ -57,6 +57,17 @@ describe("claims in the sections that were changed", () => {
   })
 })
 
+describe("homepage title", () => {
+  it("leads with the main phrase, ends with the brand, and is the same in the page, Open Graph and Twitter tags", () => {
+    const titles = [...home.matchAll(/^ {2,4}title: "([^"]+)",/gm)].map((m) => m[1]).slice(0, 3)
+    expect(titles).toHaveLength(3)
+    for (const t of titles) {
+      expect(t).toBe("Roofing Supplement Software for Tear-Off Damage | Supplement Snap")
+      expect(t.length).toBeLessThanOrEqual(65)
+    }
+  })
+})
+
 describe("the team FAQ", () => {
   it("is present in the structured data and on the page with the same words", () => {
     const s = [...home.matchAll(/text: "(Team members can view[^"]*)"/g)].map((m) => m[1])

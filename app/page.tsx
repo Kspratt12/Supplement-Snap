@@ -7,11 +7,11 @@ import { InteractiveDemo } from "./components/interactive-demo"
 import { CheckoutButton } from "./pricing/checkout-button"
 
 export const metadata: Metadata = {
-  title: "Roofing Supplement Software for Documenting Tear-Off Damage",
+  title: "Roofing Supplement Software for Tear-Off Damage | Supplement Snap",
   description: "Capture tear-off photos, notes and hidden damage on any phone and draft supplement language. Try one project free; PDF reports and email are on paid plans.",
   alternates: { canonical: "https://supplementsnap.io" },
   openGraph: {
-    title: "Roofing Supplement Software for Documenting Tear-Off Damage",
+    title: "Roofing Supplement Software for Tear-Off Damage | Supplement Snap",
     description: "Capture tear-off photos, notes and hidden damage on any phone and draft supplement language. Try one project free; PDF reports and email are on paid plans.",
     siteName: "Supplement Snap",
     type: "website",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Roofing Supplement Software for Documenting Tear-Off Damage",
+    title: "Roofing Supplement Software for Tear-Off Damage | Supplement Snap",
     description: "Capture tear-off photos, notes and hidden damage on any phone and draft supplement language. Try one project free; PDF reports and email are on paid plans.",
   },
 }
