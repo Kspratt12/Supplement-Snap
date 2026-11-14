@@ -88,3 +88,29 @@ describe("roof condition report article", () => {
     expect(block("roof-inspection-report")).toMatch(/"roof-condition-report"/)
   })
 })
+
+describe("internal links for 'supplemental roofing estimate' and 'roofing supplement list'", () => {
+  it("articles Google already shows for those queries link to the dedicated pages with descriptive anchors", () => {
+    for (const s of ["roof-replacement-estimate-vs-final-cost", "insurance-lowball-roof-estimate-what-to-do"]) {
+      expect(block(s), s).toMatch(/<a href='\/blog\/supplemental-roofing-estimate-explained'>supplemental roofing estimate<\/a>/)
+    }
+    for (const s of ["xactimate-codes-for-roofing-supplements", "xactimate-roof-estimate-supplements"]) {
+      expect(block(s), s).toMatch(/<a href='\/blog\/what-can-you-supplement-on-a-roof-claim'>[^<]+<\/a>/)
+    }
+    expect(block("xactimate-roof-estimate-supplements")).toMatch(/<a href='\/blog\/xactimate-codes-for-roofing-supplements'>Xactimate roofing supplement list quick reference<\/a>/)
+  })
+
+  it("the list article's title tag says what it is: a list of 12 items", () => {
+    expect(field("what-can-you-supplement-on-a-roof-claim", "metaTitle")).toBe("Roofing Supplement List: 12 Items You Can Request")
+    expect(field("what-can-you-supplement-on-a-roof-claim", "metaTitle").length).toBeLessThanOrEqual(60)
+    expect(block("what-can-you-supplement-on-a-roof-claim")).toMatch(/The 12 items/)
+  })
+
+  it("the new link text makes no approval or coverage promise", () => {
+    for (const s of ["roof-replacement-estimate-vs-final-cost", "insurance-lowball-roof-estimate-what-to-do", "xactimate-codes-for-roofing-supplements", "xactimate-roof-estimate-supplements"]) {
+      const added = block(s).match(/(A written request|If the gap comes|For a plain-language|Looking for the full)[^"]*/)?.[0] ?? ""
+      expect(added.length, s).toBeGreaterThan(40)
+      expect(added, s).not.toMatch(/guarantee|will be approved|always/i)
+    }
+  })
+})
