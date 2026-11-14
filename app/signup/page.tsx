@@ -15,6 +15,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
+  const [notice, setNotice] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
@@ -28,6 +29,7 @@ export default function SignupPage() {
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault()
     setError("")
+    setNotice("")
 
     if (password !== confirmPassword) {
       setError("Passwords do not match.")
@@ -61,11 +63,8 @@ export default function SignupPage() {
         password,
       })
       if (signInError || !signInData.session) {
-        setError(
-          signInError?.message === "Email not confirmed"
-            ? "Account created. Please confirm your email, then log in."
-            : "Account created, but automatic login failed. Please log in."
-        )
+        if (signInError?.message === "Email not confirmed") setNotice("Account created. Please confirm your email, then log in.")
+        else setError("Account created, but automatic login failed. Please log in.")
         setLoading(false)
         return
       }
@@ -155,6 +154,10 @@ export default function SignupPage() {
               className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400"
             />
           </div>
+
+          {notice && (
+            <p role="status" className="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800">{notice}</p>
+          )}
 
           {error && (
             <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>

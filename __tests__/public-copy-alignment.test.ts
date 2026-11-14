@@ -119,3 +119,15 @@ describe("links added on the evaluation path", () => {
     for (const p of ["app/roofing-supplement-software/page.tsx", "app/roofing-supplement-report-example/page.tsx", "app/pricing/page.tsx", "app/roofing-supplement-software/[city]/page.tsx"]) expect(exists(p), p).toBe(true)
   })
 })
+
+describe("remaining public wording (onboarding email and the in-app sample report)", () => {
+  it("the welcome email no longer says 'adjuster-ready'", () => {
+    expect(read("app/api/send-onboarding-email/route.ts")).not.toMatch(/adjuster-ready/i)
+  })
+  it("the dashboard's sample report is labeled fictional and makes no concealment claim", () => {
+    const d = read("app/dashboard/page.tsx")
+    const modal = d.slice(d.indexOf("Sample Report Modal"), d.indexOf("Sample Report Modal") + 6000)
+    expect(modal).toMatch(/A fictional example of a report/)
+    expect(modal).not.toMatch(/concealed beneath|Not visible prior to shingle removal|ready for adjuster review/)
+  })
+})
