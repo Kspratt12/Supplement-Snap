@@ -28,7 +28,7 @@ function buildWelcomeEmail(name: string): { subject: string; html: string } {
             Thank you for creating your Supplement Snap account. We're glad to have you on board.
           </p>
           <p style="font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">
-            Supplement Snap helps roofing crews capture hidden damage during tear-off and generate adjuster-ready supplement documentation — all from the field.
+            Supplement Snap helps roofing crews capture hidden damage during tear-off and generate supplement documentation you review before sending — all from the field.
           </p>
 
           <div style="background-color: #f4f4f5; border-radius: 8px; padding: 20px; margin: 0 0 24px 0;">

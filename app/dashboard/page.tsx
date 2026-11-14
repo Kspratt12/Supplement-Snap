@@ -669,7 +669,7 @@ export default function DashboardPage() {
 
               <div className="px-5 sm:px-6 py-4">
                 <p className="text-sm leading-relaxed text-zinc-500">
-                  This is what your supplement report looks like when sent to an adjuster.
+                  A fictional example of a report. You review the descriptions and the report before anything is sent.
                 </p>
               </div>
 
@@ -691,7 +691,7 @@ export default function DashboardPage() {
                       <div>
                         <p className="text-sm font-semibold text-zinc-900">Decking — Front Slope</p>
                         <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                          Three sheets of rotted OSB decking discovered along the eave edge during tear-off. Damage was concealed beneath existing shingles.
+                          Three sheets of rotted OSB decking discovered along the eave edge during tear-off.
                         </p>
                       </div>
                     </div>
@@ -700,7 +700,7 @@ export default function DashboardPage() {
                       <div>
                         <p className="text-sm font-semibold text-zinc-900">Flashing — Chimney</p>
                         <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                          Step flashing severely corroded with multiple separation points. Not visible prior to shingle removal.
+                          Step flashing severely corroded with multiple separation points.
                         </p>
                       </div>
                     </div>
@@ -727,7 +727,7 @@ export default function DashboardPage() {
                   <div className="mt-4 rounded-lg bg-zinc-50 px-4 py-3">
                     <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Summary</p>
                     <p className="mt-2 text-xs leading-relaxed text-zinc-600">
-                      3 supplement items documented during tear-off. Documentation and photos ready for adjuster review.
+                      3 supplement items documented during tear-off. Fictional example.
                     </p>
                   </div>
                 </div>
