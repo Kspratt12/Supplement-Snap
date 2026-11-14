@@ -513,8 +513,8 @@ const ARTICLES: Article[] = [
   {
     slug: "xactimate-codes-for-roofing-supplements",
     title: "Xactimate Codes for Roofing Supplements: Quick Reference",
-    metaTitle: "Xactimate Roofing Supplement Items and Proof",
-    metaDescription: "Common roofing supplement items (decking, flashing, ice & water shield, pipe boots, drip edge), how each is counted, and the proof to attach. Item codes and prices are not listed.",
+    metaTitle: "Xactimate Roofing Supplement Items: How Each Is Counted",
+    metaDescription: "Common roofing supplement items (decking, flashing, ice and water, pipe boots, drip edge), how each is counted and proof to attach. Codes and prices not listed.",
     publishedDate: "2026-01-20",
     externalLinks: [
       { text: "Verisk Xactimate Product Page", url: "https://www.verisk.com/insurance/products/xactimate/" },
@@ -779,9 +779,12 @@ const ARTICLES: Article[] = [
   {
     slug: "roof-tear-off-cost",
     title: "Roof Tear-Off Cost: What Drives the Price and How to Read a Quote",
-    metaTitle: "Roof Tear-Off Cost: What Drives the Price and How to Read a Quote",
-    metaDescription: "What drives roof tear-off cost: roof size, layers, material, pitch, access and hidden damage, how a per-square quote is built, and how to document hidden costs.",
+    metaTitle: "Roof Tear-Off Cost: What Drives the Price",
+    metaDescription: "What drives roof tear-off cost: size, layers, material, pitch, access and hidden damage, how per-square quotes are built, and how to document extra costs.",
     publishedDate: "2026-02-10",
+    midCtaAfter: 2,
+    midCtaTitle: "Document hidden tear-off costs while the roof is open.",
+    midCtaBody: "Hidden damage found at tear-off changes the price. Photograph it, note the roof area and quantity as you go, then build a report you review before sending it to the adjuster. Try one project free; PDF reports and email are on paid plans.",
     externalLinks: [
       { text: "NRCA: National Roofing Contractors Association", url: "https://www.nrca.net" },
       { text: "EPA: Roofing Material Disposal", url: "https://www.epa.gov/smm/best-practices-reducing-reusing-and-recycling-construction-and-demolition-materials" },
@@ -1493,7 +1496,7 @@ const ARTICLES: Article[] = [
       }},
       5: { type: "tip", data: { type: "warning", title: "Common Mistake: Relying on Memory", text: "The number one mistake contractors make is inspecting the roof, taking a few photos, and then trying to write the report days later from memory. By the time you sit down to write, you have forgotten which photo goes with which finding, you cannot remember exact locations, and the report ends up vague and unconvincing. Document everything on the roof, in real time, while you are looking at it." } },
     },
-    related: ["roof-damage-report-template","roof-inspection-report-software","roofing-photo-documentation-checklist","hail-damage-roof-inspection"],
+    related: ["roof-damage-report-template","roof-condition-report","roof-inspection-report-software","roofing-photo-documentation-checklist","hail-damage-roof-inspection"],
     sections: [
       {
         heading: "What is a roof inspection report?",
@@ -3519,7 +3522,7 @@ const ARTICLES: Article[] = [
   {
     slug: "roofing-supplement-companies-vs-software",
     title: "Roofing Supplement Companies vs. Doing It In-House: How to Decide",
-    metaTitle: "Roofing Supplement Companies vs. In-House Software",
+    metaTitle: "Roofing Supplement Services vs. Doing It In-House",
     metaDescription: "Roofing supplement companies, in-house work or software? What each option involves, how pricing models differ, and the questions to ask before you choose.",
     publishedDate: "2026-10-23",
     updatedDate: "2026-11-07",
@@ -3856,6 +3859,81 @@ const ARTICLES: Article[] = [
       },
     ],
     related: ["roof-shingle-matching-insurance-claim", "how-insurance-adjusters-determine-roof-damage", "hail-damage-roof-insurance-claim-documentation", "roof-leak-insurance-claim-contractor-guide", "what-is-the-25-percent-rule-for-roofing"],
+  },
+  {
+    slug: "roof-condition-report",
+    downloads: "roof-damage-report-template",
+    title: "Roof Condition Report: What It Is, What to Include and How It Differs from an Inspection Report",
+    metaTitle: "Roof Condition Report: What It Is and What to Include",
+    metaDescription: "A roof condition report records a roof's current state: material, wear, defects and photos. What to include and how it differs from an inspection report.",
+    publishedDate: "2026-11-14",
+    updatedDate: "2026-11-14",
+    externalLinks: [
+      { text: "NRCA: Roofing resources", url: "https://www.nrca.net" },
+    ],
+    visuals: {
+      3: { type: "checklist", data: { title: "What a roof condition report usually includes", items: [
+        { text: "Property address and the date of the visit", checked: true },
+        { text: "Who prepared it and how the roof was viewed (on the roof, from the ground, by drone, from the attic)", checked: true },
+        { text: "Roof material, number of layers if known, and approximate age", checked: true },
+        { text: "Surface condition: missing, cracked or lifted shingles, granule loss", checked: true },
+        { text: "Flashing, vents, pipe boots and valleys", checked: true },
+        { text: "Attic or decking condition where it can be seen", checked: true },
+        { text: "Each defect or damage found, with a dated photo and its location", checked: true },
+        { text: "What could not be seen, so the limits are clear", checked: true },
+        { text: "Recommended next steps, kept separate from the findings", checked: true },
+      ]}},
+      5: { type: "tip", data: { type: "info", title: "Say what your report covers", text: "Because the terms overlap, state at the top whether the report is a general condition snapshot, an inspection record or a damage report for a claim. It avoids confusion for the person reading it." } },
+    },
+    sections: [
+      {
+        heading: "What a roof condition report is",
+        content: "A roof condition report is a written record of the state of a roof at a point in time. It usually covers the roof material and approximate age, the visible condition of the surface, flashing and penetrations, any defects or damage found, and photos that support each note.\n\nThere is no single required format, and the words are used loosely. Some people say condition report, some say inspection report, and some mean a roof damage report. What matters is that the report says what was looked at, when, and what was found.",
+      },
+      {
+        heading: "How it differs from an inspection report and a damage report",
+        content: "An inspection report describes what an inspector found during a visit and often ends with recommendations. A roof damage report focuses on damage tied to an event such as a hail or wind storm, usually for an insurance claim. A condition report leans toward a snapshot of overall wear, often used for planning repairs or around a sale.\n\nIn practice one document can serve more than one purpose, so say at the top which purpose yours serves. See our guides to <a href='/blog/roof-inspection-report'>writing a roof inspection report</a> and the <a href='/blog/roof-damage-report-template'>roof damage report template</a>.",
+      },
+      {
+        heading: "Who asks for a roof condition report",
+        content: "Property owners planning repairs or a replacement, buyers and sellers during a property transaction, insurers or agents reviewing a policy, and contractors who want a record of the roof before work starts.\n\nRequirements differ by company and by area, so ask the person requesting the report what they expect. Some requesters require a licensed professional to prepare it, so check before you offer one.",
+      },
+      {
+        heading: "What to include",
+        content: "Start with the facts that identify the visit: the address, the date and who prepared the report. Then describe the roof itself and what you saw, area by area. Keep findings and recommendations apart, so a reader can tell what was observed from what you suggest.\n\nThe checklist lists the usual items. Leave out anything you did not actually look at, and say so instead.",
+      },
+      {
+        heading: "Photos and notes that make it credible",
+        content: "Date every photo. Take a wide shot first to show where on the roof the detail is, then a close-up of the detail itself, and name the roof area in the note. Write what you saw, not what you guess caused it, unless you can support the cause.\n\nKeep the photos and the note together by finding, so nobody has to match them up later. Our <a href='/blog/roofing-photo-documentation-checklist'>photo documentation checklist</a> covers what to photograph.",
+      },
+      {
+        heading: "What a condition report does not do",
+        content: "A condition report does not decide insurance coverage, certify that a structure is sound, or guarantee how long a roof will last. Remaining-life estimates are opinions that depend on the material, the installation, the weather and maintenance.\n\nIf a report is going to a lender, buyer, insurer or court, a licensed professional may be needed, and local rules vary.",
+      },
+      {
+        heading: "Where Supplement Snap fits",
+        content: "Supplement Snap is built for documenting findings during tear-off and insurance restoration jobs: photos, the roof area, a note by typing or voice, a description drafted by AI for you to review, and a PDF report on paid plans. It does not rate a roof's condition or estimate its remaining life, so it is not a full condition-report tool.\n\nIf your job is documenting damage for a claim, <a href='/roofing-supplement-report-example'>see the sample report</a> and the <a href='/roofing-supplement-software'>workflow page</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "What is a roof condition report?",
+        a: "A written record of a roof's state at a point in time: material, approximate age, visible condition, defects and photos, with the date and the limits of what was seen.",
+      },
+      {
+        q: "Is a roof condition report the same as a roof inspection report?",
+        a: "The terms overlap and there is no single standard. An inspection report records what an inspector found on a visit, while a condition report leans toward overall wear. Say at the top what yours covers.",
+      },
+      {
+        q: "Does a roof condition report guarantee insurance coverage?",
+        a: "No. Coverage depends on the policy, the cause of the damage and the carrier. A report documents what was found; it does not decide coverage.",
+      },
+      {
+        q: "Who should write a roof condition report?",
+        a: "It depends on who requests it. Some insurers, lenders or buyers require a licensed professional, so ask the requester before you start.",
+      },
+    ],
+    related: ["roof-inspection-report","roof-damage-report-template","roof-inspection-checklist","roof-inspection-report-software","hail-damage-roof-inspection"],
   },
   {
     slug: "roof-inspection-checklist",

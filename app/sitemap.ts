@@ -73,6 +73,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/blog/free-roofing-supplement-software`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/recoverable-depreciation-roof-claims`, lastModified: new Date("2026-10-23"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/does-insurance-cover-roof-replacement`, lastModified: new Date("2026-10-23"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/roof-condition-report`, lastModified: new Date("2026-11-14"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/roof-inspection-checklist`, lastModified: new Date("2026-10-23"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/roof-leak-insurance-claim-contractor-guide`, lastModified: new Date("2026-10-23"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/blog/wind-damage-roof-insurance-claim-documentation`, lastModified: new Date("2026-10-23"), changeFrequency: "monthly", priority: 0.7 },
