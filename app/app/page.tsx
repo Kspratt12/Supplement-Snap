@@ -2873,7 +2873,7 @@ function Home() {
       </section>
 
       {/* Project draft */}
-      {selectedProject && captures.length > 0 && (
+      {selectedProject && reportCaptures.length > 0 && (
         <section className="mb-8">
           {!projectDraft && !projectDraftLoading && (
             <button
@@ -2881,8 +2881,9 @@ function Home() {
               onClick={generateProjectDraft}
               className="w-full rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm font-semibold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-900 dark:bg-indigo-950/50 dark:text-indigo-400 dark:hover:bg-indigo-950"
             >
-              Generate Project Draft ({captures.length} capture
-              {captures.length !== 1 ? "s" : ""})
+              {/* The draft is written from the findings saved to the account, so only those are counted */}
+              Generate Project Draft ({reportCaptures.length} capture
+              {reportCaptures.length !== 1 ? "s" : ""})
             </button>
           )}
 
