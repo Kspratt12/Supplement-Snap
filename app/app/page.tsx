@@ -379,11 +379,8 @@ function Home() {
   // Offline queue: network listener + auto-sync on reconnect
   useEffect(() => {
     // Nothing is counted or uploaded without a signed-in account; each account sees and sends only its own queued captures
-    if (!user?.id) {
-      setPendingQueueCount(0)
-      setCappedQueueCount(0)
-      return
-    }
+    // (Signed out, the page redirects to the login screen; the next account's own counts are read when it signs in.)
+    if (!user?.id) return
     // Load initial pending count
     getPendingCount(user?.id).then(setPendingQueueCount).catch(() => {})
     getCappedCount(user?.id).then(setCappedQueueCount).catch(() => {})
