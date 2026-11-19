@@ -59,6 +59,19 @@ describe("saving a capture that was queued while offline", () => {
     expect(mocks.remove).not.toHaveBeenCalled()
   })
 
+  it("keeps the time the finding was saved on the device as its recorded date, and lines the photo details up with the photos", async () => {
+    const q = { ...queued(2), createdAt: "2026-11-17T09:30:00.000Z", photoMetadata: [{ latitude: 35, longitude: -78 }] } as PendingCapture
+    expect(await uploadQueuedCapture(q, compress)).toBe(true)
+    const row = mocks.insert.mock.calls[0][0]
+    expect(row.created_at).toBe("2026-11-17T09:30:00.000Z")
+    expect(row.photo_metadata).toEqual([{ latitude: 35, longitude: -78 }, null])
+  })
+
+  it("leaves the recorded date to the server when the device time is not usable", async () => {
+    expect(await uploadQueuedCapture({ ...queued(0), fieldNote: "note only", createdAt: "2999-01-01T00:00:00Z" } as PendingCapture, compress)).toBe(true)
+    expect(mocks.insert.mock.calls[0][0]).not.toHaveProperty("created_at")
+  })
+
   it("removes the photos it just uploaded when the record cannot be saved (for example the project was deleted meanwhile)", async () => {
     mocks.insert.mockResolvedValue({ error: { message: 'insert or update on table "captures" violates foreign key constraint' } })
     expect(await uploadQueuedCapture(queued(), compress)).toBe(false)

@@ -51,7 +51,7 @@ describe("the dashboard goes through signed links", () => {
   it("opens the diagram and the annotator through signed links, and says so when they cannot be opened", () => {
     expect(page).toContain("openStoredFile(selectedProject.diagram_url")
     expect(page).toContain("The diagram could not be opened")
-    expect(page).toMatch(/signedPhotoUrl\(url, selectedProject\?\.id\)\.then\(\(link\) => \{ if \(!link\)/)
+    expect(page).toMatch(/signedPhotoUrl\(url, selectedProject\?\.id\)\.then\(\(link\) => \{\s*if \(!link\) \{ showNotice\("The photo could not be loaded, so it cannot be marked up/)
     expect(page).not.toMatch(/setAnnotateUrl\(url\)/)
   })
 
