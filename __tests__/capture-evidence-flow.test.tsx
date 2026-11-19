@@ -20,15 +20,38 @@ const h = vi.hoisted(() => ({
   failUploadOfPhoto: -1, // the photo position whose upload always fails
   projectExtra: {} as Record<string, unknown>, // extra project columns (for example the v16 ones)
   updates: [] as { table: string; patch: Record<string, unknown>; id?: string }[],
+  lostResponse: false, // the insert reaches the database, but the answer is lost (reported as a network error)
+  lookupFails: false, // reading a capture back by id fails (still no connection)
+  queueFails: false, // the device refuses to store (for example storage quota)
 }))
+
+vi.mock("../lib/offline-queue", async (orig) => {
+  const actual = await orig<typeof import("../lib/offline-queue")>()
+  return {
+    ...actual,
+    queueCapture: async (c: Parameters<typeof actual.queueCapture>[0]) => {
+      if (h.queueFails) throw new DOMException("The quota has been exceeded.", "QuotaExceededError")
+      return actual.queueCapture(c)
+    },
+  }
+})
 
 vi.mock("../lib/supabase", () => {
   const chain = (table: string): unknown => {
     const projects = [{ id: "p1", user_id: "u1", project_name: "Test Roof", property_address: "1 Sample St", claim_status: "In Progress", created_at: "2026-10-01T00:00:00Z", ...h.projectExtra }]
     let inserted: Record<string, unknown> | null = null
     let updated = false
+    let byId: string | null = null
     const answer = () => {
+      if (inserted && h.lostResponse) {
+        if (!h.serverCaptures.some((r) => r.id === inserted!.id)) h.serverCaptures.push({ ...inserted, created_at: "2026-11-19T00:00:00Z" })
+        return { data: null, error: { message: "TypeError: Failed to fetch" } }
+      }
       if (inserted) return h.insertError ? { data: null, error: h.insertError } : { data: { id: "srv-1", ...inserted }, error: null }
+      if (byId && table === "captures") {
+        if (h.lookupFails) return { data: null, error: { message: "TypeError: Failed to fetch" } }
+        return { data: h.serverCaptures.filter((r) => r.id === byId), error: null }
+      }
       if (updated) return { data: [{ id: "row" }], error: null }
       const rows = table === "projects" ? projects : table === "captures" ? h.serverCaptures : table === "subscriptions" ? [{ status: "active", plan: "starter" }] : []
       return { data: rows, error: null, count: rows.length }
@@ -38,7 +61,11 @@ vi.mock("../lib/supabase", () => {
         if (prop === "then") return (res: (v: unknown) => unknown, rej: (e: unknown) => unknown) => Promise.resolve(answer()).then(res, rej)
         if (prop === "insert") return (row: Record<string, unknown>) => { inserted = row; h.inserts.push(row); return proxy }
         if (prop === "update") return (patch: Record<string, unknown>) => { updated = true; h.updates.push({ table, patch }); return proxy }
-        if (prop === "eq") return (_col: string, value: unknown) => { if (updated) h.updates[h.updates.length - 1].id = String(value); return proxy }
+        if (prop === "eq") return (col: string, value: unknown) => {
+          if (updated) h.updates[h.updates.length - 1].id = String(value)
+          else if (col === "id") byId = String(value)
+          return proxy
+        }
         if (prop === "single" || prop === "maybeSingle") return () => {
           const a = answer() as { data: unknown; error: unknown }
           return Promise.resolve({ data: Array.isArray(a.data) ? a.data[0] ?? null : a.data, error: a.error })
@@ -102,6 +129,10 @@ beforeEach(async () => {
   h.failUploadOfPhoto = -1
   h.projectExtra = {}
   h.updates = []
+  h.lostResponse = false
+  h.lookupFails = false
+  h.queueFails = false
+  Object.defineProperty(window.navigator, "onLine", { configurable: true, get: () => true })
   const db = await openDB("supplement-snap-offline", 1, { upgrade(d) { d.createObjectStore("pending-captures", { keyPath: "id" }).createIndex("by-status", "status") } })
   await db.clear("pending-captures")
   db.close()
@@ -179,6 +210,59 @@ describe("saving a finding when the upload or save fails", () => {
     fireEvent.click(screen.getByRole("button", { name: /Save Capture/ }))
     expect(await screen.findByText("Saved to your account.")).toBeTruthy()
     expect(h.inserts).toHaveLength(1)
+  })
+})
+
+describe("harder failure cases", () => {
+  async function savePhotoFinding(container: HTMLElement, note: string) {
+    fireEvent.change(container.querySelector("#upload-input") as HTMLInputElement, { target: { files: [new File(["a"], "a.jpg", { type: "image/jpeg" })] } })
+    await screen.findByAltText("Photo 1")
+    fillFinding(note)
+    fireEvent.click(screen.getByRole("button", { name: /Save Capture/ }))
+  }
+
+  it("D: the save reaches the database but the answer is lost: it is recognised as saved, nothing queued, photos kept", async () => {
+    h.lostResponse = true
+    const { container } = await openForm()
+    await savePhotoFinding(container, "Answer lost on the way back")
+    expect(await screen.findByText("Saved to your account.")).toBeTruthy()
+    expect(await getQueuedForProject("p1")).toHaveLength(0)
+    expect(h.removed).toHaveLength(0) // the saved row points at the uploaded photo, so it must not be deleted
+    expect(h.serverCaptures).toHaveLength(1) // one finding, not two
+  })
+
+  it("D: the answer is lost and the save cannot be checked: photos are kept and the queued retry has the same id", async () => {
+    h.lostResponse = true
+    h.lookupFails = true
+    const { container } = await openForm()
+    await savePhotoFinding(container, "Cannot tell")
+    expect(await screen.findByText(/The connection dropped before the finding reached your account/)).toBeTruthy()
+    expect(h.removed).toHaveLength(0)
+    const [queued] = await getQueuedForProject("p1")
+    const { serverCaptureId } = await import("../lib/sync-capture")
+    expect(await serverCaptureId(queued.id)).toBe(h.serverCaptures[0].id) // a retry finds this row instead of saving a copy
+    expect(queued.userId).toBe("u1")
+  })
+
+  it("J: the device cannot store the finding (storage full) while offline: honest message, form kept", async () => {
+    Object.defineProperty(window.navigator, "onLine", { configurable: true, get: () => false })
+    h.queueFails = true
+    await openForm()
+    fillFinding("Storage is full")
+    fireEvent.click(screen.getByRole("button", { name: /Save Capture/ }))
+    expect(await screen.findByText(/could not be saved, not even on this device/)).toBeTruthy()
+    expect((screen.getByPlaceholderText("Describe the damage...") as HTMLTextAreaElement).value).toBe("Storage is full")
+    expect(screen.queryByText(/Saved on this device only/)).toBeNull()
+  })
+
+  it("I: another account's queued finding on this browser is neither shown nor counted", async () => {
+    await queueCapture({ id: "offline-other", userId: "someone-else", projectId: "p1", damageType: "Flashing", roofArea: "Chimney", fieldNote: "Not yours", quantity: 1, unit: "", photos: [], photoNames: [], photoMetadata: [], createdAt: "2026-11-02T00:00:00Z" })
+    await queueCapture({ id: "offline-mine", userId: "u1", projectId: "p1", damageType: "Decking", roofArea: "Front", fieldNote: "Mine", quantity: 1, unit: "", photos: [], photoNames: [], photoMetadata: [], createdAt: "2026-11-03T00:00:00Z" })
+    await openForm()
+    expect(await screen.findByText("Mine")).toBeTruthy() // the list has loaded from the device queue
+    expect(screen.queryByText("Not yours")).toBeNull()
+    expect(screen.getAllByTestId("local-only-card")).toHaveLength(1)
+    expect(await screen.findByText(/1 capture waiting to sync/)).toBeTruthy() // the other account's entry is not counted
   })
 })
 

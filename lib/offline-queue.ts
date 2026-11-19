@@ -3,6 +3,8 @@ import { openDB, type DBSchema } from "idb"
 export interface PendingCapture {
   id: string
   projectId: string
+  /** The account that saved it. Only that account's session lists, counts or uploads it. Missing on entries saved before this field existed. */
+  userId?: string
   damageType: string
   roofArea: string
   fieldNote: string
@@ -52,38 +54,44 @@ export const RETRY_CAP = 5
  * Pass includeCapped only for a sync the person asked for: it also returns failed captures that have used up their
  * automatic retries. Nothing else ever returns those, so they cannot be retried in a loop on their own.
  */
-export async function getPendingCaptures(includeStuck = false, includeCapped = false): Promise<PendingCapture[]> {
+export async function getPendingCaptures(includeStuck = false, includeCapped = false, userId?: string): Promise<PendingCapture[]> {
   const db = await getDB()
   const pending = await db.getAllFromIndex("pending-captures", "by-status", "pending")
   const failed = await db.getAllFromIndex("pending-captures", "by-status", "failed")
   const stuck = includeStuck ? await db.getAllFromIndex("pending-captures", "by-status", "uploading") : []
-  return [...pending, ...stuck, ...failed.filter((c) => includeCapped || c.retryCount < RETRY_CAP)]
+  return [...pending, ...stuck, ...failed.filter((c) => includeCapped || c.retryCount < RETRY_CAP)].filter(belongsTo(userId))
+}
+
+/**
+ * Whether a queued capture belongs to the signed-in account. With no account given, every entry counts (the old
+ * behaviour). Entries saved before userId was recorded have none and are treated as belonging to whoever is signed in.
+ */
+export function belongsTo(userId?: string) {
+  return (c: PendingCapture) => !userId || !c.userId || c.userId === userId
 }
 
 /** How many queued captures have used up their automatic retries and are waiting for a manual sync */
-export async function getCappedCount(): Promise<number> {
+export async function getCappedCount(userId?: string): Promise<number> {
   const db = await getDB()
   const failed = await db.getAllFromIndex("pending-captures", "by-status", "failed")
-  return failed.filter((c) => c.retryCount >= RETRY_CAP).length
+  return failed.filter(belongsTo(userId)).filter((c) => c.retryCount >= RETRY_CAP).length
 }
 
 /**
  * Every capture still held on this device for one project, whatever its state, oldest first. The capture screen shows
  * these as "on this device" cards so a refresh or a reopened page does not hide findings that have not reached the server.
  */
-export async function getQueuedForProject(projectId: string): Promise<PendingCapture[]> {
+export async function getQueuedForProject(projectId: string, userId?: string): Promise<PendingCapture[]> {
   const db = await getDB()
   const all = await db.getAll("pending-captures")
-  return all.filter((c) => c.projectId === projectId).sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+  return all.filter((c) => c.projectId === projectId).filter(belongsTo(userId)).sort((a, b) => a.createdAt.localeCompare(b.createdAt))
 }
 
-/** Get count of queued captures */
-export async function getPendingCount(): Promise<number> {
+/** Get count of queued captures (for one account when userId is given) */
+export async function getPendingCount(userId?: string): Promise<number> {
   const db = await getDB()
-  const pending = await db.countFromIndex("pending-captures", "by-status", "pending")
-  const failed = await db.countFromIndex("pending-captures", "by-status", "failed")
-  const uploading = await db.countFromIndex("pending-captures", "by-status", "uploading")
-  return pending + failed + uploading
+  const all = await db.getAll("pending-captures")
+  return all.filter(belongsTo(userId)).length
 }
 
 /** Remove a capture after successful upload */
@@ -121,20 +129,21 @@ let syncing = false
 
 export async function syncPendingCaptures(
   uploadFn: (capture: PendingCapture) => Promise<boolean>,
-  options: { includeCapped?: boolean } = {}
+  options: { includeCapped?: boolean; userId?: string } = {}
 ): Promise<number> {
   // Two syncs at once (for example two "back online" events) would upload the same capture twice.
   if (syncing) return 0
   syncing = true
   try {
-    return await runSync(uploadFn, !!options.includeCapped)
+    return await runSync(uploadFn, !!options.includeCapped, options.userId)
   } finally {
     syncing = false
   }
 }
 
-async function runSync(uploadFn: (capture: PendingCapture) => Promise<boolean>, includeCapped: boolean): Promise<number> {
-  const captures = await getPendingCaptures(true, includeCapped)
+async function runSync(uploadFn: (capture: PendingCapture) => Promise<boolean>, includeCapped: boolean, userId?: string): Promise<number> {
+  // Only the signed-in account's captures: another account on the same browser never uploads them
+  const captures = await getPendingCaptures(true, includeCapped, userId)
   let synced = 0
 
   for (const capture of captures) {

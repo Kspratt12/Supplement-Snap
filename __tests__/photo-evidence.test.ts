@@ -115,6 +115,20 @@ describe("queued findings can be listed per project after a reload", () => {
     expect(list[1].status).toBe("failed")
     expect(list[1].retryCount).toBe(1)
   })
+
+  it("each account lists, counts and syncs only its own entries (old entries without an account still count)", async () => {
+    const { getPendingCount, syncPendingCaptures } = await import("../lib/offline-queue")
+    const base = { projectId: "p1", damageType: "Decking", roofArea: "Front", fieldNote: "n", quantity: 1, unit: "", photos: [], photoNames: [], photoMetadata: [], createdAt: "2026-11-01T00:00:00Z" }
+    await queueCapture({ ...base, id: "mine", userId: "u1" })
+    await queueCapture({ ...base, id: "theirs", userId: "u2" })
+    await queueCapture({ ...base, id: "legacy" })
+    expect((await getQueuedForProject("p1", "u1")).map((c) => c.id).sort()).toEqual(["legacy", "mine"])
+    expect(await getPendingCount("u2")).toBe(2)
+    const sent: string[] = []
+    await syncPendingCaptures(async (c) => { sent.push(c.id); return true }, { userId: "u1" })
+    expect(sent.sort()).toEqual(["legacy", "mine"])
+    expect((await getQueuedForProject("p1")).map((c) => c.id)).toEqual(["theirs"]) // untouched
+  })
 })
 
 describe("mark-up touch handling", () => {

@@ -6,7 +6,7 @@ import { photoPathsForCaptures, removePhotoFiles } from "../../lib/storage-paths
 import { NOT_SAVED_NO_PERMISSION, writeOutcome } from "../../lib/write-result"
 import { quantityLabel } from "../../lib/quantity-label"
 import { PDF_FOOTER_LINES, DEFAULT_REPORT_EMAIL_MESSAGE } from "../../lib/report-wording"
-import { uploadQueuedCapture } from "../../lib/sync-capture"
+import { uploadQueuedCapture, serverCaptureId, savedState } from "../../lib/sync-capture"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { jsPDF } from "jspdf"
@@ -378,16 +378,22 @@ function Home() {
 
   // Offline queue: network listener + auto-sync on reconnect
   useEffect(() => {
+    // Nothing is counted or uploaded without a signed-in account; each account sees and sends only its own queued captures
+    if (!user?.id) {
+      setPendingQueueCount(0)
+      setCappedQueueCount(0)
+      return
+    }
     // Load initial pending count
-    getPendingCount().then(setPendingQueueCount).catch(() => {})
-    getCappedCount().then(setCappedQueueCount).catch(() => {})
+    getPendingCount(user?.id).then(setPendingQueueCount).catch(() => {})
+    getCappedCount(user?.id).then(setCappedQueueCount).catch(() => {})
 
     // Automatic syncs leave captures that used up their retries alone; a manual one (Sync Now) tries them once more.
     async function runSync(manual: boolean) {
       setSyncing(true)
       try {
         // Photos are uploaded and then the record is saved; if the record cannot be saved the photos are removed again
-        const synced = await syncPendingCaptures((capture: PendingCapture) => uploadQueuedCapture(capture, compressImage), { includeCapped: manual })
+        const synced = await syncPendingCaptures((capture: PendingCapture) => uploadQueuedCapture(capture, compressImage), { includeCapped: manual, userId: user?.id })
         if (synced > 0) setSavedFlash(true)
         // Reload either way: an uploaded finding moves from "on this device" to saved, and a failed one shows its new state
         if (selectedProjectId) {
@@ -395,8 +401,8 @@ function Home() {
         }
       } finally {
         setSyncing(false)
-        getPendingCount().then(setPendingQueueCount).catch(() => {})
-        getCappedCount().then(setCappedQueueCount).catch(() => {})
+        getPendingCount(user?.id).then(setPendingQueueCount).catch(() => {})
+        getCappedCount(user?.id).then(setCappedQueueCount).catch(() => {})
       }
     }
 
@@ -417,7 +423,7 @@ function Home() {
     // "back online" event, so it is also retried automatically every minute while online. The retry cap still applies.
     const retryTimer = setInterval(() => {
       if (!navigator.onLine) return
-      getPendingCount().then((n) => { if (n > 0) void runSync(false) }).catch(() => {})
+      getPendingCount(user?.id).then((n) => { if (n > 0) void runSync(false) }).catch(() => {})
     }, 60_000)
 
     window.addEventListener("online", handleOnline)
@@ -429,7 +435,7 @@ function Home() {
       window.removeEventListener("ss-manual-sync", handleManualSync)
       window.removeEventListener("offline", handleOffline)
     }
-  }, [selectedProjectId])
+  }, [selectedProjectId, user?.id])
 
   async function translateNote(text: string) {
     setTranslating(true)
@@ -708,8 +714,9 @@ function Home() {
   // Findings still in this device's queue for the project, as cards. They keep the queued photos (shown from the device)
   // and their upload state, so a refresh or reopened page still shows them, clearly marked as not yet saved.
   async function queuedCards(projectId: string): Promise<Capture[]> {
+    if (!user?.id) return []
     try {
-      const queued = await getQueuedForProject(projectId)
+      const queued = await getQueuedForProject(projectId, user.id)
       localPreviewUrls.current.forEach((u) => URL.revokeObjectURL(u))
       localPreviewUrls.current = []
       return queued
@@ -1985,13 +1992,19 @@ function Home() {
     // The optional wide/close-up tag travels with each photo's camera data
     const photoMetadata: (PhotoDetails | null)[] = (await extractAllExifData(files)).map((m, i) => ({ ...m, shot: shots[i] ?? null }))
 
+    // One id for this save, used both for the device queue entry and (through serverCaptureId) for the saved row. A save
+    // that reached the server but whose answer was lost is then found by the queued retry instead of saved twice.
+    const queueId = `offline-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+    const rowId = await serverCaptureId(queueId)
+
     // Keeps the whole finding, with every original photo, in this device's queue. The form is cleared only once the
     // queue has it; if the device cannot store it either, everything stays in the form.
     async function keepOnDevice(message: string): Promise<boolean> {
       try {
         const photoBuffers = await Promise.all(files.map((f) => fileToArrayBuffer(f)))
         await queueCapture({
-          id: `offline-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          id: queueId,
+          userId: user?.id,
           projectId: selectedProjectId,
           damageType,
           roofArea,
@@ -2008,7 +2021,7 @@ function Home() {
         setSaving(false)
         return false
       }
-      getPendingCount().then(setPendingQueueCount).catch(() => {})
+      getPendingCount(user?.id).then(setPendingQueueCount).catch(() => {})
       setStatus(message)
       resetCaptureForm()
       setSaving(false)
@@ -2049,6 +2062,7 @@ function Home() {
 
     // Step 5: Insert capture record with EXIF metadata
     const fullRow = {
+      id: rowId,
       project_id: selectedProjectId,
       image_url: uploadedUrls[0] || "",
       image_urls: uploadedUrls,
@@ -2061,6 +2075,7 @@ function Home() {
       photo_metadata: alignMetadata(photoMetadata, uploadedUrls.length),
     }
     const coreRow = {
+      id: rowId,
       project_id: selectedProjectId,
       image_url: uploadedUrls[0] || "",
       image_urls: uploadedUrls,
@@ -2084,16 +2099,26 @@ function Home() {
       insertError = fallback.error
     }
 
-    if (insertError) {
-      // Clean up orphaned uploads since DB insert failed
-      const notConfirmed = await cleanupOrphanedUploads(uploadedUrls)
-      if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The capture was not saved")
-      // The connection dropped before the record was saved: keep the finding on the device rather than asking for a retake
-      if (isNetworkFailure(insertError.message)) {
+    if (insertError && isNetworkFailure(insertError.message)) {
+      // The connection dropped. The row may or may not have been saved before the answer was lost, so ask once.
+      const saved = await savedState(rowId, selectedProjectId)
+      if (saved.state !== "yes") {
+        // Only photos that are certainly unused are removed. If the answer is unknown, they are kept: the saved row
+        // might point at them, and the queued retry will find that row by its id rather than save a second copy.
+        if (saved.state === "no") {
+          const notConfirmed = await cleanupOrphanedUploads(uploadedUrls)
+          if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The finding was kept on this device")
+        }
         await keepOnDevice("The connection dropped before the finding reached your account, so it is saved on this device only for now. It is retried automatically; you can also press Sync Now.")
         return
       }
-      // Refused by the account (for example the project was deleted): the form keeps everything so nothing is lost
+      insertError = null // it was saved; the answer was lost on the way back
+    }
+
+    if (insertError) {
+      // Refused by the account (for example the project was deleted): remove the uploads; the form keeps everything
+      const notConfirmed = await cleanupOrphanedUploads(uploadedUrls)
+      if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The capture was not saved")
       setStatus(`Save failed: ${insertError.message}`)
       setSaving(false)
       return
@@ -2410,7 +2435,12 @@ function Home() {
             Account
           </Link>
           <button
-            onClick={async () => { await signOut(); router.push("/") }}
+            onClick={async () => {
+              // Findings still on this device stay here (they are the only copy) but are not uploaded while signed out
+              if (pendingQueueCount > 0 && !confirm(`${pendingQueueCount} finding${pendingQueueCount !== 1 ? "s have" : " has"} not uploaded yet. ${pendingQueueCount !== 1 ? "They stay" : "It stays"} on this device and upload${pendingQueueCount !== 1 ? "" : "s"} when you sign in again here. Another account on this device will not see or upload ${pendingQueueCount !== 1 ? "them" : "it"}. If this browser's data is cleared first, ${pendingQueueCount !== 1 ? "they are" : "it is"} lost. Log out anyway?`)) return
+              await signOut()
+              router.push("/")
+            }}
             className="inline-flex min-h-10 items-center px-1 text-xs font-medium text-zinc-600 hover:text-zinc-800"
           >
             Log Out

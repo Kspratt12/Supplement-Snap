@@ -23,7 +23,7 @@ type SavedState = { state: "yes" | "no" | "unknown"; imageUrls?: unknown }
  * answer could not be read or the finding is not one this capture may treat as its own. For "yes" it also returns the photo
  * list the saved finding holds, uninterpreted.
  */
-async function savedState(serverId: string, projectId: string): Promise<SavedState> {
+export async function savedState(serverId: string, projectId: string): Promise<SavedState> {
   try {
     const { data, error } = await supabase.from("captures").select("id, project_id, image_urls").eq("id", serverId).maybeSingle()
     if (error) return { state: "unknown" }
