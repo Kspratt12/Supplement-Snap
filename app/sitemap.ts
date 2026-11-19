@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/roofing-supplement-roi-calculator`, lastModified: new Date("2026-10-25"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/free-roofing-templates`, lastModified: new Date("2026-10-24"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/free-roofing-supplement-checklist`, lastModified: SITE_UPDATED, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/roofing-supplement-letter-generator`, lastModified: new Date("2026-11-19"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/roofing-supplement-software-vs-spreadsheets`, lastModified: SITE_UPDATED, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/about`, lastModified: SITE_UPDATED, changeFrequency: "yearly", priority: 0.5 },
     { url: `${BASE_URL}/blog`, lastModified: SITE_UPDATED, changeFrequency: "weekly", priority: 0.8 },

@@ -185,6 +185,7 @@ export default function FreeChecklistPage() {
           <div className="grid gap-3 sm:grid-cols-2">
             {[
               { href: "/blog/roofing-photo-documentation-checklist", title: "Roofing Photo Documentation Checklist" },
+              { href: "/roofing-supplement-letter-generator", title: "Supplement Letter and Email Generator" },
               { href: "/blog/roofing-supplement-template", title: "Roofing Supplement Template" },
               { href: "/free-roofing-templates", title: "Free Roofing Templates (PDF, Word, Excel)" },
               { href: "/roofing-supplement-documentation", title: "Roofing Supplement Documentation" },

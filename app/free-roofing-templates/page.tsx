@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 
 const CHECKLISTS = [
   { href: "/free-roofing-supplement-checklist", title: "Free supplement checklist", text: "Printable list of photos, measurements, notes and documents to have before you submit." },
+  { href: "/roofing-supplement-letter-generator", title: "Supplement letter generator", text: "Fill in your claim details and items to get a request, follow-up or reinspection email." },
   { href: "/blog/roof-inspection-checklist", title: "Roof inspection checklist", text: "Exterior, flashing, attic and decking, plus how to document findings." },
   { href: "/blog/roofing-photo-documentation-checklist", title: "Photo documentation checklist", text: "What to photograph before and during tear-off." },
   { href: "/blog/roofing-supplement-follow-up-log", title: "Supplement follow-up log", text: "A simple way to track what you sent and when to follow up." },
