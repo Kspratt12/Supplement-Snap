@@ -67,10 +67,14 @@ export async function extractPdfPages(data: Uint8Array): Promise<{ pages: PageTe
   // The library is given its own copy of the bytes so the caller's copy is not consumed
   const copy = new Uint8Array(data)
   let doc: Awaited<ReturnType<typeof pdfjs.getDocument>["promise"]>
+  // The loading task, not the document, is what frees the parser's memory and worker (pdf.js 6 removed doc.destroy)
+  // pdf.js 6 has no isEvalSupported option: the code path it switched off no longer exists
+  const task = pdfjs.getDocument({ data: copy, useSystemFonts: false, disableFontFace: true, verbosity: 0 })
   try {
-    doc = await pdfjs.getDocument({ data: copy, isEvalSupported: false, useSystemFonts: false, disableFontFace: true, verbosity: 0 }).promise
+    doc = await task.promise
   } catch (err) {
     const name = (err as { name?: string })?.name || ""
+    await task.destroy().catch(() => {})
     if (name === "PasswordException") throw fail("password_protected")
     if (name === "InvalidPDFException" || name === "FormatError" || name === "MissingPDFException") throw fail("damaged")
     throw fail("unreadable")
@@ -90,6 +94,6 @@ export async function extractPdfPages(data: Uint8Array): Promise<{ pages: PageTe
     }
     return { pages, pageCount: doc.numPages }
   } finally {
-    await doc.destroy().catch(() => {})
+    await task.destroy().catch(() => {})
   }
 }
