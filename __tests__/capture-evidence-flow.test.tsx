@@ -1,6 +1,6 @@
 import "fake-indexeddb/auto"
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
-import { render, screen, fireEvent, cleanup, configure } from "@testing-library/react"
+import { render, screen, fireEvent, cleanup, configure, waitFor } from "@testing-library/react"
 import { openDB } from "idb"
 
 /**
@@ -18,14 +18,18 @@ const h = vi.hoisted(() => ({
   uploads: [] as string[],
   removed: [] as string[],
   failUploadOfPhoto: -1, // the photo position whose upload always fails
+  projectExtra: {} as Record<string, unknown>, // extra project columns (for example the v16 ones)
+  updates: [] as { table: string; patch: Record<string, unknown>; id?: string }[],
 }))
 
 vi.mock("../lib/supabase", () => {
-  const projects = [{ id: "p1", user_id: "u1", project_name: "Test Roof", property_address: "1 Sample St", claim_status: "In Progress", created_at: "2026-10-01T00:00:00Z" }]
   const chain = (table: string): unknown => {
+    const projects = [{ id: "p1", user_id: "u1", project_name: "Test Roof", property_address: "1 Sample St", claim_status: "In Progress", created_at: "2026-10-01T00:00:00Z", ...h.projectExtra }]
     let inserted: Record<string, unknown> | null = null
+    let updated = false
     const answer = () => {
       if (inserted) return h.insertError ? { data: null, error: h.insertError } : { data: { id: "srv-1", ...inserted }, error: null }
+      if (updated) return { data: [{ id: "row" }], error: null }
       const rows = table === "projects" ? projects : table === "captures" ? h.serverCaptures : table === "subscriptions" ? [{ status: "active", plan: "starter" }] : []
       return { data: rows, error: null, count: rows.length }
     }
@@ -33,6 +37,8 @@ vi.mock("../lib/supabase", () => {
       get(_t, prop: string) {
         if (prop === "then") return (res: (v: unknown) => unknown, rej: (e: unknown) => unknown) => Promise.resolve(answer()).then(res, rej)
         if (prop === "insert") return (row: Record<string, unknown>) => { inserted = row; h.inserts.push(row); return proxy }
+        if (prop === "update") return (patch: Record<string, unknown>) => { updated = true; h.updates.push({ table, patch }); return proxy }
+        if (prop === "eq") return (_col: string, value: unknown) => { if (updated) h.updates[h.updates.length - 1].id = String(value); return proxy }
         if (prop === "single" || prop === "maybeSingle") return () => {
           const a = answer() as { data: unknown; error: unknown }
           return Promise.resolve({ data: Array.isArray(a.data) ? a.data[0] ?? null : a.data, error: a.error })
@@ -94,6 +100,8 @@ beforeEach(async () => {
   h.uploads = []
   h.removed = []
   h.failUploadOfPhoto = -1
+  h.projectExtra = {}
+  h.updates = []
   const db = await openDB("supplement-snap-offline", 1, { upgrade(d) { d.createObjectStore("pending-captures", { keyPath: "id" }).createIndex("by-status", "status") } })
   await db.clear("pending-captures")
   db.close()
@@ -185,5 +193,51 @@ describe("after a reload", () => {
     expect(await screen.findByTestId("report-local-only")).toBeTruthy()
     expect(screen.getByTestId("report-review-summary").textContent).toContain("1 finding in this report")
     expect(screen.getByTestId("report-review-summary").textContent).toContain("1 without a photo")
+    // Without the v16 columns, the controls that need them do not appear
+    expect(screen.queryByTestId("claim-tracking")).toBeNull()
+    expect(screen.queryByRole("button", { name: /Move finding/ })).toBeNull()
+  })
+})
+
+describe("after supabase-migration-v16 (columns present in the loaded rows)", () => {
+  const row = (id: string, note: string, created_at: string) => ({
+    id, project_id: "p1", image_url: "", image_urls: [], damage_type: "Decking", roof_area: "Front", field_note: note,
+    status: "Captured", created_at, draft: `Explanation for ${note}`, report_order: null, diagram_pin: null,
+  })
+
+  it("amounts and follow-up are saved as typed, and a bad amount is refused before saving", async () => {
+    h.projectExtra = { amount_requested: null, amount_approved: null, follow_up_on: null }
+    await openForm()
+    const panel = await screen.findByTestId("claim-tracking")
+    expect(panel.textContent).toContain("not connected to insurers")
+    fireEvent.click(screen.getByRole("button", { name: "+ Track amounts and follow-up" }))
+    fireEvent.change(screen.getByLabelText("Amount requested ($)"), { target: { value: "about 3k" } })
+    fireEvent.click(screen.getByRole("button", { name: "Save" }))
+    expect(await screen.findByText(/Enter amounts as numbers/)).toBeTruthy()
+    expect(h.updates.filter((u) => u.table === "projects")).toHaveLength(0)
+    fireEvent.change(screen.getByLabelText("Amount requested ($)"), { target: { value: "$1,200.50" } })
+    fireEvent.change(screen.getByLabelText("Next follow-up"), { target: { value: "2020-01-01" } })
+    fireEvent.click(screen.getByRole("button", { name: "Save" }))
+    expect(await screen.findByTestId("follow-up-due")).toBeTruthy()
+    expect(h.updates.find((u) => u.table === "projects")?.patch).toEqual({ amount_requested: 1200.5, amount_approved: null, follow_up_on: "2020-01-01" })
+    expect(screen.getByTestId("claim-tracking").textContent).toContain("$1,200.50")
+  })
+
+  it("findings can be reordered in the report and every position is saved", async () => {
+    h.serverCaptures = [row("c2", "Second", "2026-11-02T00:00:00Z"), row("c1", "First", "2026-11-01T00:00:00Z")]
+    await openForm()
+    fireEvent.click(await screen.findByRole("button", { name: "Generate Project Report (2 findings)" }))
+    // Report starts in the list's order: Second is finding 1, First is finding 2
+    expect((await screen.findByRole("button", { name: "Move finding 1 up" }) as HTMLButtonElement).disabled).toBe(true)
+    fireEvent.click(screen.getByRole("button", { name: "Move finding 1 down" }))
+    await waitFor(() => expect(h.updates.filter((u) => "report_order" in u.patch)).toHaveLength(2))
+    const saved = Object.fromEntries(h.updates.filter((u) => "report_order" in u.patch).map((u) => [u.id, u.patch.report_order]))
+    expect(saved).toEqual({ c1: 0, c2: 1 })
+    // The report on screen follows the saved order
+    const report = screen.getByTestId("report-review-summary").closest("section") as HTMLElement
+    await waitFor(() => {
+      const text = report.textContent || ""
+      expect(text.indexOf("Explanation for First")).toBeLessThan(text.indexOf("Explanation for Second"))
+    })
   })
 })

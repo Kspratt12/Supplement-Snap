@@ -40,6 +40,8 @@ import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang, fetchAccountSpeechLang } 
 import { uploadPhotosWithRetry, cleanupOrphanedUploads } from "../../lib/upload-utils"
 import { trackEvent } from "../../lib/analytics"
 import { OfflineSyncBanner } from "./offline-sync-banner"
+import { ClaimTracking, DiagramPinDialog, type TrackingPatch } from "./claim-tracking"
+import { hasColumn, orderForReport, moveInReport, numberedPins, normalizePin, type Pin } from "../../lib/report-tracking"
 import {
   queueCapture,
   syncPendingCaptures,
@@ -111,6 +113,10 @@ type Project = {
   adjuster_phone?: string
   claim_status?: string
   diagram_url?: string
+  // Present only once supabase-migration-v16 has run
+  amount_requested?: number | string | null
+  amount_approved?: number | string | null
+  follow_up_on?: string | null
 }
 
 const CAPTURE_STATUSES = ["Captured", "Needs Review", "Ready to Send", "Sent"] as const
@@ -136,6 +142,9 @@ type Capture = {
   photo_metadata?: (PhotoDetails | null)[] | null
   quantity?: number | null
   unit?: string | null
+  // Present only once supabase-migration-v16 has run
+  report_order?: number | null
+  diagram_pin?: unknown
   /** Set only on a finding that is still in this device's queue and not yet saved to the account */
   localOnly?: { status: PendingCapture["status"]; retryCount: number }
 }
@@ -244,7 +253,13 @@ function Home() {
   const [captures, setCaptures] = useState<Capture[]>([])
   // Reports, exports, emails and status changes use only findings saved to the account. Findings still on this device
   // are shown in the list but are never put in a report, since the adjuster could not open their photos.
-  const reportCaptures = captures.filter((c) => !c.localOnly)
+  // In the person's chosen report order when they have set one (report_order), otherwise the order on screen.
+  const reportCaptures = orderForReport(captures.filter((c) => !c.localOnly))
+  // Controls that need supabase-migration-v16 appear only when the loaded rows carry its columns
+  const canReorder = reportCaptures.length > 1 && hasColumn(reportCaptures[0], "report_order")
+  const canPin = reportCaptures.length > 0 && hasColumn(reportCaptures[0], "diagram_pin")
+  const [pinFor, setPinFor] = useState<string | null>(null)
+  const [reordering, setReordering] = useState(false)
   const localOnlyCount = captures.length - reportCaptures.length
   // Optional wide/close-up tag for each photo in the capture form, in the same order as `files`
   const [shots, setShots] = useState<(ShotType | null)[]>([])
@@ -1520,7 +1535,28 @@ function Home() {
           doc.setLineWidth(0.3)
           doc.rect(margin, y, imgW, cappedH)
           doc.addImage(diagramDataUrl, fmt, margin, y, imgW, cappedH)
+          // Numbered pins the person placed, numbered like the findings above
+          const pins = numberedPins(captures)
+          for (const { n, pin } of pins) {
+            const px = margin + pin.x * imgW
+            const py = y + pin.y * cappedH
+            doc.setFillColor(220, 38, 38)
+            doc.setDrawColor(255, 255, 255)
+            doc.setLineWidth(0.4)
+            doc.circle(px, py, 2.6, "FD")
+            doc.setTextColor(255, 255, 255)
+            doc.setFontSize(6.5)
+            doc.setFont("helvetica", "bold")
+            doc.text(String(n), px, py + 0.9, { align: "center" })
+          }
           y += cappedH + 4
+          if (pins.length > 0) {
+            doc.setFontSize(7)
+            doc.setFont("helvetica", "normal")
+            doc.setTextColor(120, 120, 130)
+            doc.text("Numbered pins show where each finding was placed on the diagram by the person who prepared this report.", margin, y)
+            y += 4
+          }
         } else {
           pdfMissing.current.diagram = true
           doc.setFontSize(8)
@@ -2207,6 +2243,48 @@ function Home() {
     })
   }
 
+  // ---- Report order (needs supabase-migration-v16). Every position is saved before the screen changes; if any save
+  // fails, the ones that did save are put back so the stored order is never half-changed.
+  async function moveFinding(id: string, direction: -1 | 1) {
+    if (reordering || readOnly) return
+    const updates = moveInReport(reportCaptures, id, direction)
+    if (updates.length === 0) return
+    setReordering(true)
+    const before = new Map(reportCaptures.map((c) => [c.id, c.report_order ?? null]))
+    const done: string[] = []
+    let failed = false
+    for (const u of updates) {
+      const ok = writeOutcome(await supabase.from("captures").update({ report_order: u.report_order }).eq("id", u.id).select("id")) === "ok"
+      if (!ok) { failed = true; break }
+      done.push(u.id)
+    }
+    if (failed) {
+      for (const d of done) await supabase.from("captures").update({ report_order: before.get(d) ?? null }).eq("id", d).select("id")
+      showNotice("The new order was not saved. Check your connection and try again.")
+    } else {
+      const next = new Map(updates.map((u) => [u.id, u.report_order]))
+      setCaptures((prev) => prev.map((c) => (next.has(c.id) ? { ...c, report_order: next.get(c.id) } : c)))
+    }
+    setReordering(false)
+  }
+
+  // ---- Roof-diagram pin for one finding (needs supabase-migration-v16)
+  async function saveDiagramPin(captureId: string, pin: Pin | null): Promise<string> {
+    const outcome = writeOutcome(await supabase.from("captures").update({ diagram_pin: pin }).eq("id", captureId).select("id"))
+    if (outcome !== "ok") return outcome === "refused" ? NOT_SAVED_NO_PERMISSION : "The pin was not saved. Check your connection and try again."
+    setCaptures((prev) => prev.map((c) => (c.id === captureId ? { ...c, diagram_pin: pin } : c)))
+    return ""
+  }
+
+  // ---- Requested/approved amounts and follow-up date, as typed by the person (needs supabase-migration-v16)
+  async function saveTracking(patch: TrackingPatch): Promise<string> {
+    if (!selectedProjectId) return "Choose a project first."
+    const outcome = writeOutcome(await supabase.from("projects").update(patch).eq("id", selectedProjectId).select("id"))
+    if (outcome !== "ok") return outcome === "refused" ? NOT_SAVED_NO_PERMISSION : "Not saved. Check your connection and try again."
+    setProjects((prev) => prev.map((p) => (p.id === selectedProjectId ? { ...p, ...patch } : p)))
+    return ""
+  }
+
   // ---- Edit a saved finding (damage type, area, quantity, unit, note)
   function startEditCapture(c: Capture) {
     setEditingCaptureId(c.id)
@@ -2595,6 +2673,9 @@ function Home() {
                 </div>
               )}
             </div>
+            {hasColumn(selectedProject, "amount_requested") && (
+              <ClaimTracking key={selectedProject.id} project={selectedProject} readOnly={readOnly} onSave={saveTracking} />
+            )}
             {/* Diagram upload */}
             <div className="flex items-center gap-2 pt-1">
               {selectedProject.diagram_url ? (
@@ -3109,8 +3190,24 @@ function Home() {
                           day: "numeric",
                           year: "numeric",
                         })}
+                        {canPin && normalizePin(c.diagram_pin) && <span className="ml-2 text-indigo-600">Pinned on diagram</span>}
                       </p>
                     </div>
+                    {!readOnly && (canReorder || (canPin && selectedProject.diagram_url)) && (
+                      <div className="flex flex-shrink-0 items-center gap-1">
+                        {canPin && selectedProject.diagram_url && (
+                          <button type="button" onClick={() => setPinFor(c.id)} className="min-h-[40px] rounded-md border border-zinc-200 px-2 text-[11px] font-medium text-zinc-600 hover:bg-zinc-50">
+                            {normalizePin(c.diagram_pin) ? "Move pin" : "Pin on diagram"}
+                          </button>
+                        )}
+                        {canReorder && (
+                          <>
+                            <button type="button" disabled={reordering || i === 0} onClick={() => moveFinding(c.id, -1)} aria-label={`Move finding ${i + 1} up`} className="h-10 w-10 rounded-md border border-zinc-200 text-zinc-600 hover:bg-zinc-50 disabled:opacity-30">↑</button>
+                            <button type="button" disabled={reordering || i === reportCaptures.length - 1} onClick={() => moveFinding(c.id, 1)} aria-label={`Move finding ${i + 1} down`} className="h-10 w-10 rounded-md border border-zinc-200 text-zinc-600 hover:bg-zinc-50 disabled:opacity-30">↓</button>
+                          </>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {/* Field note */}
@@ -4122,6 +4219,22 @@ function Home() {
         saveLabel="Add to finding"
         onSave={(dataUrl) => { void addMarkedUpCopy(dataUrl) }}
       />
+
+      {pinFor && selectedProject?.diagram_url && (() => {
+        const idx = reportCaptures.findIndex((c) => c.id === pinFor)
+        if (idx < 0) return null
+        return (
+          <DiagramPinDialog
+            diagramUrl={selectedProject.diagram_url}
+            projectId={selectedProject.id}
+            number={idx + 1}
+            current={reportCaptures[idx].diagram_pin}
+            others={numberedPins(reportCaptures)}
+            onSave={(pin) => saveDiagramPin(pinFor, pin)}
+            onClose={() => setPinFor(null)}
+          />
+        )
+      })()}
 
       {/* Upgrade Modal */}
       {showUpgradeModal && (
