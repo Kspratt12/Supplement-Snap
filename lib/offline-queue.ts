@@ -10,7 +10,7 @@ export interface PendingCapture {
   unit: string
   photos: ArrayBuffer[]
   photoNames: string[]
-  photoMetadata: object[]
+  photoMetadata: (object | null)[]
   status: "pending" | "uploading" | "failed"
   retryCount: number
   createdAt: string
@@ -65,6 +65,16 @@ export async function getCappedCount(): Promise<number> {
   const db = await getDB()
   const failed = await db.getAllFromIndex("pending-captures", "by-status", "failed")
   return failed.filter((c) => c.retryCount >= RETRY_CAP).length
+}
+
+/**
+ * Every capture still held on this device for one project, whatever its state, oldest first. The capture screen shows
+ * these as "on this device" cards so a refresh or a reopened page does not hide findings that have not reached the server.
+ */
+export async function getQueuedForProject(projectId: string): Promise<PendingCapture[]> {
+  const db = await getDB()
+  const all = await db.getAll("pending-captures")
+  return all.filter((c) => c.projectId === projectId).sort((a, b) => a.createdAt.localeCompare(b.createdAt))
 }
 
 /** Get count of queued captures */

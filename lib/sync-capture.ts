@@ -1,6 +1,7 @@
 import { supabase } from "./supabase"
 import { arrayBufferToFile, type PendingCapture } from "./offline-queue"
 import { cleanupOrphanedUploads, uploadPhotosWithRetry } from "./upload-utils"
+import { alignMetadata, deviceRecordedAt } from "./photo-evidence"
 
 /**
  * The id the saved finding gets on the server. It is worked out from the queue entry's own id, so every retry of the
@@ -67,7 +68,10 @@ export async function uploadQueuedCapture(capture: PendingCapture, compress: (fi
       }
     }
 
+    // Keep the time the finding was saved on the device as its recorded date, not the time the connection came back
+    const recordedAt = deviceRecordedAt(capture.createdAt)
     const { error } = await supabase.from("captures").insert({
+      ...(recordedAt ? { created_at: recordedAt } : {}),
       id: serverId,
       project_id: capture.projectId,
       image_url: urls[0] || "",
@@ -78,7 +82,7 @@ export async function uploadQueuedCapture(capture: PendingCapture, compress: (fi
       status: "Captured",
       quantity: capture.quantity,
       unit: capture.unit || null,
-      photo_metadata: capture.photoMetadata,
+      photo_metadata: alignMetadata(capture.photoMetadata, urls.length),
     })
     if (error) {
       const saved = await savedState(serverId, capture.projectId)

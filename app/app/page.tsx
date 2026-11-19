@@ -21,7 +21,21 @@ import { normalizeClaimStatus, filterProjects, statusAfterSend, isFirstRun, isDe
 import { hasCreatedProject, markProjectCreated } from "../../lib/guide-state"
 import { FeedbackBox } from "../dashboard/feedback-box"
 import { ensureSpace, drawLabeledText, drawSectionLabel } from "../../lib/pdf-layout"
-import { extractAllExifData, type PhotoMetadata } from "../../lib/exif-utils"
+import { extractAllExifData } from "../../lib/exif-utils"
+import {
+  alignMetadata,
+  appendPhotos,
+  metadataForUploaded,
+  removePhotoAt,
+  shotCoverage,
+  photoLabel,
+  photoFileDetails,
+  isNetworkFailure,
+  LOCAL_ID_PREFIX,
+  PROVENANCE_NOTE,
+  type PhotoDetails,
+  type ShotType,
+} from "../../lib/photo-evidence"
 import { SPEECH_LANGS, loadSpeechLang, saveSpeechLang, fetchAccountSpeechLang } from "../../lib/speech-langs"
 import { uploadPhotosWithRetry, cleanupOrphanedUploads } from "../../lib/upload-utils"
 import { trackEvent } from "../../lib/analytics"
@@ -31,6 +45,8 @@ import {
   syncPendingCaptures,
   getPendingCount,
   getCappedCount,
+  getQueuedForProject,
+  RETRY_CAP,
   fileToArrayBuffer,
   type PendingCapture,
 } from "../../lib/offline-queue"
@@ -117,10 +133,15 @@ type Capture = {
   field_note: string
   status?: CaptureStatus
   created_at: string
-  photo_metadata?: PhotoMetadata[]
+  photo_metadata?: (PhotoDetails | null)[] | null
   quantity?: number | null
   unit?: string | null
+  /** Set only on a finding that is still in this device's queue and not yet saved to the account */
+  localOnly?: { status: PendingCapture["status"]; retryCount: number }
 }
+
+const photoUrlsOf = (c: Pick<Capture, "image_url" | "image_urls">) =>
+  (c.image_urls && c.image_urls.length > 0 ? c.image_urls : c.image_url ? [c.image_url] : []).filter(Boolean)
 
 // AI replies sometimes arrive with markdown marks. Show, copy and export plain text.
 function cleanAi(text: string): string {
@@ -221,6 +242,12 @@ function Home() {
 
   // Captures + drafts
   const [captures, setCaptures] = useState<Capture[]>([])
+  // Reports, exports, emails and status changes use only findings saved to the account. Findings still on this device
+  // are shown in the list but are never put in a report, since the adjuster could not open their photos.
+  const reportCaptures = captures.filter((c) => !c.localOnly)
+  const localOnlyCount = captures.length - reportCaptures.length
+  // Optional wide/close-up tag for each photo in the capture form, in the same order as `files`
+  const [shots, setShots] = useState<(ShotType | null)[]>([])
   const [statusFilter, setStatusFilter] = useState<"All" | CaptureStatus>("All")
   const [projectQuery, setProjectQuery] = useState("")
   const [claimFilter, setClaimFilter] = useState<ClaimStatus | "All">("All")
@@ -289,6 +316,10 @@ function Home() {
   // Photo annotation state
   const [annotateUrl, setAnnotateUrl] = useState("")
   const [annotateOpen, setAnnotateOpen] = useState(false)
+  // The finding and photo position being marked up, so the marked-up copy can be added to that finding
+  const [annotateTarget, setAnnotateTarget] = useState<{ captureId: string; photoIndex: number } | null>(null)
+  // Preview addresses made for findings held on this device; released when the list is rebuilt
+  const localPreviewUrls = useRef<string[]>([])
 
   // Offline queue state
   const [pendingQueueCount, setPendingQueueCount] = useState(0)
@@ -343,7 +374,8 @@ function Home() {
         // Photos are uploaded and then the record is saved; if the record cannot be saved the photos are removed again
         const synced = await syncPendingCaptures((capture: PendingCapture) => uploadQueuedCapture(capture, compressImage), { includeCapped: manual })
         if (synced > 0) setSavedFlash(true)
-        if (synced > 0 && selectedProjectId) {
+        // Reload either way: an uploaded finding moves from "on this device" to saved, and a failed one shows its new state
+        if (selectedProjectId) {
           await loadCaptures(selectedProjectId)
         }
       } finally {
@@ -366,10 +398,18 @@ function Home() {
       setIsOnline(false)
     }
 
+    // A finding kept on the device while the phone still had some signal (a photo that would not upload) gets no
+    // "back online" event, so it is also retried automatically every minute while online. The retry cap still applies.
+    const retryTimer = setInterval(() => {
+      if (!navigator.onLine) return
+      getPendingCount().then((n) => { if (n > 0) void runSync(false) }).catch(() => {})
+    }, 60_000)
+
     window.addEventListener("online", handleOnline)
     window.addEventListener("ss-manual-sync", handleManualSync)
     window.addEventListener("offline", handleOffline)
     return () => {
+      clearInterval(retryTimer)
       window.removeEventListener("online", handleOnline)
       window.removeEventListener("ss-manual-sync", handleManualSync)
       window.removeEventListener("offline", handleOffline)
@@ -650,13 +690,54 @@ function Home() {
     setProjects(unique)
   }
 
+  // Findings still in this device's queue for the project, as cards. They keep the queued photos (shown from the device)
+  // and their upload state, so a refresh or reopened page still shows them, clearly marked as not yet saved.
+  async function queuedCards(projectId: string): Promise<Capture[]> {
+    try {
+      const queued = await getQueuedForProject(projectId)
+      localPreviewUrls.current.forEach((u) => URL.revokeObjectURL(u))
+      localPreviewUrls.current = []
+      return queued
+        .map((q) => {
+          const urls = q.photos.map((buf) => {
+            const u = URL.createObjectURL(new Blob([buf]))
+            localPreviewUrls.current.push(u)
+            return u
+          })
+          return {
+            id: `${LOCAL_ID_PREFIX}${q.id}`,
+            project_id: q.projectId,
+            image_url: urls[0] || "",
+            image_urls: urls,
+            damage_type: q.damageType,
+            roof_area: q.roofArea,
+            field_note: q.fieldNote,
+            status: "Captured" as CaptureStatus,
+            created_at: q.createdAt,
+            photo_metadata: alignMetadata(q.photoMetadata, urls.length),
+            quantity: q.quantity,
+            unit: q.unit || null,
+            localOnly: { status: q.status, retryCount: q.retryCount },
+          }
+        })
+        .reverse() // newest first, like the saved list
+    } catch {
+      return [] // device storage unavailable: nothing queued can be shown
+    }
+  }
+
   async function loadCaptures(projectId: string) {
-    const { data } = await supabase
-      .from("captures")
-      .select("*")
-      .eq("project_id", projectId)
-      .order("created_at", { ascending: false })
-    if (data) setCaptures(data)
+    const [{ data }, local] = await Promise.all([
+      supabase
+        .from("captures")
+        .select("*")
+        .eq("project_id", projectId)
+        .order("created_at", { ascending: false }),
+      queuedCards(projectId),
+    ])
+    if (data) setCaptures([...local, ...data])
+    // Offline or a failed read: keep the saved findings already on screen, with the device's queue refreshed
+    else setCaptures((prev) => [...local, ...prev.filter((c) => !c.localOnly && c.project_id === projectId)])
     // Restore saved drafts from capture records
     if (data) {
       const savedDrafts: Record<string, string> = {}
@@ -918,11 +999,20 @@ function Home() {
       const { draft: rawDraft } = await res.json()
       const draft = cleanAi(rawDraft)
       setDrafts((prev) => ({ ...prev, [c.id]: draft }))
-      // Persist draft to capture record (not for a project this account can only view)
-      if (!readOnly) supabase.from("captures").update({ draft: draft }).eq("id", c.id).then(() => {})
-      // Auto-update status to "Needs Review"
-      if (!readOnly && (!c.status || c.status === "Captured")) {
-        updateCaptureStatus(c.id, "Needs Review")
+      if (!readOnly) {
+        // Save the draft to the finding. If it is not saved, say so: it is on screen now but would be gone after a refresh,
+        // and the finding is not moved to Needs Review.
+        const saved = writeOutcome(await supabase.from("captures").update({ draft: draft }).eq("id", c.id).select("id"))
+        if (saved !== "ok") {
+          setCardMsg((prev) => ({
+            ...prev,
+            [c.id]: saved === "refused"
+              ? NOT_SAVED_NO_PERMISSION
+              : "The draft is shown here but was not saved to your account. Copy it, or use Edit and Save to try again.",
+          }))
+        } else if (!c.status || c.status === "Captured") {
+          updateCaptureStatus(c.id, "Needs Review")
+        }
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error"
@@ -933,16 +1023,16 @@ function Home() {
   }
 
   async function generateReport() {
-    if (!selectedProject || captures.length === 0) return
+    if (!selectedProject || reportCaptures.length === 0) return
 
     setReportLoading(true)
 
     // Generate drafts for any captures that don't have one yet
-    const missing = captures.filter((c) => !drafts[c.id] && !draftLoading[c.id])
+    const missing = reportCaptures.filter((c) => !drafts[c.id] && !draftLoading[c.id])
 
     // A finding is only marked Ready to Send when it has a finished draft that is saved. Findings that already had a
     // draft keep it. A draft that failed, was cut off or could not be saved leaves that finding as it was.
-    const hasSavedDraft = new Set(captures.filter((c) => !!drafts[c.id]).map((c) => c.id))
+    const hasSavedDraft = new Set(reportCaptures.filter((c) => !!drafts[c.id]).map((c) => c.id))
     const notDrafted: string[] = []
     let firstProblem = ""
 
@@ -988,7 +1078,7 @@ function Home() {
     }
 
     // Auto-update to "Ready to Send" only the findings that have a finished, saved draft
-    const toUpdate = captures.filter((c) => c.status !== "Sent" && hasSavedDraft.has(c.id)).map((c) => c.id)
+    const toUpdate = reportCaptures.filter((c) => c.status !== "Sent" && hasSavedDraft.has(c.id)).map((c) => c.id)
     if (toUpdate.length > 0 && !readOnly) {
       bulkUpdateStatus(toUpdate, "Ready to Send")
     }
@@ -1015,7 +1105,7 @@ function Home() {
     text += `Generated: ${now}\n\n`
     text += `FINDINGS\n\n`
 
-    captures.forEach((c, i) => {
+    reportCaptures.forEach((c, i) => {
       text += `${i + 1}. ${c.damage_type} – ${c.roof_area}\n`
       if (c.field_note) {
         text += `${c.field_note}\n`
@@ -1120,7 +1210,10 @@ function Home() {
   }
 
   async function buildPdfDoc(includePhotos = true) {
+    // Only findings saved to the account: one still on this device has photos the adjuster could never open
+    const captures = reportCaptures
     if (!selectedProject || captures.length === 0) return null
+    let anyPhotoFileDetails = false
     if (includePhotos) pdfMissing.current = noMissingPdfAssets()
 
     const doc = new jsPDF({ unit: "mm", format: "a4" })
@@ -1316,26 +1409,18 @@ function Home() {
             doc.addImage(dataUrl, fmt, margin, y, imgW, cappedH)
             y += cappedH + 2
 
-            // EXIF metadata under each photo (GPS + timestamp for adjuster verification)
-            const meta = c.photo_metadata?.[pi]
-            if (meta) {
-              doc.setFontSize(6.5)
-              doc.setFont("helvetica", "normal")
-              doc.setTextColor(120, 120, 130)
-              const metaParts: string[] = []
-              if (meta.latitude && meta.longitude) {
-                metaParts.push(`GPS: ${meta.latitude.toFixed(6)}, ${meta.longitude.toFixed(6)}`)
-              }
-              if (meta.timestamp) {
-                metaParts.push(`Captured: ${new Date(meta.timestamp).toLocaleString("en-US")}`)
-              }
-              if (meta.make || meta.model) {
-                metaParts.push(`Device: ${[meta.make, meta.model].filter(Boolean).join(" ")}`)
-              }
-              if (metaParts.length > 0) {
-                doc.text(metaParts.join("  |  "), margin, y + 1)
-                y += 4
-              }
+            // Under each photo: its label (wide shot, close-up, marked-up copy) and the camera data read from the photo
+            // file, labeled as such. The details list is aligned to the photos first, so a detail is never printed under
+            // the wrong photo.
+            const meta = alignMetadata(c.photo_metadata, urls.length)[pi]
+            const lines = [`Photo ${pi + 1}${photoLabel(meta) ? ` – ${photoLabel(meta)}` : ""}`, photoFileDetails(meta)].filter(Boolean)
+            if (photoFileDetails(meta)) anyPhotoFileDetails = true
+            doc.setFontSize(6.5)
+            doc.setFont("helvetica", "normal")
+            doc.setTextColor(120, 120, 130)
+            for (const line of lines) {
+              doc.text(doc.splitTextToSize(line, contentWidth) as string[], margin, y + 1)
+              y += 3.5
             }
             y += 2
             photosLoaded++
@@ -1467,6 +1552,15 @@ function Home() {
     y += 4
     doc.text(PDF_FOOTER_LINES[1], margin, y)
     y += 8
+    // Where the photo dates and locations came from, whenever the report shows any
+    if (anyPhotoFileDetails) {
+      doc.setFontSize(7)
+      const note = doc.splitTextToSize(PROVENANCE_NOTE, contentWidth) as string[]
+      checkPage(note.length * 3.2 + 10)
+      doc.text(note, margin, y)
+      y += note.length * 3.2 + 4
+      doc.setFontSize(8)
+    }
 
     doc.setFont("helvetica", "bold")
     doc.setTextColor(60, 60, 70)
@@ -1490,7 +1584,7 @@ function Home() {
 
   async function downloadPdf() {
     if (isFreeUser) { openUpgradeModal("pdf"); return }
-    if (!selectedProject || captures.length === 0) return
+    if (!selectedProject || reportCaptures.length === 0) return
     setPdfGenerating(true)
     try {
       const doc = await buildPdfDoc()
@@ -1510,7 +1604,7 @@ function Home() {
 
   async function exportXactimate() {
     if (!isProUser) { openUpgradeModal("csv"); return }
-    if (!selectedProject || captures.length === 0) return
+    if (!selectedProject || reportCaptures.length === 0) return
     if (csvExporting.current) return // a second tap while the first export is still running does nothing
     csvExporting.current = true
     try {
@@ -1520,7 +1614,7 @@ function Home() {
         body: JSON.stringify({
           projectName: selectedProject.project_name,
           propertyAddress: selectedProject.property_address || "",
-          captures: captures.map(c => ({
+          captures: reportCaptures.map(c => ({
             damage_type: c.damage_type,
             roof_area: c.roof_area,
             field_note: c.field_note,
@@ -1547,7 +1641,7 @@ function Home() {
           userId: user!.id,
           projectId: selectedProjectId,
           action: "Xactimate CSV exported",
-          details: `${captures.length} line items`,
+          details: `${reportCaptures.length} line items`,
         }),
       }).catch(() => {})
     } catch (err) {
@@ -1631,12 +1725,12 @@ function Home() {
           userId: user!.id,
           projectId: selectedProjectId,
           action: "Report emailed",
-          details: `Sent to ${emailTo} — ${captures.length} findings`,
+          details: `Sent to ${emailTo} — ${reportCaptures.length} findings`,
         }),
       }).catch(() => {})
 
-      // Auto-update all captures to "Sent"
-      if (!readOnly) bulkUpdateStatus(captures.map((c) => c.id), "Sent")
+      // Auto-update the findings that were in the report to "Sent"
+      if (!readOnly) bulkUpdateStatus(reportCaptures.map((c) => c.id), "Sent")
     } catch (err) {
       setEmailStatus("error")
       setEmailError(err instanceof Error ? err.message : "Failed to send email")
@@ -1762,6 +1856,7 @@ function Home() {
       setStatus(problem)
     }
     setFiles((prev) => [...prev, ...toAdd])
+    setShots((prev) => [...prev, ...toAdd.map(() => null)])
     setPreviews((prev) => [...prev, ...toAdd.map((f) => URL.createObjectURL(f))])
   }
 
@@ -1796,6 +1891,23 @@ function Home() {
       return prev.filter((_, i) => i !== index)
     })
     setFiles((prev) => prev.filter((_, i) => i !== index))
+    setShots((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  function toggleShot(index: number, shot: ShotType) {
+    setShots((prev) => prev.map((s, i) => (i === index ? (s === shot ? null : shot) : s)))
+  }
+
+  function resetCaptureForm() {
+    previews.forEach((p) => URL.revokeObjectURL(p))
+    setFiles([])
+    setShots([])
+    setPreviews([])
+    setDamageType("")
+    setRoofArea("")
+    setFieldNote("")
+    setQuantity("1")
+    setUnit("")
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -1834,15 +1946,12 @@ function Home() {
 
     // Step 1: Extract EXIF metadata BEFORE compression (compression strips it)
     if (files.length > 0) setStatus("Reading photo metadata...")
-    const photoMetadata = await extractAllExifData(files)
+    // The optional wide/close-up tag travels with each photo's camera data
+    const photoMetadata: (PhotoDetails | null)[] = (await extractAllExifData(files)).map((m, i) => ({ ...m, shot: shots[i] ?? null }))
 
-    // Step 2: Compress images
-    if (files.length > 0) setStatus(`Compressing ${files.length} photo${files.length !== 1 ? "s" : ""}...`)
-    const compressed = await Promise.all(files.map((f) => compressImage(f)))
-
-    // Step 3: Check if we're online. If offline, queue for later.
-    if (!navigator.onLine) {
-      setStatus("Offline — saving to device for later sync...")
+    // Keeps the whole finding, with every original photo, in this device's queue. The form is cleared only once the
+    // queue has it; if the device cannot store it either, everything stays in the form.
+    async function keepOnDevice(message: string): Promise<boolean> {
       try {
         const photoBuffers = await Promise.all(files.map((f) => fileToArrayBuffer(f)))
         await queueCapture({
@@ -1858,39 +1967,29 @@ function Home() {
           photoMetadata,
           createdAt: new Date().toISOString(),
         })
-        getPendingCount().then(setPendingQueueCount).catch(() => {})
-        setStatus("Saved offline! Will auto-sync when connection returns.")
-
-        // Optimistic UI: add a temporary capture to the list so user sees it immediately
-        const tempCapture: Capture = {
-          id: `temp-${Date.now()}`,
-          project_id: selectedProjectId,
-          image_url: previews[0] || "",
-          image_urls: previews,
-          damage_type: damageType,
-          roof_area: roofArea,
-          field_note: fieldNote,
-          status: "Captured",
-          created_at: new Date().toISOString(),
-          photo_metadata: photoMetadata,
-        }
-        setCaptures((prev) => [tempCapture, ...prev])
       } catch {
-        setStatus("Failed to save offline. Please try again.")
+        setStatus("This finding could not be saved, not even on this device. Your photos and note are still in the form. Try again.")
+        setSaving(false)
+        return false
       }
-
-      setFiles([])
-      setPreviews([])
-      setDamageType("")
-      setRoofArea("")
-      setFieldNote("")
-      setQuantity("1")
-      setUnit("")
+      getPendingCount().then(setPendingQueueCount).catch(() => {})
+      setStatus(message)
+      resetCaptureForm()
       setSaving(false)
+      await loadCaptures(selectedProjectId)
+      return true
+    }
+
+    // Step 2: Offline: keep it on the device. Nothing has reached the account yet, and the message says so.
+    if (!navigator.onLine) {
+      setStatus("Offline — saving to this device...")
+      await keepOnDevice("Saved on this device only, not to your account yet. It uploads automatically when you have a connection. Do not clear this browser's site data until it does.")
       return
     }
 
-    // Step 4: Upload with retry logic (online path)
+    // Step 3: Compress and upload
+    if (files.length > 0) setStatus(`Compressing ${files.length} photo${files.length !== 1 ? "s" : ""}...`)
+    const compressed = await Promise.all(files.map((f) => compressImage(f)))
     if (files.length > 0) setStatus(`Uploading ${compressed.length} photo${compressed.length !== 1 ? "s" : ""}...`)
     const { urls: uploadedUrls, failedIndexes } = await uploadPhotosWithRetry(
       compressed,
@@ -1898,17 +1997,19 @@ function Home() {
       (uploaded, total) => setStatus(`Uploaded ${uploaded}/${total} photos...`)
     )
 
-    if (files.length > 0 && uploadedUrls.length === 0) {
-      setStatus("All uploads failed. Check your connection and try again.")
-      setSaving(false)
+    // Any photo that would not upload: the finding is not saved with some photos missing. The photos that did upload are
+    // removed again and the whole finding is kept on the device, to upload with all its photos on a later attempt.
+    if (failedIndexes.length > 0) {
+      if (uploadedUrls.length > 0) {
+        const notConfirmed = await cleanupOrphanedUploads(uploadedUrls)
+        if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The finding was kept on this device")
+      }
+      await keepOnDevice(
+        `${failedIndexes.length} of ${files.length} photo${files.length !== 1 ? "s" : ""} did not upload, so this finding is saved on this device only for now. It is retried automatically with all its photos; you can also press Sync Now.`,
+      )
       return
     }
-
-    if (failedIndexes.length > 0) {
-      setStatus(`${uploadedUrls.length} photos uploaded, ${failedIndexes.length} failed — saving what we have...`)
-    } else {
-      setStatus("Saving capture...")
-    }
+    setStatus("Saving capture...")
 
     // Step 5: Insert capture record with EXIF metadata
     const fullRow = {
@@ -1921,7 +2022,7 @@ function Home() {
       status: "Captured",
       quantity: quantityValue(),
       unit: unit || null,
-      photo_metadata: photoMetadata,
+      photo_metadata: alignMetadata(photoMetadata, uploadedUrls.length),
     }
     const coreRow = {
       project_id: selectedProjectId,
@@ -1951,14 +2052,18 @@ function Home() {
       // Clean up orphaned uploads since DB insert failed
       const notConfirmed = await cleanupOrphanedUploads(uploadedUrls)
       if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The capture was not saved")
+      // The connection dropped before the record was saved: keep the finding on the device rather than asking for a retake
+      if (isNetworkFailure(insertError.message)) {
+        await keepOnDevice("The connection dropped before the finding reached your account, so it is saved on this device only for now. It is retried automatically; you can also press Sync Now.")
+        return
+      }
+      // Refused by the account (for example the project was deleted): the form keeps everything so nothing is lost
       setStatus(`Save failed: ${insertError.message}`)
       setSaving(false)
       return
     }
 
-    setStatus(failedIndexes.length > 0
-      ? `Saved with ${uploadedUrls.length} photos! ${failedIndexes.length} photo(s) failed — you can re-add them later.`
-      : "Capture saved!")
+    setStatus("Saved to your account.")
     setSavedFlash(true)
 
     // Log activity (fire-and-forget)
@@ -1972,14 +2077,7 @@ function Home() {
       }),
     }).catch(() => {})
 
-    setFiles([])
-    previews.forEach((p) => URL.revokeObjectURL(p))
-    setPreviews([])
-    setDamageType("")
-    setRoofArea("")
-    setFieldNote("")
-    setQuantity("1")
-    setUnit("")
+    resetCaptureForm()
     setSaving(false)
 
     await loadCaptures(selectedProjectId)
@@ -2003,9 +2101,8 @@ function Home() {
       const compressed = await Promise.all(chosen.map((file) => compressImage(file)))
       const { urls, failedIndexes } = await uploadPhotosWithRetry(compressed, 3)
       if (urls.length === 0) throw new Error("The upload failed. Check your connection and try again.")
-      const all = [...existing, ...urls]
-      const prevMeta = Array.isArray(c.photo_metadata) ? c.photo_metadata : []
-      const nextMeta = [...prevMeta, ...meta]
+      // Details only for the photos that uploaded, after the existing ones lined up with the existing photos
+      const { urls: all, meta: nextMeta } = appendPhotos(existing, c.photo_metadata, urls, metadataForUploaded(meta, failedIndexes))
       let res = await supabase.from("captures").update({ image_url: all[0], image_urls: all, photo_metadata: nextMeta }).eq("id", c.id).select("id")
       if (res.error?.message?.includes("schema cache")) {
         res = await supabase.from("captures").update({ image_url: all[0], image_urls: all }).eq("id", c.id).select("id")
@@ -2034,9 +2131,7 @@ function Home() {
     const existing = (c.image_urls && c.image_urls.length > 0 ? c.image_urls : c.image_url ? [c.image_url] : []).filter(Boolean)
     const idx = existing.indexOf(url)
     if (idx === -1) return
-    const all = existing.filter((_, i) => i !== idx)
-    const prevMeta = Array.isArray(c.photo_metadata) ? c.photo_metadata : []
-    const nextMeta = prevMeta.length === existing.length ? prevMeta.filter((_, i) => i !== idx) : prevMeta
+    const { urls: all, meta: nextMeta } = removePhotoAt(existing, c.photo_metadata, idx)
     let res = await supabase.from("captures").update({ image_url: all[0] || "", image_urls: all, photo_metadata: nextMeta }).eq("id", c.id).select("id")
     if (res.error?.message?.includes("schema cache")) {
       res = await supabase.from("captures").update({ image_url: all[0] || "", image_urls: all }).eq("id", c.id).select("id")
@@ -2048,6 +2143,68 @@ function Home() {
     if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The photo was removed from the finding")
     say(all.length === 0 ? "Photo removed. Tap the box to add the right one." : notConfirmed.length > 0 ? "Photo removed from the finding." : "Photo removed.")
     setTimeout(() => setCardMsg((prev) => ({ ...prev, [c.id]: "" })), 5000)
+  }
+
+  // ---- Add a marked-up copy as one more photo of the finding. The original photo is left exactly as it was.
+  // If the copy cannot be added (offline, photo limit, upload or save refused) it is downloaded instead, so the marks are not lost.
+  function downloadDataUrl(dataUrl: string) {
+    const a = document.createElement("a")
+    a.href = dataUrl
+    a.download = "marked-up-photo.jpg"
+    a.click()
+  }
+
+  async function addMarkedUpCopy(dataUrl: string) {
+    const target = annotateTarget
+    const c = target ? captures.find((x) => x.id === target.captureId) : undefined
+    if (!target || !c || c.localOnly || readOnly) {
+      downloadDataUrl(dataUrl)
+      return
+    }
+    const say = (text: string) => setCardMsg((prev) => ({ ...prev, [c.id]: text }))
+    const existing = photoUrlsOf(c)
+    if (existing.length >= MAX_PHOTOS) {
+      downloadDataUrl(dataUrl)
+      showNotice(`This finding already has ${MAX_PHOTOS} photos, so the marked-up copy was downloaded to this device instead.`)
+      return
+    }
+    if (!navigator.onLine) {
+      downloadDataUrl(dataUrl)
+      showNotice("You are offline, so the marked-up copy was downloaded to this device instead of being added to the finding.")
+      return
+    }
+    setCardBusy((prev) => ({ ...prev, [c.id]: true }))
+    try {
+      const blob = await (await fetch(dataUrl)).blob()
+      const { urls } = await uploadPhotosWithRetry([blob], 3)
+      if (urls.length === 0) throw new Error("upload")
+      const { urls: all, meta } = appendPhotos(existing, c.photo_metadata, urls, [{ markupOf: target.photoIndex }])
+      const res = await supabase.from("captures").update({ image_url: all[0], image_urls: all, photo_metadata: meta }).eq("id", c.id).select("id")
+      if (writeOutcome(res) !== "ok") {
+        const notConfirmed = await cleanupOrphanedUploads(urls)
+        if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The marked-up copy was not added")
+        throw new Error("save")
+      }
+      setCaptures((prev) => prev.map((x) => (x.id === c.id ? { ...x, image_url: all[0], image_urls: all, photo_metadata: meta } : x)))
+      say(`Marked-up copy added as photo ${all.length}. Photo ${target.photoIndex + 1} is unchanged.`)
+      setTimeout(() => setCardMsg((prev) => ({ ...prev, [c.id]: "" })), 6000)
+    } catch {
+      downloadDataUrl(dataUrl)
+      showNotice("The marked-up copy could not be added to the finding, so it was downloaded to this device instead.")
+    } finally {
+      setCardBusy((prev) => ({ ...prev, [c.id]: false }))
+      setAnnotateTarget(null)
+    }
+  }
+
+  function openAnnotator(c: Capture, url: string, photoIndex: number) {
+    if (isFreeUser) { openUpgradeModal("annotate"); return }
+    void signedPhotoUrl(url, selectedProject?.id).then((link) => {
+      if (!link) { showNotice("The photo could not be loaded, so it cannot be marked up right now. Try again in a moment."); return }
+      setAnnotateTarget({ captureId: c.id, photoIndex })
+      setAnnotateUrl(link)
+      setAnnotateOpen(true)
+    })
   }
 
   // ---- Edit a saved finding (damage type, area, quantity, unit, note)
@@ -2782,7 +2939,7 @@ function Home() {
       })()}
 
       {/* Generate Project Report button */}
-      {selectedProject && captures.length > 0 && !showReport && (
+      {selectedProject && reportCaptures.length > 0 && !showReport && (
         <section className="sticky bottom-3 z-20 mb-8">
           <button
             type="button"
@@ -2800,7 +2957,7 @@ function Home() {
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                Generate Project Report ({captures.length} finding{captures.length !== 1 ? "s" : ""})
+                Generate Project Report ({reportCaptures.length} finding{reportCaptures.length !== 1 ? "s" : ""})
               </span>
             )}
           </button>
@@ -2838,9 +2995,26 @@ function Home() {
               <p>Generated: {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
             </div>
 
-            {captures.length > 0 && (
-              <p className="mt-3 text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                {captures.length} finding{captures.length !== 1 ? "s" : ""} documented
+            {reportCaptures.length > 0 && (() => {
+              const noPhoto = reportCaptures.filter((c) => photoUrlsOf(c).length === 0).length
+              const noText = reportCaptures.filter((c) => !drafts[c.id]).length
+              return (
+                <div className="mt-3 space-y-1" data-testid="report-review-summary">
+                  <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                    {reportCaptures.length} finding{reportCaptures.length !== 1 ? "s" : ""} in this report
+                  </p>
+                  {(noPhoto > 0 || noText > 0) && (
+                    <p className="text-xs text-zinc-500">
+                      {[noPhoto > 0 && `${noPhoto} without a photo`, noText > 0 && `${noText} without a supplement explanation`].filter(Boolean).join(", ")}.
+                      {" "}Review them below; you can still send the report as it is.
+                    </p>
+                  )}
+                </div>
+              )
+            })()}
+            {localOnlyCount > 0 && (
+              <p role="status" className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800" data-testid="report-local-only">
+                {localOnlyCount} finding{localOnlyCount !== 1 ? "s are" : " is"} saved on this device only and {localOnlyCount !== 1 ? "are" : "is"} not in this report, the PDF, the CSV or the email. {localOnlyCount !== 1 ? "They are" : "It is"} added once uploaded; press Sync Now, then Regenerate.
               </p>
             )}
 
@@ -2915,8 +3089,9 @@ function Home() {
 
           {/* Findings */}
           <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
-            {captures.map((c, i) => {
-              const urls = (c.image_urls && c.image_urls.length > 0 ? c.image_urls : [c.image_url]).filter(Boolean)
+            {reportCaptures.map((c, i) => {
+              const urls = photoUrlsOf(c)
+              const meta = alignMetadata(c.photo_metadata, urls.length)
               return (
                 <div key={c.id} className="p-5">
                   {/* Finding header */}
@@ -2964,10 +3139,14 @@ function Home() {
                     </div>
                   )}
 
+                  {urls.length === 0 && (
+                    <p className="mt-3 ml-9 text-xs italic text-zinc-500">No photo attached to this finding.</p>
+                  )}
+
                   {/* Photos */}
                   <div className="mt-3 ml-9 flex gap-2 overflow-x-auto">
                     {urls.map((url, j) => (
-                      <div key={j} className="relative flex-shrink-0 group">
+                      <figure key={j} className="relative flex-shrink-0 group">
                         <SignedImg
                           projectId={selectedProject?.id}
                           src={url}
@@ -2975,13 +3154,18 @@ function Home() {
                           className="h-24 w-auto rounded-lg border border-zinc-200 object-cover dark:border-zinc-700 cursor-pointer"
                           onClick={() => openViewer(urls, j)}
                         />
+                        {photoLabel(meta[j]) && (
+                          <figcaption className="mt-0.5 max-w-[8rem] truncate text-[10px] text-zinc-500">{photoLabel(meta[j])}</figcaption>
+                        )}
                         {!readOnly && <button
-                          onClick={() => { if (isFreeUser) { openUpgradeModal("annotate"); return }; void signedPhotoUrl(url, selectedProject?.id).then((link) => { if (!link) { showNotice("The photo could not be loaded, so it cannot be marked up right now. Try again in a moment."); return } setAnnotateUrl(link); setAnnotateOpen(true) }) }}
-                          className="absolute bottom-1 right-1 rounded-md bg-black/60 px-1.5 py-2 text-[10px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                          type="button"
+                          onClick={() => openAnnotator(c, url, j)}
+                          aria-label={`Mark up finding ${i + 1} photo ${j + 1}`}
+                          className="absolute right-1 top-1 rounded-md bg-black/60 px-2 py-1.5 text-[11px] font-medium text-white transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 focus:opacity-100"
                         >
-                          Annotate
+                          Mark up
                         </button>}
-                      </div>
+                      </figure>
                     ))}
                   </div>
                 </div>
@@ -3044,7 +3228,8 @@ function Home() {
             {previews.length > 0 && (
               <div className="mb-3 grid grid-cols-3 gap-2 sm:grid-cols-4">
                 {previews.map((src, i) => (
-                  <div key={i} className="group relative aspect-square">
+                  <div key={i}>
+                  <div className="group relative aspect-square">
                     <img
                       src={src}
                       alt={`Photo ${i + 1}`}
@@ -3061,9 +3246,34 @@ function Home() {
                       </svg>
                     </button>
                   </div>
+                  {/* Optional: what this photo shows. Nothing is required or blocked. */}
+                  <div className="mt-1 grid grid-cols-2 gap-1" role="group" aria-label={`Photo ${i + 1} type (optional)`}>
+                    {(["wide", "closeup"] as const).map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        onClick={() => toggleShot(i, s)}
+                        aria-pressed={shots[i] === s}
+                        className={`min-h-[36px] rounded-md text-[11px] font-medium ${shots[i] === s ? "bg-indigo-600 text-white" : "bg-zinc-100 text-zinc-600"}`}
+                      >
+                        {s === "wide" ? "Wide" : "Close-up"}
+                      </button>
+                    ))}
+                  </div>
+                  </div>
                 ))}
               </div>
             )}
+            {previews.length > 0 && (() => {
+              const cov = shotCoverage(shots.map((s) => (s ? { shot: s } : null)))
+              return (
+                <p className="mb-3 text-xs text-zinc-500" data-testid="shot-hint">
+                  Optional: a wide shot shows where the damage is, a close-up shows what it is.{" "}
+                  <span className={cov.wide ? "text-green-700" : ""}>{cov.wide ? "✓" : "○"} Wide</span>{" "}
+                  <span className={cov.closeup ? "text-green-700" : ""}>{cov.closeup ? "✓" : "○"} Close-up</span>
+                </p>
+              )
+            })()}
 
             {/* Photo buttons */}
             {files.length >= MAX_PHOTOS ? (
@@ -3352,10 +3562,22 @@ function Home() {
                 key={c.id}
                 className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
               >
+                {c.localOnly && (
+                  <div role="status" data-testid="local-only-card" className={`border-b px-4 py-2.5 text-xs font-medium ${c.localOnly.status === "failed" ? "border-red-200 bg-red-50 text-red-800" : "border-amber-200 bg-amber-50 text-amber-800"}`}>
+                    {c.localOnly.status === "uploading"
+                      ? "Uploading to your account..."
+                      : c.localOnly.status === "failed"
+                        ? c.localOnly.retryCount >= RETRY_CAP
+                          ? "Saved on this device only. Uploading failed several times; press Sync Now to try again."
+                          : "Saved on this device only. The last upload attempt failed; it will be tried again automatically."
+                        : "Saved on this device only, not to your account yet. It uploads automatically when there is a connection."}
+                    <span className="mt-0.5 block font-normal">Not included in reports until it is uploaded.</span>
+                  </div>
+                )}
                 {(() => {
-                const urls = (c.image_urls && c.image_urls.length > 0 ? c.image_urls : c.image_url ? [c.image_url] : []).filter(Boolean)
+                const urls = photoUrlsOf(c)
                 if (urls.length === 0) {
-                  if (readOnly) return <div className="border-b border-dashed border-zinc-200 bg-zinc-50 py-10 text-center text-sm text-zinc-500">No photos added</div>
+                  if (readOnly || c.localOnly) return <div className="border-b border-dashed border-zinc-200 bg-zinc-50 py-10 text-center text-sm text-zinc-500">No photos added</div>
                   return (
                     <label className="flex cursor-pointer flex-col items-center gap-2 border-b border-dashed border-zinc-200 bg-zinc-50 py-10 text-zinc-500 hover:bg-zinc-100">
                       <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -3388,7 +3610,7 @@ function Home() {
                       style={{ maxHeight: "280px" }}
                       onClick={() => openViewer(urls, 0)}
                     />
-                    {!readOnly && <button type="button" onClick={() => removePhotoFromCapture(c, urls[0])} aria-label="Remove this photo" title="Remove this photo" className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm font-bold text-white hover:bg-red-600">&times;</button>}
+                    {!readOnly && !c.localOnly && <button type="button" onClick={() => removePhotoFromCapture(c, urls[0])} aria-label="Remove this photo" title="Remove this photo" className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm font-bold text-white hover:bg-red-600">&times;</button>}
                   </div>
                 ) : (
                   <div className="grid grid-cols-3 gap-1 p-1">
@@ -3401,7 +3623,7 @@ function Home() {
                           className="aspect-square w-full rounded-lg object-cover cursor-pointer"
                           onClick={() => openViewer(urls, i)}
                         />
-                        {!readOnly && <button type="button" onClick={() => removePhotoFromCapture(c, url)} aria-label="Remove this photo" title="Remove this photo" className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm font-bold text-white hover:bg-red-600">&times;</button>}
+                        {!readOnly && !c.localOnly && <button type="button" onClick={() => removePhotoFromCapture(c, url)} aria-label="Remove this photo" title="Remove this photo" className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-sm font-bold text-white hover:bg-red-600">&times;</button>}
                       </div>
                     ))}
                   </div>
@@ -3411,7 +3633,7 @@ function Home() {
                   {/* Status + tags row */}
                   <div className="flex items-center justify-between">
                     <div className="flex flex-wrap gap-1.5">
-                      {readOnly ? (
+                      {readOnly || c.localOnly ? (
                         <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[c.status as CaptureStatus || "Captured"]}`}>{c.status || "Captured"}</span>
                       ) : (
                       <select
@@ -3536,7 +3758,7 @@ function Home() {
                   )}
 
                   {/* Generate draft button */}
-                  {!drafts[c.id] && !draftLoading[c.id] && (
+                  {!drafts[c.id] && !draftLoading[c.id] && !c.localOnly && (
                     <button
                       type="button"
                       onClick={() => generateDraft(c)}
@@ -3635,7 +3857,7 @@ function Home() {
                   )}
 
                   {/* Delete */}
-                  <div className="flex flex-wrap items-center gap-4 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+                  {!c.localOnly && <div className="flex flex-wrap items-center gap-4 border-t border-zinc-100 pt-3 dark:border-zinc-800">
                     {editingCaptureId !== c.id && !readOnly && (
                       <button
                         type="button"
@@ -3668,7 +3890,7 @@ function Home() {
                     >
                       Delete Capture
                     </button>}
-                  </div>
+                  </div>}
                 </div>
               </div>
             ))}
@@ -3897,13 +4119,8 @@ function Home() {
         imageUrl={annotateUrl}
         open={annotateOpen}
         onClose={() => setAnnotateOpen(false)}
-        onSave={(dataUrl) => {
-          // Download the annotated image
-          const a = document.createElement("a")
-          a.href = dataUrl
-          a.download = "annotated-damage.jpg"
-          a.click()
-        }}
+        saveLabel="Add to finding"
+        onSave={(dataUrl) => { void addMarkedUpCopy(dataUrl) }}
       />
 
       {/* Upgrade Modal */}
