@@ -4688,7 +4688,7 @@ const ARTICLES: Article[] = [
     sections: [
       {
         heading: "The short answer",
-        content: "A good supplement request email is short and specific. The subject line has the claim number and the words supplement request. The body says how many items you found, what you are asking for, and what is attached. The attachment, ideally a single PDF, carries the photos, locations and quantities. End with a clear next step and your contact details.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
+        content: "A good supplement request email is short and specific. The subject line has the claim number and the words supplement request. The body says how many items you found, what you are asking for, and what is attached. The attachment, ideally a single PDF, carries the photos, locations and quantities. End with a clear next step and your contact details. To fill in a request from your own claim details, use the <a href='/roofing-supplement-letter-generator'>free supplement letter generator</a>.\n\nDisclosure: we make Supplement Snap, which helps roofing crews document damage found at tear-off and export a report. It does not decide coverage, negotiate claims or guarantee approval. This page is general guidance, not legal or claims advice.",
       },
       {
         heading: "What the email should contain",
