@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { Resend } from "resend"
-import { MAX_ATTEMPTS, runReminders, type ReminderProject } from "../../../lib/follow-up-reminders"
+import { mayReclaim, runReminders, type ReminderProject } from "../../../lib/follow-up-reminders"
 
 /**
  * Daily job for opt-in follow-up reminders to project owners (see lib/follow-up-reminders.ts).
@@ -32,13 +32,15 @@ export async function GET(request: Request) {
         const ins = await db.from("follow_up_reminder_sends").insert({ project_id: projectId, follow_up_on: date, status: "claimed", attempts: 1 }).select("project_id")
         if (!ins.error && ins.data?.length === 1) return "claimed"
         if (ins.error?.code !== "23505") return "skip"
-        // Already claimed: re-open only a failed one that still has attempts left (the attempts match makes it one-winner)
-        const { data: row } = await db.from("follow_up_reminder_sends").select("status, attempts").eq("project_id", projectId).eq("follow_up_on", date).maybeSingle()
-        if (!row || row.status !== "failed" || row.attempts >= MAX_ATTEMPTS) return "skip"
+        // Already claimed: re-open a failed one, or one left "claimed" for over 30 minutes (a run that stopped mid-send),
+        // while attempts remain. The attempts match makes it one-winner; the same idempotency key makes a re-send of an
+        // already accepted message a no-op at the provider within 24 hours.
+        const { data: row } = await db.from("follow_up_reminder_sends").select("status, attempts, updated_at").eq("project_id", projectId).eq("follow_up_on", date).maybeSingle()
+        if (!row || !mayReclaim(row, Date.now())) return "skip"
         const upd = await db
           .from("follow_up_reminder_sends")
           .update({ status: "claimed", attempts: row.attempts + 1, updated_at: new Date().toISOString() })
-          .eq("project_id", projectId).eq("follow_up_on", date).eq("status", "failed").eq("attempts", row.attempts)
+          .eq("project_id", projectId).eq("follow_up_on", date).eq("status", row.status).eq("attempts", row.attempts)
           .select("project_id")
         return !upd.error && upd.data?.length === 1 ? "claimed" : "skip"
       },
@@ -46,8 +48,8 @@ export async function GET(request: Request) {
         const { data } = await db.auth.admin.getUserById(userId)
         return data?.user?.email_confirmed_at && data.user.email ? data.user.email : null
       },
-      send: async (msg) => {
-        const { data, error } = await (resend as Resend).emails.send({ from: process.env.RESEND_FROM_EMAIL || "", ...msg })
+      send: async (msg, idempotencyKey) => {
+        const { data, error } = await (resend as Resend).emails.send({ from: process.env.RESEND_FROM_EMAIL || "", ...msg }, { idempotencyKey })
         if (error || !data?.id) throw new Error(error?.message || "provider did not accept the message")
         return { id: data.id }
       },

@@ -94,7 +94,7 @@ export function ClaimTracking({
           {remindersAvailable && (
             <label className="flex items-start gap-2">
               <input type="checkbox" className="mt-0.5 h-4 w-4 accent-indigo-600" checked={form.remind} disabled={!form.followUp} onChange={(e) => setForm((f) => ({ ...f, remind: e.target.checked }))} />
-              <span>Email me on the follow-up date, at my account email, in my time zone ({Intl.DateTimeFormat().resolvedOptions().timeZone}). Only you get this email; nothing is sent to the adjuster.</span>
+              <span>Email me once on the follow-up date, sometime after 8am in my time zone ({Intl.DateTimeFormat().resolvedOptions().timeZone}), at my account email. Only you get this email; nothing is sent to the adjuster.</span>
             </label>
           )}
           <div className="flex flex-wrap gap-2">
