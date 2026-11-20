@@ -20,11 +20,22 @@ export type ReminderProject = {
 
 export type ClaimResult = "claimed" | "skip"
 
+/** A run that stops mid-send leaves a claim behind; after this long it may be retried (same idempotency key). */
+export const STALE_CLAIM_MS = 30 * 60_000
+
+/** Whether an existing send row may be claimed again: failed, or left claimed past STALE_CLAIM_MS, with attempts left. Sent rows never. */
+export function mayReclaim(row: { status: string; attempts: number; updated_at: string } | null, now: number): boolean {
+  if (!row || row.attempts >= MAX_ATTEMPTS) return false
+  if (row.status === "failed") return true
+  return row.status === "claimed" && now - new Date(row.updated_at).getTime() > STALE_CLAIM_MS
+}
+
 export type ReminderDeps = {
   candidates: () => Promise<ReminderProject[]> // opted-in projects with a follow-up date (date filtering happens here)
   claim: (projectId: string, date: string) => Promise<ClaimResult> // atomically create or re-open a failed claim below MAX_ATTEMPTS
   ownerEmail: (userId: string) => Promise<string | null> // the owner's confirmed account email, or null if the account is gone
-  send: (msg: { to: string; subject: string; text: string; html: string }) => Promise<{ id: string }>
+  /** idempotencyKey is the same for every attempt at one reminder, so the provider refuses a duplicate it already accepted (Resend keeps keys for 24 hours) */
+  send: (msg: { to: string; subject: string; text: string; html: string }, idempotencyKey: string) => Promise<{ id: string }>
   markSent: (projectId: string, date: string, providerId: string) => Promise<void>
   markFailed: (projectId: string, date: string, error: string) => Promise<void>
 }
@@ -40,10 +51,24 @@ export function dateInZone(now: Date, tz: string | null): string {
   }
 }
 
+/** Reminders go out from this hour (owner's time zone) on the follow-up date; the job runs hourly, so not at an exact time. */
+export const SEND_FROM_HOUR = 8
+
+export function hourInZone(now: Date, tz: string | null): number {
+  try {
+    return Number(new Intl.DateTimeFormat("en-GB", { timeZone: tz || "UTC", hour: "2-digit", hourCycle: "h23" }).format(now))
+  } catch {
+    return now.getUTCHours()
+  }
+}
+
 export function isDue(p: ReminderProject, now: Date): boolean {
   if (!p.reminder_opt_in || !p.follow_up_on) return false
-  return p.follow_up_on.slice(0, 10) <= dateInZone(now, p.reminder_tz)
+  const date = p.follow_up_on.slice(0, 10), today = dateInZone(now, p.reminder_tz)
+  return date < today || (date === today && hourInZone(now, p.reminder_tz) >= SEND_FROM_HOUR)
 }
+
+export const reminderKey = (projectId: string, date: string) => `followup-reminder-${projectId}-${date}`
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string)
 
@@ -69,7 +94,7 @@ export async function runReminders(deps: ReminderDeps, opts: { now: Date; send: 
     const to = await deps.ownerEmail(p.user_id)
     if (!to) { await deps.markFailed(p.id, date, "owner account not found"); result.failed++; continue }
     try {
-      const { id } = await deps.send({ to, ...reminderMessage(p, opts.siteUrl) })
+      const { id } = await deps.send({ to, ...reminderMessage(p, opts.siteUrl) }, reminderKey(p.id, date))
       await deps.markSent(p.id, date, id) // accepted by the provider; not proof of inbox delivery
       result.sent++
     } catch (e) {

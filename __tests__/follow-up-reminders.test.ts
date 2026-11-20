@@ -3,7 +3,7 @@ import { describe, it, expect, beforeAll } from "vitest"
 import { PGlite } from "@electric-sql/pglite"
 import fs from "node:fs"
 import path from "node:path"
-import { runReminders, dateInZone, isDue, reminderMessage, MAX_ATTEMPTS, type ReminderDeps, type ReminderProject } from "../lib/follow-up-reminders"
+import { runReminders, dateInZone, isDue, reminderMessage, reminderKey, mayReclaim, MAX_ATTEMPTS, type ReminderDeps, type ReminderProject } from "../lib/follow-up-reminders"
 
 const p = (over: Partial<ReminderProject> = {}): ReminderProject => ({ id: "p1", user_id: "u1", project_name: "Synthetic <Roof>", follow_up_on: "2026-11-20", reminder_opt_in: true, reminder_tz: "America/New_York", ...over })
 
@@ -20,7 +20,7 @@ function fakes(projects: ReminderProject[], over: Partial<ReminderDeps> = {}) {
       return "skip"
     },
     ownerEmail: async (u) => (u === "u1" ? "owner@example.com" : null),
-    send: async (m) => { sends.push(m); return { id: `msg-${sends.length}` } },
+    send: async (m, key) => { sends.push({ ...m, key } as never); return { id: `msg-${sends.length}` } },
     markSent: async (id, date) => { rows.get(`${id}|${date}`)!.status = "sent" },
     markFailed: async (id, date) => { rows.get(`${id}|${date}`)!.status = "failed" },
     ...over,
@@ -34,7 +34,9 @@ describe("which reminders are due", () => {
     // 03:30 UTC on the 20th is still the 19th in New York
     expect(dateInZone(at("2026-11-20T03:30:00Z"), "America/New_York")).toBe("2026-11-19")
     expect(isDue(p(), at("2026-11-20T03:30:00Z"))).toBe(false)
-    expect(isDue(p(), at("2026-11-20T05:30:00Z"))).toBe(true)
+    expect(isDue(p(), at("2026-11-20T05:30:00Z"))).toBe(false) // 00:30 in New York: before the 8am send hour
+    expect(isDue(p(), at("2026-11-20T13:05:00Z"))).toBe(true) // 08:05 in New York
+    expect(isDue(p({ follow_up_on: "2026-11-19" }), at("2026-11-20T05:30:00Z"))).toBe(true) // a past date is due at any hour
     expect(dateInZone(at("2026-11-20T03:30:00Z"), "Not/AZone")).toBe("2026-11-20") // unknown zone: UTC, no guessing
   })
   it("needs opt-in and a date", () => {
@@ -56,6 +58,11 @@ describe("running the job", () => {
     await runReminders(f.deps, { now, send: true, siteUrl: "https://x" })
     await runReminders(f.deps, { now, send: true, siteUrl: "https://x" })
     expect(f.sends.map((s) => s.to)).toEqual(["owner@example.com"])
+  })
+  it("every attempt at one reminder uses the same provider idempotency key", async () => {
+    const f = fakes([p()])
+    await runReminders(f.deps, { now, send: true, siteUrl: "https://x" })
+    expect((f.sends[0] as unknown as { key: string }).key).toBe(reminderKey("p1", "2026-11-20"))
   })
   it("two runs at the same time send once", async () => {
     const f = fakes([p()])
@@ -79,6 +86,14 @@ describe("running the job", () => {
     f.deps.send = async () => { throw new Error("provider down") }
     for (let i = 0; i < 6; i++) await runReminders(f.deps, { now, send: true, siteUrl: "https://x" })
     expect(f.rows.get("p1|2026-11-20")).toEqual({ status: "failed", attempts: MAX_ATTEMPTS })
+  })
+  it("a reminder left claimed by a run that stopped is retried only after 30 minutes; a sent one never", () => {
+    const t = Date.parse("2026-11-20T15:00:00Z")
+    expect(mayReclaim({ status: "claimed", attempts: 1, updated_at: "2026-11-20T14:50:00Z" }, t)).toBe(false)
+    expect(mayReclaim({ status: "claimed", attempts: 1, updated_at: "2026-11-20T14:00:00Z" }, t)).toBe(true)
+    expect(mayReclaim({ status: "failed", attempts: 2, updated_at: "2026-11-20T14:59:00Z" }, t)).toBe(true)
+    expect(mayReclaim({ status: "failed", attempts: MAX_ATTEMPTS, updated_at: "2026-11-20T10:00:00Z" }, t)).toBe(false)
+    expect(mayReclaim({ status: "sent", attempts: 1, updated_at: "2026-11-19T10:00:00Z" }, t)).toBe(false)
   })
   it("a deleted owner account gets nothing and is marked failed", async () => {
     const f = fakes([p({ user_id: "gone" })])
