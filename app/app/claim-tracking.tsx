@@ -13,8 +13,8 @@ import {
   type Pin,
 } from "../../lib/report-tracking"
 
-type Tracking = { amount_requested?: unknown; amount_approved?: unknown; follow_up_on?: string | null }
-export type TrackingPatch = { amount_requested: number | null; amount_approved: number | null; follow_up_on: string | null }
+type Tracking = { amount_requested?: unknown; amount_approved?: unknown; follow_up_on?: string | null; reminder_opt_in?: boolean }
+export type TrackingPatch = { amount_requested: number | null; amount_approved: number | null; follow_up_on: string | null; reminder_opt_in?: boolean; reminder_tz?: string | null }
 
 /**
  * Requested and approved amounts and the next follow-up date, all typed by the person. Shown only once the database has
@@ -25,23 +25,26 @@ export function ClaimTracking({
   project,
   readOnly,
   onSave,
+  remindersAvailable = false,
 }: {
   project: Tracking
   readOnly: boolean
   /** Saves the values; resolves to "" on success or a message to show */
   onSave: (patch: TrackingPatch) => Promise<string>
+  /** Only when reminder emails are switched on for the site and the database has the columns */
+  remindersAvailable?: boolean
 }) {
   const requested = amountValue(project.amount_requested)
   const approved = amountValue(project.amount_approved)
   const followUp = project.follow_up_on ? String(project.follow_up_on).slice(0, 10) : ""
   const [editing, setEditing] = useState(false)
-  const [form, setForm] = useState({ requested: "", approved: "", followUp: "" })
+  const [form, setForm] = useState({ requested: "", approved: "", followUp: "", remind: false })
   const [error, setError] = useState("")
   const [saving, setSaving] = useState(false)
   const state = followUpState(followUp, localToday())
 
   function start() {
-    setForm({ requested: requested === null ? "" : String(requested), approved: approved === null ? "" : String(approved), followUp })
+    setForm({ requested: requested === null ? "" : String(requested), approved: approved === null ? "" : String(approved), followUp, remind: project.reminder_opt_in === true })
     setError("")
     setEditing(true)
   }
@@ -54,7 +57,8 @@ export function ClaimTracking({
       return
     }
     setSaving(true)
-    const problem = await onSave({ amount_requested: r, amount_approved: a, follow_up_on: form.followUp || null })
+    const reminder = remindersAvailable ? { reminder_opt_in: form.remind && !!form.followUp, reminder_tz: Intl.DateTimeFormat().resolvedOptions().timeZone || null } : {}
+    const problem = await onSave({ amount_requested: r, amount_approved: a, follow_up_on: form.followUp || null, ...reminder })
     setSaving(false)
     if (problem) setError(problem)
     else setEditing(false)
@@ -71,6 +75,7 @@ export function ClaimTracking({
           <span>
             <span className="font-medium">Follow up:</span>{" "}
             {followUp ? new Date(followUp + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "no date set"}
+            {remindersAvailable && project.reminder_opt_in && followUp && <span className="ml-1.5 text-zinc-500">(email reminder on)</span>}
             {state === "due" && <span className="ml-1.5 rounded-full bg-amber-100 px-2 py-0.5 font-semibold text-amber-800" data-testid="follow-up-due">Due</span>}
           </span>
           {!readOnly && (
@@ -86,6 +91,12 @@ export function ClaimTracking({
             <label className="block font-medium">Amount approved ($)<input inputMode="decimal" className={input} value={form.approved} onChange={(e) => setForm((f) => ({ ...f, approved: e.target.value }))} /></label>
             <label className="block font-medium">Next follow-up<input type="date" className={input} value={form.followUp} onChange={(e) => setForm((f) => ({ ...f, followUp: e.target.value }))} /></label>
           </div>
+          {remindersAvailable && (
+            <label className="flex items-start gap-2">
+              <input type="checkbox" className="mt-0.5 h-4 w-4 accent-indigo-600" checked={form.remind} disabled={!form.followUp} onChange={(e) => setForm((f) => ({ ...f, remind: e.target.checked }))} />
+              <span>Email me on the follow-up date, at my account email, in my time zone ({Intl.DateTimeFormat().resolvedOptions().timeZone}). Only you get this email; nothing is sent to the adjuster.</span>
+            </label>
+          )}
           <div className="flex flex-wrap gap-2">
             <button type="button" disabled={saving} onClick={save} className="rounded bg-indigo-600 px-4 py-2.5 font-medium text-white hover:bg-indigo-500 disabled:opacity-50">{saving ? "Saving..." : "Save"}</button>
             <button type="button" onClick={() => setEditing(false)} className="rounded border border-zinc-300 px-4 py-2.5 font-medium text-zinc-600 hover:bg-zinc-50">Cancel</button>
@@ -94,7 +105,7 @@ export function ClaimTracking({
         </div>
       )}
       <p className="mt-1.5 text-[11px] text-zinc-500">
-        Entered by you for your own tracking. Supplement Snap is not connected to insurers and does not confirm these amounts. The follow-up date is a reminder in the app only; no email is sent.
+        Entered by you for your own tracking. Supplement Snap is not connected to insurers and does not confirm these amounts. {remindersAvailable ? "The follow-up date shows in the app; an email reminder to you is sent only if you turn it on." : "The follow-up date is a reminder in the app only; no email is sent."}
       </p>
     </div>
   )
