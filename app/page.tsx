@@ -595,12 +595,12 @@ export default function LandingPage() {
             {[
               {
                 title: "Claim Tracking",
-                desc: "Insurance company, claim number, policy, date of loss, and adjuster contact, all attached to every project.",
+                desc: "Insurance company, claim number, policy, date of loss, and adjuster contact, all attached to every project. Track the requested and approved amounts you enter, and set an in-app follow-up date that is marked Due when it arrives.",
                 icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
               },
               {
                 title: "Photos in Reports",
-                desc: "Damage photos are embedded directly in your PDF report. Adjusters see the evidence right next to the narrative.",
+                desc: "Damage photos are embedded directly in your PDF report. Adjusters see the evidence right next to the narrative. Arrange findings in the order you want them in the report.",
                 icon: "M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z",
               },
               {
@@ -610,7 +610,7 @@ export default function LandingPage() {
               },
               {
                 title: "Roof Diagrams",
-                desc: "Attach EagleView reports or roof sketches to any project. Everything the adjuster needs in one place.",
+                desc: "Attach EagleView reports or roof sketches to any project. On an image diagram, place numbered pins that link each finding to its spot on the roof.",
                 icon: "M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5",
               },
               {
