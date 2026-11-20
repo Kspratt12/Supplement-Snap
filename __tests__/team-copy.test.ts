@@ -25,9 +25,9 @@ describe("wording about team members matches how teams work", () => {
   it("it says what members can and cannot do, and who owns a member's projects", () => {
     const a = onPage[0]
     expect(a).toMatch(/Team members can view the account owner's projects and generate or send reports, subject to the plan's permissions\./)
-    expect(a).toMatch(/Only the project owner can add or edit that project's photos, notes, and findings\./)
+    expect(a).toMatch(/Only the project owner can edit or delete findings and change claim details\./)
     expect(a).toMatch(/Projects created by a team member are not visible to the account owner\./)
-    expect(a).toMatch(/Shared crew-to-office capture across separate logins is not currently supported\./)
+    expect(a).toMatch(/the owner can switch on shared capture for a project, so team members can add findings and photos to it from their own logins; each finding shows who added it\./)
     expect(a).not.toMatch(/\byet\b|only partly|share (a|your) (login|password)/i)
     expect(a).not.toMatch(/office staff can see all captures/)
   })

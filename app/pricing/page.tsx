@@ -305,6 +305,7 @@ export default function PricingPage() {
                   ["Xactimate-style CSV export", false, false, true, true],
                   ["Users", "1", "1", "Up to 3", "Up to 5"],
                   ["Team access", false, false, true, true],
+                  ["Team members add findings to projects you share", false, false, true, true],
                   ["Email open tracking", false, false, true, true],
                   ["Photo annotations", false, true, true, true],
                   ["Priority email replies", false, false, false, true],
