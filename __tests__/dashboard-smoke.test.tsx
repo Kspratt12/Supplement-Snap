@@ -131,6 +131,7 @@ describe("dashboard smoke test (stand-in database)", () => {
     db.removeResult = null
     db.writes = []
     plan.paid = true
+    vi.mocked(authFetch).mockImplementation(async () => ({ ok: true, json: async () => ({}) }) as Response)
     window.localStorage.clear()
   })
   afterEach(() => {
@@ -203,7 +204,7 @@ describe("dashboard smoke test (stand-in database)", () => {
     const del = await screen.findByRole("button", { name: "Delete Capture" })
     vi.useFakeTimers({ shouldAdvanceTime: true })
     try {
-      db.failWrites = true
+      vi.mocked(authFetch).mockImplementation(async (url: unknown) => { if (String(url).includes("/api/captures/delete")) throw new TypeError("Failed to fetch"); return { ok: true, json: async () => ({}) } as Response })
       fireEvent.click(del)
       expect(screen.queryByRole("button", { name: "Delete Capture" })).toBeNull() // hidden right away
       await vi.advanceTimersByTimeAsync(8500)
@@ -230,52 +231,70 @@ describe("dashboard smoke test (stand-in database)", () => {
     }
   }
 
-  it("does not count a delete the database refused (no error, no rows removed) as a deletion, and leaves the photos alone", async () => {
+  // Deleting now goes through the server route /api/captures/delete, which deletes the record and then exactly the files
+  // that record lists. These tests set the route's answer and check what the page does with it; the route's own rules are
+  // tested in capture-delete.test.ts.
+  function routeAnswers(answer: unknown) {
+    vi.mocked(authFetch).mockImplementation(async (url: unknown) => {
+      if (String(url).includes("/api/captures/delete")) return { ok: true, json: async () => answer } as Response
+      return { ok: true, json: async () => ({}) } as Response
+    })
+  }
+  const deleteCall = () => vi.mocked(authFetch).mock.calls.find((c) => String(c[0]).includes("/api/captures/delete"))
+
+  it("does not count a delete the server refused as a deletion, and puts the finding back", async () => {
     db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
     db.rows.captures = [findingWithPhotos()]
-    db.denyDeletes = true
+    routeAnswers({ status: 404, deleted: false, reason: "not_found" })
     render(<AppPage />)
     await pickProject("p1")
     await deleteFirstFinding()
     expect(await screen.findByText(/was not deleted, so it was put back/)).toBeTruthy()
     expect(await screen.findByRole("button", { name: "Delete Capture" })).toBeTruthy()
-    expect(db.removeCalls).toEqual([])
   })
 
-  it("removes every photo of a deleted finding and raises no warning when all of them are confirmed", async () => {
+  it("sends only the finding id, and raises no warning when every photo was removed", async () => {
     db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
     db.rows.captures = [findingWithPhotos()]
-    db.removeResult = { data: [{ name: "a-0.jpg" }, { name: "a-1.jpg" }], error: null }
+    vi.mocked(authFetch).mockClear()
+    routeAnswers({ status: 200, deleted: true, filesRemoved: 2, notConfirmed: [] })
     render(<AppPage />)
     await pickProject("p1")
     await deleteFirstFinding()
-    await waitFor(() => expect(db.removeCalls).toHaveLength(1))
-    expect([...db.removeCalls[0]].sort()).toEqual(["a-0.jpg", "a-1.jpg"])
+    await waitFor(() => expect(deleteCall()).toBeTruthy())
+    expect(JSON.parse(String(deleteCall()?.[1]?.body))).toEqual({ captureId: "c1" })
     expect(screen.queryByText(/could not be confirmed removed/)).toBeNull()
     expect(screen.queryByRole("button", { name: "Delete Capture" })).toBeNull()
   })
 
-  it("says so, and writes a record, when the storage service confirms only some of the photos", async () => {
+  it("says so when the server could confirm only some of the photos", async () => {
     db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
     db.rows.captures = [findingWithPhotos()]
-    db.removeResult = { data: [{ name: "a-0.jpg" }], error: null }
-    vi.mocked(authFetch).mockClear()
+    routeAnswers({ status: 200, deleted: true, filesRemoved: 1, notConfirmed: ["a-1.jpg"] })
     render(<AppPage />)
     await pickProject("p1")
     await deleteFirstFinding()
     expect(await screen.findByText(/The finding was deleted, but 1 photo file could not be confirmed removed/)).toBeTruthy()
-    const logged = vi.mocked(authFetch).mock.calls.find((c) => String(c[0]).includes("activity-log"))
-    expect(String(logged?.[1]?.body)).toContain("a-1.jpg")
   })
 
-  it("says so when the storage service returns an error for the removal", async () => {
+  it("says so when the server could confirm none of the photos", async () => {
     db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
     db.rows.captures = [findingWithPhotos()]
-    db.removeResult = { data: null, error: { message: "storage unavailable" } }
+    routeAnswers({ status: 200, deleted: true, filesRemoved: 0, notConfirmed: ["a-0.jpg", "a-1.jpg"] })
     render(<AppPage />)
     await pickProject("p1")
     await deleteFirstFinding()
     expect(await screen.findByText(/The finding was deleted, but 2 photo files could not be confirmed removed/)).toBeTruthy()
+  })
+
+  it("only the owner can delete: a member's attempt is put back with that reason", async () => {
+    db.rows.projects = [project({ id: "p1" }), project({ id: "p2", project_name: "Other" })]
+    db.rows.captures = [findingWithPhotos()]
+    routeAnswers({ status: 403, deleted: false, reason: "not_owner" })
+    render(<AppPage />)
+    await pickProject("p1")
+    await deleteFirstFinding()
+    expect(await screen.findByText(/Only the project owner can delete findings/)).toBeTruthy()
   })
 
   it("asks free-plan users to upgrade instead of sending a report, and does not email anything", async () => {

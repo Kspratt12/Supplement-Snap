@@ -49,7 +49,7 @@ export async function savedState(serverId: string, projectId: string): Promise<S
  *   the record might exist but cannot be checked, the uploaded photos are kept rather than removed. When another attempt
  *   saved it first, only this attempt's own uploads that the saved finding does not use are removed.
  */
-export async function uploadQueuedCapture(capture: PendingCapture, compress: (file: File) => Promise<Blob>): Promise<boolean> {
+export async function uploadQueuedCapture(capture: PendingCapture, compress: (file: File) => Promise<Blob>): Promise<boolean | "refused"> {
   try {
     if (capture.photos.length === 0 && !capture.fieldNote.trim()) return false // nothing to save
 
@@ -104,6 +104,9 @@ export async function uploadQueuedCapture(capture: PendingCapture, compress: (fi
         return true
       }
       if (saved.state === "no" && urls.length > 0) await cleanupOrphanedUploads(urls)
+      // The database refused the row for lack of permission (for example the person was removed from the owner's team):
+      // retrying cannot help, so the queue stops retrying it and tells the person.
+      if (saved.state === "no" && (error.code === "42501" || /row-level security/i.test(error.message || ""))) return "refused"
       return false
     }
     return true

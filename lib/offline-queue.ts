@@ -13,7 +13,8 @@ export interface PendingCapture {
   photos: ArrayBuffer[]
   photoNames: string[]
   photoMetadata: (object | null)[]
-  status: "pending" | "uploading" | "failed"
+  /** refused: the account is no longer allowed to add to this project; never retried, kept until the person discards it */
+  status: "pending" | "uploading" | "failed" | "refused"
   retryCount: number
   createdAt: string
 }
@@ -91,7 +92,31 @@ export async function getQueuedForProject(projectId: string, userId?: string): P
 export async function getPendingCount(userId?: string): Promise<number> {
   const db = await getDB()
   const all = await db.getAll("pending-captures")
-  return all.filter(belongsTo(userId)).length
+  return all.filter(belongsTo(userId)).filter((c) => c.status !== "refused").length
+}
+
+/** The account's queued captures that the database refused (access removed). They are never retried automatically. */
+export async function getRefused(userId?: string): Promise<PendingCapture[]> {
+  const db = await getDB()
+  return (await db.getAllFromIndex("pending-captures", "by-status", "refused")).filter(belongsTo(userId))
+}
+
+export async function markRefused(id: string) {
+  const db = await getDB()
+  const item = await db.get("pending-captures", id)
+  if (item) {
+    item.status = "refused"
+    await db.put("pending-captures", item)
+  }
+}
+
+/** Removes one of the signed-in account's queued captures from this device, at the person's request. */
+export async function discardQueued(id: string, userId?: string): Promise<boolean> {
+  const db = await getDB()
+  const item = await db.get("pending-captures", id)
+  if (!item || !belongsTo(userId)(item)) return false
+  await db.delete("pending-captures", id)
+  return true
 }
 
 /** Remove a capture after successful upload */
@@ -128,7 +153,7 @@ export async function markUploading(id: string) {
 let syncing = false
 
 export async function syncPendingCaptures(
-  uploadFn: (capture: PendingCapture) => Promise<boolean>,
+  uploadFn: (capture: PendingCapture) => Promise<boolean | "refused">,
   options: { includeCapped?: boolean; userId?: string } = {}
 ): Promise<number> {
   // Two syncs at once (for example two "back online" events) would upload the same capture twice.
@@ -141,7 +166,7 @@ export async function syncPendingCaptures(
   }
 }
 
-async function runSync(uploadFn: (capture: PendingCapture) => Promise<boolean>, includeCapped: boolean, userId?: string): Promise<number> {
+async function runSync(uploadFn: (capture: PendingCapture) => Promise<boolean | "refused">, includeCapped: boolean, userId?: string): Promise<number> {
   // Only the signed-in account's captures: another account on the same browser never uploads them
   const captures = await getPendingCaptures(true, includeCapped, userId)
   let synced = 0
@@ -150,7 +175,9 @@ async function runSync(uploadFn: (capture: PendingCapture) => Promise<boolean>, 
     await markUploading(capture.id)
     try {
       const success = await uploadFn(capture)
-      if (success) {
+      if (success === "refused") {
+        await markRefused(capture.id)
+      } else if (success) {
         await markUploaded(capture.id)
         synced++
       } else {
