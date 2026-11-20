@@ -2755,7 +2755,7 @@ function Home() {
               )}
             </div>
             {hasColumn(selectedProject, "amount_requested") && (
-              <ClaimTracking key={selectedProject.id} project={selectedProject} readOnly={readOnly} onSave={saveTracking} />
+              <ClaimTracking key={selectedProject.id} project={selectedProject} readOnly={readOnly} onSave={saveTracking} remindersAvailable={process.env.NEXT_PUBLIC_FOLLOWUP_REMINDERS === "true" && hasColumn(selectedProject, "reminder_opt_in")} />
             )}
             {!readOnly && isProUser && hasColumn(selectedProject, "team_capture") && (
               <label className="mt-2 flex items-start gap-2 text-xs text-zinc-600 dark:text-zinc-400" data-testid="team-capture-toggle">
