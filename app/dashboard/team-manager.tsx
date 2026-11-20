@@ -88,7 +88,7 @@ export function TeamManager({ userId }: { userId: string }) {
         </button>
       </div>
       <p data-testid="team-help" className="mt-3 text-xs leading-relaxed text-zinc-500">
-        Team members can view your projects, build and email reports, and export the CSV, but only you can add or change findings. Projects a team member creates belong to that member and are not visible to you.
+        Team members can view your projects, build and email reports, and export the CSV, but only you can change or delete findings. To let them add findings to a project, switch on shared capture on that project. Projects a team member creates belong to that member and are not visible to you.
       </p>
 
       {success && (
