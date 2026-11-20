@@ -117,6 +117,8 @@ type Project = {
   amount_requested?: number | string | null
   amount_approved?: number | string | null
   follow_up_on?: string | null
+  // Present only once supabase-migration-v17 has run: the owner lets team members add findings to this project
+  team_capture?: boolean
 }
 
 const CAPTURE_STATUSES = ["Captured", "Needs Review", "Ready to Send", "Sent"] as const
@@ -145,6 +147,8 @@ type Capture = {
   // Present only once supabase-migration-v16 has run
   report_order?: number | null
   diagram_pin?: unknown
+  // Present only once supabase-migration-v17 has run: the account that added the finding
+  created_by?: string | null
   /** Set only on a finding that is still in this device's queue and not yet saved to the account */
   localOnly?: { status: PendingCapture["status"]; retryCount: number }
 }
@@ -261,6 +265,7 @@ function Home() {
   const canPin = reportCaptures.length > 0 && hasColumn(reportCaptures[0], "diagram_pin")
   const diagramIsImage = (url?: string | null) => !!url && !/\.pdf($|[?#])/i.test(url)
   const [pinFor, setPinFor] = useState<string | null>(null)
+  const [savingTeamCapture, setSavingTeamCapture] = useState(false)
   const [reordering, setReordering] = useState(false)
   const localOnlyCount = captures.length - reportCaptures.length
   // Optional wide/close-up tag for each photo in the capture form, in the same order as `files`
@@ -2300,6 +2305,16 @@ function Home() {
     return ""
   }
 
+  // ---- Shared capture switch for one project (owner only; needs supabase-migration-v17). The screen changes only once saved.
+  async function saveTeamCapture(on: boolean) {
+    if (!selectedProjectId || readOnly) return
+    setSavingTeamCapture(true)
+    const outcome = writeOutcome(await supabase.from("projects").update({ team_capture: on }).eq("id", selectedProjectId).select("id"))
+    setSavingTeamCapture(false)
+    if (outcome !== "ok") { showNotice(outcome === "refused" ? NOT_SAVED_NO_PERMISSION : "Not saved. Check your connection and try again."); return }
+    setProjects((prev) => prev.map((p) => (p.id === selectedProjectId ? { ...p, team_capture: on } : p)))
+  }
+
   // ---- Requested/approved amounts and follow-up date, as typed by the person (needs supabase-migration-v16)
   async function saveTracking(patch: TrackingPatch): Promise<string> {
     if (!selectedProjectId) return "Choose a project first."
@@ -2399,6 +2414,15 @@ function Home() {
   const selectedProject = projects.find((p) => p.id === selectedProjectId)
   // A project that belongs to someone else (a team owner's) can be viewed, but only its owner can change it
   const readOnly = !!selectedProject && !!selectedProject.user_id && !!user && selectedProject.user_id !== user.id
+  // A team member may add findings (only add) when the owner has switched shared capture on for this project.
+  // The database decides for real (supabase-migration-v17); this only decides whether to show the capture form.
+  const canContribute = readOnly && selectedProject?.team_capture === true
+  const authorLabel = (c: Capture) => {
+    if (!hasColumn(c, "created_by") || !c.created_by || !selectedProject) return ""
+    if (c.created_by === user?.id) return readOnly ? "Added by you" : ""
+    if (c.created_by === selectedProject.user_id) return "Added by the owner"
+    return "Added by a team member"
+  }
   const filteredProjects = filterProjects(projects, projectQuery, claimFilter)
   const listedProjects =
     selectedProject && !filteredProjects.some((p) => p.id === selectedProject.id) ? [selectedProject, ...filteredProjects] : filteredProjects
@@ -2704,6 +2728,20 @@ function Home() {
             </div>
             {hasColumn(selectedProject, "amount_requested") && (
               <ClaimTracking key={selectedProject.id} project={selectedProject} readOnly={readOnly} onSave={saveTracking} />
+            )}
+            {!readOnly && isProUser && hasColumn(selectedProject, "team_capture") && (
+              <label className="mt-2 flex items-start gap-2 text-xs text-zinc-600 dark:text-zinc-400" data-testid="team-capture-toggle">
+                <input
+                  type="checkbox"
+                  className="mt-0.5 h-4 w-4 accent-indigo-600"
+                  checked={selectedProject.team_capture === true}
+                  disabled={savingTeamCapture}
+                  onChange={(e) => void saveTeamCapture(e.target.checked)}
+                />
+                <span>
+                  <span className="font-medium">Team members can add findings to this project.</span> They can add findings and photos but not edit or delete any finding or change claim details. Off by default for every project.
+                </span>
+              </label>
             )}
             {/* Diagram upload */}
             <div className="flex items-center gap-2 pt-1">
@@ -3311,7 +3349,12 @@ function Home() {
       )}
 
       {/* Capture form — only show when a project is selected */}
-      {selectedProjectId && readOnly ? (
+      {canContribute && (
+        <div data-testid="contributor-notice" role="note" className="mb-4 rounded-xl border border-indigo-200 bg-indigo-50 p-4 text-xs leading-relaxed text-indigo-900 dark:border-indigo-900 dark:bg-indigo-950/30 dark:text-indigo-200">
+          The owner lets the team add findings to this project. Findings you save are marked as added by you. After saving, only the owner can edit or delete them, and only the owner can change claim details.
+        </div>
+      )}
+      {selectedProjectId && readOnly && !canContribute ? (
         <div data-testid="read-only-notice" role="note" className="mb-10 rounded-xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-900 dark:bg-amber-950/30">
           <h2 className="text-sm font-semibold text-amber-900 dark:text-amber-200">You can view this project, but only its owner can change it</h2>
           <p className="mt-1 text-xs leading-relaxed text-amber-900 dark:text-amber-200">
@@ -3798,6 +3841,8 @@ function Home() {
                       })}
                     </span>
                   </div>
+
+                  {authorLabel(c) && <p className="text-xs font-medium text-indigo-700 dark:text-indigo-400" data-testid="author-label">{authorLabel(c)}</p>}
 
                   {/* Quantity */}
                   {c.quantity ? (
