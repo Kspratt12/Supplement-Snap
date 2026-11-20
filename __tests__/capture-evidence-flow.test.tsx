@@ -23,6 +23,7 @@ const h = vi.hoisted(() => ({
   lostResponse: false, // the insert reaches the database, but the answer is lost (reported as a network error)
   lookupFails: false, // reading a capture back by id fails (still no connection)
   queueFails: false, // the device refuses to store (for example storage quota)
+  plan: "starter",
 }))
 
 vi.mock("../lib/offline-queue", async (orig) => {
@@ -132,6 +133,7 @@ beforeEach(async () => {
   h.lostResponse = false
   h.lookupFails = false
   h.queueFails = false
+  h.plan = "starter"
   Object.defineProperty(window.navigator, "onLine", { configurable: true, get: () => true })
   const db = await openDB("supplement-snap-offline", 1, { upgrade(d) { d.createObjectStore("pending-captures", { keyPath: "id" }).createIndex("by-status", "status") } })
   await db.clear("pending-captures")
@@ -140,7 +142,7 @@ beforeEach(async () => {
   vi.stubGlobal("Image", FakeImage)
   let n = 0
   vi.stubGlobal("URL", Object.assign(globalThis.URL, { createObjectURL: () => `blob:test-${n++}`, revokeObjectURL: () => {} }))
-  vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => ({ status: "active", plan: "starter", viaOwner: false, hasBilling: false, isAdmin: false }) })))
+  vi.stubGlobal("fetch", vi.fn(async () => ({ ok: true, json: async () => ({ status: "active", plan: h.plan, viaOwner: false, hasBilling: false, isAdmin: false }) })))
 })
 afterEach(() => {
   cleanup()
@@ -305,6 +307,35 @@ describe("after supabase-migration-v16 (columns present in the loaded rows)", ()
     expect(await screen.findByTestId("follow-up-due")).toBeTruthy()
     expect(h.updates.find((u) => u.table === "projects")?.patch).toEqual({ amount_requested: 1200.5, amount_approved: null, follow_up_on: "2020-01-01" })
     expect(screen.getByTestId("claim-tracking").textContent).toContain("$1,200.50")
+  })
+
+  it("shared capture (v17): a team member gets the capture form only when the owner switched it on, with author labels", async () => {
+    h.projectExtra = { user_id: "owner-1", team_capture: false }
+    h.serverCaptures = [{ ...row("c1", "By owner", "2026-11-01T00:00:00Z"), created_by: "owner-1" }]
+    // Not switched on: the read-only notice, no form
+    const ro = render(<AuthProvider><AppPage /></AuthProvider>)
+    expect(await screen.findByTestId("read-only-notice")).toBeTruthy()
+    expect(screen.queryByPlaceholderText("Describe the damage...")).toBeNull()
+    ro.unmount()
+    // Switched on: the form and the contributor note; owner's finding labelled
+    h.projectExtra = { user_id: "owner-1", team_capture: true }
+    h.serverCaptures = [{ ...row("c1", "By owner", "2026-11-01T00:00:00Z"), created_by: "owner-1" }, { ...row("c2", "By me", "2026-11-02T00:00:00Z"), created_by: "u1" }]
+    await openForm()
+    expect(screen.getByTestId("contributor-notice").textContent).toMatch(/only the owner can edit or delete them/)
+    const labels = (await screen.findAllByTestId("author-label")).map((e) => e.textContent).sort()
+    expect(labels).toEqual(["Added by the owner", "Added by you"])
+    expect(screen.queryByTestId("team-capture-toggle")).toBeNull() // only the owner sees the switch
+    expect(screen.queryByRole("button", { name: "Delete Capture" })).toBeNull() // members cannot delete
+  })
+
+  it("shared capture (v17): the owner on a team plan gets the switch, and it saves", async () => {
+    h.projectExtra = { team_capture: false }
+    h.plan = "team"
+    await openForm()
+    const toggle = (await screen.findByTestId("team-capture-toggle")).querySelector("input") as HTMLInputElement
+    fireEvent.click(toggle)
+    await waitFor(() => expect(h.updates.find((u) => u.table === "projects")?.patch).toEqual({ team_capture: true }))
+    await waitFor(() => expect(toggle.checked).toBe(true))
   })
 
   it("pins are offered for an image diagram but not for a PDF diagram", async () => {
