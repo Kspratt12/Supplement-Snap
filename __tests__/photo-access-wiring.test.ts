@@ -56,7 +56,9 @@ describe("the dashboard goes through signed links", () => {
   })
 
   it("keeps saving and deleting on the saved address", () => {
-    expect(page).toContain("photoPathsForCaptures([{ image_url: c.image_url, image_urls: c.image_urls }])")
+    // Deleting a finding goes through the server, which reads the paths from the saved record
+    expect(page).toContain('authFetch("/api/captures/delete"')
+    expect(read("lib/capture-delete.ts")).toContain("photoPathsForCaptures([{ image_url: row.image_url, image_urls: row.image_urls }])")
     expect(page).toContain("image_url: uploadedUrls[0] || \"\"")
   })
 

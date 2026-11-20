@@ -25,6 +25,8 @@ export default function PrivacyPage() {
           <li><span className="font-medium text-zinc-900">Account information:</span> name, email address, and password when you create an account</li>
           <li><span className="font-medium text-zinc-900">Project data:</span> project names, property addresses, and capture metadata</li>
           <li><span className="font-medium text-zinc-900">Uploaded content:</span> photos, field notes (including voice notes, which are saved as text; we do not store audio recordings), and damage documentation</li>
+          <li><span className="font-medium text-zinc-900">Team contributions:</span> when a project owner on a Team or Pro plan lets their team add findings to a project, the findings and photos a team member adds are stored in the owner&apos;s project together with which account added them. The owner and the owner&apos;s team can view them, and only the owner can edit or delete them; deleting a finding also deletes its photo files from storage.</li>
+          <li><span className="font-medium text-zinc-900">On your device:</span> findings saved without a connection are kept in your browser&apos;s storage on that device until they upload. If your access to a project is removed first, they are not uploaded and stay on the device until you discard them. Clearing the browser&apos;s data removes them.</li>
           <li><span className="font-medium text-zinc-900">Billing information:</span> payment details processed securely through Stripe (we do not store your card numbers)</li>
           <li><span className="font-medium text-zinc-900">Usage data:</span> general information about how you interact with the platform</li>
         </ul>

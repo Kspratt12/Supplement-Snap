@@ -48,6 +48,8 @@ import {
   getPendingCount,
   getCappedCount,
   getQueuedForProject,
+  getRefused,
+  discardQueued,
   RETRY_CAP,
   fileToArrayBuffer,
   type PendingCapture,
@@ -266,6 +268,14 @@ function Home() {
   const diagramIsImage = (url?: string | null) => !!url && !/\.pdf($|[?#])/i.test(url)
   const [pinFor, setPinFor] = useState<string | null>(null)
   const [savingTeamCapture, setSavingTeamCapture] = useState(false)
+  // Findings queued on this device that the database refused (access to the project was removed). Never retried.
+  const [refusedItems, setRefusedItems] = useState<PendingCapture[]>([])
+  async function discardFromDevice(ids: string[]) {
+    for (const id of ids) await discardQueued(id, user?.id)
+    getRefused(user?.id).then(setRefusedItems).catch(() => {})
+    getPendingCount(user?.id).then(setPendingQueueCount).catch(() => {})
+    if (selectedProjectId) await loadCaptures(selectedProjectId)
+  }
   const [reordering, setReordering] = useState(false)
   const localOnlyCount = captures.length - reportCaptures.length
   // Optional wide/close-up tag for each photo in the capture form, in the same order as `files`
@@ -390,7 +400,7 @@ function Home() {
     if (!user?.id) return
     // Load initial pending count
     getPendingCount(user?.id).then(setPendingQueueCount).catch(() => {})
-    getCappedCount(user?.id).then(setCappedQueueCount).catch(() => {})
+    getCappedCount(user?.id).then(setCappedQueueCount).catch(() => {}); getRefused(user?.id).then(setRefusedItems).catch(() => {})
 
     // Automatic syncs leave captures that used up their retries alone; a manual one (Sync Now) tries them once more.
     async function runSync(manual: boolean) {
@@ -406,7 +416,7 @@ function Home() {
       } finally {
         setSyncing(false)
         getPendingCount(user?.id).then(setPendingQueueCount).catch(() => {})
-        getCappedCount(user?.id).then(setCappedQueueCount).catch(() => {})
+        getCappedCount(user?.id).then(setCappedQueueCount).catch(() => {}); getRefused(user?.id).then(setRefusedItems).catch(() => {})
       }
     }
 
@@ -852,31 +862,37 @@ function Home() {
   }
 
   async function finalizeDelete(c: Capture) {
-    // Every photo of the finding, in both the list and the single-photo field
-    const filePaths = photoPathsForCaptures([{ image_url: c.image_url, image_urls: c.image_urls }])
 
     const putBack = (message: string) => {
       setCaptures((prev) => (prev.some((cap) => cap.id === c.id) ? prev : [...prev, c].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())))
       showNotice(message)
     }
 
-    // Remove the record first. If that fails the capture comes back with its photos, instead of a record pointing at deleted files.
-    const { data: removedRows, error: deleteErr } = await supabase.from("captures").delete().eq("id", c.id).select("id")
-    if (deleteErr) {
+    // The server deletes the record (only for the project's owner) and then exactly the files that record lists, including
+    // photos a team member added. If the record cannot be deleted, the capture comes back with its photos.
+    let result: { deleted?: boolean; reason?: string; notConfirmed?: string[] } | null = null
+    try {
+      const res = await authFetch("/api/captures/delete", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ captureId: c.id }) })
+      result = await res.json().catch(() => null)
+    } catch {
+      result = null
+    }
+    if (!result) {
       putBack("The capture could not be deleted, so it was put back. Check your connection and try again.")
       return
     }
-    // A request the database refuses to apply (a team member can view an owner's findings but not delete them) comes back
-    // without an error and with no rows removed. That is not a deletion, and the photos must be left alone.
-    if (!removedRows || removedRows.length === 0) {
-      putBack("This finding was not deleted, so it was put back. Your account may not have permission to delete it, or it may already be deleted. Refresh to check.")
+    if (!result.deleted) {
+      putBack(result.reason === "not_owner"
+        ? "Only the project owner can delete findings, so this one was put back."
+        : "This finding was not deleted, so it was put back. It may already be deleted. Refresh to check.")
       return
     }
     setCaptures((prev) => prev.filter((cap) => cap.id !== c.id))
-
-    // Then the photo files. Say so if the storage service did not confirm removing them, and keep a record of which ones.
-    const { notConfirmed } = await removePhotoFiles(supabase.storage.from("test-uploads"), filePaths)
-    if (notConfirmed.length > 0) reportUnremovedFiles(notConfirmed, selectedProjectId, "The finding was deleted")
+    // The server noted any file whose removal was not confirmed; say so instead of claiming they are gone
+    const notConfirmed = Array.isArray(result.notConfirmed) ? result.notConfirmed : []
+    if (notConfirmed.length > 0) {
+      showNotice(`The finding was deleted, but ${notConfirmed.length} photo file${notConfirmed.length === 1 ? "" : "s"} could not be confirmed removed from storage. They are noted for cleanup; email support@supplementsnap.io if you want confirmation.`)
+    }
   }
 
   // Photo files stay reachable by their link until the file itself is removed, so a removal that was not confirmed is
@@ -2493,6 +2509,18 @@ function Home() {
           Syncing offline captures...
         </div>
       )}
+      {refusedItems.length > 0 && (
+        <div role="status" data-testid="refused-banner" className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          {refusedItems.length} finding{refusedItems.length !== 1 ? "s were" : " was"} not uploaded because your access to add findings to {refusedItems.length !== 1 ? "their project was" : "its project was"} removed. {refusedItems.length !== 1 ? "They are" : "It is"} kept only on this device and will not be uploaded anywhere else.
+          <button
+            type="button"
+            className="ml-2 font-semibold underline"
+            onClick={() => { if (confirm(`Discard ${refusedItems.length} finding${refusedItems.length !== 1 ? "s" : ""} and ${refusedItems.length !== 1 ? "their" : "its"} photos from this device? This cannot be undone.`)) void discardFromDevice(refusedItems.map((r) => r.id)) }}
+          >
+            Discard from this device
+          </button>
+        </div>
+      )}
       {isOnline && !syncing && (
         <OfflineSyncBanner waiting={pendingQueueCount} stuck={cappedQueueCount} onSyncNow={() => window.dispatchEvent(new Event("ss-manual-sync"))} />
       )}
@@ -3742,7 +3770,9 @@ function Home() {
               >
                 {c.localOnly && (
                   <div role="status" data-testid="local-only-card" className={`border-b px-4 py-2.5 text-xs font-medium ${c.localOnly.status === "failed" ? "border-red-200 bg-red-50 text-red-800" : "border-amber-200 bg-amber-50 text-amber-800"}`}>
-                    {c.localOnly.status === "uploading"
+                    {c.localOnly.status === "refused"
+                      ? "Not uploaded: your access to add findings to this project was removed. It is kept only on this device."
+                      : c.localOnly.status === "uploading"
                       ? "Uploading to your account..."
                       : c.localOnly.status === "failed"
                         ? c.localOnly.retryCount >= RETRY_CAP

@@ -96,7 +96,7 @@ describe("saving a capture that was queued while offline", () => {
     mocks.upload.mockResolvedValue({ error: { message: "network down" } })
     vi.useFakeTimers({ toFake: ["setTimeout"] })
     try {
-      let result: boolean | undefined
+      let result: boolean | "refused" | undefined
       uploadQueuedCapture(queued(1), compress).then((r) => { result = r })
       for (let i = 0; i < 60 && result === undefined; i++) await vi.advanceTimersByTimeAsync(1000)
       expect(result).toBe(false)
