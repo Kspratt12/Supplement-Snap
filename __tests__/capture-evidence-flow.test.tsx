@@ -307,6 +307,37 @@ describe("after supabase-migration-v16 (columns present in the loaded rows)", ()
     expect(screen.getByTestId("claim-tracking").textContent).toContain("$1,200.50")
   })
 
+  it("pins are offered for an image diagram but not for a PDF diagram", async () => {
+    h.projectExtra = { diagram_url: "https://abc.supabase.co/storage/v1/object/public/test-uploads/diagrams/roof.pdf" }
+    h.serverCaptures = [row("c1", "Only", "2026-11-01T00:00:00Z")]
+    const view = await openForm()
+    fireEvent.click(await screen.findByRole("button", { name: "Generate Project Report (1 finding)" }))
+    await screen.findByTestId("report-review-summary")
+    expect(screen.queryByRole("button", { name: "Pin on diagram" })).toBeNull()
+    view.unmount()
+    h.projectExtra = { diagram_url: "https://abc.supabase.co/storage/v1/object/public/test-uploads/diagrams/roof.jpg" }
+    await openForm()
+    fireEvent.click(await screen.findByRole("button", { name: "Generate Project Report (1 finding)" }))
+    expect(await screen.findByRole("button", { name: "Pin on diagram" })).toBeTruthy()
+  })
+
+  it("removing the diagram clears the pins placed on it first, and says so", async () => {
+    h.projectExtra = { diagram_url: "https://abc.supabase.co/storage/v1/object/public/test-uploads/diagrams/roof.jpg" }
+    h.serverCaptures = [{ ...row("c1", "Pinned", "2026-11-01T00:00:00Z"), diagram_pin: { x: 0.5, y: 0.5 } }]
+    let asked = ""
+    vi.stubGlobal("confirm", (m: string) => { asked = m; return true })
+    await openForm()
+    fireEvent.click(await screen.findByRole("button", { name: "Generate Project Report (1 finding)" }))
+    await screen.findByText("Pinned on diagram")
+    fireEvent.click(screen.getByTitle("Remove diagram"))
+    await waitFor(() => expect(h.updates.some((u) => u.table === "projects" && u.patch.diagram_url === null)).toBe(true))
+    expect(asked).toMatch(/The 1 pin placed on it will be removed too/)
+    const pinClear = h.updates.findIndex((u) => u.table === "captures" && "diagram_pin" in u.patch && u.patch.diagram_pin === null)
+    const diagramClear = h.updates.findIndex((u) => u.table === "projects" && u.patch.diagram_url === null)
+    expect(pinClear).toBeGreaterThanOrEqual(0)
+    expect(pinClear).toBeLessThan(diagramClear) // pins first
+  })
+
   it("findings can be reordered in the report and every position is saved", async () => {
     h.serverCaptures = [row("c2", "Second", "2026-11-02T00:00:00Z"), row("c1", "First", "2026-11-01T00:00:00Z")]
     await openForm()

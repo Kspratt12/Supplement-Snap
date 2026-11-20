@@ -257,7 +257,9 @@ function Home() {
   const reportCaptures = orderForReport(captures.filter((c) => !c.localOnly))
   // Controls that need supabase-migration-v16 appear only when the loaded rows carry its columns
   const canReorder = reportCaptures.length > 1 && hasColumn(reportCaptures[0], "report_order")
+  // Pins need a picture to place them on: a diagram uploaded as a PDF cannot be shown in the pin screen or drawn on in the report
   const canPin = reportCaptures.length > 0 && hasColumn(reportCaptures[0], "diagram_pin")
+  const diagramIsImage = (url?: string | null) => !!url && !/\.pdf($|[?#])/i.test(url)
   const [pinFor, setPinFor] = useState<string | null>(null)
   const [reordering, setReordering] = useState(false)
   const localOnlyCount = captures.length - reportCaptures.length
@@ -2716,7 +2718,15 @@ function Home() {
                   {!readOnly && <button
                     type="button"
                     onClick={async () => {
-                      if (!confirm("Remove this diagram?")) return
+                      const pinned = reportCaptures.filter((c) => normalizePin(c.diagram_pin))
+                      if (!confirm(pinned.length > 0 ? `Remove this diagram? The ${pinned.length} pin${pinned.length !== 1 ? "s" : ""} placed on it will be removed too, because they would not match a different diagram.` : "Remove this diagram?")) return
+                      // Pins are positions on this diagram, so they go with it. They are cleared first: if that fails, the
+                      // diagram stays, and nothing is left pointing at a diagram that is gone.
+                      if (pinned.length > 0) {
+                        const cleared = writeOutcome(await supabase.from("captures").update({ diagram_pin: null }).eq("project_id", selectedProject.id).not("diagram_pin", "is", null).select("id"))
+                        if (cleared !== "ok") { showNotice(cleared === "refused" ? NOT_SAVED_NO_PERMISSION : "The diagram was not removed. Check your connection and try again."); return }
+                        setCaptures((prev) => prev.map((c) => (c.project_id === selectedProject.id ? { ...c, diagram_pin: null } : c)))
+                      }
                       const outcome = writeOutcome(await supabase.from("projects").update({ diagram_url: null }).eq("id", selectedProject.id).select("id"))
                       if (outcome !== "ok") { showNotice(outcome === "refused" ? NOT_SAVED_NO_PERMISSION : "The diagram was not removed. Check your connection and try again."); return }
                       setProjects((prev) => prev.map((p) => p.id === selectedProject.id ? { ...p, diagram_url: undefined } : p))
@@ -3221,9 +3231,9 @@ function Home() {
                         {canPin && normalizePin(c.diagram_pin) && <span className="ml-2 text-indigo-600">Pinned on diagram</span>}
                       </p>
                     </div>
-                    {!readOnly && (canReorder || (canPin && selectedProject.diagram_url)) && (
+                    {!readOnly && (canReorder || (canPin && diagramIsImage(selectedProject.diagram_url))) && (
                       <div className="flex flex-shrink-0 items-center gap-1">
-                        {canPin && selectedProject.diagram_url && (
+                        {canPin && diagramIsImage(selectedProject.diagram_url) && (
                           <button type="button" onClick={() => setPinFor(c.id)} className="min-h-[40px] rounded-md border border-zinc-200 px-2 text-[11px] font-medium text-zinc-600 hover:bg-zinc-50">
                             {normalizePin(c.diagram_pin) ? "Move pin" : "Pin on diagram"}
                           </button>
