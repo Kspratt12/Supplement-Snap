@@ -9,6 +9,11 @@
  */
 export const MAX_ATTEMPTS = 3
 
+/** The server switch. Stray whitespace or a trailing newline from how the value was entered does not turn it off. */
+export function sendingEnabled(value: string | undefined): boolean {
+  return (value || "").trim().toLowerCase() === "true"
+}
+
 export type ReminderProject = {
   id: string
   user_id: string

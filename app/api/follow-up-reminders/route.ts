@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { Resend } from "resend"
-import { mayReclaim, runReminders, type ReminderProject } from "../../../lib/follow-up-reminders"
+import { mayReclaim, runReminders, sendingEnabled, type ReminderProject } from "../../../lib/follow-up-reminders"
 
 /**
  * Daily job for opt-in follow-up reminders to project owners (see lib/follow-up-reminders.ts).
@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   if (!secret || request.headers.get("authorization") !== `Bearer ${secret}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
-  const send = process.env.FOLLOWUP_REMINDERS_SEND === "true"
+  const send = sendingEnabled(process.env.FOLLOWUP_REMINDERS_SEND)
   const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "", process.env.SUPABASE_SERVICE_ROLE_KEY || "")
   const resend = send ? new Resend(process.env.RESEND_API_KEY) : null
 
@@ -62,5 +62,7 @@ export async function GET(request: Request) {
     },
     { now: new Date(), send, siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://supplementsnap.io" },
   )
+  // Counts only (no addresses or project names), so each run is visible in the runtime logs
+  console.log(JSON.stringify({ job: "follow-up-reminders", sending: send, ...result }))
   return NextResponse.json({ sending: send, ...result }, { headers: { "Cache-Control": "no-store" } })
 }

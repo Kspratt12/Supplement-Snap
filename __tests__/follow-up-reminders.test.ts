@@ -3,7 +3,7 @@ import { describe, it, expect, beforeAll } from "vitest"
 import { PGlite } from "@electric-sql/pglite"
 import fs from "node:fs"
 import path from "node:path"
-import { runReminders, dateInZone, isDue, reminderMessage, reminderKey, mayReclaim, MAX_ATTEMPTS, type ReminderDeps, type ReminderProject } from "../lib/follow-up-reminders"
+import { runReminders, dateInZone, isDue, reminderMessage, reminderKey, mayReclaim, sendingEnabled, MAX_ATTEMPTS, type ReminderDeps, type ReminderProject } from "../lib/follow-up-reminders"
 
 const p = (over: Partial<ReminderProject> = {}): ReminderProject => ({ id: "p1", user_id: "u1", project_name: "Synthetic <Roof>", follow_up_on: "2026-11-20", reminder_opt_in: true, reminder_tz: "America/New_York", ...over })
 
@@ -42,6 +42,13 @@ describe("which reminders are due", () => {
   it("needs opt-in and a date", () => {
     expect(isDue(p({ reminder_opt_in: false }), at("2026-11-21T12:00:00Z"))).toBe(false)
     expect(isDue(p({ follow_up_on: null }), at("2026-11-21T12:00:00Z"))).toBe(false)
+  })
+})
+
+describe("the sending switch", () => {
+  it("is on for true even with stray whitespace or case, and off for anything else", () => {
+    for (const v of ["true", "true\n", "true\r\n", " TRUE "]) expect(sendingEnabled(v)).toBe(true)
+    for (const v of [undefined, "", "false", "1", "yes", "tru"]) expect(sendingEnabled(v)).toBe(false)
   })
 })
 
