@@ -299,7 +299,7 @@ export default function PricingPage() {
                   ["Arrange findings in report order", true, true, true, true],
                   ["Numbered roof-diagram pins linked to findings", true, true, true, true],
                   ["Track requested and approved amounts you enter", true, true, true, true],
-                  ["In-app follow-up date (no automatic emails)", true, true, true, true],
+                  ["Follow-up date, with an optional email reminder to you", true, true, true, true],
                   ["PDF reports", false, true, true, true],
                   ["Email to adjusters", false, true, true, true],
                   ["Xactimate-style CSV export", false, false, true, true],
